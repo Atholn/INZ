@@ -6,11 +6,7 @@ using UnityEngine.UI;
 public class LevelEditorManager : MonoBehaviour
 {
     public ItemController[] ItemButtons;
-    public GameObject[] ItemPrefabs;
-    public GameObject[] ItemImage;
-    public int[] ItemHeightLevel;
     public int CurrentButtonPressed;
-
     RaycastHit hit;
    
     private void Start()
@@ -25,19 +21,23 @@ public class LevelEditorManager : MonoBehaviour
         if (Input.GetMouseButtonDown(0) && ItemButtons[CurrentButtonPressed].Clicked)
         {
             Vector3 v = hit.point;
-            if (Physics.Raycast(ray, out hit, 50000.0f, (1 << 0)))
+            if (Physics.Raycast(ray, out hit, 1000.0f))
             {
                  v  = hit.point;
-            }
-            ItemButtons[CurrentButtonPressed].Clicked = false;
-            Instantiate(ItemPrefabs[CurrentButtonPressed], new Vector3(v.x - v.x % 1 + 0.5f, 0.5f, v.z - v.z % 1 + 0.5f), Quaternion.identity);
-            Destroy(GameObject.FindGameObjectWithTag("ItemImage"));
+            }          
+            Instantiate(ItemButtons[CurrentButtonPressed].ItemPrefab, new Vector3(v.x - v.x % 1 + 0.5f, ItemButtons[CurrentButtonPressed].ItemHeightLevel, v.z - v.z % 1 + 0.5f), ItemButtons[CurrentButtonPressed].ItemPrefab.transform.rotation);
+            ButtonOff();
         }
         else if (Input.GetMouseButtonDown(1))
         {
-            ItemButtons[CurrentButtonPressed].Clicked = false;
-            Destroy(GameObject.FindGameObjectWithTag("ItemImage"));
+            ButtonOff();
         }
 
+    }
+
+    private void ButtonOff()
+    {
+        ItemButtons[CurrentButtonPressed].Clicked = false;
+        Destroy(GameObject.FindGameObjectWithTag("ItemImage"));
     }
 }

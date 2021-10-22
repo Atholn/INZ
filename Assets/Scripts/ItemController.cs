@@ -7,7 +7,11 @@ public class ItemController : MonoBehaviour
 {
     public int ID;
     public bool Clicked = false;
-    private LevelEditorManager editor;
+
+    public LevelEditorManager editor;
+    public GameObject ItemPrefab;
+    public GameObject ItemImage;
+    public float ItemHeightLevel;
 
     private void Start()
     {
@@ -16,11 +20,11 @@ public class ItemController : MonoBehaviour
 
     public void ButtonClicked()
     {
-        Vector3 screenPosition = new Vector3(Input.mousePosition.x, 0, Input.mousePosition.y);
+        Vector3 screenPosition = new Vector3(Input.mousePosition.x, editor.ItemButtons[ID].ItemHeightLevel, Input.mousePosition.z);
         Vector3 worldPosition = Camera.main.ScreenToWorldPoint(screenPosition);
         Clicked = true;
 
-        Instantiate(editor.ItemImage[ID], new Vector3(worldPosition.x, editor.ItemHeightLevel[ID], worldPosition.y), Quaternion.identity);
+        Instantiate(editor.ItemButtons[ID].ItemImage, new Vector3(worldPosition.x, editor.ItemButtons[ID].ItemHeightLevel, worldPosition.z), ItemPrefab.transform.rotation);
 
         editor.CurrentButtonPressed = ID;
 

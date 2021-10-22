@@ -9,14 +9,14 @@ public class FollowScript : MonoBehaviour
     void Update()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-        if (Physics.Raycast(ray, out hit, 50000.0f, (1 << 0)))
+        //if (Input.GetKeyDown("space"))
+        //{
+        //    transform.localScale *= 2;
+        //}
+        if (Physics.Raycast(ray, out hit, 50000.0f))
         {
-            transform.position = hit.point;
-            if (Input.GetKeyDown("space"))
-            {
-                transform.localScale *= 2;
-            }
+            transform.position = new Vector3(hit.point.x, 0, hit.point.z);
+
         }
     }
 }
