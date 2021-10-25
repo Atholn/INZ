@@ -11,7 +11,7 @@ public class CameraControll : MonoBehaviour
     public Vector2 cameraRotationMinMax;
     
     new Camera camera;
-    Vector2 mousePos, keyboardInput;
+    Vector2  keyboardInput;
 
     private void Awake()
     {
