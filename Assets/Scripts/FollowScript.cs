@@ -13,10 +13,9 @@ public class FollowScript : MonoBehaviour
         //{
         //    transform.localScale *= 2;
         //}
-        if (Physics.Raycast(ray, out hit, 50000.0f))
+        if (Physics.Raycast(ray, out hit, 500.0f))
         {
-            transform.position = new Vector3(hit.point.x, 0, hit.point.z);
-
+            transform.position = new Vector3(hit.point.x , 0, hit.point.z - 0.5f);
         }
     }
 }
