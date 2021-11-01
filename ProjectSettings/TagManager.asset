@@ -8,6 +8,7 @@ TagManager:
   - ItemImage
   - Slider
   - SizePanel
+  - EditorBasicPanels
   layers:
   - Default
   - TransparentFX
