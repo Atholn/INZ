@@ -20,10 +20,14 @@ public class LevelEditorManager : MonoBehaviour
     public Text valueSizeSliderText;
     public Toggle singleMultiToggle;
     public Text valueSingleMultiToggleText;
+    public Toggle replaceToggle;
+    public Text valueReplaceToggleText;
+
+    public Vector3 orginalScale;
 
     private void Start()
     {
-
+        orginalScale = ItemButtons[0].ItemImage.transform.localScale;
     }
 
     private void Update()
@@ -37,13 +41,13 @@ public class LevelEditorManager : MonoBehaviour
         UpdateSettingsPanel();
     }
 
-    
 
     private void UpdateSettingsPanel()
     {
-        valueSizeSliderText.text = sizeSlider.value.ToString();
+        valueSizeSliderText.text = sizeSlider.value.ToString() + "x" + sizeSlider.value.ToString();
 
-        if(singleMultiToggle.isOn)
+
+        if (singleMultiToggle.isOn)
         {
             valueSingleMultiToggleText.text = "Single";
         }
@@ -53,37 +57,21 @@ public class LevelEditorManager : MonoBehaviour
             valueSingleMultiToggleText.text = "Multi";
         }
 
-    }
+        if (ItemButtons[CurrentButtonPressed].ItemHeightLevel == 0)
+        {
+            ItemButtons[CurrentButtonPressed].ItemImage.transform.localScale = new Vector3(orginalScale.x * sizeSlider.value, orginalScale.y * sizeSlider.value, orginalScale.z);
+        }
 
-    private void DestroyObjectsTerrain()
-    {
-        ///to wyzej
-        //if (mapGameObjects[vx, vz] != null )
-        //{
-        //    Terrain terrain = mapGameObjects[vx, vz].GetComponent<Terrain>();
-        //    terrain.toDelete = true;
-        //}
+        if (replaceToggle.isOn)
+        {
+            valueReplaceToggleText.text = "Replace";
+        }
 
+        if (!replaceToggle.isOn)
+        {
+            valueReplaceToggleText.text = "No replace";
+        }
 
-        //if(gameObjectsToDelete.Count!=0)
-        //{
-        //    //for (int i = gameObjectsToDelete.Count - 1; i >= 0; i--)
-        //    //{
-
-
-        //    //    //Destroy(gameObjectsToDelete[i]);
-        //    //    //gameObjectsToDelete.RemoveAt(i);
-        //    //    //GameObject.Destroy(gameObjectsToDelete.gameObject);
-
-        //    //}
-
-        //    foreach(GameObject cube in gameObjectsToDelete)
-        //    {
-        //        Terrain terrain = cube.GetComponent<Terrain>();
-        //        terrain.toDelete = true;
-        //    }
-        //    //gameObjectsToDelete.Clear();
-        //}
     }
 
     private void CreateTerrain()
@@ -108,11 +96,8 @@ public class LevelEditorManager : MonoBehaviour
             int vx = (int)(v.x - v.x % 1);
             int vz = (int)(v.z - v.z % 1);
 
-            if ((vx < sizeMap && vx > -1) && (vz < sizeMap && vz > -1) && map[vx, vz] != CurrentButtonPressed)
+            if ((vx < sizeMap && vx > -1) && (vz < sizeMap && vz > -1))
             {
-
-                
-
                 for (int i = 0; i < sizeSlider.value; i++)
                 {
                     for (int j = 0; j < sizeSlider.value; j++)
@@ -120,25 +105,32 @@ public class LevelEditorManager : MonoBehaviour
                         int vxSlider = vx - (int)sizeSlider.value / 2 + i;
                         int vySlider = vz - (int)sizeSlider.value / 2 + j;
 
-                        if (vxSlider >= 0 && vxSlider < sizeMap &&
-                            vySlider >= 0 && vySlider < sizeMap
-                            && map[vxSlider, vySlider] == 0)
+                        if (vxSlider < 0 || vxSlider >= sizeMap || vySlider < 0 || vySlider >= sizeMap)
+                        {
+                            continue;
+                        }
+
+                        if (replaceToggle.isOn && map[vxSlider, vySlider] != 0 && map[vxSlider, vySlider] != CurrentButtonPressed)
+                        {
+                            DeleteCube(vxSlider, vySlider);
+                        }
+
+                        if (map[vxSlider, vySlider] == 0)
                         {
                             Instantiate(ItemButtons[CurrentButtonPressed].ItemPrefab,
-                                    new Vector3(vxSlider, ItemButtons[CurrentButtonPressed].ItemHeightLevel, vySlider),
+                                    new Vector3(vxSlider, ItemButtons[CurrentButtonPressed].ItemHeightPosY, vySlider),
                                     ItemButtons[CurrentButtonPressed].ItemPrefab.transform.rotation);
 
                             map[vxSlider, vySlider] = CurrentButtonPressed;
                             mapGameObjects[vxSlider, vySlider] = ItemButtons[CurrentButtonPressed].ItemPrefab;
                         }
                     }
-
                 }
             }
         }
 
 
-        
+
 
         //if (map[vx, vz] == 0)
         //{
@@ -149,6 +141,11 @@ public class LevelEditorManager : MonoBehaviour
         //    map[vx, vz] = CurrentButtonPressed;
         //    mapGameObjects[vx, vz] = ItemButtons[CurrentButtonPressed].ItemPrefab;
         //}
+    }
+
+    private void DeleteCube(int vxSlider, int vySlider)
+    {
+        //todo
     }
 
     private void UpdateLocation(Ray ray)
@@ -174,7 +171,6 @@ public class LevelEditorManager : MonoBehaviour
                 Debug.Log(test);
             }
         }
-
     }
 
     private void ButtonOff()
@@ -184,6 +180,7 @@ public class LevelEditorManager : MonoBehaviour
             for (int i = 0; i < ItemButtons.Length; i++)
             {
                 ItemButtons[i].Clicked = false;
+                ItemButtons[i].ItemImage.transform.localScale = orginalScale;
             }
 
             GameObject[] itemImages = GameObject.FindGameObjectsWithTag("ItemImage");

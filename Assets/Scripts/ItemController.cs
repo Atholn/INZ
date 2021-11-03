@@ -12,6 +12,7 @@ public class ItemController : MonoBehaviour
     public GameObject ItemPrefab;
     public GameObject ItemImage;
     public float ItemHeightLevel;
+    public float ItemHeightPosY = 0;
 
     private void Start()
     {
