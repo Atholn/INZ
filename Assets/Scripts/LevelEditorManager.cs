@@ -9,6 +9,8 @@ public class LevelEditorManager : MonoBehaviour
     public ItemController[] ItemButtons;
     public int CurrentButtonPressed;
 
+
+
     private int[,] map;
     private GameObject[,] mapGameObjects;
     private int sizeMap;
