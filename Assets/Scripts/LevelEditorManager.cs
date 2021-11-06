@@ -8,12 +8,16 @@ public class LevelEditorManager : MonoBehaviour
 {
     public ItemController[] ItemButtons;
     public int CurrentButtonPressed;
+   
+    internal int sizeMap;
+    //private int[,] mapTerrain; // height level 0 
+    //private GameObject[,] mapTerrainPrefabs;
+    //private int[,] mapNatureUnit; // height level 1
+    //private GameObject[,] mapNatureUnitPrefabs;
 
-
-
-    private int[,] map;
-    private GameObject[,] mapGameObjects;
-    private int sizeMap;
+    private int mapCount = 2; //Level 0 - terrain; Level 1 - Nature/Unit
+    private int[][,] maps;
+    private GameObject[][,] mapsPrefabs;
 
     RaycastHit hit;
     internal Vector3 v;
@@ -27,9 +31,27 @@ public class LevelEditorManager : MonoBehaviour
 
     public Vector3 orginalScale;
 
+    private List<StartPointUnit> startPointUnits = new List<StartPointUnit>();
+    UnitEditorPanel unitEditorPanel;
+
     private void Start()
     {
         orginalScale = ItemButtons[0].ItemImage.transform.localScale;
+
+        InitializeStartMaps();
+
+        CreateStartPointUnits();
+    }
+
+    private void InitializeStartMaps()
+    {
+        maps = new int[mapCount][,];
+        mapsPrefabs = new GameObject[mapCount][,];
+    }
+
+    private void CreateStartPointUnits()
+    {
+        unitEditorPanel = FindObjectOfType<UnitEditorPanel>();
     }
 
     private void Update()
@@ -86,13 +108,13 @@ public class LevelEditorManager : MonoBehaviour
 
         if (!singleMultiToggle.isOn && Input.GetMouseButton(0))
         {
-            CreateTerrainCube();
+            CreateTerrainCube(); 
+            return;
         }
     }
 
     private void CreateTerrainCube()
     {
-
         if (ItemButtons[CurrentButtonPressed].Clicked)
         {
             int vx = (int)(v.x - v.x % 1);
@@ -100,39 +122,18 @@ public class LevelEditorManager : MonoBehaviour
 
             if ((vx < sizeMap && vx > -1) && (vz < sizeMap && vz > -1))
             {
-                for (int i = 0; i < sizeSlider.value; i++)
+                if (ItemButtons[CurrentButtonPressed].ItemHeightLevel == 0)
                 {
-                    for (int j = 0; j < sizeSlider.value; j++)
-                    {
-                        int vxSlider = vx - (int)sizeSlider.value / 2 + i;
-                        int vySlider = vz - (int)sizeSlider.value / 2 + j;
-
-                        if (vxSlider < 0 || vxSlider >= sizeMap || vySlider < 0 || vySlider >= sizeMap)
-                        {
-                            continue;
-                        }
-
-                        if (replaceToggle.isOn && map[vxSlider, vySlider] != 0 && map[vxSlider, vySlider] != CurrentButtonPressed)
-                        {
-                            DeleteCube(vxSlider, vySlider);
-                        }
-
-                        if (map[vxSlider, vySlider] == 0)
-                        {
-                            Instantiate(ItemButtons[CurrentButtonPressed].ItemPrefab,
-                                    new Vector3(vxSlider, ItemButtons[CurrentButtonPressed].ItemHeightPosY, vySlider),
-                                    ItemButtons[CurrentButtonPressed].ItemPrefab.transform.rotation);
-
-                            map[vxSlider, vySlider] = CurrentButtonPressed;
-                            mapGameObjects[vxSlider, vySlider] = ItemButtons[CurrentButtonPressed].ItemPrefab;
-                        }
-                    }
+                    GenerateTerrain(vx, vz, ItemButtons[CurrentButtonPressed].ItemHeightLevel);
                 }
+
+                if (ItemButtons[CurrentButtonPressed].ItemHeightLevel == 1)
+                {
+                    GenerateNatureUnit(vx, vz, ItemButtons[CurrentButtonPressed].ItemHeightLevel);
+                }
+
             }
         }
-
-
-
 
         //if (map[vx, vz] == 0)
         //{
@@ -145,7 +146,91 @@ public class LevelEditorManager : MonoBehaviour
         //}
     }
 
-    private void DeleteCube(int vxSlider, int vySlider)
+    private void GenerateNatureUnit(int vx, int vz, int level)
+    {
+        int size;
+        if (ItemButtons[CurrentButtonPressed] is ItemUnitController)
+        {
+            size = ItemButtons[CurrentButtonPressed].ItemPrefab.GetComponent<StartPointUnit>().buildSize / 2;
+            vx = vx < 0 ? size + 1 : vx;
+            vx = vx >= sizeMap ? sizeMap - size - 1 : vx;
+
+            vz = vz < 0 ? size + 1 : vz;
+            vz = vz >= sizeMap ? sizeMap - size - 1 : vz;
+
+            Debug.Log(vx + " " + vz);
+        }
+          
+
+        if (!(ItemButtons[CurrentButtonPressed] is  ItemUnitController)||
+            (ItemButtons[CurrentButtonPressed] is ItemUnitController 
+            
+            
+            ))
+        {
+            
+
+            CreateGameObject(vx, vz, level);
+        }
+        
+    }
+
+    private void GenerateTerrain(int vx, int vz, int level)
+    {
+        for (int i = 0; i < sizeSlider.value; i++)
+        {
+            for (int j = 0; j < sizeSlider.value; j++)
+            {
+                int vxSlider = vx - (int)sizeSlider.value / 2 + i;
+                int vySlider = vz - (int)sizeSlider.value / 2 + j;
+
+                if (vxSlider < 0 || vxSlider >= sizeMap || vySlider < 0 || vySlider >= sizeMap)
+                {
+                    continue;
+                }
+
+                CreateGameObject(vxSlider, vySlider, level);
+            }
+        }
+    }
+
+    private void CreateGameObject(int vx, int vy, int level)
+    {
+        if (replaceToggle.isOn && maps[level][vx, vy] != 0 && maps[level][vx, vy] != CurrentButtonPressed)
+        {
+            DeleteGameObject(vx, vy);
+        }
+
+        if (maps[level][vx, vy] == 0)
+        {
+            Instantiate(ItemButtons[CurrentButtonPressed].ItemPrefab,
+                    new Vector3(vx, ItemButtons[CurrentButtonPressed].ItemHeightPosY, vy),
+                    ItemButtons[CurrentButtonPressed].ItemPrefab.transform.rotation);
+
+            maps[level][vx, vy] = CurrentButtonPressed;
+            mapsPrefabs[level][vx, vy] = ItemButtons[CurrentButtonPressed].ItemPrefab;
+        }
+    }
+
+    //private void CreateGameObject(int vx, int vy)
+    //{
+    //    if (replaceToggle.isOn && mapTerrain[vx, vy] != 0 && mapTerrain[vx, vy] != CurrentButtonPressed)
+    //    {
+    //        DeleteGameObject(vx, vy);
+    //    }
+
+    //    if (mapTerrain[vx, vy] == 0)
+    //    {
+    //        Instantiate(ItemButtons[CurrentButtonPressed].ItemPrefab,
+    //                new Vector3(vx, ItemButtons[CurrentButtonPressed].ItemHeightPosY, vy),
+    //                ItemButtons[CurrentButtonPressed].ItemPrefab.transform.rotation);
+
+    //        mapTerrain[vx, vy] = CurrentButtonPressed;
+    //        mapTerrainPrefabs[vx, vy] = ItemButtons[CurrentButtonPressed].ItemPrefab;
+    //    }
+    //}
+
+    private void DeleteGameObject(int vxSlider, int vySlider)
     {
         //todo
     }
@@ -162,16 +247,21 @@ public class LevelEditorManager : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(2))
         {
-            string test;
-            for (int i = 0; i < sizeMap; i++)
+            for(int k=0; k< mapCount; k++)
             {
-                test = "";
-                for (int j = 0; j < sizeMap; j++)
+                string test;
+                for (int i = 0; i < sizeMap; i++)
                 {
-                    test += map[i, j];
+                    test = "";
+                    for (int j = 0; j < sizeMap; j++)
+                    {
+                        test += maps[k][i, j];
+                    }
+                    Debug.Log(test);
                 }
-                Debug.Log(test);
-            }
+
+                Debug.LogError("-------------");
+            }         
         }
     }
 
@@ -182,7 +272,10 @@ public class LevelEditorManager : MonoBehaviour
             for (int i = 0; i < ItemButtons.Length; i++)
             {
                 ItemButtons[i].Clicked = false;
-                ItemButtons[i].ItemImage.transform.localScale = orginalScale;
+                if(ItemButtons[i].ItemHeightLevel == 0)
+                {
+                    ItemButtons[i].ItemImage.transform.localScale = orginalScale;
+                }         
             }
 
             GameObject[] itemImages = GameObject.FindGameObjectsWithTag("ItemImage");
@@ -201,10 +294,20 @@ public class LevelEditorManager : MonoBehaviour
         Instantiate(basicTerrain, new Vector3(size / 2 - 0.5f, 0, size / 2 - 0.5f), basicTerrain.transform.rotation);
         basicTerrain.gameObject.transform.localScale = ground.orginalScale;
 
-        //size = this.size;
-        map = new int[size, size];
-        mapGameObjects = new GameObject[size, size];
+
+        //mapTerrain = new int[size, size];
+        //mapTerrainPrefabs = new GameObject[size, size];
+        //mapNatureUnit = new int[size, size];
+        //mapNatureUnitPrefabs = new GameObject[size, size];
+
         sizeMap = size;
+        for (int i = 0; i < mapCount; i++)
+        {
+            maps[i] = new int[size, size];
+            mapsPrefabs[i] = new GameObject[size, size];
+        }
+        //maps[0] = mapTerrain;
+        //maps[1] = mapNatureUnit;
         //todo
 
         //for (int i = 0; i < size; i++)

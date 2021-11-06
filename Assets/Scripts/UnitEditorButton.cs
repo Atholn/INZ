@@ -5,11 +5,11 @@ using UnityEngine.UI;
 
 public class UnitEditorButton : MonoBehaviour
 {
+    public int ID;
     public Button button;
     public Color buttonColor;
     public Material unitMaterial;
-    UnitEditorPanel unitEditorPanel;
-    
+    UnitEditorPanel unitEditorPanel;  
 
     private void Start()
     {
@@ -19,5 +19,6 @@ public class UnitEditorButton : MonoBehaviour
     public void ChangePanelColor() 
     {
         unitEditorPanel.GetComponent<Image>().color = buttonColor;
+        unitEditorPanel.actualMaterial = unitMaterial;
     }
 }

@@ -11,23 +11,22 @@ public class ItemController : MonoBehaviour
     public LevelEditorManager editor;
     public GameObject ItemPrefab;
     public GameObject ItemImage;
-    public float ItemHeightLevel;
+    public int ItemHeightLevel;
     public float ItemHeightPosY = 0;
 
     private void Start()
     {
-        editor = GameObject.FindGameObjectWithTag("LevelEditorManager").GetComponent<LevelEditorManager>();
+        editor = GameObject.FindGameObjectWithTag("LevelEditorManager").GetComponent<LevelEditorManager>();        
     }
 
-    public void ButtonClicked()
+    public virtual void ButtonClicked()
     {
         Vector3 screenPosition = new Vector3(Input.mousePosition.x, editor.ItemButtons[ID].ItemHeightLevel, Input.mousePosition.z);
         Vector3 worldPosition = Camera.main.ScreenToWorldPoint(screenPosition);
         Clicked = true;
-
+        
         Instantiate(editor.ItemButtons[ID].ItemImage, new Vector3(worldPosition.x, editor.ItemButtons[ID].ItemHeightLevel, worldPosition.z), ItemPrefab.transform.rotation);
 
         editor.CurrentButtonPressed = ID;
-
     }
 }
