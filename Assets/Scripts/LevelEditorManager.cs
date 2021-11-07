@@ -10,11 +10,6 @@ public class LevelEditorManager : MonoBehaviour
     public int CurrentButtonPressed;
 
     internal int sizeMap;
-    //private int[,] mapTerrain; // height level 0 
-    //private GameObject[,] mapTerrainPrefabs;
-    //private int[,] mapNatureUnit; // height level 1
-    //private GameObject[,] mapNatureUnitPrefabs;
-
     private int mapCount = 2; //Level 0 - terrain; Level 1 - Nature/Unit
     private int[][,] maps;
     private GameObject[][,] mapsPrefabs;
@@ -147,13 +142,40 @@ public class LevelEditorManager : MonoBehaviour
     }
 
     private void GenerateNatureUnit(int vx, int vz, int level)
-    {
-        int size;
+    {       
         if (ItemButtons[CurrentButtonPressed] is ItemUnitController)
         {
-            size = ItemButtons[CurrentButtonPressed].ItemPrefab.GetComponent<StartPointUnit>().buildSize / 2;
+            int size;
+            int fullSize = ItemButtons[CurrentButtonPressed].ItemPrefab.GetComponent<StartPointUnit>().buildSize;
+            size =fullSize / 2;
 
-            if (vx < size || vx >= sizeMap - size || vz < size || vz >= sizeMap) return;
+            if (vx < size || vx >= sizeMap - size || vz < size || vz >= sizeMap - size) return;
+
+            int tempvx;
+            int tempvz;
+
+            for (int i=0; i< fullSize; i++)
+            {
+                for (int j = 0; j < fullSize; j++)
+                {
+                    tempvx = vx - fullSize/2 + i;
+                    tempvz = vz - fullSize/2 + j;                   
+
+                    if (vx < 0 || vx >= sizeMap || vz < 0 || vz >= sizeMap) return;
+                    if (maps[level][tempvx, tempvz] != 0) return;
+                }
+            }
+
+            for (int i = 0; i < fullSize; i++)
+            {
+                for (int j = 0; j < fullSize; j++)
+                {
+                    tempvx = vx - fullSize / 2 + i;
+                    tempvz = vz - fullSize / 2 + j;
+                    if (tempvx == vx && tempvz == vz) continue;
+                    maps[level][tempvx, tempvz] = -1;
+                }
+            }                   
         }
 
         CreateGameObject(vx, vz, level);
@@ -178,21 +200,21 @@ public class LevelEditorManager : MonoBehaviour
         }
     }
 
-    private void CreateGameObject(int vx, int vy, int level)
+    private void CreateGameObject(int vx, int vz, int level)
     {
-        if (replaceToggle.isOn && maps[level][vx, vy] != 0 && maps[level][vx, vy] != CurrentButtonPressed)
+        if (replaceToggle.isOn && maps[level][vx, vz] != 0 && maps[level][vx, vz] != CurrentButtonPressed)
         {
-            DeleteGameObject(vx, vy);
+            DeleteGameObject(vx, vz);
         }
 
-        if (maps[level][vx, vy] == 0)
+        if (maps[level][vx, vz] == 0)
         {
             Instantiate(ItemButtons[CurrentButtonPressed].ItemPrefab,
-                    new Vector3(vx, ItemButtons[CurrentButtonPressed].ItemHeightPosY, vy),
+                    new Vector3(vx, ItemButtons[CurrentButtonPressed].ItemHeightPosY, vz),
                     ItemButtons[CurrentButtonPressed].ItemPrefab.transform.rotation);
 
-            maps[level][vx, vy] = CurrentButtonPressed;
-            mapsPrefabs[level][vx, vy] = ItemButtons[CurrentButtonPressed].ItemPrefab;
+            maps[level][vx, vz] = CurrentButtonPressed;
+            mapsPrefabs[level][vx, vz] = ItemButtons[CurrentButtonPressed].ItemPrefab;
         }
     }
 
@@ -263,6 +285,7 @@ public class LevelEditorManager : MonoBehaviour
             }
 
             GameObject[] itemImages = GameObject.FindGameObjectsWithTag("ItemImage");
+
             for (int i = 0; i < itemImages.Length; i++)
             {
                 Destroy(itemImages[i]);
@@ -274,15 +297,8 @@ public class LevelEditorManager : MonoBehaviour
     {
         Ground ground = basicTerrain.gameObject.GetComponent<Ground>();
         basicTerrain.gameObject.transform.localScale = new Vector3(size * basicTerrain.gameObject.transform.localScale.x, basicTerrain.gameObject.transform.localScale.y, size * basicTerrain.gameObject.transform.localScale.z);
-
         Instantiate(basicTerrain, new Vector3(size / 2 - 0.5f, 0, size / 2 - 0.5f), basicTerrain.transform.rotation);
         basicTerrain.gameObject.transform.localScale = ground.orginalScale;
-
-
-        //mapTerrain = new int[size, size];
-        //mapTerrainPrefabs = new GameObject[size, size];
-        //mapNatureUnit = new int[size, size];
-        //mapNatureUnitPrefabs = new GameObject[size, size];
 
         sizeMap = size;
         for (int i = 0; i < mapCount; i++)
@@ -290,26 +306,5 @@ public class LevelEditorManager : MonoBehaviour
             maps[i] = new int[size, size];
             mapsPrefabs[i] = new GameObject[size, size];
         }
-        //maps[0] = mapTerrain;
-        //maps[1] = mapNatureUnit;
-        //todo
-
-        //for (int i = 0; i < size; i++)
-        //{
-        //    for (int j = 0; j < size; j++)
-        //    {
-        //        Debug.Log(mapGameObjects[i, j]);
-        //    }
-        //}
-
-        //bT.gameObject.transform *= new Vector3(1, 0, 1);
-        //for (int i=0; i<size;i++)
-        //{
-        //    for (int j = 0; j < size; j++)
-        //    {
-
-        //        Instantiate(basicTerrain, new Vector3(i + 0.5f, 0, j + 0.5f), basicTerrain.transform.rotation);
-        //    }
-        //}
     }
 }

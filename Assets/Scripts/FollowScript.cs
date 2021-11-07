@@ -16,7 +16,7 @@ public class FollowScript : MonoBehaviour
         levelEditorManager = FindObjectOfType<LevelEditorManager>();
         height = levelEditorManager.ItemButtons[levelEditorManager.CurrentButtonPressed].ItemHeightPosY;
 
-        StartPointUnit startPointUnit =  levelEditorManager.ItemButtons[levelEditorManager.CurrentButtonPressed].ItemPrefab.GetComponent<StartPointUnit>();
+        StartPointUnit startPointUnit = levelEditorManager.ItemButtons[levelEditorManager.CurrentButtonPressed].ItemPrefab.GetComponent<StartPointUnit>();
         limit = startPointUnit != null ? startPointUnit.buildSize / 2 : 0;
     }
 
@@ -25,11 +25,11 @@ public class FollowScript : MonoBehaviour
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
         if (Physics.Raycast(ray, out hit, 500.0f) &&
-            hit.point.x > limit && hit.point.x < levelEditorManager.sizeMap - (limit + 1) &&
-            hit.point.z > limit + shift && hit.point.z < levelEditorManager.sizeMap - limit - shift)
+            hit.point.x > limit && hit.point.x <= levelEditorManager.sizeMap - limit &&
+            hit.point.z > limit && hit.point.z <= levelEditorManager.sizeMap - limit)
         {
-            
-            transform.position = new Vector3(hit.point.x - hit.point.x%1 , height, hit.point.z - hit.point.z % 1);
+
+            transform.position = new Vector3(hit.point.x - hit.point.x % 1, height, hit.point.z - hit.point.z % 1);
         }
     }
 }
