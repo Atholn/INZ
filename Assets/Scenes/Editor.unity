@@ -1247,7 +1247,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0e3eabee295cfd4eae8384424d3d955, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  size: 10
+  size: 100
   basicTerrain: {fileID: 5770076833996844587, guid: 2d15e7a89d6abcf498bb4d5c7dbdee7a, type: 3}
   editor: {fileID: 1793844480}
 --- !u!1 &445202707
@@ -5945,7 +5945,6 @@ MonoBehaviour:
   ItemImage: {fileID: 826525227639827491, guid: f549e40adb9a6e4498a3993c700a14d8, type: 3}
   ItemHeightLevel: 1
   ItemHeightPosY: 0.5
-  startPointUnit: {fileID: 0}
 --- !u!1 &1855833820
 GameObject:
   m_ObjectHideFlags: 0

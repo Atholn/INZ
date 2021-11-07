@@ -8,7 +8,7 @@ public class LevelEditorManager : MonoBehaviour
 {
     public ItemController[] ItemButtons;
     public int CurrentButtonPressed;
-   
+
     internal int sizeMap;
     //private int[,] mapTerrain; // height level 0 
     //private GameObject[,] mapTerrainPrefabs;
@@ -108,7 +108,7 @@ public class LevelEditorManager : MonoBehaviour
 
         if (!singleMultiToggle.isOn && Input.GetMouseButton(0))
         {
-            CreateTerrainCube(); 
+            CreateTerrainCube();
             return;
         }
     }
@@ -152,27 +152,18 @@ public class LevelEditorManager : MonoBehaviour
         if (ItemButtons[CurrentButtonPressed] is ItemUnitController)
         {
             size = ItemButtons[CurrentButtonPressed].ItemPrefab.GetComponent<StartPointUnit>().buildSize / 2;
-            vx = vx < 0 ? size + 1 : vx;
-            vx = vx >= sizeMap ? sizeMap - size - 1 : vx;
 
-            vz = vz < 0 ? size + 1 : vz;
-            vz = vz >= sizeMap ? sizeMap - size - 1 : vz;
+
+            vx = vx < size ? size : vx;
+            vx = vx >= sizeMap - size ? sizeMap - size - 1 : vx;
+
+            vz = vz < size ? size : vz;
+            vz = vz >= sizeMap - size ? sizeMap - size - 1 : vz;
 
             Debug.Log(vx + " " + vz);
         }
-          
 
-        if (!(ItemButtons[CurrentButtonPressed] is  ItemUnitController)||
-            (ItemButtons[CurrentButtonPressed] is ItemUnitController 
-            
-            
-            ))
-        {
-            
-
-            CreateGameObject(vx, vz, level);
-        }
-        
+        CreateGameObject(vx, vz, level);
     }
 
     private void GenerateTerrain(int vx, int vz, int level)
@@ -247,7 +238,7 @@ public class LevelEditorManager : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(2))
         {
-            for(int k=0; k< mapCount; k++)
+            for (int k = 0; k < mapCount; k++)
             {
                 string test;
                 for (int i = 0; i < sizeMap; i++)
@@ -261,7 +252,7 @@ public class LevelEditorManager : MonoBehaviour
                 }
 
                 Debug.LogError("-------------");
-            }         
+            }
         }
     }
 
@@ -272,10 +263,10 @@ public class LevelEditorManager : MonoBehaviour
             for (int i = 0; i < ItemButtons.Length; i++)
             {
                 ItemButtons[i].Clicked = false;
-                if(ItemButtons[i].ItemHeightLevel == 0)
+                if (ItemButtons[i].ItemHeightLevel == 0)
                 {
                     ItemButtons[i].ItemImage.transform.localScale = orginalScale;
-                }         
+                }
             }
 
             GameObject[] itemImages = GameObject.FindGameObjectsWithTag("ItemImage");
