@@ -153,14 +153,7 @@ public class LevelEditorManager : MonoBehaviour
         {
             size = ItemButtons[CurrentButtonPressed].ItemPrefab.GetComponent<StartPointUnit>().buildSize / 2;
 
-
-            vx = vx < size ? size : vx;
-            vx = vx >= sizeMap - size ? sizeMap - size - 1 : vx;
-
-            vz = vz < size ? size : vz;
-            vz = vz >= sizeMap - size ? sizeMap - size - 1 : vz;
-
-            Debug.Log(vx + " " + vz);
+            if (vx < size || vx >= sizeMap - size || vz < size || vz >= sizeMap) return;
         }
 
         CreateGameObject(vx, vz, level);
