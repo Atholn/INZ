@@ -1,6 +1,8 @@
+using Assets.Scripts;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -26,16 +28,28 @@ public class LevelEditorManager : MonoBehaviour
 
     public Vector3 orginalScale;
 
-    private List<StartPointUnit> startPointUnits = new List<StartPointUnit>();
-    UnitEditorPanel unitEditorPanel;
+
+    private List<StartPoint> startPoints = new List<StartPoint>();
+    public UnitEditorPanel unitEditorPanel;
 
     private void Start()
     {
         orginalScale = ItemButtons[0].ItemImage.transform.localScale;
 
         InitializeStartMaps();
+        InitializeStartPointUnitsList();
+    }
 
-        CreateStartPointUnits();
+    private void InitializeStartPointUnitsList()
+    {
+        foreach (UnitEditorButton unit in unitEditorPanel.UnitButtons)
+        {
+            startPoints.Add(new StartPoint
+            {
+                unitMaterialName = unit.unitMaterial.name,
+                unitStartLocation = Vector3.zero,
+            });
+        }
     }
 
     private void InitializeStartMaps()
@@ -44,22 +58,16 @@ public class LevelEditorManager : MonoBehaviour
         mapsPrefabs = new GameObject[mapCount][,];
     }
 
-    private void CreateStartPointUnits()
-    {
-        unitEditorPanel = FindObjectOfType<UnitEditorPanel>();
-    }
-
     private void Update()
     {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        CreateTerrain();
-        ButtonOff();
-
-        UpdateLocation(ray);
-        CheckMap();
+        UpdateCreateTerrain();
+        UpdateButtonOff();
+        UpdateLocation();
         UpdateSettingsPanel();
-    }
 
+        //
+        CheckMap();
+    }
 
     private void UpdateSettingsPanel()
     {
@@ -93,7 +101,7 @@ public class LevelEditorManager : MonoBehaviour
 
     }
 
-    private void CreateTerrain()
+    private void UpdateCreateTerrain()
     {
         if (singleMultiToggle.isOn && Input.GetMouseButtonDown(0))
         {
@@ -126,7 +134,6 @@ public class LevelEditorManager : MonoBehaviour
                 {
                     GenerateNatureUnit(vx, vz, ItemButtons[CurrentButtonPressed].ItemHeightLevel);
                 }
-
             }
         }
 
@@ -142,24 +149,22 @@ public class LevelEditorManager : MonoBehaviour
     }
 
     private void GenerateNatureUnit(int vx, int vz, int level)
-    {       
+    {
         if (ItemButtons[CurrentButtonPressed] is ItemUnitController)
         {
-            int size;
             int fullSize = ItemButtons[CurrentButtonPressed].ItemPrefab.GetComponent<StartPointUnit>().buildSize;
-            size =fullSize / 2;
 
-            if (vx < size || vx >= sizeMap - size || vz < size || vz >= sizeMap - size) return;
+            if (vx < fullSize / 2 || vx >= sizeMap - fullSize / 2 || vz < fullSize / 2 || vz >= sizeMap - fullSize / 2) return;
 
             int tempvx;
             int tempvz;
 
-            for (int i=0; i< fullSize; i++)
+            for (int i = 0; i < fullSize; i++)
             {
                 for (int j = 0; j < fullSize; j++)
                 {
-                    tempvx = vx - fullSize/2 + i;
-                    tempvz = vz - fullSize/2 + j;                   
+                    tempvx = vx - fullSize / 2 + i;
+                    tempvz = vz - fullSize / 2 + j;
 
                     if (vx < 0 || vx >= sizeMap || vz < 0 || vz >= sizeMap) return;
                     if (maps[level][tempvx, tempvz] != 0) return;
@@ -175,7 +180,7 @@ public class LevelEditorManager : MonoBehaviour
                     if (tempvx == vx && tempvz == vz) continue;
                     maps[level][tempvx, tempvz] = -1;
                 }
-            }                   
+            }
         }
 
         CreateGameObject(vx, vz, level);
@@ -204,17 +209,21 @@ public class LevelEditorManager : MonoBehaviour
     {
         if (replaceToggle.isOn && maps[level][vx, vz] != 0 && maps[level][vx, vz] != CurrentButtonPressed)
         {
-            DeleteGameObject(vx, vz);
+            DeleteGameObject(vx, vz, level);
         }
 
         if (maps[level][vx, vz] == 0)
         {
-            Instantiate(ItemButtons[CurrentButtonPressed].ItemPrefab,
-                    new Vector3(vx, ItemButtons[CurrentButtonPressed].ItemHeightPosY, vz),
-                    ItemButtons[CurrentButtonPressed].ItemPrefab.transform.rotation);
+            if (ItemButtons[CurrentButtonPressed] is ItemUnitController)
+            {
+                UpdateStartUnitList(vx, vz, level);
+            }
 
             maps[level][vx, vz] = CurrentButtonPressed;
-            mapsPrefabs[level][vx, vz] = ItemButtons[CurrentButtonPressed].ItemPrefab;
+            mapsPrefabs[level][vx, vz] = Instantiate(ItemButtons[CurrentButtonPressed].ItemPrefab,
+                new Vector3(vx, ItemButtons[CurrentButtonPressed].ItemHeightPosY, vz),
+                ItemButtons[CurrentButtonPressed].ItemPrefab.transform.rotation);
+            //mapsPrefabs[level][vx, vz] = ItemButtons[CurrentButtonPressed].ItemPrefab;
         }
     }
 
@@ -236,13 +245,56 @@ public class LevelEditorManager : MonoBehaviour
     //    }
     //}
 
-    private void DeleteGameObject(int vxSlider, int vySlider)
+
+
+    private void UpdateStartUnitList(int vx, int vz, int level)
     {
-        //todo
+        StartPoint spu = startPoints.Where(u => u.unitMaterialName == unitEditorPanel.actualMaterial.name).First();
+
+        if (spu.unitStartLocation == Vector3.zero)
+        {
+            spu.unitStartLocation = new Vector3(vx, ItemButtons[CurrentButtonPressed].ItemHeightPosY, vz);
+            return;
+        }
+
+        if (maps[level][(int)spu.unitStartLocation.x, (int)spu.unitStartLocation.z] == CurrentButtonPressed)
+        {
+            int tempvx, tempvz;
+            int fullSize = ItemButtons[CurrentButtonPressed].ItemPrefab.GetComponent<StartPointUnit>().buildSize;
+
+            for (int i = 0; i < fullSize; i++)
+            {
+                for (int j = 0; j < fullSize; j++)
+                {
+                    tempvx = (int)spu.unitStartLocation.x - fullSize / 2 + i;
+                    tempvz = (int)spu.unitStartLocation.z - fullSize / 2 + j;
+
+                    maps[level][tempvx, tempvz] = 0;
+                }
+            }
+        }
+
+        GameObjectToDelete(mapsPrefabs[level][(int)spu.unitStartLocation.x, (int)spu.unitStartLocation.z]);
+        mapsPrefabs[level][(int)spu.unitStartLocation.x, (int)spu.unitStartLocation.z] = null;
+        spu.unitStartLocation = new Vector3(vx, ItemButtons[CurrentButtonPressed].ItemHeightPosY, vz);
     }
 
-    private void UpdateLocation(Ray ray)
+    private void DeleteGameObject(int vx, int vz, int level)
     {
+        GameObjectToDelete(mapsPrefabs[level][vx, vz]);
+
+        maps[level][vx, vz] = 0;
+        mapsPrefabs[level][vx, vz] = null;
+    }
+
+    private void GameObjectToDelete(GameObject gameObject)
+    {
+        Destroy(gameObject.transform.gameObject);
+    }
+
+    private void UpdateLocation()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out hit, 1000.0f))
         {
             v = hit.point;
@@ -271,7 +323,7 @@ public class LevelEditorManager : MonoBehaviour
         }
     }
 
-    private void ButtonOff()
+    private void UpdateButtonOff()
     {
         if (Input.GetMouseButtonDown(1))
         {

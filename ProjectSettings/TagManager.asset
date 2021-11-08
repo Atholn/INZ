@@ -9,6 +9,7 @@ TagManager:
   - Slider
   - SizePanel
   - EditorBasicPanels
+  - UnitsPanel
   layers:
   - Default
   - TransparentFX
