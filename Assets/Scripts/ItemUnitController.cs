@@ -5,7 +5,6 @@ using UnityEngine;
 public class ItemUnitController : ItemController
 {
     UnitEditorPanel unitEditorPanel;
-    //public StartPointUnit startPointUnit;
 
     private void Start()
     {

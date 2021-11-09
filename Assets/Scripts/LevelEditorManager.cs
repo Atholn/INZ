@@ -207,9 +207,31 @@ public class LevelEditorManager : MonoBehaviour
 
     private void CreateGameObject(int vx, int vz, int level)
     {
-        if (replaceToggle.isOn && maps[level][vx, vz] != 0 && maps[level][vx, vz] != CurrentButtonPressed)
+        if (replaceToggle.isOn && maps[level][vx, vz] > 0 && maps[level][vx, vz] != CurrentButtonPressed)
         {
+            if (mapsPrefabs[level][vx, vz].GetComponent<StartPointUnit>() != null)
+            {
+                StartPoint spu = startPoints.Where(u => u.unitStartLocation.x == vx && u.unitStartLocation.z == vz).First();
+
+                int areaToReset = mapsPrefabs[level][vx, vz].GetComponent<StartPointUnit>().buildSize;
+                int tempvx, tempvz;
+
+                for (int i = 0; i < areaToReset; i++)
+                {
+                    for (int j = 0; j < areaToReset; j++)
+                    {
+                        tempvx = vx - areaToReset / 2 + i;
+                        tempvz = vz - areaToReset / 2 + j;
+
+                        maps[level][tempvx, tempvz] = 0;
+                    }
+                }
+
+                spu.unitStartLocation = Vector3.zero;
+            }
+
             DeleteGameObject(vx, vz, level);
+
         }
 
         if (maps[level][vx, vz] == 0)
@@ -319,6 +341,17 @@ public class LevelEditorManager : MonoBehaviour
                 }
 
                 Debug.LogError("-------------");
+            }
+        }
+
+        if (Input.GetMouseButtonDown(3))
+        {
+            foreach(StartPoint sP in startPoints)
+            {
+                if (sP.unitStartLocation != Vector3.zero)
+                {
+                    Debug.Log(sP.unitMaterialName);
+                }
             }
         }
     }
