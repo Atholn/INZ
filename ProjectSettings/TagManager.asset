@@ -7,9 +7,9 @@ TagManager:
   - LevelEditorManager
   - ItemImage
   - Slider
-  - SizePanel
   - EditorBasicPanels
   - UnitsPanel
+  - StartPanel
   layers:
   - Default
   - TransparentFX

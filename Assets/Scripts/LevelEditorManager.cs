@@ -32,6 +32,8 @@ public class LevelEditorManager : MonoBehaviour
     private List<StartPoint> startPoints = new List<StartPoint>();
     public UnitEditorPanel unitEditorPanel;
 
+    public GameObject[] panelsToActive;
+
     private void Start()
     {
         orginalScale = ItemButtons[0].ItemImage.transform.localScale;
@@ -346,7 +348,7 @@ public class LevelEditorManager : MonoBehaviour
 
         if (Input.GetMouseButtonDown(3))
         {
-            foreach(StartPoint sP in startPoints)
+            foreach (StartPoint sP in startPoints)
             {
                 if (sP.unitStartLocation != Vector3.zero)
                 {
@@ -390,6 +392,11 @@ public class LevelEditorManager : MonoBehaviour
         {
             maps[i] = new int[size, size];
             mapsPrefabs[i] = new GameObject[size, size];
+        }
+
+        foreach (GameObject panel in panelsToActive)
+        {
+            panel.SetActive(true);
         }
     }
 }

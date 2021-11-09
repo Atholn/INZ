@@ -8,12 +8,11 @@ public class SizeMapButton : MonoBehaviour
     public int size;
     public GameObject basicTerrain;
     public LevelEditorManager editor;
-    
+
 
     public void ChoiceMapSize()
     {
-        GameObject panel = GameObject.FindGameObjectWithTag("SizePanel");
-        panel.SetActive(false);
+        GameObject.FindGameObjectWithTag("StartPanel").SetActive(false);
         editor.CreateStartTerrain(size, basicTerrain);
     }
 }
