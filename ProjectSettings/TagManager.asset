@@ -10,6 +10,8 @@ TagManager:
   - EditorBasicPanels
   - UnitsPanel
   - StartPanel
+  - TypeOfMap
+  - OptionsEditorPanel
   layers:
   - Default
   - TransparentFX

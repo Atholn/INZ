@@ -8,6 +8,13 @@ using UnityEngine.UI;
 
 public class LevelEditorManager : MonoBehaviour
 {
+    enum TypeOfMap
+    {
+        Campaign,
+        Sirmish,
+        FreeGame
+    }
+
     public ItemController[] ItemButtons;
     public int CurrentButtonPressed;
 
@@ -28,11 +35,13 @@ public class LevelEditorManager : MonoBehaviour
 
     public Vector3 orginalScale;
 
-
     private List<StartPoint> startPoints = new List<StartPoint>();
     public UnitEditorPanel unitEditorPanel;
 
     public GameObject[] panelsToActive;
+
+    public Dropdown dropdownTypeOfMap;
+
 
     private void Start()
     {
@@ -40,6 +49,13 @@ public class LevelEditorManager : MonoBehaviour
 
         InitializeStartMaps();
         InitializeStartPointUnitsList();
+        InitializeDropDownTypeOfMap();
+    }
+
+    private void InitializeDropDownTypeOfMap()
+    {
+        List<string> types = new List<string>(Enum.GetNames(typeof(TypeOfMap)));
+        dropdownTypeOfMap.AddOptions(types);
     }
 
     private void InitializeStartPointUnitsList()
