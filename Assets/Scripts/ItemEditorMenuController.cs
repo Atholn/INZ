@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ItemEditorMenuController : MonoBehaviour
 {
@@ -21,6 +22,7 @@ public class ItemEditorMenuController : MonoBehaviour
 
     public void Exit()
     {
-
+        OptionsMenu.GoToMainMenu();
+        //SceneManager.LoadScene("MainMenu");
     }
 }
