@@ -369,7 +369,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 104582383}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1091722693}
+        m_TargetAssemblyTypeName: MenuEditorManager, Assembly-CSharp
+        m_MethodName: SaveClickAccept
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &104582383
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -390,8 +402,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: 480b82cf61b82014397b4f7c499a9691, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -1590,7 +1602,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &451026756
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4246,6 +4258,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77ec0a3626821284499717412b3e662e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lem: {fileID: 0}
 --- !u!1 &1016852058
 GameObject:
   m_ObjectHideFlags: 0
@@ -4749,8 +4762,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ed3a1ee0e54b914b83881bc5503e164, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OptionsEditorPanel: {fileID: 1522705196}
-  SaveMapPanel: {fileID: 2085680755}
+  optionsEditorPanel: {fileID: 1522705196}
+  dropdownTypeOfMap: {fileID: 1809320034}
+  saveMapPanel: {fileID: 2085680755}
 --- !u!1 &1130363082
 GameObject:
   m_ObjectHideFlags: 0
@@ -6780,7 +6794,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1612601653}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1091722693}
+        m_TargetAssemblyTypeName: MenuEditorManager, Assembly-CSharp
+        m_MethodName: SaveClickCancel
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1612601653
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6801,8 +6827,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: 8c300d92a0e372847b725fae3cccb2be, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -7638,7 +7664,6 @@ MonoBehaviour:
   - {fileID: 1091722689}
   - {fileID: 1206370200}
   - {fileID: 136406570}
-  dropdownTypeOfMap: {fileID: 1809320034}
 --- !u!1 &1809320032
 GameObject:
   m_ObjectHideFlags: 0
@@ -9536,7 +9561,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2085680756
 RectTransform:
   m_ObjectHideFlags: 0
