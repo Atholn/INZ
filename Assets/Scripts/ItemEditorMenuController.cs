@@ -5,9 +5,12 @@ using UnityEngine.SceneManagement;
 
 public class ItemEditorMenuController : MonoBehaviour
 {
+    LevelEditorManager lem;
     public void Save()
     {
-
+        GameObject saveMapEditorPanel = GameObject.FindGameObjectWithTag("SaveMapEditorPanel");
+        if(saveMapEditorPanel != null)
+        saveMapEditorPanel.SetActive(true);
     }
 
     public void Load()
