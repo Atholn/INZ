@@ -58,9 +58,9 @@ public static class SaveSystem
         //Debug.Log(typeOfMap);
     }
 
-    public static Map LoadMap(ref Map map)
+    public static Map LoadMap(Map map)
     {
-        string path = Application.dataPath + $"Game/Maps/{map.type}/{map.name}.war";
+        string path = Application.dataPath + $"Game/Maps/{map.type}/{map.name}";
         if(File.Exists(path))
         {
             BinaryFormatter formatter = new BinaryFormatter();
@@ -73,6 +73,7 @@ public static class SaveSystem
         }
         else
         {
+            Debug.LogError("!");
             return null;
         }
     }
@@ -144,6 +145,26 @@ public class MenuEditorManager : MonoBehaviour
     private void Update()
     {
         
+        if(Input.GetMouseButtonDown(2))
+        {
+            map.firstValue++;
+        }
+
+        if (Input.GetMouseButtonDown(3))
+        {
+            map.secondValue++;
+        }
+
+        if (Input.GetMouseButtonDown(4))
+        {
+            map.thirdValue++;
+        }
+
+        if(Input.GetMouseButtonDown(1))
+        {
+            Debug.Log(map.firstValue + " " + map.secondValue + " " + map.thirdValue);
+        }
+
     }
 
     // File section
@@ -181,9 +202,9 @@ public class MenuEditorManager : MonoBehaviour
         //todo
     }
 
-    public void SaveClickCancel()
+    public void Cancel(GameObject panel)
     {
-        ActiveDeactivatePanel(saveMapPanel, false);
+        ActiveDeactivatePanel(panel, false);
     }
 
     public void SaveClickAccept()
@@ -222,9 +243,9 @@ public class MenuEditorManager : MonoBehaviour
 
     public void LoadMap()
     {
-        SaveSystem.LoadMap(ref map);
+        map = SaveSystem.LoadMap(map);
 
-        Debug.Log(map.firstValue + " " + map.secondValue + " " + map.thirdValue);
+        //Debug.Log(map.firstValue + " " + map.secondValue + " " + map.thirdValue);
     }
 
     public void Generate()
