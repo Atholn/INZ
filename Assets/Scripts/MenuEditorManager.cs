@@ -14,8 +14,10 @@ public class Map
     public bool ifExist = false;
     public string name;
     public string type;
+
     public DateTime CreateTime;
     public DateTime UpdateTime;
+
     public int firstValue;
     public int secondValue;
     public int thirdValue;
@@ -36,6 +38,7 @@ public static class SaveSystem
             formatter.Serialize(stream, map);
 
             stream.Close();
+            return;
         }
 
         if (!map.ifExist)
@@ -122,7 +125,6 @@ public class MenuEditorManager : MonoBehaviour
         ActiveDeactivatePanel(loadMapPanel, false);
         ActiveDeactivatePanel(optionsEditorPanel, false);
 
-
         InitializeScrollRectLoadMap();
         InitializeDropDownTypeOfMap();
     }
@@ -137,6 +139,11 @@ public class MenuEditorManager : MonoBehaviour
         dropdownTypeOfMap = saveMapPanel.GetComponentInChildren<Dropdown>();
         List<string> types = new List<string>(Enum.GetNames(typeof(TypeOfMap)));
         dropdownTypeOfMap.AddOptions(types);
+    }
+
+    private void Update()
+    {
+        
     }
 
     // File section
@@ -167,8 +174,6 @@ public class MenuEditorManager : MonoBehaviour
             ActiveDeactivatePanel(saveMapPanel, true);
             return;
         }
-        
-
     }
 
     public void SaveAs()
@@ -183,7 +188,7 @@ public class MenuEditorManager : MonoBehaviour
 
     public void SaveClickAccept()
     {
-        InputField nameOfMapInputField = GetComponentInChildren<InputField>();
+        InputField nameOfMapInputField = saveMapPanel.GetComponentInChildren<InputField>();
 
         if(nameOfMapInputField == null)
         {
