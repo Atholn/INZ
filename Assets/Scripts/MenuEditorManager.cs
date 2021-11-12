@@ -31,13 +31,14 @@ public static class SaveSystem
         {
             BinaryFormatter formatter = new BinaryFormatter();
 
-            string path = Application.dataPath + $"/Game/Maps/Editor/{map.type}/{map.name}";
+            string path = Application.dataPath + $"/Game/Maps/Editor/{map.name}";
 
             FileStream stream = new FileStream(path, FileMode.Open);
 
             formatter.Serialize(stream, map);
 
             stream.Close();
+            map.UpdateTime = DateTime.Now;
             return;
         }
 
@@ -45,42 +46,43 @@ public static class SaveSystem
         {
             BinaryFormatter formatter = new BinaryFormatter();
 
-            string path = Application.dataPath + $"/Game/Maps/Editor/{map.type}/{map.name}";
+            string path = Application.dataPath + $"/Game/Maps/Editor/{map.name}";
 
             FileStream stream = new FileStream(path, FileMode.Create);
 
             formatter.Serialize(stream, map);
             stream.Close();
 
+            map.CreateTime = DateTime.Now;
+            map.UpdateTime = DateTime.Now;
+            Debug.Log(map.UpdateTime);
             map.ifExist = true;
         }
-        //Debug.Log(map.ifExist + " " + map.name + " " + map.type);
-        //Debug.Log(typeOfMap);
     }
 
-    public static Map LoadMap(Map map)
+    public static Map LoadMap(string  nameMap)
     {
-        string path = Application.dataPath + $"Game/Maps/{map.type}/{map.name}";
-        if(File.Exists(path))
+        string path = Application.dataPath + $"/Game/Maps/Editor/{nameMap}";
+
+        if (File.Exists(path))
         {
             BinaryFormatter formatter = new BinaryFormatter();
             FileStream stream = new FileStream(path, FileMode.Open);
 
-            map = formatter.Deserialize(stream) as Map;
+            Map map = formatter.Deserialize(stream) as Map;
             stream.Close();
-
+            
             return map;
         }
         else
         {
-            Debug.LogError("!");
             return null;
         }
     }
 
     public static List<string> GetNamesMaps()
     {
-        string path = Application.dataPath + $"/Game/Maps/Editor/Campaign/";
+        string path = Application.dataPath + $"/Game/Maps/Editor/";
         var info = new DirectoryInfo(path);
         var fileInfo = info.GetFiles();
 
@@ -94,6 +96,25 @@ public static class SaveSystem
         NamesOfMaps = NamesOfMaps.Where(n => !n.Contains(".meta")).ToList();
 
         return NamesOfMaps;
+    }
+
+    public static Map GetMapInfo(string nameMap)
+    {
+        string path = Application.dataPath + $"/Game/Maps/Editor/{nameMap}";
+
+        if (File.Exists(path))
+        {
+            BinaryFormatter formatter = new BinaryFormatter();
+            FileStream stream = new FileStream(path, FileMode.Open);
+
+            Map map = formatter.Deserialize(stream) as Map;
+            stream.Close();
+            return map;
+        }
+        else
+        {
+            return null;
+        }
     }
 }
 
@@ -114,8 +135,10 @@ public class MenuEditorManager : MonoBehaviour
     public GameObject loadMapPanel;
     Dropdown dropdownMapsToLoad;
 
-    public GameObject optionsEditorPanel;
+    public GameObject mapLoadInfoPanel;
+    private Text[] infoTexts = new Text[4];
 
+    public GameObject optionsEditorPanel;
 
     private Map map = new Map();
 
@@ -125,9 +148,11 @@ public class MenuEditorManager : MonoBehaviour
         ActiveDeactivatePanel(saveMapPanel, false);
         ActiveDeactivatePanel(loadMapPanel, false);
         ActiveDeactivatePanel(optionsEditorPanel, false);
+        ActiveDeactivatePanel(mapLoadInfoPanel, true);
 
         InitializeScrollRectLoadMap();
         InitializeDropDownTypeOfMap();
+        InitializeMapLoadInfo();
     }
 
     private void InitializeScrollRectLoadMap()
@@ -140,6 +165,11 @@ public class MenuEditorManager : MonoBehaviour
         dropdownTypeOfMap = saveMapPanel.GetComponentInChildren<Dropdown>();
         List<string> types = new List<string>(Enum.GetNames(typeof(TypeOfMap)));
         dropdownTypeOfMap.AddOptions(types);
+    }
+
+    private void InitializeMapLoadInfo()
+    {
+        infoTexts = mapLoadInfoPanel.GetComponentsInChildren<Text>().ToArray();
     }
 
     private void Update()
@@ -164,6 +194,7 @@ public class MenuEditorManager : MonoBehaviour
         {
             Debug.Log(map.firstValue + " " + map.secondValue + " " + map.thirdValue);
         }
+
 
     }
 
@@ -226,10 +257,8 @@ public class MenuEditorManager : MonoBehaviour
             SaveSystem.SaveMap(ref map);
         }
 
-
         ActiveDeactivatePanel(saveMapPanel, false);
     }
-
 
     public void Load()
     {
@@ -243,9 +272,19 @@ public class MenuEditorManager : MonoBehaviour
 
     public void LoadMap()
     {
-        map = SaveSystem.LoadMap(map);
+        map = SaveSystem.LoadMap(dropdownMapsToLoad.options[dropdownMapsToLoad.value].text);
+
 
         //Debug.Log(map.firstValue + " " + map.secondValue + " " + map.thirdValue);
+    }
+
+    public void ChosingMapToLoad()
+    {
+        Map mapInfo = SaveSystem.GetMapInfo(dropdownMapsToLoad.options[dropdownMapsToLoad.value].text);
+
+        infoTexts[1].text = "Type: " + mapInfo.type;
+        infoTexts[2].text = "Create: " + mapInfo.CreateTime.Year.ToString() + ":" + mapInfo.CreateTime.Month+ mapInfo.CreateTime.Day + ":" + mapInfo.CreateTime.Hour + mapInfo.CreateTime.Minute + ":" + mapInfo.CreateTime.Second;
+        infoTexts[3].text = "Update: " + mapInfo.UpdateTime;
     }
 
     public void Generate()
