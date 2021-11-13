@@ -3,20 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
-using System;
 using System.Linq;
 
-public static class FileMapSystem
+public class FileMapSystem 
 {
-    public static void SaveMap(ref Map map)
+    private string path = Application.dataPath + $"/Game/Maps/";
+
+    public void SaveMap(ref Map map)
     {
+        string tmpPath = path + $"/Editor/{map.name}";
         if (map.ifExist && !map.saveAs)
         {
             BinaryFormatter formatter = new BinaryFormatter();
 
-            string path = Application.dataPath + $"/Game/Maps/Editor/{map.name}";
-
-            FileStream stream = new FileStream(path, FileMode.Open);
+            FileStream stream = new FileStream(tmpPath, FileMode.Open);
 
             formatter.Serialize(stream, map);
 
@@ -28,9 +28,7 @@ public static class FileMapSystem
         {
             BinaryFormatter formatter = new BinaryFormatter();
 
-            string path = Application.dataPath + $"/Game/Maps/Editor/{map.name}";
-
-            FileStream stream = new FileStream(path, FileMode.Create);
+            FileStream stream = new FileStream(tmpPath, FileMode.Create);
 
             formatter.Serialize(stream, map);
             stream.Close();
@@ -40,14 +38,14 @@ public static class FileMapSystem
         }
     }
 
-    public static Map LoadMap(string nameMap)
+    public Map LoadMap(string nameMap)
     {
-        string path = Application.dataPath + $"/Game/Maps/Editor/{nameMap}";
+        string tmpPath = path + $"/Editor/{nameMap}";
 
-        if (File.Exists(path))
+        if (File.Exists(tmpPath))
         {
             BinaryFormatter formatter = new BinaryFormatter();
-            FileStream stream = new FileStream(path, FileMode.Open);
+            FileStream stream = new FileStream(tmpPath, FileMode.Open);
 
             Map map = formatter.Deserialize(stream) as Map;
             stream.Close();
@@ -60,10 +58,42 @@ public static class FileMapSystem
         }
     }
 
-    public static List<string> GetNamesMaps()
+    public void Generate(Map map)
     {
-        string path = Application.dataPath + $"/Game/Maps/Editor/";
-        var info = new DirectoryInfo(path);
+        string tmpPath = path + $"/{map.type}/{map.name}";
+
+        if (File.Exists(tmpPath))
+        {
+            BinaryFormatter formatter = new BinaryFormatter();
+
+            FileStream stream = new FileStream(tmpPath, FileMode.Open);
+
+            formatter.Serialize(stream, map);
+
+            stream.Close();
+            Debug.Log("Whoo1");
+            return;
+        }
+
+        if (!File.Exists(tmpPath))
+        {
+            BinaryFormatter formatter = new BinaryFormatter();
+
+            FileStream stream = new FileStream(tmpPath, FileMode.Create);
+
+            formatter.Serialize(stream, map);
+            stream.Close();
+
+            map.ifGenerated = true;
+            Debug.Log("Whoo2");
+            return;
+        }
+    }
+
+    public List<string> GetNamesMaps(string type)
+    {
+        string tmpPath = path + $"/{type}/";
+        var info = new DirectoryInfo(tmpPath);
         var fileInfo = info.GetFiles();
 
         List<string> NamesOfMaps = new List<string>();
@@ -80,14 +110,14 @@ public static class FileMapSystem
         return NamesOfMaps;
     }
 
-    public static Map GetMapInfo(string nameMap)
+    public Map GetMapInfo(string type, string nameMap)
     {
-        string path = Application.dataPath + $"/Game/Maps/Editor/{nameMap}";
+        string tmpPath = path + $"/{type}/{nameMap}";
 
-        if (File.Exists(path))
+        if (File.Exists(tmpPath))
         {
             BinaryFormatter formatter = new BinaryFormatter();
-            FileStream stream = new FileStream(path, FileMode.Open);
+            FileStream stream = new FileStream(tmpPath, FileMode.Open);
 
             Map map = formatter.Deserialize(stream) as Map;
             stream.Close();

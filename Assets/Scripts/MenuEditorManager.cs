@@ -31,8 +31,11 @@ public class MenuEditorManager : MonoBehaviour
 
     private Map map = new Map();
 
+    private FileMapSystem fileMapSystem;
+
     private void Start()
     {
+        fileMapSystem = new FileMapSystem();
         InitializePanels();
         InitializeScrollRectLoadMap();
         InitializeDropDownTypeOfMap();
@@ -121,7 +124,7 @@ public class MenuEditorManager : MonoBehaviour
     {
         if (map.ifExist)
         {
-            FileMapSystem.SaveMap(ref map);
+            fileMapSystem.SaveMap(ref map);
             return;
         }
 
@@ -154,8 +157,8 @@ public class MenuEditorManager : MonoBehaviour
         {
             map.name = nameOfMapInputField.text;
             map.type = dropdownTypeOfMap.options[dropdownTypeOfMap.value].text;
-            
-            FileMapSystem.SaveMap(ref map);
+
+            fileMapSystem.SaveMap(ref map);
         }
 
         ActiveDeactivatePanel(saveMapPanel, false);
@@ -168,26 +171,26 @@ public class MenuEditorManager : MonoBehaviour
         if (loadMapPanel.activeSelf)
         {
             dropdownMapsToLoad.options.Clear();
-            dropdownMapsToLoad.AddOptions(FileMapSystem.GetNamesMaps());
+            dropdownMapsToLoad.AddOptions(fileMapSystem.GetNamesMaps("Editor"));
         }
     }
 
     public void LoadMap()
     {
-        map = FileMapSystem.LoadMap(dropdownMapsToLoad.options[dropdownMapsToLoad.value].text);
+        map = fileMapSystem.LoadMap(dropdownMapsToLoad.options[dropdownMapsToLoad.value].text);
         ActiveDeactivatePanel(loadMapPanel, !loadMapPanel.activeSelf);
     }
 
     public void ChosingMapToLoad()
     {
-        Map mapInfo = FileMapSystem.GetMapInfo(dropdownMapsToLoad.options[dropdownMapsToLoad.value].text);
+        Map mapInfo = fileMapSystem.GetMapInfo("Editor" , dropdownMapsToLoad.options[dropdownMapsToLoad.value].text);
 
         infoLoadTexts[1].text = "Type: " + mapInfo.type;
     }
 
     public void Generate()
     {
-
+        fileMapSystem.Generate(map);
     }
 
     public void Info()
