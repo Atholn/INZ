@@ -1,122 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
-
-using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
-using System;
-using System.Linq;
-
-[System.Serializable]
-public class Map
-{
-    public bool ifExist = false;
-    public bool saveAs = false;
-    public string name = "";
-    public string type = "";
-
-    public string CreateTime;
-    public string UpdateTime;
-
-    public int firstValue;
-    public int secondValue;
-    public int thirdValue;
-}
-
-public static class SaveSystem
-{
-    public static void  SaveMap(ref Map map)
-    {
-        if (map.ifExist && !map.saveAs)
-        {
-            BinaryFormatter formatter = new BinaryFormatter();
-
-            string path = Application.dataPath + $"/Game/Maps/Editor/{map.name}";
-
-            FileStream stream = new FileStream(path, FileMode.Open);
-
-            formatter.Serialize(stream, map);
-
-            stream.Close();
-            return;
-        }
-
-        if (!map.ifExist || map.saveAs)
-        {
-            BinaryFormatter formatter = new BinaryFormatter();
-
-            string path = Application.dataPath + $"/Game/Maps/Editor/{map.name}";
-
-            FileStream stream = new FileStream(path, FileMode.Create);
-
-            formatter.Serialize(stream, map);
-            stream.Close();
-
-            map.ifExist = true;
-            map.saveAs = false;
-        }
-    }
-
-    public static Map LoadMap(string  nameMap)
-    {
-        string path = Application.dataPath + $"/Game/Maps/Editor/{nameMap}";
-
-        if (File.Exists(path))
-        {
-            BinaryFormatter formatter = new BinaryFormatter();
-            FileStream stream = new FileStream(path, FileMode.Open);
-
-            Map map = formatter.Deserialize(stream) as Map;
-            stream.Close();
-            
-            return map;
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    public static List<string> GetNamesMaps()
-    {
-        string path = Application.dataPath + $"/Game/Maps/Editor/";
-        var info = new DirectoryInfo(path);
-        var fileInfo = info.GetFiles();
-
-        List<string> NamesOfMaps = new List<string>();
-
-        foreach(var file in fileInfo)
-        {
-            NamesOfMaps.Add(file.Name as string);
-        }
-
-        NamesOfMaps = NamesOfMaps.Where(n => !n.Contains(".meta")).ToList();
-
-        //todo  pliki z koncowkami ktore pomijamy
-
-        return NamesOfMaps;
-    }
-
-    public static Map GetMapInfo(string nameMap)
-    {
-        string path = Application.dataPath + $"/Game/Maps/Editor/{nameMap}";
-
-        if (File.Exists(path))
-        {
-            BinaryFormatter formatter = new BinaryFormatter();
-            FileStream stream = new FileStream(path, FileMode.Open);
-
-            Map map = formatter.Deserialize(stream) as Map;
-            stream.Close();
-            return map;
-        }
-        else
-        {
-            return null;
-        }
-    }
-}
 
 public class MenuEditorManager : MonoBehaviour
 {
@@ -234,7 +121,7 @@ public class MenuEditorManager : MonoBehaviour
     {
         if (map.ifExist)
         {
-            SaveSystem.SaveMap(ref map);
+            FileMapSystem.SaveMap(ref map);
             return;
         }
 
@@ -268,7 +155,7 @@ public class MenuEditorManager : MonoBehaviour
             map.name = nameOfMapInputField.text;
             map.type = dropdownTypeOfMap.options[dropdownTypeOfMap.value].text;
             
-            SaveSystem.SaveMap(ref map);
+            FileMapSystem.SaveMap(ref map);
         }
 
         ActiveDeactivatePanel(saveMapPanel, false);
@@ -281,19 +168,19 @@ public class MenuEditorManager : MonoBehaviour
         if (loadMapPanel.activeSelf)
         {
             dropdownMapsToLoad.options.Clear();
-            dropdownMapsToLoad.AddOptions(SaveSystem.GetNamesMaps());
+            dropdownMapsToLoad.AddOptions(FileMapSystem.GetNamesMaps());
         }
     }
 
     public void LoadMap()
     {
-        map = SaveSystem.LoadMap(dropdownMapsToLoad.options[dropdownMapsToLoad.value].text);
+        map = FileMapSystem.LoadMap(dropdownMapsToLoad.options[dropdownMapsToLoad.value].text);
         ActiveDeactivatePanel(loadMapPanel, !loadMapPanel.activeSelf);
     }
 
     public void ChosingMapToLoad()
     {
-        Map mapInfo = SaveSystem.GetMapInfo(dropdownMapsToLoad.options[dropdownMapsToLoad.value].text);
+        Map mapInfo = FileMapSystem.GetMapInfo(dropdownMapsToLoad.options[dropdownMapsToLoad.value].text);
 
         infoLoadTexts[1].text = "Type: " + mapInfo.type;
     }
