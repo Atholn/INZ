@@ -12,11 +12,12 @@ using System.Linq;
 public class Map
 {
     public bool ifExist = false;
-    public string name;
-    public string type;
+    public bool saveAs = false;
+    public string name = "";
+    public string type = "";
 
-    public DateTime CreateTime;
-    public DateTime UpdateTime;
+    public string CreateTime;
+    public string UpdateTime;
 
     public int firstValue;
     public int secondValue;
@@ -27,7 +28,7 @@ public static class SaveSystem
 {
     public static void  SaveMap(ref Map map)
     {
-        if (map.ifExist)
+        if (map.ifExist && !map.saveAs)
         {
             BinaryFormatter formatter = new BinaryFormatter();
 
@@ -38,11 +39,10 @@ public static class SaveSystem
             formatter.Serialize(stream, map);
 
             stream.Close();
-            map.UpdateTime = DateTime.Now;
             return;
         }
 
-        if (!map.ifExist)
+        if (!map.ifExist || map.saveAs)
         {
             BinaryFormatter formatter = new BinaryFormatter();
 
@@ -53,10 +53,8 @@ public static class SaveSystem
             formatter.Serialize(stream, map);
             stream.Close();
 
-            map.CreateTime = DateTime.Now;
-            map.UpdateTime = DateTime.Now;
-            Debug.Log(map.UpdateTime);
             map.ifExist = true;
+            map.saveAs = false;
         }
     }
 
@@ -94,6 +92,8 @@ public static class SaveSystem
         }
 
         NamesOfMaps = NamesOfMaps.Where(n => !n.Contains(".meta")).ToList();
+
+        //todo  pliki z koncowkami ktore pomijamy
 
         return NamesOfMaps;
     }
@@ -134,9 +134,11 @@ public class MenuEditorManager : MonoBehaviour
 
     public GameObject loadMapPanel;
     Dropdown dropdownMapsToLoad;
-
     public GameObject mapLoadInfoPanel;
-    private Text[] infoTexts = new Text[4];
+    private Text[] infoLoadTexts = new Text[4];
+
+    public GameObject mapInfoPanel;
+    private Text[] infoTexts = new Text[5];
 
     public GameObject optionsEditorPanel;
 
@@ -144,15 +146,21 @@ public class MenuEditorManager : MonoBehaviour
 
     private void Start()
     {
+        InitializePanels();
+        InitializeScrollRectLoadMap();
+        InitializeDropDownTypeOfMap();
+        InitializeMapLoadInfo();
+        InitializeMapInfo();
+    }
+
+    private void InitializePanels()
+    {
         ActiveDeactivatePanel(filePanel, false);
         ActiveDeactivatePanel(saveMapPanel, false);
         ActiveDeactivatePanel(loadMapPanel, false);
         ActiveDeactivatePanel(optionsEditorPanel, false);
         ActiveDeactivatePanel(mapLoadInfoPanel, true);
-
-        InitializeScrollRectLoadMap();
-        InitializeDropDownTypeOfMap();
-        InitializeMapLoadInfo();
+        ActiveDeactivatePanel(mapInfoPanel, false);
     }
 
     private void InitializeScrollRectLoadMap()
@@ -169,12 +177,16 @@ public class MenuEditorManager : MonoBehaviour
 
     private void InitializeMapLoadInfo()
     {
-        infoTexts = mapLoadInfoPanel.GetComponentsInChildren<Text>().ToArray();
+        infoLoadTexts = mapLoadInfoPanel.GetComponentsInChildren<Text>().ToArray();
+    }
+
+    private void InitializeMapInfo()
+    {
+        infoTexts = mapInfoPanel.GetComponentsInChildren<Text>().ToArray();
     }
 
     private void Update()
-    {
-        
+    {        
         if(Input.GetMouseButtonDown(2))
         {
             map.firstValue++;
@@ -194,8 +206,6 @@ public class MenuEditorManager : MonoBehaviour
         {
             Debug.Log(map.firstValue + " " + map.secondValue + " " + map.thirdValue);
         }
-
-
     }
 
     // File section
@@ -211,6 +221,13 @@ public class MenuEditorManager : MonoBehaviour
         {
             GetComponentInChildren<Text>().text = @"File \/";
         } 
+    }
+
+    public void New()
+    {
+        map = new Map();
+
+        //todo
     }
 
     public void Save()
@@ -230,13 +247,10 @@ public class MenuEditorManager : MonoBehaviour
 
     public void SaveAs()
     {
-        //todo
+        map.saveAs = true;
+        ActiveDeactivatePanel(saveMapPanel, true);
     }
 
-    public void Cancel(GameObject panel)
-    {
-        ActiveDeactivatePanel(panel, false);
-    }
 
     public void SaveClickAccept()
     {
@@ -264,8 +278,9 @@ public class MenuEditorManager : MonoBehaviour
     {
         ActiveDeactivatePanel(loadMapPanel, !loadMapPanel.activeSelf);
 
-        if(loadMapPanel.activeSelf)
+        if (loadMapPanel.activeSelf)
         {
+            dropdownMapsToLoad.options.Clear();
             dropdownMapsToLoad.AddOptions(SaveSystem.GetNamesMaps());
         }
     }
@@ -273,18 +288,14 @@ public class MenuEditorManager : MonoBehaviour
     public void LoadMap()
     {
         map = SaveSystem.LoadMap(dropdownMapsToLoad.options[dropdownMapsToLoad.value].text);
-
-
-        //Debug.Log(map.firstValue + " " + map.secondValue + " " + map.thirdValue);
+        ActiveDeactivatePanel(loadMapPanel, !loadMapPanel.activeSelf);
     }
 
     public void ChosingMapToLoad()
     {
         Map mapInfo = SaveSystem.GetMapInfo(dropdownMapsToLoad.options[dropdownMapsToLoad.value].text);
 
-        infoTexts[1].text = "Type: " + mapInfo.type;
-        infoTexts[2].text = "Create: " + mapInfo.CreateTime.Year.ToString() + ":" + mapInfo.CreateTime.Month+ mapInfo.CreateTime.Day + ":" + mapInfo.CreateTime.Hour + mapInfo.CreateTime.Minute + ":" + mapInfo.CreateTime.Second;
-        infoTexts[3].text = "Update: " + mapInfo.UpdateTime;
+        infoLoadTexts[1].text = "Type: " + mapInfo.type;
     }
 
     public void Generate()
@@ -292,22 +303,36 @@ public class MenuEditorManager : MonoBehaviour
 
     }
 
+    public void Info()
+    {
+        ActiveDeactivatePanel(mapInfoPanel, !mapInfoPanel.activeSelf);
+
+        if(mapInfoPanel.activeSelf)
+        {
+            infoTexts[0].text = "Map info:";
+            infoTexts[1].text = map.name == "" ? "Name: untitled" : "Name: " + map.name;
+            infoTexts[2].text = map.type == "" ? "Type: no chose yet" : "Type: " + map.type;
+        }
+    }
+
     public void Options()
     {
         ActiveDeactivatePanel(optionsEditorPanel, !optionsEditorPanel.activeSelf);
     }
-
-
 
     public void Exit()
     {
         OptionsMenu.GoToMainMenu();
     }
 
+    public void Cancel(GameObject panel)
+    {
+        ActiveDeactivatePanel(panel, false);
+        if (map.saveAs) map.saveAs = false;
+    }
+
     private void  ActiveDeactivatePanel(GameObject panel, bool activeDesactive)
     {
         panel.SetActive(activeDesactive);
     }
-
-
 }
