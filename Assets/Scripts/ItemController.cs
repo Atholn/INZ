@@ -5,7 +5,7 @@ using UnityEngine;
 [System.Serializable]
 public class Item
 {
-    public int ID;
+    internal int ID;
     public GameObject ItemPrefab;
     public GameObject ItemImage;
     public int ItemHeightLevel;
@@ -16,11 +16,14 @@ public class Item
 public class ItemController : MonoBehaviour
 {
     public bool Clicked = false;
+    internal Vector3 firstScale = new Vector3();
     public Item item;
     public LevelEditorManager editor;
 
     private void Start()
     {
+        firstScale = item.ItemPrefab.transform.localScale;
+        item.ItemImage.transform.localScale = item.ItemPrefab.transform.localScale;
         editor = GameObject.FindGameObjectWithTag("LevelEditorManager").GetComponent<LevelEditorManager>();        
     }
 

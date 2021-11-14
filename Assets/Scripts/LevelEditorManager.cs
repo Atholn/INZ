@@ -40,6 +40,15 @@ public class LevelEditorManager : MonoBehaviour
 
         InitializeStartMaps();
         InitializeStartPointUnitsList();
+        InitializeIDButtons();
+    }
+
+    private void InitializeIDButtons()
+    {
+        for (int i = 0; i < ItemButtons.Length; i++)
+        {
+            ItemButtons[i].item.ID = i;
+        }
     }
 
     private void InitializeStartPointUnitsList()
@@ -367,7 +376,7 @@ public class LevelEditorManager : MonoBehaviour
                 ItemButtons[i].Clicked = false;
                 if (ItemButtons[i].item.ItemHeightLevel == 0)
                 {
-                    ItemButtons[i].item.ItemImage.transform.localScale = orginalScale;
+                    ItemButtons[i].item.ItemImage.transform.localScale = ItemButtons[i].firstScale;
                 }
             }
 
@@ -433,7 +442,7 @@ public class LevelEditorManager : MonoBehaviour
     }
 
     public void ImportInfo(Map map)
-    {     
+    {
         DeleteArrayGameObjects(mapsPrefabs[0], 0);
         DeleteArrayGameObjects(mapsPrefabs[1], 1);
 
