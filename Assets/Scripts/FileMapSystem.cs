@@ -12,7 +12,7 @@ public class FileMapSystem
 
     public void SaveMap(ref Map map)
     {
-        string tmpPath = path + $"/{FolderName}/{map.name}";
+        string tmpPath = path + $"/{FolderName}/{map.Name}";
 
         if(!map.ifExist && File.Exists(tmpPath))
         {
@@ -72,7 +72,7 @@ public class FileMapSystem
 
     public void Generate(Map map)
     {
-        string tmpPath = path + $"/{map.type}/{map.name}";
+        string tmpPath = path + $"/{map.Type}/{map.Name}";
 
         if (File.Exists(tmpPath))
         {

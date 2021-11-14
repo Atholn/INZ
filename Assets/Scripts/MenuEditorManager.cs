@@ -32,11 +32,11 @@ public class MenuEditorManager : MonoBehaviour
     private Map map = new Map();
 
     private FileMapSystem fileMapSystem;
+    public LevelEditorManager levelEditorManager;
 
     private void Start()
     {
         InitializeFileMapSystem();
-
         InitializePanels();
         InitializeScrollRectLoadMap();
         InitializeDropDownTypeOfMap();
@@ -167,11 +167,21 @@ public class MenuEditorManager : MonoBehaviour
 
         if(nameOfMapInputField.text != "")
         {
-            map.name = nameOfMapInputField.text;
-            map.type = dropdownTypeOfMap.options[dropdownTypeOfMap.value].text;
+            map.Name = nameOfMapInputField.text;
+            map.Type = dropdownTypeOfMap.options[dropdownTypeOfMap.value].text;
+            map.Decription = ""; //todo
+
+            Map tmpMap =  levelEditorManager.ExportInfo();
+
+            map.SizeMap = tmpMap.SizeMap;
+            map.Maps = tmpMap.Maps;
+            map.UnitStartLocations = tmpMap.UnitStartLocations;
+            map.UnitMaterials = tmpMap.UnitMaterials;
 
             fileMapSystem.SaveMap(ref map);
         }
+
+
 
         ActiveDeactivatePanel(saveMapPanel, false);
     }
@@ -190,6 +200,7 @@ public class MenuEditorManager : MonoBehaviour
     public void LoadMap()
     {
         map = fileMapSystem.LoadMap(dropdownMapsToLoad.options[dropdownMapsToLoad.value].text);
+        levelEditorManager.ImportInfo(map);
         ActiveDeactivatePanel(loadMapPanel, !loadMapPanel.activeSelf);
     }
 
@@ -197,7 +208,7 @@ public class MenuEditorManager : MonoBehaviour
     {
         Map mapInfo = fileMapSystem.GetMapInfo("Editor" , dropdownMapsToLoad.options[dropdownMapsToLoad.value].text);
 
-        infoLoadTexts[1].text = "Type: " + mapInfo.type;
+        infoLoadTexts[1].text = "Type: " + mapInfo.Type;
     }
 
     public void Generate()
@@ -212,8 +223,8 @@ public class MenuEditorManager : MonoBehaviour
         if(mapInfoPanel.activeSelf)
         {
             infoTexts[0].text = "Map info:";
-            infoTexts[1].text = map.name == "" ? "Name: untitled" : "Name: " + map.name;
-            infoTexts[2].text = map.type == "" ? "Type: no chose yet" : "Type: " + map.type;
+            infoTexts[1].text = map.Name == "" ? "Name: untitled" : "Name: " + map.Name;
+            infoTexts[2].text = map.Type == "" ? "Type: no chose yet" : "Type: " + map.Type;
         }
     }
 

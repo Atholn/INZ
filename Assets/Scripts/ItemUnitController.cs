@@ -13,8 +13,8 @@ public class ItemUnitController : ItemController
 
     public override void ButtonClicked()
     {
-        ItemImage.GetComponent<MeshRenderer>().material = unitEditorPanel.actualMaterial;
-        ItemPrefab.GetComponent<MeshRenderer>().material = unitEditorPanel.actualMaterial;
+        item.ItemImage.GetComponent<MeshRenderer>().material = unitEditorPanel.actualMaterial;
+        item.ItemPrefab.GetComponent<MeshRenderer>().material = unitEditorPanel.actualMaterial;
         base.ButtonClicked();
     }
 }

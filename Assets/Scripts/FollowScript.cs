@@ -13,9 +13,9 @@ public class FollowScript : MonoBehaviour
     private void Start()
     {
         levelEditorManager = FindObjectOfType<LevelEditorManager>();
-        height = levelEditorManager.ItemButtons[levelEditorManager.CurrentButtonPressed].ItemHeightPosY;
+        height = levelEditorManager.ItemButtons[levelEditorManager.CurrentButtonPressed].item.ItemHeightPosY;
 
-        StartPointUnit startPointUnit = levelEditorManager.ItemButtons[levelEditorManager.CurrentButtonPressed].ItemPrefab.GetComponent<StartPointUnit>();
+        StartPointUnit startPointUnit = levelEditorManager.ItemButtons[levelEditorManager.CurrentButtonPressed].item.ItemPrefab.GetComponent<StartPointUnit>();
         limit = startPointUnit != null ? startPointUnit.buildSize / 2 : 0;
     }
 

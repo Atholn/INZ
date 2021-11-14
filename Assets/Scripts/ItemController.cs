@@ -2,17 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
-public class ItemController : MonoBehaviour
+[System.Serializable]
+public class Item
 {
     public int ID;
-    public bool Clicked = false;
-
-    public LevelEditorManager editor;
     public GameObject ItemPrefab;
     public GameObject ItemImage;
     public int ItemHeightLevel;
     public float ItemHeightPosY = 0;
+}
+
+
+public class ItemController : MonoBehaviour
+{
+    public bool Clicked = false;
+    public Item item;
+    public LevelEditorManager editor;
 
     private void Start()
     {
@@ -21,12 +26,12 @@ public class ItemController : MonoBehaviour
 
     public virtual void ButtonClicked()
     {
-        Vector3 screenPosition = new Vector3(Input.mousePosition.x, editor.ItemButtons[ID].ItemHeightLevel, Input.mousePosition.z);
+        Vector3 screenPosition = new Vector3(Input.mousePosition.x, editor.ItemButtons[item.ID].item.ItemHeightLevel, Input.mousePosition.z);
         Vector3 worldPosition = Camera.main.ScreenToWorldPoint(screenPosition);
         Clicked = true;
         
-        Instantiate(editor.ItemButtons[ID].ItemImage, new Vector3(worldPosition.x, editor.ItemButtons[ID].ItemHeightLevel, worldPosition.z), ItemPrefab.transform.rotation);
+        Instantiate(editor.ItemButtons[item.ID].item.ItemImage, new Vector3(worldPosition.x, editor.ItemButtons[item.ID].item.ItemHeightLevel, worldPosition.z), item.ItemPrefab.transform.rotation);
 
-        editor.CurrentButtonPressed = ID;
+        editor.CurrentButtonPressed = item.ID;
     }
 }

@@ -1,4 +1,3 @@
-using Assets.Scripts;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -35,7 +34,7 @@ public class LevelEditorManager : MonoBehaviour
 
     private void Start()
     {
-        orginalScale = ItemButtons[0].ItemImage.transform.localScale;
+        orginalScale = ItemButtons[0].item.ItemImage.transform.localScale;
 
         InitializeStartMaps();
         InitializeStartPointUnitsList();
@@ -85,9 +84,9 @@ public class LevelEditorManager : MonoBehaviour
             valueSingleMultiToggleText.text = "Multi";
         }
 
-        if (ItemButtons[CurrentButtonPressed].ItemHeightLevel == 0)
+        if (ItemButtons[CurrentButtonPressed].item.ItemHeightLevel == 0)
         {
-            ItemButtons[CurrentButtonPressed].ItemImage.transform.localScale = new Vector3(orginalScale.x * sizeSlider.value, orginalScale.y * sizeSlider.value, orginalScale.z);
+            ItemButtons[CurrentButtonPressed].item.ItemImage.transform.localScale = new Vector3(orginalScale.x * sizeSlider.value, orginalScale.y * sizeSlider.value, orginalScale.z);
         }
 
         if (replaceToggle.isOn)
@@ -126,14 +125,14 @@ public class LevelEditorManager : MonoBehaviour
 
             if ((vx < sizeMap && vx > -1) && (vz < sizeMap && vz > -1))
             {
-                if (ItemButtons[CurrentButtonPressed].ItemHeightLevel == 0)
+                if (ItemButtons[CurrentButtonPressed].item.ItemHeightLevel == 0)
                 {
-                    GenerateTerrain(vx, vz, ItemButtons[CurrentButtonPressed].ItemHeightLevel);
+                    GenerateTerrain(vx, vz, ItemButtons[CurrentButtonPressed].item.ItemHeightLevel);
                 }
 
-                if (ItemButtons[CurrentButtonPressed].ItemHeightLevel == 1)
+                if (ItemButtons[CurrentButtonPressed].item.ItemHeightLevel == 1)
                 {
-                    GenerateNatureUnit(vx, vz, ItemButtons[CurrentButtonPressed].ItemHeightLevel);
+                    GenerateNatureUnit(vx, vz, ItemButtons[CurrentButtonPressed].item.ItemHeightLevel);
                 }
             }
         }
@@ -153,7 +152,7 @@ public class LevelEditorManager : MonoBehaviour
     {
         if (ItemButtons[CurrentButtonPressed] is ItemUnitController)
         {
-            int fullSize = ItemButtons[CurrentButtonPressed].ItemPrefab.GetComponent<StartPointUnit>().buildSize;
+            int fullSize = ItemButtons[CurrentButtonPressed].item.ItemPrefab.GetComponent<StartPointUnit>().buildSize;
 
             if (vx < fullSize / 2 || vx >= sizeMap - fullSize / 2 || vz < fullSize / 2 || vz >= sizeMap - fullSize / 2) return;
 
@@ -243,9 +242,9 @@ public class LevelEditorManager : MonoBehaviour
             }
 
             maps[level][vx, vz] = CurrentButtonPressed;
-            mapsPrefabs[level][vx, vz] = Instantiate(ItemButtons[CurrentButtonPressed].ItemPrefab,
-                new Vector3(vx, ItemButtons[CurrentButtonPressed].ItemHeightPosY, vz),
-                ItemButtons[CurrentButtonPressed].ItemPrefab.transform.rotation);
+            mapsPrefabs[level][vx, vz] = Instantiate(ItemButtons[CurrentButtonPressed].item.ItemPrefab,
+                new Vector3(vx, ItemButtons[CurrentButtonPressed].item.ItemHeightPosY, vz),
+                ItemButtons[CurrentButtonPressed].item.ItemPrefab.transform.rotation);
             //mapsPrefabs[level][vx, vz] = ItemButtons[CurrentButtonPressed].ItemPrefab;
         }
     }
@@ -276,14 +275,14 @@ public class LevelEditorManager : MonoBehaviour
 
         if (spu.unitStartLocation == Vector3.zero)
         {
-            spu.unitStartLocation = new Vector3(vx, ItemButtons[CurrentButtonPressed].ItemHeightPosY, vz);
+            spu.unitStartLocation = new Vector3(vx, ItemButtons[CurrentButtonPressed].item.ItemHeightPosY, vz);
             return;
         }
 
         if (maps[level][(int)spu.unitStartLocation.x, (int)spu.unitStartLocation.z] == CurrentButtonPressed)
         {
             int tempvx, tempvz;
-            int fullSize = ItemButtons[CurrentButtonPressed].ItemPrefab.GetComponent<StartPointUnit>().buildSize;
+            int fullSize = ItemButtons[CurrentButtonPressed].item.ItemPrefab.GetComponent<StartPointUnit>().buildSize;
 
             for (int i = 0; i < fullSize; i++)
             {
@@ -299,7 +298,7 @@ public class LevelEditorManager : MonoBehaviour
 
         GameObjectToDelete(mapsPrefabs[level][(int)spu.unitStartLocation.x, (int)spu.unitStartLocation.z]);
         mapsPrefabs[level][(int)spu.unitStartLocation.x, (int)spu.unitStartLocation.z] = null;
-        spu.unitStartLocation = new Vector3(vx, ItemButtons[CurrentButtonPressed].ItemHeightPosY, vz);
+        spu.unitStartLocation = new Vector3(vx, ItemButtons[CurrentButtonPressed].item.ItemHeightPosY, vz);
     }
 
     private void DeleteGameObject(int vx, int vz, int level)
@@ -364,9 +363,9 @@ public class LevelEditorManager : MonoBehaviour
             for (int i = 0; i < ItemButtons.Length; i++)
             {
                 ItemButtons[i].Clicked = false;
-                if (ItemButtons[i].ItemHeightLevel == 0)
+                if (ItemButtons[i].item.ItemHeightLevel == 0)
                 {
-                    ItemButtons[i].ItemImage.transform.localScale = orginalScale;
+                    ItemButtons[i].item.ItemImage.transform.localScale = orginalScale;
                 }
             }
 
@@ -398,4 +397,30 @@ public class LevelEditorManager : MonoBehaviour
             panel.SetActive(true);
         }
     }
+
+    public Map ExportInfo()
+    {
+        List<string> unitMaterials = new List<string>();
+        List<float[]> unitStartLocations = new List<float[]>();
+        foreach (StartPoint sp in startPoints)
+        {
+            unitStartLocations.Add(sp.uSL);
+            unitMaterials.Add(sp.unitMaterialName);
+        }
+
+
+        return new Map()
+        {
+            SizeMap = this.sizeMap,
+            Maps = this.maps,
+            UnitMaterials = unitMaterials,
+            UnitStartLocations = unitStartLocations,
+        };
+    }
+
+    public void ImportInfo(Map map)
+    {
+        maps = map.Maps;
+    }
+
 }
