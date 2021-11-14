@@ -10869,7 +10869,6 @@ MonoBehaviour:
   valueSingleMultiToggleText: {fileID: 837670049}
   replaceToggle: {fileID: 1684082881}
   valueReplaceToggleText: {fileID: 19923368}
-  orginalScale: {x: 0, y: 0, z: 0}
   unitEditorPanel: {fileID: 1347706008}
   panelsToActive:
   - {fileID: 1091722689}
@@ -11388,7 +11387,7 @@ MonoBehaviour:
     ItemPrefab: {fileID: 5919578388576820400, guid: 3e7828405ae37f7479db96219746376f, type: 3}
     ItemImage: {fileID: 826525227639827491, guid: f549e40adb9a6e4498a3993c700a14d8, type: 3}
     ItemHeightLevel: 1
-    ItemHeightPosY: 0
+    ItemHeightPosY: 0.45
   editor: {fileID: 1793844480}
 --- !u!1 &1855833820
 GameObject:
