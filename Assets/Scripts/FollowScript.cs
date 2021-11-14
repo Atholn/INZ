@@ -5,7 +5,6 @@ using UnityEngine;
 public class FollowScript : MonoBehaviour
 {
     private RaycastHit hit;
-    private float shift = 0.5f;
     private float height;
     private int limit;
 

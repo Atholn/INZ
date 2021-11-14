@@ -11,7 +11,7 @@ public class MenuEditorManager : MonoBehaviour
     {
         Campaign,
         Sirmish,
-        FreeGame
+        FreeGame,
     }
 
     public GameObject filePanel;
@@ -35,12 +35,18 @@ public class MenuEditorManager : MonoBehaviour
 
     private void Start()
     {
-        fileMapSystem = new FileMapSystem();
+        InitializeFileMapSystem();
+
         InitializePanels();
         InitializeScrollRectLoadMap();
         InitializeDropDownTypeOfMap();
         InitializeMapLoadInfo();
         InitializeMapInfo();
+    }
+
+    private void InitializeFileMapSystem()
+    {
+        fileMapSystem = new FileMapSystem() { FolderName = "Editor" };
     }
 
     private void InitializePanels()
@@ -145,6 +151,12 @@ public class MenuEditorManager : MonoBehaviour
     public void SaveClickAccept()
     {
         InputField nameOfMapInputField = saveMapPanel.GetComponentInChildren<InputField>();
+
+        if(map.nameToChange)
+        { 
+            //todo
+            return;
+        }
 
         if(nameOfMapInputField == null)
         {

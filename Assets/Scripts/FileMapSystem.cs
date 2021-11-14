@@ -8,10 +8,22 @@ using System.Linq;
 public class FileMapSystem 
 {
     private string path = Application.dataPath + $"/Game/Maps/";
+    public string FolderName;
 
     public void SaveMap(ref Map map)
     {
-        string tmpPath = path + $"/Editor/{map.name}";
+        string tmpPath = path + $"/{FolderName}/{map.name}";
+
+        if(!map.ifExist && File.Exists(tmpPath))
+        {
+            map.nameToChange = true;
+            return;
+        }
+        else
+        {
+            map.nameToChange = false;
+        }
+
         if (map.ifExist && !map.saveAs)
         {
             BinaryFormatter formatter = new BinaryFormatter();
@@ -40,7 +52,7 @@ public class FileMapSystem
 
     public Map LoadMap(string nameMap)
     {
-        string tmpPath = path + $"/Editor/{nameMap}";
+        string tmpPath = path + $"/{FolderName}/{nameMap}";
 
         if (File.Exists(tmpPath))
         {
@@ -71,7 +83,6 @@ public class FileMapSystem
             formatter.Serialize(stream, map);
 
             stream.Close();
-            Debug.Log("Whoo1");
             return;
         }
 
@@ -85,7 +96,6 @@ public class FileMapSystem
             stream.Close();
 
             map.ifGenerated = true;
-            Debug.Log("Whoo2");
             return;
         }
     }

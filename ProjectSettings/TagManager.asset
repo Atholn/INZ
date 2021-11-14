@@ -11,6 +11,9 @@ TagManager:
   - UnitsPanel
   - StartPanel
   - TypeOfMap
+  - OptionsEditorPanel
+  - SaveMapEditorPanel
+  - AlreadyExistText
   layers:
   - Default
   - TransparentFX
