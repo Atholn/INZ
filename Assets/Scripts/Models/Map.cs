@@ -17,11 +17,6 @@ public class Map
     public string UpdateTime;
     public string Decription;
 
-
-    public int firstValue;
-    public int secondValue;
-    public int thirdValue;
-
     public int SizeMap;
     public int[][,] Maps;
 

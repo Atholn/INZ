@@ -5,16 +5,40 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Linq;
 
-public class FileMapSystem 
+public class FileMapSystem
 {
+    enum Flag
+    {
+        SaveGenerate,
+        Load
+    }
+
     private string path = Application.dataPath + $"/Game/Maps/";
     public string FolderName;
+
+    private void SaveLoadMapFile(string tmpPath, ref Map map, FileMode fileMode, Flag flag)
+    {
+        BinaryFormatter formatter = new BinaryFormatter();
+        FileStream stream = new FileStream(tmpPath, fileMode);
+        switch (flag)
+        {
+            case Flag.SaveGenerate:
+                formatter.Serialize(stream, map);
+                break;
+            case Flag.Load:
+                map = formatter.Deserialize(stream) as Map;
+                break;
+            default:
+                break;
+        }
+        stream.Close();
+    }
 
     public void SaveMap(ref Map map)
     {
         string tmpPath = path + $"/{FolderName}/{map.Name}";
 
-        if(!map.ifExist && File.Exists(tmpPath))
+        if (!map.ifExist && File.Exists(tmpPath))
         {
             map.nameToChange = true;
             return;
@@ -26,27 +50,19 @@ public class FileMapSystem
 
         if (map.ifExist && !map.saveAs)
         {
-            BinaryFormatter formatter = new BinaryFormatter();
+            SaveLoadMapFile(tmpPath, ref map, FileMode.Open, Flag.SaveGenerate);
 
-            FileStream stream = new FileStream(tmpPath, FileMode.Open);
-
-            formatter.Serialize(stream, map);
-
-            stream.Close();
             return;
         }
 
         if (!map.ifExist || map.saveAs)
         {
-            BinaryFormatter formatter = new BinaryFormatter();
-
-            FileStream stream = new FileStream(tmpPath, FileMode.Create);
-
-            formatter.Serialize(stream, map);
-            stream.Close();
+            SaveLoadMapFile(tmpPath, ref map, FileMode.Create, Flag.SaveGenerate);
 
             map.ifExist = true;
             map.saveAs = false;
+
+            return;
         }
     }
 
@@ -56,18 +72,13 @@ public class FileMapSystem
 
         if (File.Exists(tmpPath))
         {
-            BinaryFormatter formatter = new BinaryFormatter();
-            FileStream stream = new FileStream(tmpPath, FileMode.Open);
+            Map loadMap = new Map();
+            SaveLoadMapFile(tmpPath, ref loadMap, FileMode.Open, Flag.Load);
 
-            Map map = formatter.Deserialize(stream) as Map;
-            stream.Close();
+            return loadMap;
+        }
 
-            return map;
-        }
-        else
-        {
-            return null;
-        }
+        return null;
     }
 
     public void Generate(Map map)
@@ -76,48 +87,18 @@ public class FileMapSystem
 
         if (File.Exists(tmpPath))
         {
-            BinaryFormatter formatter = new BinaryFormatter();
+            SaveLoadMapFile(tmpPath, ref map, FileMode.Open, Flag.SaveGenerate);
 
-            FileStream stream = new FileStream(tmpPath, FileMode.Open);
-
-            formatter.Serialize(stream, map);
-
-            stream.Close();
             return;
         }
 
         if (!File.Exists(tmpPath))
         {
-            BinaryFormatter formatter = new BinaryFormatter();
-
-            FileStream stream = new FileStream(tmpPath, FileMode.Create);
-
-            formatter.Serialize(stream, map);
-            stream.Close();
-
+            SaveLoadMapFile(tmpPath, ref map, FileMode.Create, Flag.SaveGenerate);
             map.ifGenerated = true;
+
             return;
         }
-    }
-
-    public List<string> GetNamesMaps(string type)
-    {
-        string tmpPath = path + $"/{type}/";
-        var info = new DirectoryInfo(tmpPath);
-        var fileInfo = info.GetFiles();
-
-        List<string> NamesOfMaps = new List<string>();
-
-        foreach (var file in fileInfo)
-        {
-            NamesOfMaps.Add(file.Name as string);
-        }
-
-        NamesOfMaps = NamesOfMaps.Where(n => !n.Contains(".meta")).ToList();
-
-        //todo  pliki z koncowkami ktore pomijamy
-
-        return NamesOfMaps;
     }
 
     public Map GetMapInfo(string type, string nameMap)
@@ -137,6 +118,25 @@ public class FileMapSystem
         {
             return null;
         }
+    }
+    public List<string> GetNamesMaps(string type)
+    {
+        string tmpPath = path + $"/{type}/";
+        var info = new DirectoryInfo(tmpPath);
+        var fileInfo = info.GetFiles();
+
+        List<string> NamesOfMaps = new List<string>();
+
+        foreach (var file in fileInfo)
+        {
+            NamesOfMaps.Add(file.Name as string);
+        }
+
+        NamesOfMaps = NamesOfMaps.Where(n => !n.Contains(".meta")).ToList();
+
+        //todo  pliki z koncowkami ktore pomijamy
+
+        return NamesOfMaps;
     }
 
 }

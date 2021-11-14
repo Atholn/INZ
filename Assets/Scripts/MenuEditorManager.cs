@@ -81,29 +81,6 @@ public class MenuEditorManager : MonoBehaviour
         infoTexts = mapInfoPanel.GetComponentsInChildren<Text>().ToArray();
     }
 
-    private void Update()
-    {        
-        if(Input.GetMouseButtonDown(2))
-        {
-            map.firstValue++;
-        }
-
-        if (Input.GetMouseButtonDown(3))
-        {
-            map.secondValue++;
-        }
-
-        if (Input.GetMouseButtonDown(4))
-        {
-            map.thirdValue++;
-        }
-
-        if(Input.GetMouseButtonDown(1))
-        {
-            Debug.Log(map.firstValue + " " + map.secondValue + " " + map.thirdValue);
-        }
-    }
-
     // File section
     public void File()
     {
