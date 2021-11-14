@@ -7,6 +7,8 @@ using UnityEngine.UI;
 
 public class LevelEditorManager : MonoBehaviour
 {
+    public GameObject canvas;
+
     public ItemController[] ItemButtons;
     public int CurrentButtonPressed;
 
@@ -15,7 +17,7 @@ public class LevelEditorManager : MonoBehaviour
     private int[][,] maps;
     private GameObject[][,] mapsPrefabs;
     private GameObject Terrain;
-    public GameObject basicTerrain;
+    public int BasicTerrainID = 0;
 
     RaycastHit hit;
     internal Vector3 v;
@@ -27,20 +29,38 @@ public class LevelEditorManager : MonoBehaviour
     public Toggle replaceToggle;
     public Text valueReplaceToggleText;
 
-    public Vector3 orginalScale;
-
     private List<StartPoint> startPoints = new List<StartPoint>();
     public UnitEditorPanel unitEditorPanel;
 
     public GameObject[] panelsToActive;
+    public GameObject[] craftingPanels;
+    public GameObject sizeMapPanel;
 
     private void Start()
     {
-        orginalScale = ItemButtons[0].item.ItemImage.transform.localScale;
-
-        InitializeStartMaps();
-        InitializeStartPointUnitsList();
+        InitializeBasicTerrain();
+        InitializeOpenEditor();
         InitializeIDButtons();
+        InitializeStartPointUnitsList();
+        InitializeStartMaps();
+    }
+
+    private void InitializeBasicTerrain()
+    {
+        ItemButtons[BasicTerrainID].firstScale = ItemButtons[BasicTerrainID].item.ItemPrefab.transform.localScale;
+    }
+
+    private void InitializeOpenEditor()
+    {
+        foreach (GameObject panel in panelsToActive)
+        {
+            panel.SetActive(false);
+        }
+        foreach (GameObject panel in craftingPanels)
+        {
+            panel.SetActive(false);
+        }
+        sizeMapPanel.SetActive(true);
     }
 
     private void InitializeIDButtons()
@@ -76,8 +96,8 @@ public class LevelEditorManager : MonoBehaviour
         UpdateLocation();
         UpdateSettingsPanel();
 
-        //
-        CheckMap();
+        //--
+        UpdateCheckMap();
     }
 
     private void UpdateSettingsPanel()
@@ -97,7 +117,7 @@ public class LevelEditorManager : MonoBehaviour
 
         if (ItemButtons[CurrentButtonPressed].item.ItemHeightLevel == 0)
         {
-            ItemButtons[CurrentButtonPressed].item.ItemImage.transform.localScale = new Vector3(orginalScale.x * sizeSlider.value, orginalScale.y * sizeSlider.value, orginalScale.z);
+            ItemButtons[CurrentButtonPressed].item.ItemImage.transform.localScale = new Vector3(ItemButtons[CurrentButtonPressed].firstScale.x * sizeSlider.value, ItemButtons[CurrentButtonPressed].firstScale.y * sizeSlider.value, ItemButtons[CurrentButtonPressed].firstScale.z);
         }
 
         if (replaceToggle.isOn)
@@ -279,7 +299,6 @@ public class LevelEditorManager : MonoBehaviour
     //}
 
 
-
     private void UpdateStartUnitList(int vx, int vz, int level)
     {
         StartPoint spu = startPoints.Where(u => u.unitMaterialName == unitEditorPanel.actualMaterial.name).First();
@@ -334,7 +353,7 @@ public class LevelEditorManager : MonoBehaviour
         }
     }
 
-    private void CheckMap()
+    private void UpdateCheckMap()
     {
         if (Input.GetMouseButtonDown(2))
         {
@@ -389,24 +408,19 @@ public class LevelEditorManager : MonoBehaviour
         }
     }
 
-    internal void CreateStartTerrain(int size)
+    internal void InitializeStartTerrain(int size)
     {
-        if (Terrain != null)
+        foreach (GameObject panel in panelsToActive)
         {
-            GameObjectToDelete(Terrain);
+            panel.SetActive(true);
         }
-        else
-        {
-            foreach (GameObject panel in panelsToActive)
-            {
-                panel.SetActive(true);
-            }
-        }
+        sizeMapPanel.SetActive(false);
 
-        Ground ground = basicTerrain.gameObject.GetComponent<Ground>();
-        basicTerrain.gameObject.transform.localScale = new Vector3(size * basicTerrain.gameObject.transform.localScale.x, basicTerrain.gameObject.transform.localScale.y, size * basicTerrain.gameObject.transform.localScale.z);
-        Terrain = Instantiate(basicTerrain, new Vector3(size / 2 - 0.5f, 0, size / 2 - 0.5f), basicTerrain.transform.rotation);
-        basicTerrain.gameObject.transform.localScale = ground.orginalScale;
+        GameObject basicTerrainPrefab = ItemButtons[BasicTerrainID].item.ItemPrefab;
+
+        basicTerrainPrefab.gameObject.transform.localScale = new Vector3(size * ItemButtons[BasicTerrainID].firstScale.x, ItemButtons[BasicTerrainID].firstScale.y, size * ItemButtons[BasicTerrainID].firstScale.x);
+        Terrain = Instantiate(basicTerrainPrefab, new Vector3(size / 2 - 0.5f, 0, size / 2 - 0.5f), basicTerrainPrefab.transform.rotation);
+        basicTerrainPrefab.gameObject.transform.localScale = ItemButtons[BasicTerrainID].firstScale;
         InitializeTerrainArrays(size);
     }
 
@@ -421,16 +435,16 @@ public class LevelEditorManager : MonoBehaviour
         }
     }
 
-    public Map ExportInfo()
+    public Map ExportMap()
     {
         List<string> unitMaterials = new List<string>();
         List<float[]> unitStartLocations = new List<float[]>();
+
         foreach (StartPoint sp in startPoints)
         {
             unitStartLocations.Add(sp.uSL);
             unitMaterials.Add(sp.unitMaterialName);
         }
-
 
         return new Map()
         {
@@ -441,15 +455,13 @@ public class LevelEditorManager : MonoBehaviour
         };
     }
 
-    public void ImportInfo(Map map)
+    public void ImportMap(Map map)
     {
-        DeleteArrayGameObjects(mapsPrefabs[0], 0);
-        DeleteArrayGameObjects(mapsPrefabs[1], 1);
+        DeleteMapGameObjects();
 
         InitializeTerrainArrays(map.SizeMap);
-        CreateStartTerrain(sizeMap);
+        InitializeStartTerrain(sizeMap);
         InitializeNewMap(map);
-
     }
 
     private void InitializeNewMap(Map map)
@@ -470,18 +482,28 @@ public class LevelEditorManager : MonoBehaviour
         }
     }
 
-    public void DeleteArrayGameObjects(GameObject[,] ArrayToDelete, int level)
+    public void DeleteMapGameObjects()
     {
-        for (int i = 0; i < sizeMap; i++)
+        for (int k = 0; k < mapCount; k++)
         {
-            for (int j = 0; j < sizeMap; j++)
+            for (int i = 0; i < sizeMap; i++)
             {
-                if (ArrayToDelete[i, j] != null)
+                for (int j = 0; j < sizeMap; j++)
                 {
-                    DeleteGameObject(i, j, level);
+                    if (mapsPrefabs[k][i, j] != null)
+                    {
+                        GameObjectToDelete(mapsPrefabs[k][i, j]);
+                    }
                 }
             }
         }
+
+        GameObjectToDelete(Terrain);
     }
 
+    public void NewTerrain()
+    {
+        DeleteMapGameObjects();
+        InitializeOpenEditor();
+    }
 }

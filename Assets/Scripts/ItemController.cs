@@ -12,7 +12,6 @@ public class Item
     public float ItemHeightPosY = 0;
 }
 
-
 public class ItemController : MonoBehaviour
 {
     public bool Clicked = false;
@@ -20,7 +19,7 @@ public class ItemController : MonoBehaviour
     public Item item;
     public LevelEditorManager editor;
 
-    private void Start()
+    private void Awake()
     {
         firstScale = item.ItemPrefab.transform.localScale;
         item.ItemImage.transform.localScale = item.ItemPrefab.transform.localScale;

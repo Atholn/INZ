@@ -587,7 +587,7 @@ GameObject:
   - component: {fileID: 118847223}
   m_Layer: 5
   m_Name: TreesPanel
-  m_TagString: Untagged
+  m_TagString: CraftingPanel
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -747,7 +747,7 @@ GameObject:
   - component: {fileID: 181186131}
   m_Layer: 5
   m_Name: TerrainPanel
-  m_TagString: Untagged
+  m_TagString: CraftingPanel
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2109,8 +2109,8 @@ GameObject:
   - component: {fileID: 451026758}
   - component: {fileID: 451026757}
   m_Layer: 5
-  m_Name: SizePanel
-  m_TagString: StartPanel
+  m_Name: SizeMapPanel
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3711,7 +3711,7 @@ GameObject:
   - component: {fileID: 719709040}
   m_Layer: 5
   m_Name: StonesPanel
-  m_TagString: Untagged
+  m_TagString: CraftingPanel
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8073,7 +8073,7 @@ GameObject:
   - component: {fileID: 1347706008}
   m_Layer: 5
   m_Name: UnitsPanel
-  m_TagString: UnitsPanel
+  m_TagString: CraftingPanel
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -10846,6 +10846,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf30ba09a3e82134086c14ad922b4353, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canvas: {fileID: 546291821}
   ItemButtons:
   - {fileID: 1871055850}
   - {fileID: 889626573}
@@ -10861,7 +10862,7 @@ MonoBehaviour:
   - {fileID: 751646970}
   - {fileID: 1850700686}
   CurrentButtonPressed: 0
-  basicTerrain: {fileID: 426985600659949882, guid: 0f2062c14435e4549ae2a76bdf2a0cc6, type: 3}
+  BasicTerrainID: 0
   sizeSlider: {fileID: 557162453}
   valueSizeSliderText: {fileID: 494215951}
   singleMultiToggle: {fileID: 104417654}
@@ -10874,6 +10875,12 @@ MonoBehaviour:
   - {fileID: 1091722689}
   - {fileID: 1206370200}
   - {fileID: 136406570}
+  craftingPanels:
+  - {fileID: 181186129}
+  - {fileID: 118847221}
+  - {fileID: 719709038}
+  - {fileID: 1347706004}
+  sizeMapPanel: {fileID: 451026755}
 --- !u!1 &1809320032
 GameObject:
   m_ObjectHideFlags: 0
@@ -11756,7 +11763,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Clicked: 0
   item:
-    ItemPrefab: {fileID: 1643027924844237403, guid: c803417a66c2d984888fe49b0b83b525, type: 3}
+    ItemPrefab: {fileID: 426985600659949882, guid: 0f2062c14435e4549ae2a76bdf2a0cc6, type: 3}
     ItemImage: {fileID: 1643027924844237403, guid: c803417a66c2d984888fe49b0b83b525, type: 3}
     ItemHeightLevel: 0
     ItemHeightPosY: 0
@@ -13145,7 +13152,7 @@ GameObject:
   - component: {fileID: 2085680757}
   m_Layer: 5
   m_Name: SaveMapPanel
-  m_TagString: SaveMapEditorPanel
+  m_TagString: Undefined
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

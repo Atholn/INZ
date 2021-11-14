@@ -8,12 +8,10 @@ TagManager:
   - ItemImage
   - Slider
   - EditorBasicPanels
-  - UnitsPanel
-  - StartPanel
   - TypeOfMap
   - OptionsEditorPanel
   - SaveMapEditorPanel
-  - AlreadyExistText
+  - CraftingPanel
   layers:
   - Default
   - TransparentFX

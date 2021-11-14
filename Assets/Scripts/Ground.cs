@@ -10,6 +10,4 @@ public class Ground : MonoBehaviour
     private void Avake()
     { 
     }
-
-
 }

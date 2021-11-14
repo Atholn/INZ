@@ -85,26 +85,29 @@ public class MenuEditorManager : MonoBehaviour
     public void File()
     {
         ActiveDeactivatePanel(filePanel, !filePanel.activeSelf);
-        
-        if(filePanel.activeSelf)
+
+        if (filePanel.activeSelf)
         {
             GetComponentInChildren<Text>().text = @"File /\";
         }
         else
         {
             GetComponentInChildren<Text>().text = @"File \/";
-        } 
+        }
     }
 
     public void New()
     {
+        ActiveDeactivatePanel(filePanel, !filePanel.activeSelf);
         map = new Map();
 
+        levelEditorManager.NewTerrain();
         //todo
     }
 
     public void Save()
     {
+        ActiveDeactivatePanel(filePanel, !filePanel.activeSelf);
         if (map.ifExist)
         {
             fileMapSystem.SaveMap(ref map);
@@ -120,6 +123,7 @@ public class MenuEditorManager : MonoBehaviour
 
     public void SaveAs()
     {
+        ActiveDeactivatePanel(filePanel, !filePanel.activeSelf);
         map.saveAs = true;
         ActiveDeactivatePanel(saveMapPanel, true);
     }
@@ -129,26 +133,26 @@ public class MenuEditorManager : MonoBehaviour
     {
         InputField nameOfMapInputField = saveMapPanel.GetComponentInChildren<InputField>();
 
-        if(map.nameToChange)
-        { 
+        if (map.nameToChange)
+        {
             //todo
             return;
         }
 
-        if(nameOfMapInputField == null)
+        if (nameOfMapInputField == null)
         {
             ActiveDeactivatePanel(saveMapPanel, false);
-            
+
             return;
         }
 
-        if(nameOfMapInputField.text != "")
+        if (nameOfMapInputField.text != "")
         {
             map.Name = nameOfMapInputField.text;
             map.Type = dropdownTypeOfMap.options[dropdownTypeOfMap.value].text;
             map.Decription = ""; //todo
 
-            Map tmpMap =  levelEditorManager.ExportInfo();
+            Map tmpMap = levelEditorManager.ExportMap();
 
             map.SizeMap = tmpMap.SizeMap;
             map.Maps = tmpMap.Maps;
@@ -158,14 +162,13 @@ public class MenuEditorManager : MonoBehaviour
             fileMapSystem.SaveMap(ref map);
         }
 
-
-
         ActiveDeactivatePanel(saveMapPanel, false);
     }
 
     public void Load()
     {
         ActiveDeactivatePanel(loadMapPanel, !loadMapPanel.activeSelf);
+        ActiveDeactivatePanel(filePanel, !filePanel.activeSelf);
 
         if (loadMapPanel.activeSelf)
         {
@@ -178,27 +181,29 @@ public class MenuEditorManager : MonoBehaviour
     {
         map = new Map();
         map = fileMapSystem.LoadMap(dropdownMapsToLoad.options[dropdownMapsToLoad.value].text);
-        levelEditorManager.ImportInfo(map);
+        levelEditorManager.ImportMap(map);
         ActiveDeactivatePanel(loadMapPanel, !loadMapPanel.activeSelf);
     }
 
     public void ChosingMapToLoad()
     {
-        Map mapInfo = fileMapSystem.GetMapInfo("Editor" , dropdownMapsToLoad.options[dropdownMapsToLoad.value].text);
+        Map mapInfo = fileMapSystem.GetMapInfo("Editor", dropdownMapsToLoad.options[dropdownMapsToLoad.value].text);
 
         infoLoadTexts[1].text = "Type: " + mapInfo.Type;
     }
 
     public void Generate()
     {
+        ActiveDeactivatePanel(filePanel, !filePanel.activeSelf);
         fileMapSystem.Generate(map);
     }
 
     public void Info()
     {
         ActiveDeactivatePanel(mapInfoPanel, !mapInfoPanel.activeSelf);
+        ActiveDeactivatePanel(filePanel, !filePanel.activeSelf);
 
-        if(mapInfoPanel.activeSelf)
+        if (mapInfoPanel.activeSelf)
         {
             infoTexts[0].text = "Map info:";
             infoTexts[1].text = map.Name == "" ? "Name: untitled" : "Name: " + map.Name;
@@ -222,7 +227,7 @@ public class MenuEditorManager : MonoBehaviour
         if (map.saveAs) map.saveAs = false;
     }
 
-    private void  ActiveDeactivatePanel(GameObject panel, bool activeDesactive)
+    private void ActiveDeactivatePanel(GameObject panel, bool activeDesactive)
     {
         panel.SetActive(activeDesactive);
     }
