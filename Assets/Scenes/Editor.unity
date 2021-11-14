@@ -1983,7 +1983,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   size: 100
-  basicTerrain: {fileID: 5770076833996844587, guid: 2d15e7a89d6abcf498bb4d5c7dbdee7a, type: 3}
   editor: {fileID: 1793844480}
 --- !u!1 &421241724
 GameObject:
@@ -3700,7 +3699,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   size: 200
-  basicTerrain: {fileID: 5770076833996844587, guid: 2d15e7a89d6abcf498bb4d5c7dbdee7a, type: 3}
   editor: {fileID: 1793844480}
 --- !u!1 &719709038
 GameObject:
@@ -8390,7 +8388,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   size: 300
-  basicTerrain: {fileID: 5770076833996844587, guid: 2d15e7a89d6abcf498bb4d5c7dbdee7a, type: 3}
   editor: {fileID: 1793844480}
 --- !u!1 &1371107277
 GameObject:
@@ -10658,7 +10655,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   size: 400
-  basicTerrain: {fileID: 5770076833996844587, guid: 2d15e7a89d6abcf498bb4d5c7dbdee7a, type: 3}
   editor: {fileID: 1793844480}
 --- !u!1 &1781430069
 GameObject:
@@ -10872,6 +10868,7 @@ MonoBehaviour:
   - {fileID: 751646970}
   - {fileID: 1850700686}
   CurrentButtonPressed: 0
+  basicTerrain: {fileID: 426985600659949882, guid: 0f2062c14435e4549ae2a76bdf2a0cc6, type: 3}
   sizeSlider: {fileID: 557162453}
   valueSizeSliderText: {fileID: 494215951}
   singleMultiToggle: {fileID: 104417654}

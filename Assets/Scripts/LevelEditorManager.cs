@@ -14,6 +14,8 @@ public class LevelEditorManager : MonoBehaviour
     private int mapCount = 2; //Level 0 - terrain; Level 1 - Nature/Unit
     private int[][,] maps;
     private GameObject[][,] mapsPrefabs;
+    private GameObject Terrain;
+    public GameObject basicTerrain;
 
     RaycastHit hit;
     internal Vector3 v;
@@ -378,23 +380,35 @@ public class LevelEditorManager : MonoBehaviour
         }
     }
 
-    internal void CreateStartTerrain(int size, GameObject basicTerrain)
+    internal void CreateStartTerrain(int size)
     {
+        if (Terrain != null)
+        {
+            GameObjectToDelete(Terrain);
+        }
+        else
+        {
+            foreach (GameObject panel in panelsToActive)
+            {
+                panel.SetActive(true);
+            }
+        }
+
         Ground ground = basicTerrain.gameObject.GetComponent<Ground>();
         basicTerrain.gameObject.transform.localScale = new Vector3(size * basicTerrain.gameObject.transform.localScale.x, basicTerrain.gameObject.transform.localScale.y, size * basicTerrain.gameObject.transform.localScale.z);
-        Instantiate(basicTerrain, new Vector3(size / 2 - 0.5f, 0, size / 2 - 0.5f), basicTerrain.transform.rotation);
+        Terrain = Instantiate(basicTerrain, new Vector3(size / 2 - 0.5f, 0, size / 2 - 0.5f), basicTerrain.transform.rotation);
         basicTerrain.gameObject.transform.localScale = ground.orginalScale;
+        InitializeTerrainArrays(size);
+    }
 
+    private void InitializeTerrainArrays(int size)
+    {
         sizeMap = size;
+
         for (int i = 0; i < mapCount; i++)
         {
             maps[i] = new int[size, size];
             mapsPrefabs[i] = new GameObject[size, size];
-        }
-
-        foreach (GameObject panel in panelsToActive)
-        {
-            panel.SetActive(true);
         }
     }
 
@@ -419,8 +433,46 @@ public class LevelEditorManager : MonoBehaviour
     }
 
     public void ImportInfo(Map map)
+    {     
+        DeleteArrayGameObjects(mapsPrefabs[0], 0);
+        DeleteArrayGameObjects(mapsPrefabs[1], 1);
+
+        InitializeTerrainArrays(map.SizeMap);
+        CreateStartTerrain(sizeMap);
+        InitializeNewMap(map);
+
+    }
+
+    private void InitializeNewMap(Map map)
     {
         maps = map.Maps;
+        for (int i = 0; i < mapCount; i++)
+        {
+            for (int j = 0; j < sizeMap; j++)
+            {
+                for (int k = 0; k < sizeMap; k++)
+                {
+                    if (maps[i][j, k] > 0)
+                    {
+                        mapsPrefabs[i][j, k] = Instantiate(ItemButtons[maps[i][j, k]].item.ItemPrefab, new Vector3(j, ItemButtons[maps[i][j, k]].item.ItemHeightPosY, k), ItemButtons[maps[i][j, k]].item.ItemPrefab.transform.rotation);
+                    }
+                }
+            }
+        }
+    }
+
+    public void DeleteArrayGameObjects(GameObject[,] ArrayToDelete, int level)
+    {
+        for (int i = 0; i < sizeMap; i++)
+        {
+            for (int j = 0; j < sizeMap; j++)
+            {
+                if (ArrayToDelete[i, j] != null)
+                {
+                    DeleteGameObject(i, j, level);
+                }
+            }
+        }
     }
 
 }

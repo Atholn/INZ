@@ -199,6 +199,7 @@ public class MenuEditorManager : MonoBehaviour
 
     public void LoadMap()
     {
+        map = new Map();
         map = fileMapSystem.LoadMap(dropdownMapsToLoad.options[dropdownMapsToLoad.value].text);
         levelEditorManager.ImportInfo(map);
         ActiveDeactivatePanel(loadMapPanel, !loadMapPanel.activeSelf);
