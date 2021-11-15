@@ -9,12 +9,30 @@ EditorBuildSettings:
     path: Assets/Scenes/MainMenu.unity
     guid: 37784ccb9ad3650499f13fec831119aa
   - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
-    guid: 9fc0d4010bbf28b4594072e72b8655ab
+    path: Assets/Scenes/Sirmish.unity
+    guid: 41bb3d041615d6f408091537fd0e6798
+  - enabled: 1
+    path: Assets/Scenes/SirmishChose.unity
+    guid: ef89bb2a7afcd2a469b32728b45e26f9
+  - enabled: 1
+    path: Assets/Scenes/Campaign.unity
+    guid: 07f6841c6d517f3458ca1c46d1e071a2
+  - enabled: 1
+    path: Assets/Scenes/CampaignChose.unity
+    guid: 6f68ec06964b66a4988ffc4c77aaf4f6
+  - enabled: 1
+    path: Assets/Scenes/FreeGame.unity
+    guid: d7721eb68b430784d8917707aa8e1bac
+  - enabled: 1
+    path: Assets/Scenes/FreeGameChose.unity
+    guid: ea4b4561028f9e34aa504e8665d16e8b
+  - enabled: 1
+    path: Assets/Scenes/Editor.unity
+    guid: 213fbbb1921af7d4f9844eaf930d347a
   - enabled: 1
     path: Assets/Scenes/OptionsMenu.unity
     guid: 46fd6618f8dabb847af3f508d878d195
   - enabled: 1
-    path: Assets/Scenes/Editor.unity
-    guid: 213fbbb1921af7d4f9844eaf930d347a
+    path: Assets/Scenes/SampleScene.unity
+    guid: 9fc0d4010bbf28b4594072e72b8655ab
   m_configObjects: {}

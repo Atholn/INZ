@@ -5,9 +5,29 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
-    public void Play()
+    //public void Play()
+    //{
+    //    SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+    //}
+
+    public void Sirmish()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        SceneManager.LoadScene("SirmishChose");
+    }
+
+    public void Campaign()
+    {
+        SceneManager.LoadScene("CampaignChose");
+    }
+
+    public void FreeGame()
+    {
+        SceneManager.LoadScene("FreeGameChose");
+    }
+
+    public void Editor()
+    {
+        SceneManager.LoadScene("Editor");
     }
 
     public void OptionsMenu()
@@ -15,10 +35,6 @@ public class MainMenu : MonoBehaviour
         SceneManager.LoadScene("OptionsMenu");
     }
 
-    public void Editor()
-    {
-        SceneManager.LoadScene("Editor");
-    }
 
     public void QuitGame()
     {
