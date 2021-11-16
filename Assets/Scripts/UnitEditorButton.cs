@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class UnitEditorButton : MonoBehaviour
 {
-    public int ID;
+    internal int ID;
     public Button button;
     public Color buttonColor;
     public Material unitMaterial;
