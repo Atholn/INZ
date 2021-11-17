@@ -101,25 +101,6 @@ public class FileMapSystem
         }
     }
 
-    public Map GetMapInfo(string type, string nameMap)
-    {
-        string tmpPath = path + $"/{type}/{nameMap}";
-
-        if (File.Exists(tmpPath))
-        {
-            BinaryFormatter formatter = new BinaryFormatter();
-            FileStream stream = new FileStream(tmpPath, FileMode.Open);
-
-            Map map = formatter.Deserialize(stream) as Map;
-            stream.Close();
-            return map;
-        }
-        else
-        {
-            return null;
-        }
-    }
-
     public List<string> GetNamesMaps(string type)
     {
         string tmpPath = path + $"/{type}/";
@@ -140,4 +121,22 @@ public class FileMapSystem
         return NamesOfMaps;
     }
 
+    public Map GetMapInfo(string type, string nameMap)
+    {
+        string tmpPath = path + $"/{type}/{nameMap}";
+
+        if (File.Exists(tmpPath))
+        {
+            BinaryFormatter formatter = new BinaryFormatter();
+            FileStream stream = new FileStream(tmpPath, FileMode.Open);
+
+            Map map = formatter.Deserialize(stream) as Map;
+            stream.Close();
+            return map;
+        }
+        else
+        {
+            return null;
+        }
+    }
 }
