@@ -128,7 +128,6 @@ public class MenuEditorManager : MonoBehaviour
         ActiveDeactivatePanel(saveMapPanel, true);
     }
 
-
     public void SaveClickAccept()
     {
         InputField nameOfMapInputField = saveMapPanel.GetComponentInChildren<InputField>();
@@ -182,6 +181,7 @@ public class MenuEditorManager : MonoBehaviour
         map = new Map();
         map = fileMapSystem.LoadMap(dropdownMapsToLoad.options[dropdownMapsToLoad.value].text);
         levelEditorManager.ImportMap(map);
+
         ActiveDeactivatePanel(loadMapPanel, !loadMapPanel.activeSelf);
     }
 
@@ -208,7 +208,14 @@ public class MenuEditorManager : MonoBehaviour
             infoTexts[0].text = "Map info:";
             infoTexts[1].text = map.Name == "" ? "Name: untitled" : "Name: " + map.Name;
             infoTexts[2].text = map.Type == "" ? "Type: no chose yet" : "Type: " + map.Type;
+            mapInfoPanel.GetComponentInChildren<InputField>().text = map.Decription;
         }
+    }
+
+    public void SaveDescription()
+    {
+        map.Decription = mapInfoPanel.GetComponentInChildren<InputField>().text;
+        ActiveDeactivatePanel(mapInfoPanel, false);
     }
 
     public void Options()

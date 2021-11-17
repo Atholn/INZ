@@ -12,10 +12,10 @@ public class Map
 
     public string Name = "";
     public string Type = "";
+    public string Decription;
 
     public string CreateTime;
     public string UpdateTime;
-    public string Decription;
 
     public int SizeMap;
     public int[][,] Maps;
