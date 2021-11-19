@@ -24,7 +24,4 @@ public class StartPoint
             unitStartLocation.z = uSL[2];
         }
     }
-
-
 }
-
