@@ -18,10 +18,9 @@ public class ChooseMapManager : MonoBehaviour
     FileMapSystem FileMapSystem;
 
 
-    Vector3 DisplacementVector = new Vector3(-100, 225, 0);
+    Vector3 DisplacementVector = new Vector3(-50, 225, 0);
 
     public GameObject PanelComputerSettings;
-    private GameObject[] PanelsPlayer;
 
     List<GameObject> PanelPlayerList = new List<GameObject>();
     public Image colorPlayers;
@@ -35,9 +34,9 @@ public class ChooseMapManager : MonoBehaviour
         MapsDropdown.options.Clear();
         MapsDropdown.AddOptions(FileMapSystem.GetNamesMaps(FileMapSystem.FolderName));
 
-
         InfoTexts = MapInfoPanel.GetComponentsInChildren<Text>();
 
+        InitializeListPlayer();
         InitializeComputerPanel();
     }
 
@@ -48,7 +47,18 @@ public class ChooseMapManager : MonoBehaviour
         computerSettings[0].AddOptions(new List<string>() { "None", "Computer" });
     }
 
-
+    private void InitializeListPlayer()
+    {
+        PanelPlayerList.Add(Instantiate(PanelComputerSettings,
+            new Vector3(PlaySettingsPanel.transform.position.x + DisplacementVector.x,
+            PlaySettingsPanel.transform.position.y + DisplacementVector.y,
+            DisplacementVector.z),
+            PlaySettingsPanel.transform.localRotation));
+        PanelPlayerList[0].gameObject.SetActive(true);
+        PanelPlayerList[0].transform.SetParent(PlaySettingsPanel.transform);
+        PanelPlayerList[0].GetComponentInChildren<Text>().gameObject.SetActive(true);
+        Destroy(PanelPlayerList[0].GetComponentInChildren<Dropdown>().gameObject);
+    }
 
 
     public void ChooseMap()
@@ -57,29 +67,35 @@ public class ChooseMapManager : MonoBehaviour
         InfoTexts[0].text = map.Name;
         InfoTexts[1].text = map.Decription;
 
-        //--------------------
-        if (PanelsPlayer != null)
+        if (PanelPlayerList.Count > 1)
         {
-            for (int i = 0; i < PanelsPlayer.Length; i++)
-            {               
-                Destroy(PanelsPlayer[i].gameObject);
+            for (int i = PanelPlayerList.Count-1; i >1 ; i--)
+            {
+                Destroy(PanelPlayerList[i].gameObject);
+                PanelPlayerList.Remove(PanelPlayerList[i]);
             }
         }
 
-        PanelsPlayer = new GameObject[map.UnitStartLocations.Count - 1];
-
-        for (int i = 0; i < PanelsPlayer.Length; i++)
+        for (int i = 1; i < map.UnitStartLocations.Count; i++)
         {
-            //float height = Dropdown.GetComponent<RectTransform>().rect.height;
-            //TypeOfPlayer[i] = Instantiate(Dropdown, new Vector3(PlaySettingsPanel.transform.position.x + DisplacementVector.x, PlaySettingsPanel.transform.position.y - i * (height + 5) + DisplacementVector.y, DisplacementVector.z), PlaySettingsPanel.transform.localRotation);
-            //TypeOfPlayer[i].gameObject.SetActive(true);
-            //TypeOfPlayer[i].transform.SetParent(PlaySettingsPanel.transform);
+            PanelPlayerList.Add(Instantiate(PanelComputerSettings, new Vector3(PlaySettingsPanel.transform.position.x + DisplacementVector.x, PlaySettingsPanel.transform.position.y - i * PanelComputerSettings.GetComponent<RectTransform>().rect.height + DisplacementVector.y, DisplacementVector.z), PlaySettingsPanel.transform.localRotation));
+            PanelPlayerList[i].GetComponentInChildren<Text>().text = "Computer" + (i + 1);
+            PanelPlayerList[i].gameObject.SetActive(true);
+            PanelPlayerList[i].transform.SetParent(PlaySettingsPanel.transform);
 
+            Dropdown[] dropdowns = PanelPlayerList[i].GetComponentsInChildren<Dropdown>();
+            dropdowns[0].value = 0;
+            dropdowns[1].value = i;
 
-            PanelsPlayer[i] = Instantiate(PanelComputerSettings, new Vector3(PlaySettingsPanel.transform.position.x + DisplacementVector.x, PlaySettingsPanel.transform.position.y - i *PanelComputerSettings.GetComponent<RectTransform>().rect.height + DisplacementVector.y, DisplacementVector.z), PlaySettingsPanel.transform.localRotation);
-            PanelsPlayer[i].GetComponentInChildren<Text>().text = "Computer" + (i + 1);
-            PanelsPlayer[i].gameObject.SetActive(true);
-            PanelsPlayer[i].transform.SetParent(PlaySettingsPanel.transform);
+            List<string> placeList = new List<string>();
+            placeList.Add("-");
+            for (int j = 0; j < map.UnitStartLocations.Count; j++)
+            {
+                placeList.Add((j+1).ToString());
+            }
+            placeList.Add("Random");
+            dropdowns[2].AddOptions(placeList);
+            dropdowns[2].value = 0;
         }
     }
 
