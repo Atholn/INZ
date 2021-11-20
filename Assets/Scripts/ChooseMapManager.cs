@@ -17,13 +17,11 @@ public class ChooseMapManager : MonoBehaviour
 
     FileMapSystem FileMapSystem;
 
-
     Vector3 DisplacementVector = new Vector3(-50, 225, 0);
 
     public GameObject PanelComputerSettings;
 
     List<GameObject> PanelPlayerList = new List<GameObject>();
-    public Image colorPlayers;
 
     private void Start()
     {
@@ -60,7 +58,6 @@ public class ChooseMapManager : MonoBehaviour
         Destroy(PanelPlayerList[0].GetComponentInChildren<Dropdown>().gameObject);
     }
 
-
     public void ChooseMap()
     {
         Map map = FileMapSystem.GetMapInfo(FileMapSystem.FolderName, MapsDropdown.options[MapsDropdown.value].text);
@@ -79,24 +76,42 @@ public class ChooseMapManager : MonoBehaviour
         for (int i = 1; i < map.UnitStartLocations.Count; i++)
         {
             PanelPlayerList.Add(Instantiate(PanelComputerSettings, new Vector3(PlaySettingsPanel.transform.position.x + DisplacementVector.x, PlaySettingsPanel.transform.position.y - i * PanelComputerSettings.GetComponent<RectTransform>().rect.height + DisplacementVector.y, DisplacementVector.z), PlaySettingsPanel.transform.localRotation));
-            PanelPlayerList[i].GetComponentInChildren<Text>().text = "Computer" + (i + 1);
             PanelPlayerList[i].gameObject.SetActive(true);
             PanelPlayerList[i].transform.SetParent(PlaySettingsPanel.transform);
 
-            Dropdown[] dropdowns = PanelPlayerList[i].GetComponentsInChildren<Dropdown>();
-            dropdowns[0].value = 0;
-            dropdowns[1].value = i;
-
-            List<string> placeList = new List<string>();
-            placeList.Add("-");
-            for (int j = 0; j < map.UnitStartLocations.Count; j++)
-            {
-                placeList.Add((j+1).ToString());
-            }
-            placeList.Add("Random");
-            dropdowns[2].AddOptions(placeList);
-            dropdowns[2].value = 0;
+            GenerateChooseNumbers(PanelPlayerList[i], map.UnitStartLocations.Count, i);
         }
+
+        GenerateChooseNumbers(PanelPlayerList[0], map.UnitStartLocations.Count, 0);
+    }
+
+    public void GenerateChooseNumbers(GameObject panel, int countPlayers, int whichColour)
+    {
+        Dropdown[] dropdowns = panel.GetComponentsInChildren<Dropdown>();
+
+        int i;
+        if(dropdowns.Length == 3)
+        {
+            dropdowns[0].value = 0;
+            i = 0;
+        }
+        else
+        {
+            i = 1;
+        }
+
+        dropdowns[1-i].value = whichColour;
+
+        List<string> placeList = new List<string>();
+        placeList.Add("Random");
+        for (int j = 0; j < countPlayers; j++)
+        {
+            placeList.Add((j + 1).ToString());
+        }
+        
+        dropdowns[2 - i].options.Clear();
+        dropdowns[2 - i].AddOptions(placeList);
+        dropdowns[2 - i].value = 0;     
     }
 
     public void PlayButton()
