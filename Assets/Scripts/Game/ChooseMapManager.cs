@@ -2,40 +2,53 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 using System;
 using System.Linq;
 
 public class ChooseMapManager : MonoBehaviour
 {
     public GameObject ChooseMapPanel;
-    Dropdown MapsDropdown;
     public GameObject PlaySettingsPanel;
     public GameObject MapInfoPanel;
-    Text[] InfoTexts = new Text[2];
     public GameObject ActionPanel;
-
-    FileMapSystem FileMapSystem;
-
-    Vector3 DisplacementVector = new Vector3(-50, 225, 0);
-
     public GameObject PanelComputerSettings;
 
-    List<GameObject> PanelPlayerList = new List<GameObject>();
+    private Text[] InfoTexts = new Text[2];
+    private Dropdown MapsDropdown;
+    private Vector3 DisplacementVector = new Vector3(-50, 225, 0);
+    private List<GameObject> PanelPlayerList = new List<GameObject>();
+
+    private FileMapSystem FileMapSystem;
 
     private void Start()
     {
-        FileMapSystem = new FileMapSystem() { FolderName = "Sirmish" };
+        InitializeFileMapSystem();
+        InitializeMapList();
+        InitializeFirstMap();
 
-        MapsDropdown = ChooseMapPanel.GetComponentInChildren<Dropdown>();
-
-        MapsDropdown.options.Clear();
-        MapsDropdown.AddOptions(FileMapSystem.GetNamesMaps(FileMapSystem.FolderName));
+        
+        
 
         InfoTexts = MapInfoPanel.GetComponentsInChildren<Text>();
 
         InitializeListPlayer();
         InitializeComputerPanel();
+    }
+    private void InitializeFileMapSystem()
+    {
+        FileMapSystem = new FileMapSystem() { FolderName = "Sirmish" };
+    }
+
+    private void InitializeMapList()
+    {
+        MapsDropdown = ChooseMapPanel.GetComponentInChildren<Dropdown>();
+        MapsDropdown.options.Clear();
+        MapsDropdown.AddOptions(FileMapSystem.GetNamesMaps(FileMapSystem.FolderName));
+    }
+
+    private void InitializeFirstMap()
+    {
+        
     }
 
     private void InitializeComputerPanel()
@@ -55,7 +68,15 @@ public class ChooseMapManager : MonoBehaviour
         PanelPlayerList[0].gameObject.SetActive(true);
         PanelPlayerList[0].transform.SetParent(PlaySettingsPanel.transform);
         PanelPlayerList[0].GetComponentInChildren<Text>().gameObject.SetActive(true);
-        Destroy(PanelPlayerList[0].GetComponentInChildren<Dropdown>().gameObject);
+
+        Dropdown dropdownToDelete = PanelPlayerList[0].GetComponentInChildren<Dropdown>();
+
+        Text playerText = Instantiate(ChooseMapPanel.GetComponentInChildren<Text>(), new Vector3(0, 0, 0), PanelPlayerList[0].transform.rotation);
+        playerText.transform.SetParent(PanelPlayerList[0].transform);
+        playerText.text = "Player";
+        playerText.transform.localPosition = new Vector3(dropdownToDelete.transform.localPosition.x, 0, 0);
+
+        Destroy(dropdownToDelete.gameObject);
     }
 
     public void ChooseMap()
@@ -112,17 +133,5 @@ public class ChooseMapManager : MonoBehaviour
         dropdowns[2 - i].options.Clear();
         dropdowns[2 - i].AddOptions(placeList);
         dropdowns[2 - i].value = 0;     
-    }
-
-    public void PlayButton()
-    {
-        SceneManager.LoadScene("Sirmish");
-
-        //todo create tmp file to load in skirmish
-    }
-
-    public void BackButton()
-    {
-        OptionsMenu.GoToMainMenu();
     }
 }
