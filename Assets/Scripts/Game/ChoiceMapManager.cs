@@ -5,9 +5,9 @@ using UnityEngine.UI;
 using System;
 using System.Linq;
 
-public class ChooseMapManager : MonoBehaviour
+public class ChoiceMapManager : MonoBehaviour
 {
-    public GameObject ChooseMapPanel;
+    public GameObject ChoiceMapPanel;
     public GameObject PlaySettingsPanel;
     public GameObject MapInfoPanel;
     public GameObject ActionPanel;
@@ -24,15 +24,9 @@ public class ChooseMapManager : MonoBehaviour
     {
         InitializeFileMapSystem();
         InitializeMapList();
-        InitializeFirstMap();
-
-        
-        
-
-        InfoTexts = MapInfoPanel.GetComponentsInChildren<Text>();
-
         InitializeListPlayer();
-        InitializeComputerPanel();
+        InitializeComponents();
+        InitializeFirstMap();
     }
     private void InitializeFileMapSystem()
     {
@@ -41,21 +35,22 @@ public class ChooseMapManager : MonoBehaviour
 
     private void InitializeMapList()
     {
-        MapsDropdown = ChooseMapPanel.GetComponentInChildren<Dropdown>();
+        MapsDropdown = ChoiceMapPanel.GetComponentInChildren<Dropdown>();
         MapsDropdown.options.Clear();
         MapsDropdown.AddOptions(FileMapSystem.GetNamesMaps(FileMapSystem.FolderName));
     }
 
     private void InitializeFirstMap()
     {
-        
+        LoadMapInfo();
     }
 
-    private void InitializeComputerPanel()
+    private void InitializeComponents()
     {
         List<Dropdown> computerSettings = PanelComputerSettings.GetComponentsInChildren<Dropdown>().ToList();
-
         computerSettings[0].AddOptions(new List<string>() { "None", "Computer" });
+
+        InfoTexts = MapInfoPanel.GetComponentsInChildren<Text>();
     }
 
     private void InitializeListPlayer()
@@ -71,7 +66,7 @@ public class ChooseMapManager : MonoBehaviour
 
         Dropdown dropdownToDelete = PanelPlayerList[0].GetComponentInChildren<Dropdown>();
 
-        Text playerText = Instantiate(ChooseMapPanel.GetComponentInChildren<Text>(), new Vector3(0, 0, 0), PanelPlayerList[0].transform.rotation);
+        Text playerText = Instantiate(ChoiceMapPanel.GetComponentInChildren<Text>(), new Vector3(0, 0, 0), PanelPlayerList[0].transform.rotation);
         playerText.transform.SetParent(PanelPlayerList[0].transform);
         playerText.text = "Player";
         playerText.transform.localPosition = new Vector3(dropdownToDelete.transform.localPosition.x, 0, 0);
@@ -79,7 +74,7 @@ public class ChooseMapManager : MonoBehaviour
         Destroy(dropdownToDelete.gameObject);
     }
 
-    public void ChooseMap()
+    public void LoadMapInfo()
     {
         Map map = FileMapSystem.GetMapInfo(FileMapSystem.FolderName, MapsDropdown.options[MapsDropdown.value].text);
         InfoTexts[0].text = map.Name;
@@ -94,19 +89,18 @@ public class ChooseMapManager : MonoBehaviour
             }
         }
 
+        GeneratingDifferentFeatures(PanelPlayerList[0], map.UnitStartLocations.Count, 0);
         for (int i = 1; i < map.UnitStartLocations.Count; i++)
         {
             PanelPlayerList.Add(Instantiate(PanelComputerSettings, new Vector3(PlaySettingsPanel.transform.position.x + DisplacementVector.x, PlaySettingsPanel.transform.position.y - i * PanelComputerSettings.GetComponent<RectTransform>().rect.height + DisplacementVector.y, DisplacementVector.z), PlaySettingsPanel.transform.localRotation));
             PanelPlayerList[i].gameObject.SetActive(true);
             PanelPlayerList[i].transform.SetParent(PlaySettingsPanel.transform);
 
-            GenerateChooseNumbers(PanelPlayerList[i], map.UnitStartLocations.Count, i);
+            GeneratingDifferentFeatures(PanelPlayerList[i], map.UnitStartLocations.Count, i);
         }
-
-        GenerateChooseNumbers(PanelPlayerList[0], map.UnitStartLocations.Count, 0);
     }
 
-    public void GenerateChooseNumbers(GameObject panel, int countPlayers, int whichColour)
+    public void GeneratingDifferentFeatures(GameObject panel, int countPlayers, int whichColour)
     {
         Dropdown[] dropdowns = panel.GetComponentsInChildren<Dropdown>();
 

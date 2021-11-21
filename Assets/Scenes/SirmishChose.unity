@@ -1832,7 +1832,7 @@ GameObject:
   - component: {fileID: 652461286}
   - component: {fileID: 652461285}
   m_Layer: 5
-  m_Name: ChooseMapPanel
+  m_Name: ChoiceMapPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2598,7 +2598,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9cc1623e02ead442b1315824b61de83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ChooseMapPanel: {fileID: 652461283}
+  ChoiceMapPanel: {fileID: 652461283}
   PlaySettingsPanel: {fileID: 2010470060}
   MapInfoPanel: {fileID: 438295761}
   ActionPanel: {fileID: 766300370}
@@ -4767,9 +4767,9 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 882497378}
-        m_TargetAssemblyTypeName: ChooseMapManager, Assembly-CSharp
-        m_MethodName: ChooseMap
+      - m_Target: {fileID: 1714033544}
+        m_TargetAssemblyTypeName: CanvasManager, Assembly-CSharp
+        m_MethodName: ChangeMapDropdown
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5232,7 +5232,7 @@ GameObject:
   - component: {fileID: 1714033542}
   - component: {fileID: 1714033544}
   m_Layer: 5
-  m_Name: SirmishChosePanel
+  m_Name: SirmishChoosePanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5312,6 +5312,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d516f88326f4db4fa6a5f90f1cccbd5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Manager: {fileID: 882497378}
 --- !u!1 &1856916294
 GameObject:
   m_ObjectHideFlags: 0

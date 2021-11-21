@@ -5,7 +5,14 @@ using UnityEngine.SceneManagement;
 
 public class CanvasManager : MonoBehaviour
 {
-    ChooseMapManager Manager;
+    public ChoiceMapManager Manager;
+
+    public void ChangeMapDropdown()
+    {
+        Manager.LoadMapInfo();
+    }
+
+    //
 
     public void PlayButton()
     {
