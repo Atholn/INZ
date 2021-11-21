@@ -8,7 +8,6 @@ public class StartPointUnit:MonoBehaviour
     public int buildScale;
     public int buildSize;
 
-
     private void Start()
     {
         gameObject.transform.localScale = new Vector3(buildScale, buildScale, buildScale);
