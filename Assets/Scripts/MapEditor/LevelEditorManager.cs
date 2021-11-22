@@ -17,7 +17,7 @@ public class LevelEditorManager : MonoBehaviour
     private int[][,] maps;
     private GameObject[][,] mapsPrefabs;
     private GameObject Terrain;
-    public int BasicTerrainID = 0;
+    internal int BasicTerrainID = 0;
 
     RaycastHit hit;
     internal Vector3 v;
@@ -418,7 +418,7 @@ public class LevelEditorManager : MonoBehaviour
 
         GameObject basicTerrainPrefab = ItemButtons[BasicTerrainID].item.ItemPrefab;
 
-        basicTerrainPrefab.gameObject.transform.localScale = new Vector3(size * ItemButtons[BasicTerrainID].firstScale.x, ItemButtons[BasicTerrainID].firstScale.y, size * ItemButtons[BasicTerrainID].firstScale.x);
+        basicTerrainPrefab.gameObject.transform.localScale = new Vector3(size * ItemButtons[BasicTerrainID].firstScale.x, ItemButtons[BasicTerrainID].firstScale.y, size * ItemButtons[BasicTerrainID].firstScale.z);
         Terrain = Instantiate(basicTerrainPrefab, new Vector3(size / 2 - 0.5f, 0, size / 2 - 0.5f), basicTerrainPrefab.transform.rotation);
         basicTerrainPrefab.gameObject.transform.localScale = ItemButtons[BasicTerrainID].firstScale;
         InitializeTerrainArrays(size);
@@ -482,6 +482,12 @@ public class LevelEditorManager : MonoBehaviour
         }
     }
 
+    public void NewTerrain()
+    {
+        DeleteMapGameObjects();
+        InitializeOpenEditor();
+    }
+
     public void DeleteMapGameObjects()
     {
         for (int k = 0; k < mapCount; k++)
@@ -501,9 +507,4 @@ public class LevelEditorManager : MonoBehaviour
         GameObjectToDelete(Terrain);
     }
 
-    public void NewTerrain()
-    {
-        DeleteMapGameObjects();
-        InitializeOpenEditor();
-    }
 }

@@ -128,4 +128,11 @@ public class ChoiceMapManager : MonoBehaviour
         dropdowns[2 - i].AddOptions(placeList);
         dropdowns[2 - i].value = 0;     
     }
+
+    internal void Play()
+    {
+        Map map = FileMapSystem.LoadMap(MapsDropdown.options[MapsDropdown.value].text);
+        Debug.Log(map.Name);
+        MapToPlayStorage.Map = map;
+    }
 }
