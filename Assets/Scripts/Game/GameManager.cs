@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -21,8 +22,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         map = MapToPlayStorage.Map;
-        Debug.Log(map.Name);
-        
+
         basicScale = new Vector3(basicTerrain.transform.localScale.x, basicTerrain.transform.localScale.y, basicTerrain.transform.localScale.z);
         InitializeStartMaps();
         ImportMap(map);
@@ -63,6 +63,24 @@ public class GameManager : MonoBehaviour
         InitializeTerrainArrays(size);
     }
 
+    //private void InitializeNewMap(Map map)
+    //{
+    //    maps = map.Maps;
+    //    for (int i = 0; i < mapCount; i++)
+    //    {
+    //        for (int j = 0; j < sizeMap; j++)
+    //        {
+    //            for (int k = 0; k < sizeMap; k++)
+    //            {
+    //                if (maps[i][j, k] > 0)
+    //                {
+    //                    mapsPrefabs[i][j, k] = Instantiate(Prefabs[maps[i][j, k]], new Vector3(j, i, k), Prefabs[maps[i][j, k]].transform.rotation);
+    //                }
+    //            }
+    //        }
+    //    }     
+    //}
+
     private void InitializeNewMap(Map map)
     {
         maps = map.Maps;
@@ -74,15 +92,22 @@ public class GameManager : MonoBehaviour
                 {
                     if (maps[i][j, k] > 0)
                     {
-                        mapsPrefabs[i][j, k] = Instantiate(Prefabs[maps[i][j, k]], new Vector3(j, i, k), Prefabs[maps[i][j, k]].transform.rotation);
+                        InstantiateAsync(i, j, k);
+                        //mapsPrefabs[i][j, k] = Instantiate(Prefabs[maps[i][j, k]], new Vector3(j, i, k), Prefabs[maps[i][j, k]].transform.rotation);
                     }
                 }
             }
-        }     
+        }
+    }
+
+    async void InstantiateAsync(int i, int j, int k)
+    {
+        await Task.Delay(1000);
+        mapsPrefabs[i][j, k] = GameObject.Instantiate(Prefabs[maps[i][j, k]], new Vector3(j, i, k), Prefabs[maps[i][j, k]].transform.rotation);
     }
 
     void Update()
     {
-        
+
     }
 }

@@ -17,7 +17,7 @@ public class CanvasManager : MonoBehaviour
     public void PlayButton()
     {
         Manager.Play();
-        SceneManager.LoadScene("Sirmish");
+        SceneManager.LoadScene("GameScene");
 
         //todo create tmp file to load in skirmish
     }
