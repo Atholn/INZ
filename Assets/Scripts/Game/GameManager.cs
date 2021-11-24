@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         map = MapToPlayStorage.Map;
+        MapToPlayStorage.ImportMaterials();
 
         basicScale = new Vector3(basicTerrain.transform.localScale.x, basicTerrain.transform.localScale.y, basicTerrain.transform.localScale.z);
         InitializeStartMaps();
