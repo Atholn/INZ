@@ -69,7 +69,7 @@ public class ChoiceMapManager : MonoBehaviour
         List<Dropdown.OptionData> options = new List<Dropdown.OptionData>();
         foreach (Sprite sprite in MapToPlayStorage.ImportResources<Sprite>("UI/UnitColors/", ".bmp"))
         {
-            options.Add(new Dropdown.OptionData(sprite));
+            options.Add(new Dropdown.OptionData(sprite.name, sprite));
         }
 
         computerSettings[1].AddOptions(options);
@@ -217,7 +217,7 @@ public class ChoiceMapManager : MonoBehaviour
                 Dropdown[] dropdownsTmp = PanelPlayerList[j].GetComponentsInChildren<Dropdown>();
                 if (dropdownsTmp[1].value == dropdowns[1].value)
                 {
-                    dropdownsTmp[1].value = ColorUnitsTmpList[i];    
+                    dropdownsTmp[1].value = ColorUnitsTmpList[i];
                     break;
                 }
             }
@@ -231,5 +231,25 @@ public class ChoiceMapManager : MonoBehaviour
     {
         Map map = FileMapSystem.LoadMap(MapsDropdown.options[MapsDropdown.value].text);
         MapToPlayStorage.Map = map;
+
+        List<GameStartPoint> gameStartPoints = new List<GameStartPoint>();
+        List<Material> materialList = MapToPlayStorage.ImportResources<Material>("Materials/Units/", ".mat");
+
+        for(int i = 0; i<PanelPlayerList.Count;i++)
+        {
+            Dropdown[] dropdowns = PanelPlayerList[i].GetComponentsInChildren<Dropdown>();
+            if (dropdowns[0].value == 0 && i!=0)
+            {
+                continue;
+            }
+
+            gameStartPoints.Add(new GameStartPoint()
+            {
+                UnitMaterial =  materialList.Where(n => n.name == dropdowns[1].options[dropdowns[1].value].text).FirstOrDefault(),
+                UnitStartLocation  = new Vector3(map.UnitStartLocations[dropdowns[2].value][0] , map.UnitStartLocations[dropdowns[2].value][1], map.UnitStartLocations[dropdowns[2].value][2])
+            });         
+        }
+
+        MapToPlayStorage.GameStartPoints = gameStartPoints;
     }
 }

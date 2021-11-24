@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class LocationTextScript : MonoBehaviour
 {
-    public LevelEditorManager levelEditorManager;
+    public MapEditorManager levelEditorManager;
     public Text locationText;
 
     private void Update()

@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class SizeMapButton : MonoBehaviour
 {
     public int size;
-    public LevelEditorManager editor;
+    public MapEditorManager editor;
 
     public void ChoiceMapSize()
     {

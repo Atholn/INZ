@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 
 [System.Serializable]
-public class StartPoint
+public class EditorStartPoint
 {
     internal Vector3 unitStartLocation;
     internal string unitMaterialName;

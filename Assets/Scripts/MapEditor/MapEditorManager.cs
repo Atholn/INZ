@@ -5,7 +5,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class LevelEditorManager : MonoBehaviour
+public class MapEditorManager : MonoBehaviour
 {
     public ItemController[] ItemButtons;
     public int CurrentButtonPressed;
@@ -27,7 +27,7 @@ public class LevelEditorManager : MonoBehaviour
     public Toggle replaceToggle;
     public Text valueReplaceToggleText;
 
-    private List<StartPoint> startPoints = new List<StartPoint>();
+    private List<EditorStartPoint> startPoints = new List<EditorStartPoint>();
     public UnitEditorPanel unitEditorPanel;
 
     public GameObject[] panelsToActive;
@@ -75,7 +75,7 @@ public class LevelEditorManager : MonoBehaviour
         {
             UnitEditorButton unitEditorButton = button.gameObject.GetComponent<UnitEditorButton>();
 
-            startPoints.Add(new StartPoint
+            startPoints.Add(new EditorStartPoint
             {
                 unitMaterialName = unitEditorButton.unitMaterial.name,
                 unitStartLocation = Vector3.zero,
@@ -242,7 +242,7 @@ public class LevelEditorManager : MonoBehaviour
         {
             if (mapsPrefabs[level][vx, vz].GetComponent<StartPointUnit>() != null)
             {
-                StartPoint spu = startPoints.Where(u => u.unitStartLocation.x == vx && u.unitStartLocation.z == vz).First();
+                EditorStartPoint spu = startPoints.Where(u => u.unitStartLocation.x == vx && u.unitStartLocation.z == vz).First();
 
                 int areaToReset = mapsPrefabs[level][vx, vz].GetComponent<StartPointUnit>().buildSize;
                 int tempvx, tempvz;
@@ -301,7 +301,7 @@ public class LevelEditorManager : MonoBehaviour
 
     private void UpdateStartUnitList(int vx, int vz, int level)
     {
-        StartPoint spu = startPoints.Where(u => u.unitMaterialName == unitEditorPanel.ActualMaterial.name).First();
+        EditorStartPoint spu = startPoints.Where(u => u.unitMaterialName == unitEditorPanel.ActualMaterial.name).First();
 
         if (spu.unitStartLocation == Vector3.zero)
         {
@@ -376,7 +376,7 @@ public class LevelEditorManager : MonoBehaviour
 
         if (Input.GetMouseButtonDown(3))
         {
-            foreach (StartPoint sP in startPoints)
+            foreach (EditorStartPoint sP in startPoints)
             {
                 if (sP.unitStartLocation != Vector3.zero)
                 {
@@ -440,7 +440,7 @@ public class LevelEditorManager : MonoBehaviour
         List<string> unitMaterials = new List<string>();
         List<float[]> unitStartLocations = new List<float[]>();
 
-        foreach (StartPoint sp in startPoints)
+        foreach (EditorStartPoint sp in startPoints)
         {
             if (sp.unitStartLocation != Vector3.zero)
             {

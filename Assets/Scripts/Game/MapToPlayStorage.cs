@@ -7,6 +7,7 @@ using UnityEngine;
 public class MapToPlayStorage : MonoBehaviour
 {
     public static Map Map;
+    public static List<GameStartPoint> GameStartPoints;
 
     public static List<T> ImportResources<T>(string path, string end) where T: UnityEngine.Object
     {

@@ -11026,7 +11026,7 @@ GameObject:
   - component: {fileID: 1793844478}
   - component: {fileID: 1793844480}
   m_Layer: 0
-  m_Name: LevelEditorManager
+  m_Name: MapEditorManager
   m_TagString: LevelEditorManager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

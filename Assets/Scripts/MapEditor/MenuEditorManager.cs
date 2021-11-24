@@ -32,7 +32,7 @@ public class MenuEditorManager : MonoBehaviour
     private Map map = new Map();
 
     private FileMapSystem fileMapSystem;
-    public LevelEditorManager levelEditorManager;
+    public MapEditorManager levelEditorManager;
 
     private void Start()
     {

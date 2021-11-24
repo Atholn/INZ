@@ -5,7 +5,8 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    Map map;
+    Map _map;
+    List<GameStartPoint> _gameStartPoints;
 
     internal int sizeMap;
     private int mapCount = 2; //Level 0 - terrain; Level 1 - Nature/Unit
@@ -21,12 +22,18 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        map = MapToPlayStorage.Map;
+        _map = MapToPlayStorage.Map;
+        _gameStartPoints = MapToPlayStorage.GameStartPoints;
+        Debug.Log("s" + _gameStartPoints.Count);
+        foreach (GameStartPoint gameStartPoint in _gameStartPoints)
+        {
+            Debug.Log(gameStartPoint.UnitMaterial.name + " " + gameStartPoint.UnitStartLocation);
+        }
         //MapToPlayStorage.ImportMaterials();
 
         basicScale = new Vector3(basicTerrain.transform.localScale.x, basicTerrain.transform.localScale.y, basicTerrain.transform.localScale.z);
         InitializeStartMaps();
-        ImportMap(map);
+        ImportMap(_map);
 
     }
 

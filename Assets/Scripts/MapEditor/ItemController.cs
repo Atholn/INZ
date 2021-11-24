@@ -17,13 +17,13 @@ public class ItemController : MonoBehaviour
     public bool Clicked = false;
     internal Vector3 firstScale = new Vector3();
     public Item item;
-    public LevelEditorManager editor;
+    public MapEditorManager editor;
 
     private void Awake()
     {
         firstScale = item.ItemPrefab.transform.localScale;
         item.ItemImage.transform.localScale = item.ItemPrefab.transform.localScale;
-        editor = GameObject.FindGameObjectWithTag("LevelEditorManager").GetComponent<LevelEditorManager>();        
+        editor = GameObject.FindGameObjectWithTag("LevelEditorManager").GetComponent<MapEditorManager>();        
     }
 
     public virtual void ButtonClicked()
