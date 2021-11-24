@@ -52,7 +52,7 @@ public class ChoiceMapManager : MonoBehaviour
         InfoTexts = MapInfoPanel.GetComponentsInChildren<Text>();
 
         List<Dropdown.OptionData> options = new List<Dropdown.OptionData>();
-        foreach (Sprite sprite in MapToPlayStorage.ImportColorsSpirtes())
+        foreach (Sprite sprite in MapToPlayStorage.ImportResources<Sprite>("UI/UnitColors/", ".bmp"))
         {
             options.Add(new Dropdown.OptionData( sprite));
         }

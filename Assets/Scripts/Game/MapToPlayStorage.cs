@@ -7,49 +7,25 @@ using UnityEngine;
 public class MapToPlayStorage : MonoBehaviour
 {
     public static Map Map;
-    private static List<Material> MaterialList = new List<Material>();
-    private static List<Sprite> ColorList = new List<Sprite>();
 
-    public static List<Material> ImportMaterials()
+    public static List<T> ImportResources<T>(string path, string end) where T: UnityEngine.Object
     {
-        List<string> list = GetNamesMaps();
+        List<string> list = GetNamesResources(path, end);
+        List<T> genericList = new List<T>();
 
-        foreach (string materialName in list)
-        {
-            MaterialList.Add(Resources.Load<Material>($"Materials/Units/{materialName.Remove(materialName.IndexOf("."), 4)}"));
+        foreach (string name in list)
+        {         
+            genericList.Add(Resources.Load<T>($"{path}{name.Remove(name.IndexOf("."), end.Length)}"));
         }
 
-        return MaterialList;
+        return genericList;
     }
 
-    private static List<string> GetNamesMaps()
+    private static List<string> GetNamesResources(string path, string end)
     {
-        return new DirectoryInfo(Application.dataPath + "/Resources/Materials/Units/")
+        return new DirectoryInfo(Application.dataPath + $"/Resources/{path}")
             .GetFiles()
-            .Where(n => !n.Name.Contains(".meta")
-            && n.Name.Contains(".mat"))
-            .Select(n => n.Name)
-            .ToList();
-    }
-
-    public static List<Sprite> ImportColorsSpirtes()
-    {
-        List<string> list = GetNamesColorsSpirtes();
-
-        foreach (string colorName in list)
-        {
-            ColorList.Add(Resources.Load<Sprite>($"UI/UnitColors/{colorName.Remove(colorName.IndexOf("."), 4)}"));
-        }
-
-        return ColorList;
-    }
-
-    private static List<string> GetNamesColorsSpirtes()
-    {
-        return new DirectoryInfo(Application.dataPath + "/Resources/UI/UnitColors/")
-            .GetFiles()
-            .Where(n => !n.Name.Contains(".meta")
-            && n.Name.Contains(".bmp"))
+            .Where(n => !n.Name.Contains(".meta") && n.Name.Contains(end))
             .Select(n => n.Name)
             .ToList();
     }

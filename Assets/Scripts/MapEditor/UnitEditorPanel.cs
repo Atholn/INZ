@@ -18,7 +18,7 @@ public class UnitEditorPanel : MonoBehaviour
     {
         Button ButtonToCopy = gameObject.GetComponentInChildren<Button>();
         RectTransform startPosition = ButtonToCopy.GetComponent<RectTransform>();
-        List<Material> materialList = MapToPlayStorage.ImportMaterials();
+        List<Material> materialList = MapToPlayStorage.ImportResources<Material>("Materials/Units/", ".mat");
 
         for (int i = 0; i < materialList.Count; i++)
         {
