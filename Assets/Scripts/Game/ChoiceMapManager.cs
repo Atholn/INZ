@@ -246,7 +246,7 @@ public class ChoiceMapManager : MonoBehaviour
             gameStartPoints.Add(new GameStartPoint()
             {
                 UnitMaterial =  materialList.Where(n => n.name == dropdowns[1].options[dropdowns[1].value].text).FirstOrDefault(),
-                UnitStartLocation  = new Vector3(map.UnitStartLocations[dropdowns[2].value][0] , map.UnitStartLocations[dropdowns[2].value][1], map.UnitStartLocations[dropdowns[2].value][2])
+                UnitStartLocation  = new Vector3(map.UnitStartLocations[dropdowns[2].value-1][0] , map.UnitStartLocations[dropdowns[2].value - 1][1], map.UnitStartLocations[dropdowns[2].value - 1][2])
             });         
         }
 

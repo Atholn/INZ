@@ -24,12 +24,6 @@ public class GameManager : MonoBehaviour
     {
         _map = MapToPlayStorage.Map;
         _gameStartPoints = MapToPlayStorage.GameStartPoints;
-        Debug.Log("s" + _gameStartPoints.Count);
-        foreach (GameStartPoint gameStartPoint in _gameStartPoints)
-        {
-            Debug.Log(gameStartPoint.UnitMaterial.name + " " + gameStartPoint.UnitStartLocation);
-        }
-        //MapToPlayStorage.ImportMaterials();
 
         basicScale = new Vector3(basicTerrain.transform.localScale.x, basicTerrain.transform.localScale.y, basicTerrain.transform.localScale.z);
         InitializeStartMaps();
@@ -71,6 +65,45 @@ public class GameManager : MonoBehaviour
         InitializeTerrainArrays(size);
     }
 
+    private void InitializeNewMap(Map map)
+    {
+        maps = map.Maps;
+        for (int i = 0; i < mapCount; i++)
+        {
+            for (int j = 0; j < sizeMap; j++)
+            {
+                for (int k = 0; k < sizeMap; k++)
+                {
+                    bool ifNotCreate = true;
+                    if (maps[i][j, k] > 0)
+                    {
+                        if (maps[i][j, k] == 12)
+                        {
+                            foreach (GameStartPoint gameStartPoint in _gameStartPoints)
+                            {
+                                if (j == gameStartPoint.UnitStartLocation.x && k == gameStartPoint.UnitStartLocation.z)
+                                {
+                                    Prefabs[maps[i][j, k]].GetComponent<MeshRenderer>().material = gameStartPoint.UnitMaterial;
+                                    ifNotCreate = false;
+                                    break;
+                                }         
+                            }
+                        }
+                        else
+                        {
+                            ifNotCreate = false;
+                        }
+
+                        if (!ifNotCreate)
+                        {
+                            mapsPrefabs[i][j, k] = Instantiate(Prefabs[maps[i][j, k]], new Vector3(j, i, k), Prefabs[maps[i][j, k]].transform.rotation);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     //private void InitializeNewMap(Map map)
     //{
     //    maps = map.Maps;
@@ -82,37 +115,19 @@ public class GameManager : MonoBehaviour
     //            {
     //                if (maps[i][j, k] > 0)
     //                {
-    //                    mapsPrefabs[i][j, k] = Instantiate(Prefabs[maps[i][j, k]], new Vector3(j, i, k), Prefabs[maps[i][j, k]].transform.rotation);
+    //                    InstantiateAsync(i, j, k);
+    //                    //mapsPrefabs[i][j, k] = Instantiate(Prefabs[maps[i][j, k]], new Vector3(j, i, k), Prefabs[maps[i][j, k]].transform.rotation);
     //                }
     //            }
     //        }
-    //    }     
+    //    }
     //}
 
-    private void InitializeNewMap(Map map)
-    {
-        maps = map.Maps;
-        for (int i = 0; i < mapCount; i++)
-        {
-            for (int j = 0; j < sizeMap; j++)
-            {
-                for (int k = 0; k < sizeMap; k++)
-                {
-                    if (maps[i][j, k] > 0)
-                    {
-                        InstantiateAsync(i, j, k);
-                        //mapsPrefabs[i][j, k] = Instantiate(Prefabs[maps[i][j, k]], new Vector3(j, i, k), Prefabs[maps[i][j, k]].transform.rotation);
-                    }
-                }
-            }
-        }
-    }
-
-    async void InstantiateAsync(int i, int j, int k)
-    {
-        await Task.Delay(1000);
-        mapsPrefabs[i][j, k] = GameObject.Instantiate(Prefabs[maps[i][j, k]], new Vector3(j, i, k), Prefabs[maps[i][j, k]].transform.rotation);
-    }
+    //async void InstantiateAsync(int i, int j, int k)
+    //{
+    //    await Task.Delay(1000);
+    //    mapsPrefabs[i][j, k] = GameObject.Instantiate(Prefabs[maps[i][j, k]], new Vector3(j, i, k), Prefabs[maps[i][j, k]].transform.rotation);
+    //}
 
     void Update()
     {
