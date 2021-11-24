@@ -6,9 +6,7 @@ using UnityEngine.UI;
 public class UnitEditorButton : MonoBehaviour
 {
     internal int ID;
-    public Button button;
-    public Color buttonColor;
-    public Material unitMaterial;
+    public Material unitMaterial;   
     UnitEditorPanel unitEditorPanel;  
 
     private void Start()
@@ -18,7 +16,7 @@ public class UnitEditorButton : MonoBehaviour
 
     public void ChangePanelColor() 
     {
-        unitEditorPanel.GetComponent<Image>().color = buttonColor;
-        unitEditorPanel.actualMaterial = unitMaterial;
+        unitEditorPanel.GetComponent<Image>().color = unitMaterial.color;
+        unitEditorPanel.ActualMaterial = unitMaterial;
     }
 }

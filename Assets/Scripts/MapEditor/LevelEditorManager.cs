@@ -7,8 +7,6 @@ using UnityEngine.UI;
 
 public class LevelEditorManager : MonoBehaviour
 {
-    public GameObject canvas;
-
     public ItemController[] ItemButtons;
     public int CurrentButtonPressed;
 
@@ -73,11 +71,13 @@ public class LevelEditorManager : MonoBehaviour
 
     private void InitializeStartPointUnitsList()
     {
-        foreach (UnitEditorButton unit in unitEditorPanel.UnitButtons)
+        foreach (Button button in unitEditorPanel.ColorsUnitsButtons)
         {
+            UnitEditorButton unitEditorButton = button.gameObject.GetComponent<UnitEditorButton>();
+
             startPoints.Add(new StartPoint
             {
-                unitMaterialName = unit.unitMaterial.name,
+                unitMaterialName = unitEditorButton.unitMaterial.name,
                 unitStartLocation = Vector3.zero,
             });
         }
@@ -301,7 +301,7 @@ public class LevelEditorManager : MonoBehaviour
 
     private void UpdateStartUnitList(int vx, int vz, int level)
     {
-        StartPoint spu = startPoints.Where(u => u.unitMaterialName == unitEditorPanel.actualMaterial.name).First();
+        StartPoint spu = startPoints.Where(u => u.unitMaterialName == unitEditorPanel.ActualMaterial.name).First();
 
         if (spu.unitStartLocation == Vector3.zero)
         {
