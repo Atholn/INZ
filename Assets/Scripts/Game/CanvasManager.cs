@@ -17,6 +17,11 @@ public class CanvasManager : MonoBehaviour
         Manager.ChangeNumberPlace();
     }
 
+    public void ChangeColorUnits()
+    {
+        Manager.ChangeColorUnits();
+    }
+
     //
 
     public void PlayButton()

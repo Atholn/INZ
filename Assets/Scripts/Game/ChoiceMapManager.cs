@@ -23,6 +23,7 @@ public class ChoiceMapManager : MonoBehaviour
     private Text NumberText;
     private List<Text> PlaceNumbersList = new List<Text>();
     private List<int> PlaceNumbersTmpList = new List<int>();
+    private List<int> ColorUnitsTmpList = new List<int>();
 
     private FileMapSystem FileMapSystem;
 
@@ -41,7 +42,9 @@ public class ChoiceMapManager : MonoBehaviour
         MapView = MapInfoPanel.GetComponentsInChildren<Image>().LastOrDefault();
         NumberText = MapView.GetComponentInChildren<Text>();
         PlaceNumbersList.Add(NumberText);
+
         PlaceNumbersTmpList.Add(0);
+        ColorUnitsTmpList.Add(0);
     }
 
     private void InitializeFileMapSystem()
@@ -115,6 +118,7 @@ public class ChoiceMapManager : MonoBehaviour
                 PlaceNumbersList.Remove(PlaceNumbersList[i]);
 
                 PlaceNumbersTmpList.Remove(PlaceNumbersTmpList[i]);
+                ColorUnitsTmpList.Remove(ColorUnitsTmpList[i]);
             }
         }
 
@@ -138,6 +142,7 @@ public class ChoiceMapManager : MonoBehaviour
             PlaceNumbersList[i].text = (i + 1).ToString();
 
             PlaceNumbersTmpList.Add(0);
+            ColorUnitsTmpList.Add(i);
         }
     }
 
@@ -182,10 +187,42 @@ public class ChoiceMapManager : MonoBehaviour
                 if (dropdownsTmp[2].value == dropdowns[2].value)
                 {
                     dropdownsTmp[2].value = 0;
+                    break;
                 }
             }
 
             PlaceNumbersTmpList[i] = dropdowns[2].value;
+        }
+    }
+
+    internal void ChangeColorUnits()
+    {
+        for (int i = 0; i < ColorUnitsTmpList.Count; i++)
+        {
+            Dropdown[] dropdowns = PanelPlayerList[i].GetComponentsInChildren<Dropdown>();
+
+            if (ColorUnitsTmpList[i] == dropdowns[1].value || dropdowns[1].value == 0)
+            {
+                ColorUnitsTmpList[i] = dropdowns[1].value;
+                continue;
+            }
+
+            for (int j = 0; j < ColorUnitsTmpList.Count; j++)
+            {
+                if (i == j)
+                {
+                    continue;
+                }
+
+                Dropdown[] dropdownsTmp = PanelPlayerList[j].GetComponentsInChildren<Dropdown>();
+                if (dropdownsTmp[1].value == dropdowns[1].value)
+                {
+                    dropdownsTmp[1].value = ColorUnitsTmpList[i];    
+                    break;
+                }
+            }
+
+            ColorUnitsTmpList[i] = dropdowns[1].value;
         }
     }
 
