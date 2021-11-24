@@ -22,6 +22,7 @@ public class ChoiceMapManager : MonoBehaviour
     private Image MapView;
     private Text NumberText;
     private List<Text> PlaceNumbersList = new List<Text>();
+    private List<int> PlaceNumbersTmpList = new List<int>();
 
     private FileMapSystem FileMapSystem;
 
@@ -40,6 +41,7 @@ public class ChoiceMapManager : MonoBehaviour
         MapView = MapInfoPanel.GetComponentsInChildren<Image>().LastOrDefault();
         NumberText = MapView.GetComponentInChildren<Text>();
         PlaceNumbersList.Add(NumberText);
+        PlaceNumbersTmpList.Add(0);
     }
 
     private void InitializeFileMapSystem()
@@ -81,14 +83,14 @@ public class ChoiceMapManager : MonoBehaviour
         PanelPlayerList[0].transform.SetParent(PlaySettingsPanel.transform);
         PanelPlayerList[0].GetComponentInChildren<Text>().gameObject.SetActive(true);
 
-        Dropdown dropdownToDelete = PanelPlayerList[0].GetComponentInChildren<Dropdown>();
+        Dropdown dropdownToHide = PanelPlayerList[0].GetComponentInChildren<Dropdown>();
 
         Text playerText = Instantiate(ChoiceMapPanel.GetComponentInChildren<Text>(), new Vector3(0, 0, 0), PanelPlayerList[0].transform.rotation);
         playerText.transform.SetParent(PanelPlayerList[0].transform);
         playerText.text = "Player";
-        playerText.transform.localPosition = new Vector3(dropdownToDelete.transform.localPosition.x, 0, 0);
+        playerText.transform.localPosition = new Vector3(dropdownToHide.transform.localPosition.x, 0, 0);
 
-        Destroy(dropdownToDelete.gameObject);
+        dropdownToHide.transform.position = new Vector3(-100, -100, -100);
     }
 
     private void InitializeFirstMap()
@@ -108,8 +110,11 @@ public class ChoiceMapManager : MonoBehaviour
             {
                 Destroy(PanelPlayerList[i].gameObject);
                 PanelPlayerList.Remove(PanelPlayerList[i]);
+
                 Destroy(PlaceNumbersList[i].gameObject);
                 PlaceNumbersList.Remove(PlaceNumbersList[i]);
+
+                PlaceNumbersTmpList.Remove(PlaceNumbersTmpList[i]);
             }
         }
 
@@ -117,20 +122,22 @@ public class ChoiceMapManager : MonoBehaviour
         float scale = rT.rect.height / map.SizeMap;
 
         GeneratingDifferentFeatures(PanelPlayerList[0], map.UnitStartLocations.Count, 0);
-        PlaceNumbersList[0].transform.localPosition = new Vector3(-scale * ((map.SizeMap / 2) - map.UnitStartLocations[0][0]),- scale * ((map.SizeMap / 2) - map.UnitStartLocations[0][2]), 0);
+        PlaceNumbersList[0].transform.localPosition = new Vector3(-scale * ((map.SizeMap / 2) - map.UnitStartLocations[0][0]), -scale * ((map.SizeMap / 2) - map.UnitStartLocations[0][2]), 0);
 
         for (int i = 1; i < map.UnitStartLocations.Count; i++)
         {
             PanelPlayerList.Add(Instantiate(PanelSettingsPlayers, new Vector3(PlaySettingsPanel.transform.position.x + DisplacementVector.x, PlaySettingsPanel.transform.position.y - i * PanelSettingsPlayers.GetComponent<RectTransform>().rect.height + DisplacementVector.y, DisplacementVector.z), PlaySettingsPanel.transform.localRotation));
             PanelPlayerList[i].gameObject.SetActive(true);
             PanelPlayerList[i].transform.SetParent(PlaySettingsPanel.transform);
-            
+
             GeneratingDifferentFeatures(PanelPlayerList[i], map.UnitStartLocations.Count, i);
 
             PlaceNumbersList.Add(Instantiate(NumberText, new Vector3(), NumberText.transform.rotation));
             PlaceNumbersList[i].transform.SetParent(MapView.transform);
-            PlaceNumbersList[i].transform.localPosition = new Vector3(-scale* (map.SizeMap/2 - map.UnitStartLocations[i][0]),- scale * (map.SizeMap / 2 - map.UnitStartLocations[i][2]), 0);
+            PlaceNumbersList[i].transform.localPosition = new Vector3(-scale * (map.SizeMap / 2 - map.UnitStartLocations[i][0]), -scale * (map.SizeMap / 2 - map.UnitStartLocations[i][2]), 0);
             PlaceNumbersList[i].text = (i + 1).ToString();
+
+            PlaceNumbersTmpList.Add(0);
         }
     }
 
@@ -138,18 +145,7 @@ public class ChoiceMapManager : MonoBehaviour
     {
         Dropdown[] dropdowns = panel.GetComponentsInChildren<Dropdown>();
 
-        int i;
-        if (dropdowns.Length == 3)
-        {
-            dropdowns[0].value = 0;
-            i = 0;
-        }
-        else
-        {
-            i = 1;
-        }
-
-        dropdowns[1 - i].value = whichColour;
+        dropdowns[1].value = whichColour;
 
         List<string> placeList = new List<string>();
         placeList.Add("Random");
@@ -158,11 +154,40 @@ public class ChoiceMapManager : MonoBehaviour
             placeList.Add((j + 1).ToString());
         }
 
-        dropdowns[2 - i].options.Clear();
-        dropdowns[2 - i].AddOptions(placeList);
-        dropdowns[2 - i].value = 0;
+        dropdowns[2].options.Clear();
+        dropdowns[2].AddOptions(placeList);
+        dropdowns[2].value = 0;
     }
 
+    internal void ChangeNumberPlace()
+    {
+        for (int i = 0; i < PlaceNumbersTmpList.Count; i++)
+        {
+            Dropdown[] dropdowns = PanelPlayerList[i].GetComponentsInChildren<Dropdown>();
+
+            if (PlaceNumbersTmpList[i] == dropdowns[2].value || dropdowns[2].value == 0)
+            {
+                PlaceNumbersTmpList[i] = dropdowns[2].value;
+                continue;
+            }
+
+            for (int j = 0; j < PlaceNumbersTmpList.Count; j++)
+            {
+                if (i == j)
+                {
+                    continue;
+                }
+
+                Dropdown[] dropdownsTmp = PanelPlayerList[j].GetComponentsInChildren<Dropdown>();
+                if (dropdownsTmp[2].value == dropdowns[2].value)
+                {
+                    dropdownsTmp[2].value = 0;
+                }
+            }
+
+            PlaceNumbersTmpList[i] = dropdowns[2].value;
+        }
+    }
 
     ///--------------------------------------------------------
     internal void Play()

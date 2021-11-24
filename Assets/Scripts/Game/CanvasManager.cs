@@ -12,6 +12,11 @@ public class CanvasManager : MonoBehaviour
         Manager.LoadMapInfo();
     }
 
+    public void ChangeNumberPlace()
+    {
+        Manager.ChangeNumberPlace();
+    }
+
     //
 
     public void PlayButton()
