@@ -442,8 +442,11 @@ public class LevelEditorManager : MonoBehaviour
 
         foreach (StartPoint sp in startPoints)
         {
-            unitStartLocations.Add(sp.uSL);
-            unitMaterials.Add(sp.unitMaterialName);
+            if (sp.unitStartLocation != Vector3.zero)
+            {
+                unitStartLocations.Add(sp.uSL);
+                unitMaterials.Add(sp.unitMaterialName);
+            }
         }
 
         return new Map()

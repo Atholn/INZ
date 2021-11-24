@@ -18,8 +18,6 @@ public class CanvasManager : MonoBehaviour
     {
         Manager.Play();
         SceneManager.LoadScene("GameScene");
-
-        //todo create tmp file to load in skirmish
     }
 
     public void BackButton()
