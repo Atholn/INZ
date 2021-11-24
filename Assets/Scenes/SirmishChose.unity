@@ -1032,7 +1032,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 280492551}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
@@ -1045,7 +1045,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 01b60eaa9edbae1478353df3ef3fe237, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1556,15 +1556,7 @@ MonoBehaviour:
   m_ItemImage: {fileID: 390989062}
   m_Value: 0
   m_Options:
-    m_Options:
-    - m_Text: 
-      m_Image: {fileID: 21300000, guid: 01b60eaa9edbae1478353df3ef3fe237, type: 3}
-    - m_Text: 
-      m_Image: {fileID: 21300000, guid: 363894b5d1dba3443a0fea308528d74e, type: 3}
-    - m_Text: 
-      m_Image: {fileID: 21300000, guid: b5e3490548a26ea4bad43a3f5760f799, type: 3}
-    - m_Text: 
-      m_Image: {fileID: 21300000, guid: cd167d1ac9ec63b4e8b752c40e6e21ab, type: 3}
+    m_Options: []
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -2602,7 +2594,7 @@ MonoBehaviour:
   PlaySettingsPanel: {fileID: 2010470060}
   MapInfoPanel: {fileID: 438295761}
   ActionPanel: {fileID: 766300370}
-  PanelComputerSettings: {fileID: 1181643933}
+  PanelSettingsPlayers: {fileID: 1181643933}
 --- !u!1 &893766833
 GameObject:
   m_ObjectHideFlags: 0
@@ -3131,7 +3123,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1013845683}
   m_Direction: 2
   m_Value: 0
-  m_Size: 1
+  m_Size: 0.81333333
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -3330,7 +3322,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -3486,9 +3478,9 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -17, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1174130559
 MonoBehaviour:
@@ -3553,7 +3545,7 @@ GameObject:
   - component: {fileID: 1181643936}
   - component: {fileID: 1181643935}
   m_Layer: 5
-  m_Name: PanelPlayerSettings
+  m_Name: PanelSettingsPlayers
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5331,7 +5323,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1856916295
 RectTransform:
   m_ObjectHideFlags: 0

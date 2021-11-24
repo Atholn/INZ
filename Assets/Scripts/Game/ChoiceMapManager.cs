@@ -11,21 +11,20 @@ public class ChoiceMapManager : MonoBehaviour
     public GameObject PlaySettingsPanel;
     public GameObject MapInfoPanel;
     public GameObject ActionPanel;
-    public GameObject PanelComputerSettings;
+    public GameObject PanelSettingsPlayers;
 
     private Text[] InfoTexts = new Text[2];
     private Dropdown MapsDropdown;
     private Vector3 DisplacementVector = new Vector3(-50, 225, 0);
     private List<GameObject> PanelPlayerList = new List<GameObject>();
-
     private FileMapSystem FileMapSystem;
 
     private void Start()
     {
         InitializeFileMapSystem();
         InitializeMapList();
-        InitializeListPlayer();
         InitializeComponents();
+        InitializeFirstPlayer();
         InitializeFirstMap();
     }
     private void InitializeFileMapSystem()
@@ -47,15 +46,23 @@ public class ChoiceMapManager : MonoBehaviour
 
     private void InitializeComponents()
     {
-        List<Dropdown> computerSettings = PanelComputerSettings.GetComponentsInChildren<Dropdown>().ToList();
+        List<Dropdown> computerSettings = PanelSettingsPlayers.GetComponentsInChildren<Dropdown>().ToList();
         computerSettings[0].AddOptions(new List<string>() { "None", "Computer" });
 
         InfoTexts = MapInfoPanel.GetComponentsInChildren<Text>();
+
+        List<Dropdown.OptionData> options = new List<Dropdown.OptionData>();
+        foreach (Sprite sprite in MapToPlayStorage.ImportColorsSpirtes())
+        {
+            options.Add(new Dropdown.OptionData( sprite));
+        }
+
+        computerSettings[1].AddOptions(options);
     }
 
-    private void InitializeListPlayer()
+    private void InitializeFirstPlayer()
     {
-        PanelPlayerList.Add(Instantiate(PanelComputerSettings,
+        PanelPlayerList.Add(Instantiate(PanelSettingsPlayers,
             new Vector3(PlaySettingsPanel.transform.position.x + DisplacementVector.x,
             PlaySettingsPanel.transform.position.y + DisplacementVector.y,
             DisplacementVector.z),
@@ -92,7 +99,7 @@ public class ChoiceMapManager : MonoBehaviour
         GeneratingDifferentFeatures(PanelPlayerList[0], map.UnitStartLocations.Count, 0);
         for (int i = 1; i < map.UnitStartLocations.Count; i++)
         {
-            PanelPlayerList.Add(Instantiate(PanelComputerSettings, new Vector3(PlaySettingsPanel.transform.position.x + DisplacementVector.x, PlaySettingsPanel.transform.position.y - i * PanelComputerSettings.GetComponent<RectTransform>().rect.height + DisplacementVector.y, DisplacementVector.z), PlaySettingsPanel.transform.localRotation));
+            PanelPlayerList.Add(Instantiate(PanelSettingsPlayers, new Vector3(PlaySettingsPanel.transform.position.x + DisplacementVector.x, PlaySettingsPanel.transform.position.y - i * PanelSettingsPlayers.GetComponent<RectTransform>().rect.height + DisplacementVector.y, DisplacementVector.z), PlaySettingsPanel.transform.localRotation));
             PanelPlayerList[i].gameObject.SetActive(true);
             PanelPlayerList[i].transform.SetParent(PlaySettingsPanel.transform);
 
