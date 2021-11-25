@@ -22,6 +22,7 @@ public class ChoiceMapManager : MonoBehaviour
     private Image MapView;
     private Text NumberText;
     private List<Text> PlaceNumbersList = new List<Text>();
+    private List<int> TypeOfPlayerTmpList = new List<int>();
     private List<int> PlaceNumbersTmpList = new List<int>();
     private List<int> ColorUnitsTmpList = new List<int>();
 
@@ -43,8 +44,9 @@ public class ChoiceMapManager : MonoBehaviour
         NumberText = MapView.GetComponentInChildren<Text>();
         PlaceNumbersList.Add(NumberText);
 
+        TypeOfPlayerTmpList.Add(0);
         PlaceNumbersTmpList.Add(0);
-        ColorUnitsTmpList.Add(0);
+        ColorUnitsTmpList.Add(0);   
     }
 
     private void InitializeFileMapSystem()
@@ -93,7 +95,8 @@ public class ChoiceMapManager : MonoBehaviour
         playerText.text = "Player";
         playerText.transform.localPosition = new Vector3(dropdownToHide.transform.localPosition.x, 0, 0);
 
-        dropdownToHide.transform.position = new Vector3(-100, -100, -100);
+        //dropdownToHide.transform.position = new Vector3(-100, -100, -100);
+        dropdownToHide.gameObject.SetActive(false);
     }
 
     private void InitializeFirstMap()
@@ -117,6 +120,7 @@ public class ChoiceMapManager : MonoBehaviour
                 Destroy(PlaceNumbersList[i].gameObject);
                 PlaceNumbersList.Remove(PlaceNumbersList[i]);
 
+                TypeOfPlayerTmpList.Remove(TypeOfPlayerTmpList[i]);
                 PlaceNumbersTmpList.Remove(PlaceNumbersTmpList[i]);
                 ColorUnitsTmpList.Remove(ColorUnitsTmpList[i]);
             }
@@ -141,6 +145,7 @@ public class ChoiceMapManager : MonoBehaviour
             PlaceNumbersList[i].transform.localPosition = new Vector3(-scale * (map.SizeMap / 2 - map.UnitStartLocations[i][0]), -scale * (map.SizeMap / 2 - map.UnitStartLocations[i][2]), 0);
             PlaceNumbersList[i].text = (i + 1).ToString();
 
+            TypeOfPlayerTmpList.Add(0);
             PlaceNumbersTmpList.Add(0);
             ColorUnitsTmpList.Add(i);
         }
@@ -148,7 +153,7 @@ public class ChoiceMapManager : MonoBehaviour
 
     private void GeneratingDifferentFeatures(GameObject panel, int countPlayers, int whichColour)
     {
-        Dropdown[] dropdowns = panel.GetComponentsInChildren<Dropdown>();
+        Dropdown[] dropdowns = panel.GetComponentsInChildren<Dropdown>(true);
 
         dropdowns[1].value = whichColour;
 
@@ -164,11 +169,65 @@ public class ChoiceMapManager : MonoBehaviour
         dropdowns[2].value = 0;
     }
 
+    internal void ChangeTypeOfPlayer()
+    {
+        for (int i = 0; i < TypeOfPlayerTmpList.Count; i++)
+        {
+            Dropdown[] dropdowns = PanelPlayerList[i].GetComponentsInChildren<Dropdown>(true);
+
+            if (i != 0 && dropdowns[0].value == 0)
+            {
+                dropdowns[2].value = 0;
+
+                dropdowns[1].gameObject.SetActive(false);
+                dropdowns[2].gameObject.SetActive(false);
+            }
+            else
+            {
+                dropdowns[1].gameObject.SetActive(true);
+                dropdowns[2].gameObject.SetActive(true);
+            }
+
+            TypeOfPlayerTmpList[i] = dropdowns[0].value;
+        }
+    }
+
+    internal void ChangeColorUnits()
+    {
+        for (int i = 0; i < ColorUnitsTmpList.Count; i++)
+        {
+            Dropdown[] dropdowns = PanelPlayerList[i].GetComponentsInChildren<Dropdown>(true);
+
+            if (ColorUnitsTmpList[i] == dropdowns[1].value)
+            {
+                ColorUnitsTmpList[i] = dropdowns[1].value;
+                continue;
+            }
+
+            for (int j = 0; j < ColorUnitsTmpList.Count; j++)
+            {
+                if (i == j)
+                {
+                    continue;
+                }
+
+                Dropdown[] dropdownsTmp = PanelPlayerList[j].GetComponentsInChildren<Dropdown>(true);
+                if (dropdownsTmp[1].value == dropdowns[1].value)
+                {
+                    dropdownsTmp[1].value = ColorUnitsTmpList[i];
+                    break;
+                }
+            }
+
+            ColorUnitsTmpList[i] = dropdowns[1].value;
+        }
+    }
+
     internal void ChangeNumberPlace()
     {
         for (int i = 0; i < PlaceNumbersTmpList.Count; i++)
         {
-            Dropdown[] dropdowns = PanelPlayerList[i].GetComponentsInChildren<Dropdown>();
+            Dropdown[] dropdowns = PanelPlayerList[i].GetComponentsInChildren<Dropdown>(true);
 
             if (PlaceNumbersTmpList[i] == dropdowns[2].value || dropdowns[2].value == 0)
             {
@@ -183,7 +242,7 @@ public class ChoiceMapManager : MonoBehaviour
                     continue;
                 }
 
-                Dropdown[] dropdownsTmp = PanelPlayerList[j].GetComponentsInChildren<Dropdown>();
+                Dropdown[] dropdownsTmp = PanelPlayerList[j].GetComponentsInChildren<Dropdown>(true);
                 if (dropdownsTmp[2].value == dropdowns[2].value)
                 {
                     dropdownsTmp[2].value = 0;
@@ -192,37 +251,6 @@ public class ChoiceMapManager : MonoBehaviour
             }
 
             PlaceNumbersTmpList[i] = dropdowns[2].value;
-        }
-    }
-
-    internal void ChangeColorUnits()
-    {
-        for (int i = 0; i < ColorUnitsTmpList.Count; i++)
-        {
-            Dropdown[] dropdowns = PanelPlayerList[i].GetComponentsInChildren<Dropdown>();
-
-            if (ColorUnitsTmpList[i] == dropdowns[1].value || dropdowns[1].value == 0)
-            {
-                ColorUnitsTmpList[i] = dropdowns[1].value;
-                continue;
-            }
-
-            for (int j = 0; j < ColorUnitsTmpList.Count; j++)
-            {
-                if (i == j)
-                {
-                    continue;
-                }
-
-                Dropdown[] dropdownsTmp = PanelPlayerList[j].GetComponentsInChildren<Dropdown>();
-                if (dropdownsTmp[1].value == dropdowns[1].value)
-                {
-                    dropdownsTmp[1].value = ColorUnitsTmpList[i];
-                    break;
-                }
-            }
-
-            ColorUnitsTmpList[i] = dropdowns[1].value;
         }
     }
 
@@ -235,21 +263,26 @@ public class ChoiceMapManager : MonoBehaviour
         List<GameStartPoint> gameStartPoints = new List<GameStartPoint>();
         List<Material> materialList = MapToPlayStorage.ImportResources<Material>("Materials/Units/", ".mat");
 
-        for(int i = 0; i<PanelPlayerList.Count;i++)
+        for (int i = 0; i < PanelPlayerList.Count; i++)
         {
-            Dropdown[] dropdowns = PanelPlayerList[i].GetComponentsInChildren<Dropdown>();
-            if (dropdowns[0].value == 0 && i!=0)
+            Dropdown[] dropdowns = PanelPlayerList[i].GetComponentsInChildren<Dropdown>(true);
+            if (dropdowns[0].value == 0 && i != 0)
             {
                 continue;
             }
 
+            Vector3 location = dropdowns[2].value - 1 == 0 ?
+                new Vector3() :
+                new Vector3(map.UnitStartLocations[dropdowns[2].value - 1][0], map.UnitStartLocations[dropdowns[2].value - 1][1], map.UnitStartLocations[dropdowns[2].value - 1][2]);
+
             gameStartPoints.Add(new GameStartPoint()
             {
-                UnitMaterial =  materialList.Where(n => n.name == dropdowns[1].options[dropdowns[1].value].text).FirstOrDefault(),
-                UnitStartLocation  = new Vector3(map.UnitStartLocations[dropdowns[2].value-1][0] , map.UnitStartLocations[dropdowns[2].value - 1][1], map.UnitStartLocations[dropdowns[2].value - 1][2])
-            });         
+                UnitMaterial = materialList.Where(n => n.name == dropdowns[1].options[dropdowns[1].value].text).FirstOrDefault(),
+                UnitStartLocation = location,
+            });
         }
 
         MapToPlayStorage.GameStartPoints = gameStartPoints;
     }
+
 }
