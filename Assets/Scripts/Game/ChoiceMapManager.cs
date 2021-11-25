@@ -44,9 +44,9 @@ public class ChoiceMapManager : MonoBehaviour
         NumberText = MapView.GetComponentInChildren<Text>();
         PlaceNumbersList.Add(NumberText);
 
-        TypeOfPlayerTmpList.Add(0);
+        TypeOfPlayerTmpList.Add(1);
         PlaceNumbersTmpList.Add(0);
-        ColorUnitsTmpList.Add(0);   
+        ColorUnitsTmpList.Add(0);
     }
 
     private void InitializeFileMapSystem()
@@ -95,7 +95,7 @@ public class ChoiceMapManager : MonoBehaviour
         playerText.text = "Player";
         playerText.transform.localPosition = new Vector3(dropdownToHide.transform.localPosition.x, 0, 0);
 
-        //dropdownToHide.transform.position = new Vector3(-100, -100, -100);
+        dropdownToHide.value = 1;
         dropdownToHide.gameObject.SetActive(false);
     }
 
@@ -149,6 +149,7 @@ public class ChoiceMapManager : MonoBehaviour
             PlaceNumbersTmpList.Add(0);
             ColorUnitsTmpList.Add(i);
         }
+        ChangeTypeOfPlayer();
     }
 
     private void GeneratingDifferentFeatures(GameObject panel, int countPlayers, int whichColour)
@@ -266,23 +267,41 @@ public class ChoiceMapManager : MonoBehaviour
         for (int i = 0; i < PanelPlayerList.Count; i++)
         {
             Dropdown[] dropdowns = PanelPlayerList[i].GetComponentsInChildren<Dropdown>(true);
-            if (dropdowns[0].value == 0 && i != 0)
+
+            if (dropdowns[0].value == 0)
             {
                 continue;
             }
 
-            Vector3 location = dropdowns[2].value - 1 == 0 ?
-                new Vector3() :
-                new Vector3(map.UnitStartLocations[dropdowns[2].value - 1][0], map.UnitStartLocations[dropdowns[2].value - 1][1], map.UnitStartLocations[dropdowns[2].value - 1][2]);
+            if (dropdowns[2].value == 0)
+            {
+                dropdowns[2].value = RandomNumberPlace();
+                PlaceNumbersTmpList[i] = dropdowns[2].value;
+            }
 
             gameStartPoints.Add(new GameStartPoint()
             {
                 UnitMaterial = materialList.Where(n => n.name == dropdowns[1].options[dropdowns[1].value].text).FirstOrDefault(),
-                UnitStartLocation = location,
+                UnitStartLocation = new Vector3(map.UnitStartLocations[dropdowns[2].value - 1][0], map.UnitStartLocations[dropdowns[2].value - 1][1], map.UnitStartLocations[dropdowns[2].value - 1][2]),
             });
         }
 
         MapToPlayStorage.GameStartPoints = gameStartPoints;
+    }
+
+    private int RandomNumberPlace()
+    {
+        List<int> possibleValues = new List<int>();
+
+        for (int i = 0; i < PlaceNumbersTmpList.Count; i++)
+        {
+            if(!PlaceNumbersTmpList.Any(t => t == i + 1))
+            possibleValues.Add(i + 1);
+        }
+        //possibleValues = possibleValues.Where(n => !PlaceNumbersTmpList.Any(t => t == n)).ToList();
+
+        System.Random rnd = new System.Random();
+        return possibleValues[rnd.Next(0, possibleValues.Count)];
     }
 
 }
