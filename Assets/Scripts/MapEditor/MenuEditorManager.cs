@@ -153,7 +153,6 @@ public class MenuEditorManager : MonoBehaviour
         {
             map.Name = nameOfMapInputField.text;
             map.Type = dropdownTypeOfMap.options[dropdownTypeOfMap.value].text;
-            //map.Decription = ""; //todo
 
             Map tmpMap = levelEditorManager.ExportMap();
 

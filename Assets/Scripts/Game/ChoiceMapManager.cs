@@ -21,6 +21,7 @@ public class ChoiceMapManager : MonoBehaviour
 
     private Image MapView;
     private Text NumberText;
+
     private List<Text> PlaceNumbersList = new List<Text>();
     private List<int> TypeOfPlayerTmpList = new List<int>();
     private List<int> PlaceNumbersTmpList = new List<int>();
@@ -150,6 +151,20 @@ public class ChoiceMapManager : MonoBehaviour
             ColorUnitsTmpList.Add(i);
         }
         ChangeTypeOfPlayer();
+
+        Texture2D texture = new Texture2D(map.SizeMap, map.SizeMap);
+        Sprite sprite = Sprite.Create(texture, new Rect(0, 0, map.SizeMap, map.SizeMap), Vector2.zero);
+        MapView.sprite = sprite;
+
+        for (int i = 0; i < texture.height; i++)
+        {
+            for (int j = 0; j < texture.width; j++)
+            {
+                Color pixelColour = new Color(map.ViewMap[i][j][0], map.ViewMap[i][j][1], map.ViewMap[i][j][2], 1);
+                texture.SetPixel(i, j, pixelColour);
+            }
+        }
+        texture.Apply();
     }
 
     private void GeneratingDifferentFeatures(GameObject panel, int countPlayers, int whichColour)
