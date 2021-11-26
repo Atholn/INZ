@@ -11,10 +11,10 @@ public class MapEditorManager : MonoBehaviour
     public int CurrentButtonPressed;
 
     internal int sizeMap;
-    private int mapCount = 2; //Level 0 - terrain; Level 1 - Nature/Unit
-    private int[][,] maps;
-    private GameObject[][,] mapsPrefabs;
-    private GameObject Terrain;
+    internal int mapCount = 2; //Level 0 - terrain; Level 1 - Nature/Unit
+    internal int[][,] maps;
+    internal GameObject[][,] mapsPrefabs;
+    internal GameObject Terrain;
     internal int BasicTerrainID = 0;
 
     RaycastHit hit;

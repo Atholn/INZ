@@ -14,25 +14,28 @@ public class MenuEditorManager : MonoBehaviour
         FreeGame,
     }
 
+    public MapEditorManager levelEditorManager;
     public GameObject filePanel;
 
     public GameObject saveMapPanel;
-    Dropdown dropdownTypeOfMap;
+    private Dropdown dropdownTypeOfMap;
 
     public GameObject loadMapPanel;
-    Dropdown dropdownMapsToLoad;
+    private Dropdown dropdownMapsToLoad;
+
     public GameObject mapLoadInfoPanel;
     private Text[] infoLoadTexts = new Text[4];
 
     public GameObject mapInfoPanel;
     private Text[] infoTexts = new Text[5];
+    private Image mapViewImage;
+    float[][][] mapViewColors;
 
     public GameObject optionsEditorPanel;
 
     private Map map = new Map();
 
     private FileMapSystem fileMapSystem;
-    public MapEditorManager levelEditorManager;
 
     private void Start()
     {
@@ -79,6 +82,7 @@ public class MenuEditorManager : MonoBehaviour
     private void InitializeMapInfo()
     {
         infoTexts = mapInfoPanel.GetComponentsInChildren<Text>().ToArray();
+        mapViewImage = mapInfoPanel.GetComponentsInChildren<Image>()[2];
     }
 
     // File section
@@ -157,6 +161,7 @@ public class MenuEditorManager : MonoBehaviour
             map.Maps = tmpMap.Maps;
             map.UnitStartLocations = tmpMap.UnitStartLocations;
             map.UnitMaterials = tmpMap.UnitMaterials;
+            map.ViewMap = mapViewColors;
 
             fileMapSystem.SaveMap(ref map);
         }
@@ -208,8 +213,62 @@ public class MenuEditorManager : MonoBehaviour
             infoTexts[0].text = "Map info:";
             infoTexts[1].text = map.Name == "" ? "Name: untitled" : "Name: " + map.Name;
             infoTexts[2].text = map.Type == "" ? "Type: no chose yet" : "Type: " + map.Type;
+            infoTexts[3].text = $"Size: {levelEditorManager.sizeMap} x {levelEditorManager.sizeMap}";
             mapInfoPanel.GetComponentInChildren<InputField>().text = map.Decription;
+
+            DrawMapView();
         }
+    }
+
+    private void DrawMapView()
+    {
+        if (mapViewColors == null)
+        {
+            mapViewColors = new float[levelEditorManager.sizeMap][][];
+
+            for (int i = 0; i < levelEditorManager.sizeMap; i++)
+            {
+                mapViewColors[i] = new float[levelEditorManager.sizeMap][];
+                for (int j = 0; j < levelEditorManager.sizeMap; j++)
+                {
+                    mapViewColors[i][j] = new float[3];
+                }
+            }
+        }
+
+        for (int i = 0; i < levelEditorManager.sizeMap; i++)
+        {
+            for (int j = 0; j < levelEditorManager.sizeMap; j++)
+            {
+                for (int k = 0; k < levelEditorManager.mapCount; k++)
+                {
+                    MeshRenderer mesh = levelEditorManager.mapsPrefabs[k][i, j] != null ?
+                        levelEditorManager.mapsPrefabs[k][i, j].gameObject.GetComponent<MeshRenderer>() :
+                        k == 0 ? levelEditorManager.Terrain.gameObject.GetComponent<MeshRenderer>() : null;
+
+                    if (mesh != null)
+                    {
+                        mapViewColors[i][j][0] = mesh.material.color.r;
+                        mapViewColors[i][j][1] = mesh.material.color.g;
+                        mapViewColors[i][j][2] = mesh.material.color.b;
+                    }
+                }
+            }
+        }
+
+        Texture2D texture = new Texture2D(levelEditorManager.sizeMap, levelEditorManager.sizeMap);
+        Sprite sprite = Sprite.Create(texture, new Rect(0, 0, levelEditorManager.sizeMap, levelEditorManager.sizeMap), Vector2.zero);
+        mapViewImage.sprite = sprite;
+
+        for (int i = 0; i < texture.height; i++)
+        {
+            for (int j = 0; j < texture.width; j++)
+            {
+                Color pixelColour = new Color(mapViewColors[i][j][0], mapViewColors[i][j][1], mapViewColors[i][j][2], 1);
+                texture.SetPixel(i, j, pixelColour);
+            }
+        }
+        texture.Apply();
     }
 
     public void SaveDescription()

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 [System.Serializable]
 public class Map
@@ -19,6 +20,7 @@ public class Map
 
     public int SizeMap;
     public int[][,] Maps;
+    public float[][][] ViewMap;
 
     public List<string> UnitMaterials;
     public List<float[]> UnitStartLocations;

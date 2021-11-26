@@ -4,6 +4,7 @@ using UnityEngine;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Linq;
+using UnityEngine.UI;
 
 public class FileMapSystem
 {
@@ -18,15 +19,15 @@ public class FileMapSystem
 
     private void SaveLoadMapFile(string tmpPath, ref Map map, FileMode fileMode, Flag flag)
     {
-        BinaryFormatter formatter = new BinaryFormatter();
+        BinaryFormatter binaryFormatter = new BinaryFormatter();
         FileStream stream = new FileStream(tmpPath, fileMode);
         switch (flag)
         {
             case Flag.SaveGenerate:
-                formatter.Serialize(stream, map);
+                binaryFormatter.Serialize(stream, map);
                 break;
             case Flag.Load:
-                map = formatter.Deserialize(stream) as Map;
+                map = binaryFormatter.Deserialize(stream) as Map;
                 break;
             default:
                 break;
@@ -127,16 +128,14 @@ public class FileMapSystem
 
         if (File.Exists(tmpPath))
         {
-            BinaryFormatter formatter = new BinaryFormatter();
+            BinaryFormatter binaryFormatter = new BinaryFormatter();
             FileStream stream = new FileStream(tmpPath, FileMode.Open);
 
-            Map map = formatter.Deserialize(stream) as Map;
+            Map map = binaryFormatter.Deserialize(stream) as Map;
             stream.Close();
             return map;
         }
-        else
-        {
-            return null;
-        }
+            
+        return null;      
     }
 }
