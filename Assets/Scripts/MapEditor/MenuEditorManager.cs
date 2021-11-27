@@ -29,7 +29,7 @@ public class MenuEditorManager : MonoBehaviour
     public GameObject mapInfoPanel;
     private Text[] infoTexts = new Text[5];
     private Image mapViewImage;
-    float[][][] mapViewColors;
+    private float[][][] mapViewColors;
 
     public GameObject optionsEditorPanel;
 

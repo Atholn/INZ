@@ -1,34 +1,51 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    Map _map;
-    List<GameStartPoint> _gameStartPoints;
+    private Map _map;
+    private List<GameStartPoint> _gameStartPoints;
+    private List<List<GameObject>> _playersGameObjects;
 
-    internal int sizeMap;
+    private int sizeMap;
     private int mapCount = 2; //Level 0 - terrain; Level 1 - Nature/Unit
     private int[][,] maps;
     private GameObject[][,] mapsPrefabs;
     private GameObject Terrain;
     public int BasicTerrainID = 0;
 
+    public int[,,] hakuna = new int[3, 3, 3];
+
     public GameObject basicTerrain;
     private Vector3 basicScale;
 
-    public GameObject[] Prefabs;
+    public GameObject[] TerrainPrefabs;
+    public GameObject[] UnitsPrefabs;
+    public GameObject[] BuildingsPrefabs;
+
+    private GameObject _worker;
 
     void Start()
     {
         _map = MapToPlayStorage.Map;
         _gameStartPoints = MapToPlayStorage.GameStartPoints;
 
+        foreach (GameStartPoint gameStartPoint in _gameStartPoints)
+        {
+            Debug.Log(gameStartPoint.UnitStartLocation);
+        }
+
         basicScale = new Vector3(basicTerrain.transform.localScale.x, basicTerrain.transform.localScale.y, basicTerrain.transform.localScale.z);
         InitializeStartMaps();
         ImportMap(_map);
 
+        InitializePlayers();
+
+        _worker = UnitsPrefabs.Where(w => w.name == "Worker").FirstOrDefault();
     }
 
     private void InitializeStartMaps()
@@ -74,31 +91,30 @@ public class GameManager : MonoBehaviour
             {
                 for (int k = 0; k < sizeMap; k++)
                 {
-                    bool ifNotCreate = true;
-                    if (maps[i][j, k] > 0)
+                    if (maps[i][j, k] >= 0)
                     {
-                        if (maps[i][j, k] == 12)
+
+                        bool ifCreate = true;
+                        foreach (GameStartPoint gameStartPoint in _gameStartPoints)
                         {
-                            foreach (GameStartPoint gameStartPoint in _gameStartPoints)
+                            if (gameStartPoint.UnitStartLocation.x == j && gameStartPoint.UnitStartLocation.y == i && gameStartPoint.UnitStartLocation.z == k)
                             {
-                                if (j == gameStartPoint.UnitStartLocation.x && k == gameStartPoint.UnitStartLocation.z)
-                                {
-                                    Prefabs[maps[i][j, k]].GetComponent<MeshRenderer>().material = gameStartPoint.UnitMaterial;
-                                    ifNotCreate = false;
-                                    break;
-                                }         
+                                ifCreate = false;
+                                break;
                             }
                         }
-                        else
-                        {
-                            ifNotCreate = false;
-                        }
 
-                        if (!ifNotCreate)
+                        if (ifCreate)
                         {
-                            mapsPrefabs[i][j, k] = Instantiate(Prefabs[maps[i][j, k]], new Vector3(j, i, k), Prefabs[maps[i][j, k]].transform.rotation);
+                            mapsPrefabs[i][j, k] = Instantiate(TerrainPrefabs[maps[i][j, k]], new Vector3(j, i, k), TerrainPrefabs[maps[i][j, k]].transform.rotation);
+
                         }
+                        continue;
                     }
+
+
+                    maps[i][j, k] = 0;
+
                 }
             }
         }
@@ -128,6 +144,20 @@ public class GameManager : MonoBehaviour
     //    await Task.Delay(1000);
     //    mapsPrefabs[i][j, k] = GameObject.Instantiate(Prefabs[maps[i][j, k]], new Vector3(j, i, k), Prefabs[maps[i][j, k]].transform.rotation);
     //}
+
+    private void InitializePlayers()
+    {
+        _playersGameObjects = new List<List<GameObject>>();
+        for (int i = 0; i < _gameStartPoints.Count; i++)
+        {
+            _playersGameObjects.Add(new List<GameObject>());
+        }
+
+
+
+        // robotnicy 
+        // 
+    }
 
     void Update()
     {

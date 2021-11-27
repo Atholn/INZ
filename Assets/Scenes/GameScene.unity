@@ -851,7 +851,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BasicTerrainID: 0
   basicTerrain: {fileID: 5770076833996844587, guid: 2d15e7a89d6abcf498bb4d5c7dbdee7a, type: 3}
-  Prefabs:
+  TerrainPrefabs:
   - {fileID: 426985600659949882, guid: 0f2062c14435e4549ae2a76bdf2a0cc6, type: 3}
   - {fileID: 6333110819727023937, guid: 99e24d61b4f638c49ac48e410929925d, type: 3}
   - {fileID: 4471362363148010571, guid: 45dac4c7f27c13f46a3f915133e8e691, type: 3}
@@ -864,7 +864,15 @@ MonoBehaviour:
   - {fileID: 6981954615339529793, guid: 477e206ff18f0cb41ab70d4e38e1bf74, type: 3}
   - {fileID: 4755938419018921687, guid: 315b260d10d7acd409cd1bfc9842e4e5, type: 3}
   - {fileID: 2681721045036282386, guid: 08aae598e8e3c21419da11965a22c468, type: 3}
-  - {fileID: 5919578388576820400, guid: 3e7828405ae37f7479db96219746376f, type: 3}
+  - {fileID: 2681721045036282386, guid: 08aae598e8e3c21419da11965a22c468, type: 3}
+  UnitsPrefabs:
+  - {fileID: 3446284451790535581, guid: 4b59cc05a6d5c384abdef9af2257c520, type: 3}
+  BuildingsPrefabs:
+  - {fileID: 4226839067637202005, guid: f9f450868aa36894daa1a9183ba955a3, type: 3}
+  - {fileID: 9155407829503300144, guid: d75495dfce41b1f42a3ca78754e5025f, type: 3}
+  - {fileID: 7610857667599838142, guid: 7b7ab6b43b77a6647bd3627c5515f81d, type: 3}
+  - {fileID: 5543830575717470350, guid: 46a73ab1cb95a4044a93a0a2421a551f, type: 3}
+  - {fileID: 7118206607154517990, guid: 0cf1a775b0aab70408cc20f75b9247c2, type: 3}
 --- !u!4 &1251306219
 Transform:
   m_ObjectHideFlags: 0
