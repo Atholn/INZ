@@ -98,10 +98,19 @@ public class MenuEditorManager : MonoBehaviour
 
     private void Update()
     {
+        UpdateLocationText();
+    }
+
+    private void UpdateLocationText()
+    {
         locationText.text = (MapEditorManager.v.x - MapEditorManager.v.x % 1).ToString() + " x " + (MapEditorManager.v.z - MapEditorManager.v.z % 1).ToString() + " y";
     }
 
-    // File section
+    public void Size(int size)
+    {
+        MapEditorManager.InitializeStartTerrain(size);
+    }
+
     public void File()
     {
         ActiveDeactivatePanel(filePanel, !filePanel.activeSelf);
@@ -197,7 +206,7 @@ public class MenuEditorManager : MonoBehaviour
         }
     }
 
-    public void LoadMap()
+    public void LoadMapAccept()
     {
         map = new Map();
         map = fileMapSystem.LoadEditorMap(dropdownMapsToLoad.options[dropdownMapsToLoad.value].text);
