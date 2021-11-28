@@ -35,7 +35,7 @@ public class FileMapSystem
         stream.Close();
     }
 
-    public void SaveMap(ref Map map)
+    public void SaveEditorMap(ref Map map)
     {
         string tmpPath = path + $"/{FolderName}/{map.Name}";
 
@@ -67,7 +67,7 @@ public class FileMapSystem
         }
     }
 
-    public Map LoadMap(string nameMap)
+    public Map LoadEditorMap(string nameMap)
     {
         string tmpPath = path + $"/{FolderName}/{nameMap}";
 
@@ -82,7 +82,7 @@ public class FileMapSystem
         return null;
     }
 
-    public void Generate(Map map)
+    public void GenerateEditorMap(Map map)
     {
         string tmpPath = path + $"/{map.Type}/{map.Name}";
 

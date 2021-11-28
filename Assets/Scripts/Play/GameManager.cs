@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     private Map _map;
     private List<GameStartPoint> _gameStartPoints;
     private List<List<GameObject>> _playersGameObjects;
+    private List<Material> _playersMaterials;
 
     private int sizeMap;
     private int mapCount = 2; //Level 0 - terrain; Level 1 - Nature/Unit
@@ -23,29 +24,30 @@ public class GameManager : MonoBehaviour
     public GameObject basicTerrain;
     private Vector3 basicScale;
 
-    public GameObject[] TerrainPrefabs;
-    public GameObject[] UnitsPrefabs;
-    public GameObject[] BuildingsPrefabs;
+    public List<GameObject> TerrainPrefabs;
+    public List<GameObject> UnitsPrefabs;
+    public List<GameObject> BuildingsPrefabs;
 
     private GameObject _worker;
+    private GameObject _townHall;
+
+    private int _countOfWorkers = 5;
+
+    private GameObject gameObjectToMove;
 
     void Start()
     {
         _map = MapToPlayStorage.Map;
         _gameStartPoints = MapToPlayStorage.GameStartPoints;
 
-        foreach (GameStartPoint gameStartPoint in _gameStartPoints)
-        {
-            Debug.Log(gameStartPoint.UnitStartLocation);
-        }
-
         basicScale = new Vector3(basicTerrain.transform.localScale.x, basicTerrain.transform.localScale.y, basicTerrain.transform.localScale.z);
         InitializeStartMaps();
         ImportMap(_map);
 
-        InitializePlayers();
-
         _worker = UnitsPrefabs.Where(w => w.name == "Worker").FirstOrDefault();
+        _townHall = BuildingsPrefabs.Where(w => w.name == "TownHall").FirstOrDefault();
+
+        InitializePlayers();
     }
 
     private void InitializeStartMaps()
@@ -91,13 +93,13 @@ public class GameManager : MonoBehaviour
             {
                 for (int k = 0; k < sizeMap; k++)
                 {
-                    if (maps[i][j, k] >= 0)
+                    if (maps[i][j, k] > 0)
                     {
 
                         bool ifCreate = true;
-                        foreach (GameStartPoint gameStartPoint in _gameStartPoints)
+                        foreach (float[] gameStartPoint in map.UnitStartLocations)
                         {
-                            if (gameStartPoint.UnitStartLocation.x == j && gameStartPoint.UnitStartLocation.y == i && gameStartPoint.UnitStartLocation.z == k)
+                            if (gameStartPoint[0] == j  && gameStartPoint[2] == k)
                             {
                                 ifCreate = false;
                                 break;
@@ -112,7 +114,6 @@ public class GameManager : MonoBehaviour
                         continue;
                     }
 
-
                     maps[i][j, k] = 0;
 
                 }
@@ -120,47 +121,73 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    //private void InitializeNewMap(Map map)
-    //{
-    //    maps = map.Maps;
-    //    for (int i = 0; i < mapCount; i++)
-    //    {
-    //        for (int j = 0; j < sizeMap; j++)
-    //        {
-    //            for (int k = 0; k < sizeMap; k++)
-    //            {
-    //                if (maps[i][j, k] > 0)
-    //                {
-    //                    InstantiateAsync(i, j, k);
-    //                    //mapsPrefabs[i][j, k] = Instantiate(Prefabs[maps[i][j, k]], new Vector3(j, i, k), Prefabs[maps[i][j, k]].transform.rotation);
-    //                }
-    //            }
-    //        }
-    //    }
-    //}
-
-    //async void InstantiateAsync(int i, int j, int k)
-    //{
-    //    await Task.Delay(1000);
-    //    mapsPrefabs[i][j, k] = GameObject.Instantiate(Prefabs[maps[i][j, k]], new Vector3(j, i, k), Prefabs[maps[i][j, k]].transform.rotation);
-    //}
-
     private void InitializePlayers()
     {
         _playersGameObjects = new List<List<GameObject>>();
+        _playersMaterials = new List<Material>();
+
         for (int i = 0; i < _gameStartPoints.Count; i++)
         {
             _playersGameObjects.Add(new List<GameObject>());
+            _playersMaterials.Add(_gameStartPoints[i].UnitMaterial);
         }
 
+        for (int i = 0; i < _gameStartPoints.Count; i++)
+        {
+            Debug.LogWarning(_gameStartPoints[i].UnitMaterial.name);
 
+            MeshRenderer mesh = _townHall.GetComponent<MeshRenderer>();
+            mesh.material = _playersMaterials[i];
+            _playersGameObjects[i].Add(Instantiate(_townHall, _gameStartPoints[i].UnitStartLocation, _townHall.transform.rotation));
 
-        // robotnicy 
-        // 
+            SkinnedMeshRenderer skinnedMesh = _worker.GetComponentInChildren<SkinnedMeshRenderer>();
+            skinnedMesh.material = _playersMaterials[i];
+
+            for (int j = 0; j < _countOfWorkers; j++)
+            {
+                _playersGameObjects[i].Add(Instantiate(_worker, _gameStartPoints[i].UnitStartLocation + new Vector3(5+ j*1 ,0, 5 ), _worker.transform.rotation));
+            }
+        }
+
     }
 
     void Update()
     {
+        if (Input.GetMouseButtonDown(1))
+        {
+            var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+
+            if (Physics.Raycast(ray, out hit))
+            {
+                foreach (GameObject obj in _playersGameObjects[0])
+                {
+                    if (hit.collider.gameObject == obj)
+                    {
+                        Debug.Log(obj.name);
+
+                        gameObjectToMove = obj;
+                        break;
+                    }
+                }
+            }
+        }
+
+
+
+        if(Input.GetMouseButtonDown(2))
+        {
+            if (gameObjectToMove !=null)
+            {
+                var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                RaycastHit hit;
+
+
+                if (Physics.Raycast(ray, out hit, 1000.0f))
+                    gameObjectToMove.transform.position = hit.point;
+            }
+        }
+
 
     }
 }

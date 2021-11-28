@@ -106,7 +106,6 @@ public class MenuEditorManager : MonoBehaviour
         map = new Map();
 
         levelEditorManager.NewTerrain();
-        //todo
     }
 
     public void Save()
@@ -114,7 +113,9 @@ public class MenuEditorManager : MonoBehaviour
         ActiveDeactivatePanel(filePanel, !filePanel.activeSelf);
         if (map.ifExist)
         {
-            fileMapSystem.SaveMap(ref map);
+            GeneratePixelsColors();
+            map.ViewMap = mapViewColors;
+            fileMapSystem.SaveEditorMap(ref map);
             return;
         }
 
@@ -162,7 +163,7 @@ public class MenuEditorManager : MonoBehaviour
             map.UnitMaterials = tmpMap.UnitMaterials;
             map.ViewMap = mapViewColors;
 
-            fileMapSystem.SaveMap(ref map);
+            fileMapSystem.SaveEditorMap(ref map);
         }
 
         ActiveDeactivatePanel(saveMapPanel, false);
@@ -183,7 +184,9 @@ public class MenuEditorManager : MonoBehaviour
     public void LoadMap()
     {
         map = new Map();
-        map = fileMapSystem.LoadMap(dropdownMapsToLoad.options[dropdownMapsToLoad.value].text);
+        map = fileMapSystem.LoadEditorMap(dropdownMapsToLoad.options[dropdownMapsToLoad.value].text);
+        mapViewColors = map.ViewMap;
+
         levelEditorManager.ImportMap(map);
 
         ActiveDeactivatePanel(loadMapPanel, !loadMapPanel.activeSelf);
@@ -199,7 +202,7 @@ public class MenuEditorManager : MonoBehaviour
     public void Generate()
     {
         ActiveDeactivatePanel(filePanel, !filePanel.activeSelf);
-        fileMapSystem.Generate(map);
+        fileMapSystem.GenerateEditorMap(map);
     }
 
     public void Info()
@@ -235,6 +238,25 @@ public class MenuEditorManager : MonoBehaviour
             }
         }
 
+        GeneratePixelsColors();
+
+        Texture2D texture = new Texture2D(levelEditorManager.sizeMap, levelEditorManager.sizeMap);
+        Sprite sprite = Sprite.Create(texture, new Rect(0, 0, levelEditorManager.sizeMap, levelEditorManager.sizeMap), Vector2.zero);
+        mapViewImage.sprite = sprite;
+
+        for (int i = 0; i < texture.height; i++)
+        {
+            for (int j = 0; j < texture.width; j++)
+            {
+                Color pixelColour = new Color(mapViewColors[i][j][0], mapViewColors[i][j][1], mapViewColors[i][j][2], 1);
+                texture.SetPixel(i, j, pixelColour);
+            }
+        }
+        texture.Apply();
+    }
+
+    private void GeneratePixelsColors()
+    {
         for (int i = 0; i < levelEditorManager.sizeMap; i++)
         {
             for (int j = 0; j < levelEditorManager.sizeMap; j++)
@@ -254,20 +276,6 @@ public class MenuEditorManager : MonoBehaviour
                 }
             }
         }
-
-        Texture2D texture = new Texture2D(levelEditorManager.sizeMap, levelEditorManager.sizeMap);
-        Sprite sprite = Sprite.Create(texture, new Rect(0, 0, levelEditorManager.sizeMap, levelEditorManager.sizeMap), Vector2.zero);
-        mapViewImage.sprite = sprite;
-
-        for (int i = 0; i < texture.height; i++)
-        {
-            for (int j = 0; j < texture.width; j++)
-            {
-                Color pixelColour = new Color(mapViewColors[i][j][0], mapViewColors[i][j][1], mapViewColors[i][j][2], 1);
-                texture.SetPixel(i, j, pixelColour);
-            }
-        }
-        texture.Apply();
     }
 
     public void SaveDescription()

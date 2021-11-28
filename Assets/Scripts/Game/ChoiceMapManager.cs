@@ -273,7 +273,7 @@ public class ChoiceMapManager : MonoBehaviour
     ///--------------------------------------------------------
     internal void Play()
     {
-        Map map = FileMapSystem.LoadMap(MapsDropdown.options[MapsDropdown.value].text);
+        Map map = FileMapSystem.LoadEditorMap(MapsDropdown.options[MapsDropdown.value].text);
         MapToPlayStorage.Map = map;
 
         List<GameStartPoint> gameStartPoints = new List<GameStartPoint>();

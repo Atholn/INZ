@@ -5,18 +5,18 @@ using UnityEngine.UI;
 
 public class UnitEditorButton : MonoBehaviour
 {
-    internal int ID;
     public Material unitMaterial;   
-    UnitEditorPanel unitEditorPanel;  
+    internal int ID;
+    private UnitEditorPanel _unitEditorPanel;  
 
     private void Start()
     {
-        unitEditorPanel = GetComponentInParent<UnitEditorPanel>();
+        _unitEditorPanel = GetComponentInParent<UnitEditorPanel>();
     }
 
     public void ChangePanelColor() 
     {
-        unitEditorPanel.GetComponent<Image>().color = unitMaterial.color;
-        unitEditorPanel.ActualMaterial = unitMaterial;
+        _unitEditorPanel.GetComponent<Image>().color = unitMaterial.color;
+        _unitEditorPanel.ActualMaterial = unitMaterial;
     }
 }
