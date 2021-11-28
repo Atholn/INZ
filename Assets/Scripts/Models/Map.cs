@@ -25,3 +25,12 @@ public class Map
     public List<string> UnitMaterials;
     public List<float[]> UnitStartLocations;
 }
+
+
+public class MapInfo
+{
+
+
+    public float[][][] ViewMap;
+    public string Description;
+}

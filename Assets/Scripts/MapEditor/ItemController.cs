@@ -14,7 +14,7 @@ public class Item
 
 public class ItemController : MonoBehaviour
 {
-    public bool Clicked = false;
+    internal bool Clicked = false;
     internal Vector3 firstScale = new Vector3();
     public Item item;
     public MapEditorManager editor;

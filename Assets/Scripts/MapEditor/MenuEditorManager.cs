@@ -14,8 +14,12 @@ public class MenuEditorManager : MonoBehaviour
         FreeGame,
     }
 
-    public MapEditorManager levelEditorManager;
+    public MapEditorManager MapEditorManager;
+
     public GameObject filePanel;
+
+    public GameObject createSettingsPanel;
+    private Text locationText;
 
     public GameObject saveMapPanel;
     private Dropdown dropdownTypeOfMap;
@@ -45,7 +49,9 @@ public class MenuEditorManager : MonoBehaviour
         InitializeDropDownTypeOfMap();
         InitializeMapLoadInfo();
         InitializeMapInfo();
+        InitializeCreateSettingsPanel();
     }
+
 
     private void InitializeFileMapSystem()
     {
@@ -55,6 +61,7 @@ public class MenuEditorManager : MonoBehaviour
     private void InitializePanels()
     {
         ActiveDeactivatePanel(filePanel, false);
+        ActiveDeactivatePanel(createSettingsPanel, false);
         ActiveDeactivatePanel(saveMapPanel, false);
         ActiveDeactivatePanel(loadMapPanel, false);
         ActiveDeactivatePanel(optionsEditorPanel, false);
@@ -84,6 +91,15 @@ public class MenuEditorManager : MonoBehaviour
         infoTexts = mapInfoPanel.GetComponentsInChildren<Text>().ToArray();
         mapViewImage = mapInfoPanel.GetComponentsInChildren<Image>()[2];
     }
+    private void InitializeCreateSettingsPanel()
+    {
+        locationText = createSettingsPanel.GetComponentInChildren<Text>(true);
+    }
+
+    private void Update()
+    {
+        locationText.text = (MapEditorManager.v.x - MapEditorManager.v.x % 1).ToString() + " x " + (MapEditorManager.v.z - MapEditorManager.v.z % 1).ToString() + " y";
+    }
 
     // File section
     public void File()
@@ -105,7 +121,7 @@ public class MenuEditorManager : MonoBehaviour
         ActiveDeactivatePanel(filePanel, !filePanel.activeSelf);
         map = new Map();
 
-        levelEditorManager.NewTerrain();
+        MapEditorManager.NewTerrain();
     }
 
     public void Save()
@@ -155,7 +171,7 @@ public class MenuEditorManager : MonoBehaviour
             map.Name = nameOfMapInputField.text;
             map.Type = dropdownTypeOfMap.options[dropdownTypeOfMap.value].text;
 
-            Map tmpMap = levelEditorManager.ExportMap();
+            Map tmpMap = MapEditorManager.ExportMap();
 
             map.SizeMap = tmpMap.SizeMap;
             map.Maps = tmpMap.Maps;
@@ -187,7 +203,7 @@ public class MenuEditorManager : MonoBehaviour
         map = fileMapSystem.LoadEditorMap(dropdownMapsToLoad.options[dropdownMapsToLoad.value].text);
         mapViewColors = map.ViewMap;
 
-        levelEditorManager.ImportMap(map);
+        MapEditorManager.ImportMap(map);
 
         ActiveDeactivatePanel(loadMapPanel, !loadMapPanel.activeSelf);
     }
@@ -215,7 +231,7 @@ public class MenuEditorManager : MonoBehaviour
             infoTexts[0].text = "Map info:";
             infoTexts[1].text = map.Name == "" ? "Name: untitled" : "Name: " + map.Name;
             infoTexts[2].text = map.Type == "" ? "Type: no chose yet" : "Type: " + map.Type;
-            infoTexts[3].text = $"Size: {levelEditorManager.sizeMap} x {levelEditorManager.sizeMap}";
+            infoTexts[3].text = $"Size: {MapEditorManager.sizeMap} x {MapEditorManager.sizeMap}";
             mapInfoPanel.GetComponentInChildren<InputField>().text = map.Decription;
 
             DrawMapView();
@@ -226,12 +242,12 @@ public class MenuEditorManager : MonoBehaviour
     {
         if (mapViewColors == null)
         {
-            mapViewColors = new float[levelEditorManager.sizeMap][][];
+            mapViewColors = new float[MapEditorManager.sizeMap][][];
 
-            for (int i = 0; i < levelEditorManager.sizeMap; i++)
+            for (int i = 0; i < MapEditorManager.sizeMap; i++)
             {
-                mapViewColors[i] = new float[levelEditorManager.sizeMap][];
-                for (int j = 0; j < levelEditorManager.sizeMap; j++)
+                mapViewColors[i] = new float[MapEditorManager.sizeMap][];
+                for (int j = 0; j < MapEditorManager.sizeMap; j++)
                 {
                     mapViewColors[i][j] = new float[3];
                 }
@@ -240,8 +256,8 @@ public class MenuEditorManager : MonoBehaviour
 
         GeneratePixelsColors();
 
-        Texture2D texture = new Texture2D(levelEditorManager.sizeMap, levelEditorManager.sizeMap);
-        Sprite sprite = Sprite.Create(texture, new Rect(0, 0, levelEditorManager.sizeMap, levelEditorManager.sizeMap), Vector2.zero);
+        Texture2D texture = new Texture2D(MapEditorManager.sizeMap, MapEditorManager.sizeMap);
+        Sprite sprite = Sprite.Create(texture, new Rect(0, 0, MapEditorManager.sizeMap, MapEditorManager.sizeMap), Vector2.zero);
         mapViewImage.sprite = sprite;
 
         for (int i = 0; i < texture.height; i++)
@@ -257,15 +273,15 @@ public class MenuEditorManager : MonoBehaviour
 
     private void GeneratePixelsColors()
     {
-        for (int i = 0; i < levelEditorManager.sizeMap; i++)
+        for (int i = 0; i < MapEditorManager.sizeMap; i++)
         {
-            for (int j = 0; j < levelEditorManager.sizeMap; j++)
+            for (int j = 0; j < MapEditorManager.sizeMap; j++)
             {
-                for (int k = 0; k < levelEditorManager.mapCount; k++)
+                for (int k = 0; k < MapEditorManager.mapCount; k++)
                 {
-                    MeshRenderer mesh = levelEditorManager.mapsPrefabs[k][i, j] != null ?
-                        levelEditorManager.mapsPrefabs[k][i, j].gameObject.GetComponent<MeshRenderer>() :
-                        k == 0 ? levelEditorManager.Terrain.gameObject.GetComponent<MeshRenderer>() : null;
+                    MeshRenderer mesh = MapEditorManager.mapsPrefabs[k][i, j] != null ?
+                        MapEditorManager.mapsPrefabs[k][i, j].gameObject.GetComponent<MeshRenderer>() :
+                        k == 0 ? MapEditorManager.Terrain.gameObject.GetComponent<MeshRenderer>() : null;
 
                     if (mesh != null)
                     {

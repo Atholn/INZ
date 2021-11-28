@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class MapEditorManager : MonoBehaviour
 {
     public ItemController[] ItemButtons;
-    public int CurrentButtonPressed;
+    internal int CurrentButtonPressed;
 
     internal int sizeMap;
     internal int mapCount = 2; //Level 0 - terrain; Level 1 - Nature/Unit
