@@ -18,6 +18,8 @@ public class MenuEditorManager : MonoBehaviour
 
     public GameObject filePanel;
 
+    public GameObject mainEditorPanel;
+
     public GameObject createSettingsPanel;
     private Text locationText;
 
@@ -328,5 +330,18 @@ public class MenuEditorManager : MonoBehaviour
     private void ActiveDeactivatePanel(GameObject panel, bool activeDesactive)
     {
         panel.SetActive(activeDesactive);
+    }
+
+    public void SetActivePanel(GameObject panelToHideShow)
+    {
+        if(mainEditorPanel.activeSelf)
+        {
+            ActiveDeactivatePanel(mainEditorPanel, false);
+            ActiveDeactivatePanel(panelToHideShow, true);
+            return;
+        }
+
+        ActiveDeactivatePanel(mainEditorPanel, true);
+        ActiveDeactivatePanel(panelToHideShow, false);
     }
 }

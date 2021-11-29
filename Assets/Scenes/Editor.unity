@@ -1321,7 +1321,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ce3c244633166a449bf88e06f4ae754, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitMaterial: {fileID: 2100000, guid: ad6da23c11d0778428f32da94960857d, type: 2}
 --- !u!1 &270422448
 GameObject:
   m_ObjectHideFlags: 0
@@ -3975,7 +3974,6 @@ GameObject:
   - component: {fileID: 752394834}
   - component: {fileID: 752394833}
   - component: {fileID: 752394832}
-  - component: {fileID: 752394831}
   m_Layer: 5
   m_Name: TreesButton
   m_TagString: Untagged
@@ -4002,20 +4000,6 @@ RectTransform:
   m_AnchoredPosition: {x: 300, y: 0}
   m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &752394831
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 752394829}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8f4365d140b7fd8498e9d80f9c6bc6d1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  firstPanel: {fileID: 136406570}
-  secondPanel: {fileID: 118847221}
 --- !u!114 &752394832
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4060,13 +4044,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 752394831}
-        m_TargetAssemblyTypeName: EditorController, Assembly-CSharp
+      - m_Target: {fileID: 1051816583}
+        m_TargetAssemblyTypeName: MenuEditorManager, Assembly-CSharp
         m_MethodName: SetActivePanel
-        m_Mode: 1
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 118847221}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -4720,7 +4704,6 @@ GameObject:
   - component: {fileID: 853898203}
   - component: {fileID: 853898202}
   - component: {fileID: 853898201}
-  - component: {fileID: 853898204}
   m_Layer: 5
   m_Name: BackButton
   m_TagString: Untagged
@@ -4791,13 +4774,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 853898204}
-        m_TargetAssemblyTypeName: EditorController, Assembly-CSharp
+      - m_Target: {fileID: 1051816583}
+        m_TargetAssemblyTypeName: MenuEditorManager, Assembly-CSharp
         m_MethodName: SetActivePanel
-        m_Mode: 1
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 181186129}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -4841,20 +4824,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 853898199}
   m_CullTransparentMesh: 1
---- !u!114 &853898204
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 853898199}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8f4365d140b7fd8498e9d80f9c6bc6d1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  firstPanel: {fileID: 181186129}
-  secondPanel: {fileID: 136406570}
 --- !u!1 &882083166
 GameObject:
   m_ObjectHideFlags: 0
@@ -5974,7 +5943,6 @@ GameObject:
   - component: {fileID: 1016852063}
   - component: {fileID: 1016852062}
   - component: {fileID: 1016852061}
-  - component: {fileID: 1016852060}
   m_Layer: 5
   m_Name: BackButton
   m_TagString: Untagged
@@ -6001,20 +5969,6 @@ RectTransform:
   m_AnchoredPosition: {x: 350, y: 0}
   m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1016852060
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1016852058}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8f4365d140b7fd8498e9d80f9c6bc6d1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  firstPanel: {fileID: 1347706004}
-  secondPanel: {fileID: 136406570}
 --- !u!114 &1016852061
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6059,13 +6013,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1016852060}
-        m_TargetAssemblyTypeName: EditorController, Assembly-CSharp
+      - m_Target: {fileID: 1051816583}
+        m_TargetAssemblyTypeName: MenuEditorManager, Assembly-CSharp
         m_MethodName: SetActivePanel
-        m_Mode: 1
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 1347706004}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -6366,6 +6320,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MapEditorManager: {fileID: 1793844480}
   filePanel: {fileID: 1164435211}
+  mainEditorPanel: {fileID: 136406570}
   createSettingsPanel: {fileID: 1206370200}
   saveMapPanel: {fileID: 2085680755}
   loadMapPanel: {fileID: 30692412}
@@ -9541,7 +9496,6 @@ GameObject:
   - component: {fileID: 1579768464}
   - component: {fileID: 1579768463}
   - component: {fileID: 1579768462}
-  - component: {fileID: 1579768461}
   m_Layer: 5
   m_Name: BackButton
   m_TagString: Untagged
@@ -9568,20 +9522,6 @@ RectTransform:
   m_AnchoredPosition: {x: 350, y: 0}
   m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1579768461
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1579768459}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8f4365d140b7fd8498e9d80f9c6bc6d1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  firstPanel: {fileID: 118847221}
-  secondPanel: {fileID: 136406570}
 --- !u!114 &1579768462
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9626,13 +9566,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1579768461}
-        m_TargetAssemblyTypeName: EditorController, Assembly-CSharp
+      - m_Target: {fileID: 1051816583}
+        m_TargetAssemblyTypeName: MenuEditorManager, Assembly-CSharp
         m_MethodName: SetActivePanel
-        m_Mode: 1
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 118847221}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -11765,7 +11705,6 @@ GameObject:
   - component: {fileID: 1855833825}
   - component: {fileID: 1855833824}
   - component: {fileID: 1855833823}
-  - component: {fileID: 1855833822}
   m_Layer: 5
   m_Name: UnitsButton
   m_TagString: Untagged
@@ -11792,20 +11731,6 @@ RectTransform:
   m_AnchoredPosition: {x: 500, y: 0}
   m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1855833822
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1855833820}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8f4365d140b7fd8498e9d80f9c6bc6d1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  firstPanel: {fileID: 136406570}
-  secondPanel: {fileID: 1347706004}
 --- !u!114 &1855833823
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11850,13 +11775,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1855833822}
-        m_TargetAssemblyTypeName: EditorController, Assembly-CSharp
+      - m_Target: {fileID: 1051816583}
+        m_TargetAssemblyTypeName: MenuEditorManager, Assembly-CSharp
         m_MethodName: SetActivePanel
-        m_Mode: 1
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 1347706004}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -12665,7 +12590,6 @@ GameObject:
   - component: {fileID: 1922931669}
   - component: {fileID: 1922931668}
   - component: {fileID: 1922931667}
-  - component: {fileID: 1922931666}
   m_Layer: 5
   m_Name: TerrainButton
   m_TagString: Untagged
@@ -12692,20 +12616,6 @@ RectTransform:
   m_AnchoredPosition: {x: 200, y: 0}
   m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1922931666
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1922931664}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8f4365d140b7fd8498e9d80f9c6bc6d1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  firstPanel: {fileID: 136406570}
-  secondPanel: {fileID: 181186129}
 --- !u!114 &1922931667
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12750,13 +12660,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1922931666}
-        m_TargetAssemblyTypeName: EditorController, Assembly-CSharp
+      - m_Target: {fileID: 1051816583}
+        m_TargetAssemblyTypeName: MenuEditorManager, Assembly-CSharp
         m_MethodName: SetActivePanel
-        m_Mode: 1
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 181186129}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -12980,7 +12890,6 @@ GameObject:
   - component: {fileID: 1941353522}
   - component: {fileID: 1941353521}
   - component: {fileID: 1941353520}
-  - component: {fileID: 1941353519}
   m_Layer: 5
   m_Name: StonesButton
   m_TagString: Untagged
@@ -13007,20 +12916,6 @@ RectTransform:
   m_AnchoredPosition: {x: 400, y: 0}
   m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1941353519
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1941353517}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8f4365d140b7fd8498e9d80f9c6bc6d1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  firstPanel: {fileID: 136406570}
-  secondPanel: {fileID: 719709038}
 --- !u!114 &1941353520
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13065,13 +12960,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1941353519}
-        m_TargetAssemblyTypeName: EditorController, Assembly-CSharp
+      - m_Target: {fileID: 1051816583}
+        m_TargetAssemblyTypeName: MenuEditorManager, Assembly-CSharp
         m_MethodName: SetActivePanel
-        m_Mode: 1
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 719709038}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -13737,7 +13632,6 @@ GameObject:
   - component: {fileID: 2102782727}
   - component: {fileID: 2102782726}
   - component: {fileID: 2102782725}
-  - component: {fileID: 2102782724}
   m_Layer: 5
   m_Name: BackButton
   m_TagString: Untagged
@@ -13764,20 +13658,6 @@ RectTransform:
   m_AnchoredPosition: {x: 350, y: 0}
   m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &2102782724
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2102782722}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8f4365d140b7fd8498e9d80f9c6bc6d1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  firstPanel: {fileID: 719709038}
-  secondPanel: {fileID: 136406570}
 --- !u!114 &2102782725
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13822,13 +13702,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2102782724}
-        m_TargetAssemblyTypeName: EditorController, Assembly-CSharp
+      - m_Target: {fileID: 1051816583}
+        m_TargetAssemblyTypeName: MenuEditorManager, Assembly-CSharp
         m_MethodName: SetActivePanel
-        m_Mode: 1
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 719709038}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 

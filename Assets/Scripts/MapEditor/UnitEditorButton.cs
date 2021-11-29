@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class UnitEditorButton : MonoBehaviour
 {
-    public Material unitMaterial;   
+    internal Material unitMaterial;   
     internal int ID;
     private UnitEditorPanel _unitEditorPanel;  
 

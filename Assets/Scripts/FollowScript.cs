@@ -8,7 +8,7 @@ public class FollowScript : MonoBehaviour
     private float height;
     private int limit;
 
-    MapEditorManager levelEditorManager;
+    private MapEditorManager levelEditorManager;
 
     private void Start()
     {

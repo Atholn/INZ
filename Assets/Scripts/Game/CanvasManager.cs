@@ -17,7 +17,6 @@ public class CanvasManager : MonoBehaviour
         Manager.ChangeTypeOfPlayer();
     }
 
-
     public void ChangeColorUnits()
     {
         Manager.ChangeColorUnits();
