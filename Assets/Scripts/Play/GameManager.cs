@@ -19,8 +19,6 @@ public class GameManager : MonoBehaviour
     private GameObject Terrain;
     public int BasicTerrainID = 0;
 
-    public int[,,] hakuna = new int[3, 3, 3];
-
     public GameObject basicTerrain;
     private Vector3 basicScale;
 
@@ -134,8 +132,6 @@ public class GameManager : MonoBehaviour
 
         for (int i = 0; i < _gameStartPoints.Count; i++)
         {
-            Debug.LogWarning(_gameStartPoints[i].UnitMaterial.name);
-
             MeshRenderer mesh = _townHall.GetComponent<MeshRenderer>();
             mesh.material = _playersMaterials[i];
             _playersGameObjects[i].Add(Instantiate(_townHall, _gameStartPoints[i].UnitStartLocation, _townHall.transform.rotation));
@@ -173,8 +169,6 @@ public class GameManager : MonoBehaviour
             }
         }
 
-
-
         if(Input.GetMouseButtonDown(2))
         {
             if (gameObjectToMove !=null)
@@ -187,7 +181,5 @@ public class GameManager : MonoBehaviour
                     gameObjectToMove.transform.position = hit.point;
             }
         }
-
-
     }
 }

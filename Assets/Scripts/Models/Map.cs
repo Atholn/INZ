@@ -30,7 +30,7 @@ public class Map
 public class MapInfo
 {
 
-
+    public int PlayersCount;
     public float[][][] ViewMap;
     public string Description;
 }

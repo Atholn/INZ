@@ -6,8 +6,4 @@ public class StartPointUnit:MonoBehaviour
 {
     internal Material unitMaterial;
     public int buildSize;
-
-    private void Start()
-    {
-    }
 }

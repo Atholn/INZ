@@ -36,6 +36,6 @@ public class CanvasManager : MonoBehaviour
 
     public void BackButton()
     {
-        OptionsMenu.GoToMainMenu();
+        SceneManager.LoadScene("MainMenu");
     }
 }

@@ -318,7 +318,7 @@ public class MenuEditorManager : MonoBehaviour
 
     public void Exit()
     {
-        OptionsMenu.GoToMainMenu();
+        UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
     }
 
     public void Cancel(GameObject panel)
@@ -334,7 +334,7 @@ public class MenuEditorManager : MonoBehaviour
 
     public void SetActivePanel(GameObject panelToHideShow)
     {
-        if(mainEditorPanel.activeSelf)
+        if (mainEditorPanel.activeSelf)
         {
             ActiveDeactivatePanel(mainEditorPanel, false);
             ActiveDeactivatePanel(panelToHideShow, true);
