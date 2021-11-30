@@ -34,7 +34,6 @@ public class GameManager : MonoBehaviour
     private GameObject _gameObjectToMove;
     private GameObject _profileCamera;
     private Vector3 _shiftProfileCamera = new Vector3(-0.6f, 6f, 3.7f);
-    private Quaternion _rotationProfileCamera = new Quaternion(0, 170, 0, 0);
 
     void Start()
     {
@@ -170,10 +169,9 @@ public class GameManager : MonoBehaviour
 
                         _gameObjectToMove = obj;
 
-                        //_profileCamera.transform.position = _gameObjectToMove.transform.position;
+
                         _profileCamera.transform.SetParent(_gameObjectToMove.transform);
                         _profileCamera.transform.localPosition = _shiftProfileCamera;
-                        //_profileCamera.transform.rotation = _rotationProfileCamera;
                         break;
                     }
                 }
