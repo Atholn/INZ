@@ -110,6 +110,7 @@ public class ChoiceMapManager : MonoBehaviour
         Map map = FileMapSystem.GetMapInfo(FileMapSystem.FolderName, MapsDropdown.options[MapsDropdown.value].text);
         InfoTexts[0].text = map.Name;
         InfoTexts[1].text = map.Decription;
+        InfoTexts[2].text = map.SizeMap.ToString();
 
         if (PanelPlayerList.Count > 1)
         {
@@ -285,6 +286,7 @@ public class ChoiceMapManager : MonoBehaviour
 
             if (dropdowns[0].value == 0)
             {
+                /// when game have monsters or bandits example like War, we not continue but create monsters in this place
                 continue;
             }
 

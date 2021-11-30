@@ -33,7 +33,7 @@ public class MenuEditorManager : MonoBehaviour
     private Text[] infoLoadTexts = new Text[4];
 
     public GameObject mapInfoPanel;
-    private Text[] infoTexts = new Text[5];
+    private Text[] infoTexts = new Text[6];
     private Image mapViewImage;
     private float[][][] mapViewColors;
 
@@ -179,16 +179,19 @@ public class MenuEditorManager : MonoBehaviour
 
         if (nameOfMapInputField.text != "")
         {
+            Map tmpMap = MapEditorManager.ExportMap();
+
             map.Name = nameOfMapInputField.text;
             map.Type = dropdownTypeOfMap.options[dropdownTypeOfMap.value].text;
+            map.ViewMap = mapViewColors;
 
-            Map tmpMap = MapEditorManager.ExportMap();
+            map.CreateTime = tmpMap.CreateTime;
+            map.UpdateTime = tmpMap.UpdateTime;
 
             map.SizeMap = tmpMap.SizeMap;
             map.Maps = tmpMap.Maps;
             map.UnitStartLocations = tmpMap.UnitStartLocations;
             map.UnitMaterials = tmpMap.UnitMaterials;
-            map.ViewMap = mapViewColors;
 
             fileMapSystem.SaveEditorMap(ref map);
         }
@@ -243,6 +246,9 @@ public class MenuEditorManager : MonoBehaviour
             infoTexts[1].text = map.Name == "" ? "Name: untitled" : "Name: " + map.Name;
             infoTexts[2].text = map.Type == "" ? "Type: no chose yet" : "Type: " + map.Type;
             infoTexts[3].text = $"Size: {MapEditorManager.sizeMap} x {MapEditorManager.sizeMap}";
+            infoTexts[4].text = $"Create time: {map.CreateTime}";
+            infoTexts[5].text = $"Last update: {map.UpdateTime}";
+
             mapInfoPanel.GetComponentInChildren<InputField>().text = map.Decription;
 
             DrawMapView();

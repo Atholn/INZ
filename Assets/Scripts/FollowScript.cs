@@ -7,7 +7,6 @@ public class FollowScript : MonoBehaviour
     private RaycastHit hit;
     private float height;
     private int limit;
-
     private MapEditorManager levelEditorManager;
 
     private void Start()

@@ -455,6 +455,8 @@ public class MapEditorManager : MonoBehaviour
             Maps = this.maps,
             UnitMaterials = unitMaterials,
             UnitStartLocations = unitStartLocations,
+            CreateTime = System.DateTime.UtcNow.ToLocalTime().ToString("dd-MM-yyyy HH-mm-ss"),
+            UpdateTime = System.DateTime.UtcNow.ToLocalTime().ToString("dd-MM-yyyy HH-mm-ss"),
         };
     }
 

@@ -26,7 +26,6 @@ public class CanvasManager : MonoBehaviour
     {
         Manager.ChangeNumberPlace();
     }
-    //
 
     public void PlayButton()
     {
