@@ -31,12 +31,17 @@ public class GameManager : MonoBehaviour
 
     private int _countOfWorkers = 5;
 
-    private GameObject gameObjectToMove;
+    private GameObject _gameObjectToMove;
+    private GameObject _profileCamera;
+    private Vector3 _shiftProfileCamera = new Vector3(-0.6f, 6f, 3.7f);
+    private Quaternion _rotationProfileCamera = new Quaternion(0, 170, 0, 0);
 
     void Start()
     {
         _map = MapToPlayStorage.Map;
         _gameStartPoints = MapToPlayStorage.GameStartPoints;
+
+        _profileCamera = GameObject.FindGameObjectWithTag("ProfileCamera");
 
         basicScale = new Vector3(basicTerrain.transform.localScale.x, basicTerrain.transform.localScale.y, basicTerrain.transform.localScale.z);
         InitializeStartMaps();
@@ -44,6 +49,7 @@ public class GameManager : MonoBehaviour
 
         _worker = UnitsPrefabs.Where(w => w.name == "Worker").FirstOrDefault();
         _townHall = BuildingsPrefabs.Where(w => w.name == "TownHall").FirstOrDefault();
+
 
         InitializePlayers();
     }
@@ -97,7 +103,7 @@ public class GameManager : MonoBehaviour
                         bool ifCreate = true;
                         foreach (float[] gameStartPoint in map.UnitStartLocations)
                         {
-                            if (gameStartPoint[0] == j  && gameStartPoint[2] == k)
+                            if (gameStartPoint[0] == j && gameStartPoint[2] == k)
                             {
                                 ifCreate = false;
                                 break;
@@ -141,7 +147,7 @@ public class GameManager : MonoBehaviour
 
             for (int j = 0; j < _countOfWorkers; j++)
             {
-                _playersGameObjects[i].Add(Instantiate(_worker, _gameStartPoints[i].UnitStartLocation + new Vector3(5+ j*1 ,0, 5 ), _worker.transform.rotation));
+                _playersGameObjects[i].Add(Instantiate(_worker, _gameStartPoints[i].UnitStartLocation + new Vector3(5 + j * 1, 0, 5), _worker.transform.rotation));
             }
         }
 
@@ -162,23 +168,29 @@ public class GameManager : MonoBehaviour
                     {
                         Debug.Log(obj.name);
 
-                        gameObjectToMove = obj;
+                        _gameObjectToMove = obj;
+
+                        //_profileCamera.transform.position = _gameObjectToMove.transform.position;
+                        _profileCamera.transform.SetParent(_gameObjectToMove.transform);
+                        _profileCamera.transform.localPosition = _shiftProfileCamera;
+                        //_profileCamera.transform.rotation = _rotationProfileCamera;
                         break;
                     }
                 }
             }
         }
 
-        if(Input.GetMouseButtonDown(2))
+        if (Input.GetMouseButtonDown(2))
         {
-            if (gameObjectToMove !=null)
+            if (_gameObjectToMove != null)
             {
                 var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                 RaycastHit hit;
 
 
                 if (Physics.Raycast(ray, out hit, 1000.0f))
-                    gameObjectToMove.transform.position = hit.point;
+                    _gameObjectToMove.transform.position = hit.point;
+                _profileCamera.transform.SetParent(null);
             }
         }
     }

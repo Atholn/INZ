@@ -133,7 +133,8 @@ public class ChoiceMapManager : MonoBehaviour
 
         GeneratingDifferentFeatures(PanelPlayerList[0], map.UnitStartLocations.Count, 0);
         PlaceNumbersList[0].transform.localPosition = new Vector3(-scale * ((map.SizeMap / 2) - map.UnitStartLocations[0][0]), -scale * ((map.SizeMap / 2) - map.UnitStartLocations[0][2]), 0);
-
+        PlaceNumbersList[0].text = (1).ToString();
+        
         for (int i = 1; i < map.UnitStartLocations.Count; i++)
         {
             PanelPlayerList.Add(Instantiate(PanelSettingsPlayers, new Vector3(PlaySettingsPanel.transform.position.x + DisplacementVector.x, PlaySettingsPanel.transform.position.y - i * PanelSettingsPlayers.GetComponent<RectTransform>().rect.height + DisplacementVector.y, DisplacementVector.z), PlaySettingsPanel.transform.localRotation));

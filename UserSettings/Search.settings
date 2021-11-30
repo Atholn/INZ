@@ -7,9 +7,9 @@ onBoardingDoNotAskAgain = true
 showPackageIndexes = false
 showStatusBar = false
 scopes = {
-	"last_search.785D90A9" = "brush"
+	"last_search.785D90A9" = "tille"
 	"InspectorPreview.785D90A9" = "0"
-	"currentGroup.785D90A9" = "settings"
+	"currentGroup.785D90A9" = "all"
 }
 providers = {
 	asset = {
@@ -49,6 +49,7 @@ providers = {
 	}
 }
 recentSearches = [
+	"brush"
 ]
 searchItemFavorites = [
 ]

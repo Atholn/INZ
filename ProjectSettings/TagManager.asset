@@ -12,6 +12,8 @@ TagManager:
   - OptionsEditorPanel
   - SaveMapEditorPanel
   - CraftingPanel
+  - AlreadyExistText
+  - ProfileCamera
   layers:
   - Default
   - TransparentFX

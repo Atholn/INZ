@@ -1174,7 +1174,7 @@ MonoBehaviour:
     ItemPrefab: {fileID: 6981954615339529793, guid: 477e206ff18f0cb41ab70d4e38e1bf74, type: 3}
     ItemImage: {fileID: 3863060362449770671, guid: eb2a4809aefbc314484d5bae15118a47, type: 3}
     ItemHeightLevel: 1
-    ItemHeightPosY: 0.6
+    ItemHeightPosY: 0.65
   editor: {fileID: 1793844480}
 --- !u!1 &270116558
 GameObject:
@@ -1602,7 +1602,7 @@ MonoBehaviour:
     ItemPrefab: {fileID: 2277358033861606612, guid: 7737af21f03b77e41b2c9cf1e7d59004, type: 3}
     ItemImage: {fileID: 9022125891854832521, guid: 7c38998613ef19241924c0fcd3e31545, type: 3}
     ItemHeightLevel: 1
-    ItemHeightPosY: 0.5
+    ItemHeightPosY: 0.65
   editor: {fileID: 1793844480}
 --- !u!1 &297653930
 GameObject:
@@ -4243,7 +4243,7 @@ MonoBehaviour:
     ItemPrefab: {fileID: 6967734365383964538, guid: b3edac712f97c47449c9f4371e9a8b84, type: 3}
     ItemImage: {fileID: 5466163961409507805, guid: 5910229b3ef0b0c43a733ba163799883, type: 3}
     ItemHeightLevel: 1
-    ItemHeightPosY: 0.5
+    ItemHeightPosY: 0.55
   editor: {fileID: 1793844480}
 --- !u!1 &805872894
 GameObject:
@@ -6512,7 +6512,7 @@ MonoBehaviour:
     ItemPrefab: {fileID: 4631402345741991413, guid: 6eb429d60fee2cf43b1ecae9fa241957, type: 3}
     ItemImage: {fileID: 1227970020964644609, guid: c3df1c7188a3bc54b9c2f7dffd03d946, type: 3}
     ItemHeightLevel: 1
-    ItemHeightPosY: 0.5
+    ItemHeightPosY: 0.6
   editor: {fileID: 1793844480}
 --- !u!1 &1091257431
 GameObject:
@@ -12576,7 +12576,7 @@ MonoBehaviour:
     ItemPrefab: {fileID: 2580478140243336824, guid: 733511be29b96e9439766b98986704d0, type: 3}
     ItemImage: {fileID: 4936439200417432672, guid: e34f17abfb04ae049abee5d1c8bd79b4, type: 3}
     ItemHeightLevel: 1
-    ItemHeightPosY: 0.5
+    ItemHeightPosY: 0.6
   editor: {fileID: 1793844480}
 --- !u!1 &1922931664
 GameObject:
@@ -13977,5 +13977,5 @@ MonoBehaviour:
     ItemPrefab: {fileID: 4755938419018921687, guid: 315b260d10d7acd409cd1bfc9842e4e5, type: 3}
     ItemImage: {fileID: 9112726198469466736, guid: 1a788080f60f6a74e99c98e63771c524, type: 3}
     ItemHeightLevel: 1
-    ItemHeightPosY: 0.7
+    ItemHeightPosY: 0.5
   editor: {fileID: 1793844480}

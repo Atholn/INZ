@@ -192,6 +192,7 @@ public class MenuEditorManager : MonoBehaviour
             map.Maps = tmpMap.Maps;
             map.UnitStartLocations = tmpMap.UnitStartLocations;
             map.UnitMaterials = tmpMap.UnitMaterials;
+            map.ifExist = tmpMap.ifExist;
 
             fileMapSystem.SaveEditorMap(ref map);
         }
@@ -216,6 +217,7 @@ public class MenuEditorManager : MonoBehaviour
         map = new Map();
         map = fileMapSystem.LoadEditorMap(dropdownMapsToLoad.options[dropdownMapsToLoad.value].text);
         mapViewColors = map.ViewMap;
+        
 
         MapEditorManager.ImportMap(map);
 

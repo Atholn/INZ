@@ -11,12 +11,13 @@ public class Map
     public bool saveAs = false;
     public bool nameToChange = false;
 
+    public string CreateTime;
+    public string UpdateTime;
+
     public string Name = "";
     public string Type = "";
     public string Decription;
 
-    public string CreateTime;
-    public string UpdateTime;
 
     public int SizeMap;
     public int[][,] Maps;
@@ -26,19 +27,22 @@ public class Map
     public List<float[]> UnitStartLocations;
 }
 
+public class MapPlay
+{
+    public int[][,] Maps;
+}
 
 public class MapInfo
 {
     public string Name = "";
     public string Type = "";
-    public string Decription;
+    public int PlayersCount;
 
     public int SizeMapX;
     public int SizeMapY;
 
-    public int PlayersCount;
+    public string Decription = "";
     public float[][][] ViewMap;
-    public string Description;
 }
 
 
