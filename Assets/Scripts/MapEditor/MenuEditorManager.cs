@@ -217,7 +217,6 @@ public class MenuEditorManager : MonoBehaviour
         map = new Map();
         map = fileMapSystem.LoadEditorMap(dropdownMapsToLoad.options[dropdownMapsToLoad.value].text);
         mapViewColors = map.ViewMap;
-        
 
         MapEditorManager.ImportMap(map);
 

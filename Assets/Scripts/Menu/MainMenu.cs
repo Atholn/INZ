@@ -35,7 +35,6 @@ public class MainMenu : MonoBehaviour
         SceneManager.LoadScene("OptionsMenu");
     }
 
-
     public void QuitGame()
     {
         Application.Quit();
