@@ -4,7 +4,6 @@ using UnityEngine;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Linq;
-using UnityEngine.UI;
 
 public class FileMapSystem
 {
@@ -35,36 +34,30 @@ public class FileMapSystem
         stream.Close();
     }
 
+    public bool CheckIfExist(string mapName)
+    {
+        string tmpPath = path + $"/{FolderName}/{mapName}";
+
+        if (File.Exists(tmpPath))
+        {
+            return true;
+        }
+
+        return false;
+    }
+
     public void SaveEditorMap(ref Map map)
     {
         string tmpPath = path + $"/{FolderName}/{map.Name}";
 
-        if (!map.ifExist && File.Exists(tmpPath))
-        {
-            map.nameToChange = true;
-            return;
-        }
-        else
-        {
-            map.nameToChange = false;
-        }
-
-        if (map.ifExist && !map.saveAs)
+        if (File.Exists(tmpPath))
         {
             SaveLoadMapFile(tmpPath, ref map, FileMode.Open, Flag.SaveGenerate);
 
             return;
         }
 
-        if (!map.ifExist || map.saveAs)
-        {
-            SaveLoadMapFile(tmpPath, ref map, FileMode.Create, Flag.SaveGenerate);
-
-            map.ifExist = true;
-            map.saveAs = false;
-
-            return;
-        }
+        SaveLoadMapFile(tmpPath, ref map, FileMode.Create, Flag.SaveGenerate);
     }
 
     public Map LoadEditorMap(string nameMap)
@@ -96,7 +89,6 @@ public class FileMapSystem
         if (!File.Exists(tmpPath))
         {
             SaveLoadMapFile(tmpPath, ref map, FileMode.Create, Flag.SaveGenerate);
-            map.ifGenerated = true;
 
             return;
         }
@@ -135,7 +127,7 @@ public class FileMapSystem
             stream.Close();
             return map;
         }
-            
-        return null;      
+
+        return null;
     }
 }

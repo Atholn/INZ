@@ -54,7 +54,6 @@ public class MenuEditorManager : MonoBehaviour
         InitializeCreateSettingsPanel();
     }
 
-
     private void InitializeFileMapSystem()
     {
         fileMapSystem = new FileMapSystem() { FolderName = "Editor" };
@@ -138,64 +137,63 @@ public class MenuEditorManager : MonoBehaviour
     public void Save()
     {
         ActiveDeactivatePanel(filePanel, !filePanel.activeSelf);
-        if (map.ifExist)
+        DrawMapView();
+        map.ViewMap = mapViewColors;
+
+        if (fileMapSystem.CheckIfExist(map.Name))
         {
-            GeneratePixelsColors();
-            map.ViewMap = mapViewColors;
             fileMapSystem.SaveEditorMap(ref map);
             return;
         }
 
-        if (!map.ifExist)
-        {
-            ActiveDeactivatePanel(saveMapPanel, true);
-            return;
-        }
+        ActiveDeactivatePanel(saveMapPanel, true);
+        return;
     }
 
     public void SaveAs()
     {
-        ActiveDeactivatePanel(filePanel, !filePanel.activeSelf);
-        map.saveAs = true;
-        ActiveDeactivatePanel(saveMapPanel, true);
+        //ActiveDeactivatePanel(filePanel, !filePanel.activeSelf);
+        //ActiveDeactivatePanel(saveMapPanel, true);
     }
 
     public void SaveClickAccept()
     {
         InputField nameOfMapInputField = saveMapPanel.GetComponentInChildren<InputField>();
+        Text text = saveMapPanel.GetComponentsInChildren<Text>(true).Where(t => t.tag == "InfoSaveErrorText").FirstOrDefault();
+        text.gameObject.SetActive(false);
 
-        if (map.nameToChange)
+        if (nameOfMapInputField.text == "")
         {
-            //todo
+            text.text = "Please write name of map";
+            text.gameObject.SetActive(true);
+
+            //ActiveDeactivatePanel(saveMapPanel, false);
             return;
         }
 
-        if (nameOfMapInputField == null)
+        if (nameOfMapInputField.text != "" && fileMapSystem.CheckIfExist(nameOfMapInputField.text))
         {
-            ActiveDeactivatePanel(saveMapPanel, false);
+            text.text = "Map with this name is already exist";
+            text.gameObject.SetActive(true);
 
             return;
         }
 
-        if (nameOfMapInputField.text != "")
-        {
-            Map tmpMap = MapEditorManager.ExportMap();
+        Map tmpMap = MapEditorManager.ExportMap();
 
-            map.Name = nameOfMapInputField.text;
-            map.Type = dropdownTypeOfMap.options[dropdownTypeOfMap.value].text;
-            map.ViewMap = mapViewColors;
+        map.Name = nameOfMapInputField.text;
+        map.Type = dropdownTypeOfMap.options[dropdownTypeOfMap.value].text;
+        map.ViewMap = mapViewColors;
 
-            map.CreateTime = tmpMap.CreateTime;
-            map.UpdateTime = tmpMap.UpdateTime;
+        map.CreateTime = tmpMap.CreateTime;
+        map.UpdateTime = tmpMap.UpdateTime;
 
-            map.SizeMap = tmpMap.SizeMap;
-            map.Maps = tmpMap.Maps;
-            map.UnitStartLocations = tmpMap.UnitStartLocations;
-            map.UnitMaterials = tmpMap.UnitMaterials;
-            map.ifExist = tmpMap.ifExist;
+        map.SizeMap = tmpMap.SizeMap;
+        map.Maps = tmpMap.Maps;
+        map.UnitStartLocations = tmpMap.UnitStartLocations;
+        map.UnitMaterials = tmpMap.UnitMaterials;
 
-            fileMapSystem.SaveEditorMap(ref map);
-        }
+        fileMapSystem.SaveEditorMap(ref map);
 
         ActiveDeactivatePanel(saveMapPanel, false);
     }
@@ -258,20 +256,7 @@ public class MenuEditorManager : MonoBehaviour
 
     private void DrawMapView()
     {
-        if (mapViewColors == null)
-        {
-            mapViewColors = new float[MapEditorManager.sizeMap][][];
-
-            for (int i = 0; i < MapEditorManager.sizeMap; i++)
-            {
-                mapViewColors[i] = new float[MapEditorManager.sizeMap][];
-                for (int j = 0; j < MapEditorManager.sizeMap; j++)
-                {
-                    mapViewColors[i][j] = new float[3];
-                }
-            }
-        }
-
+        InitializePixelsColors();
         GeneratePixelsColors();
 
         Texture2D texture = new Texture2D(MapEditorManager.sizeMap, MapEditorManager.sizeMap);
@@ -287,6 +272,23 @@ public class MenuEditorManager : MonoBehaviour
             }
         }
         texture.Apply();
+    }
+
+    private void InitializePixelsColors()
+    {
+        if (mapViewColors == null)
+        {
+            mapViewColors = new float[MapEditorManager.sizeMap][][];
+
+            for (int i = 0; i < MapEditorManager.sizeMap; i++)
+            {
+                mapViewColors[i] = new float[MapEditorManager.sizeMap][];
+                for (int j = 0; j < MapEditorManager.sizeMap; j++)
+                {
+                    mapViewColors[i][j] = new float[3];
+                }
+            }
+        }
     }
 
     private void GeneratePixelsColors()
@@ -331,7 +333,6 @@ public class MenuEditorManager : MonoBehaviour
     public void Cancel(GameObject panel)
     {
         ActiveDeactivatePanel(panel, false);
-        if (map.saveAs) map.saveAs = false;
     }
 
     private void ActiveDeactivatePanel(GameObject panel, bool activeDesactive)
