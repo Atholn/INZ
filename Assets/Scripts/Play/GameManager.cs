@@ -14,8 +14,8 @@ public class GameManager : MonoBehaviour
 
     private int sizeMap;
     private int mapCount = 2; //Level 0 - terrain; Level 1 - Nature/Unit
-    private int[][,] maps;
-    private GameObject[][,] mapsPrefabs;
+    private int[][][] maps;
+    private GameObject[][][] mapsPrefabs;
     private GameObject Terrain;
     public int BasicTerrainID = 0;
 
@@ -55,8 +55,8 @@ public class GameManager : MonoBehaviour
 
     private void InitializeStartMaps()
     {
-        maps = new int[mapCount][,];
-        mapsPrefabs = new GameObject[mapCount][,];
+        maps = new int[mapCount][][];
+        mapsPrefabs = new GameObject[mapCount][][];
     }
 
     public void ImportMap(Map map)
@@ -72,8 +72,14 @@ public class GameManager : MonoBehaviour
 
         for (int i = 0; i < mapCount; i++)
         {
-            maps[i] = new int[size, size];
-            mapsPrefabs[i] = new GameObject[size, size];
+            maps[i] = new int[size][];
+            mapsPrefabs[i] = new GameObject[size][];
+
+            for (int j = 0; j < size; j++)
+            {
+                maps[i][j] = new int[size];
+                mapsPrefabs[i][j] = new GameObject[size];
+            }
         }
     }
 
@@ -96,7 +102,7 @@ public class GameManager : MonoBehaviour
             {
                 for (int k = 0; k < sizeMap; k++)
                 {
-                    if (maps[i][j, k] > 0)
+                    if (maps[i][j][k] > 0)
                     {
 
                         bool ifCreate = true;
@@ -111,13 +117,13 @@ public class GameManager : MonoBehaviour
 
                         if (ifCreate)
                         {
-                            mapsPrefabs[i][j, k] = Instantiate(TerrainPrefabs[maps[i][j, k]], new Vector3(j, i, k), TerrainPrefabs[maps[i][j, k]].transform.rotation);
+                            mapsPrefabs[i][j][k] = Instantiate(TerrainPrefabs[maps[i][j][k]], new Vector3(j, i, k), TerrainPrefabs[maps[i][j][k]].transform.rotation);
 
                         }
                         continue;
                     }
 
-                    maps[i][j, k] = 0;
+                    maps[i][j][k] = 0;
 
                 }
             }

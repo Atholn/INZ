@@ -92,6 +92,7 @@ public class MenuEditorManager : MonoBehaviour
         infoTexts = mapInfoPanel.GetComponentsInChildren<Text>().ToArray();
         mapViewImage = mapInfoPanel.GetComponentsInChildren<Image>()[2];
     }
+
     private void InitializeCreateSettingsPanel()
     {
         locationText = createSettingsPanel.GetComponentInChildren<Text>(true);
@@ -298,8 +299,8 @@ public class MenuEditorManager : MonoBehaviour
             {
                 for (int k = 0; k < MapEditorManager.mapCount; k++)
                 {
-                    MeshRenderer mesh = MapEditorManager.mapsPrefabs[k][i, j] != null ?
-                        MapEditorManager.mapsPrefabs[k][i, j].gameObject.GetComponent<MeshRenderer>() :
+                    MeshRenderer mesh = MapEditorManager.mapsPrefabs[k][i][j] != null ?
+                        MapEditorManager.mapsPrefabs[k][i][j].gameObject.GetComponent<MeshRenderer>() :
                         k == 0 ? MapEditorManager.Terrain.gameObject.GetComponent<MeshRenderer>() : null;
 
                     if (mesh != null)

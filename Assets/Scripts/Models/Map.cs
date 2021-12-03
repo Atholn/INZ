@@ -13,9 +13,8 @@ public class Map
     public string Type = "";
     public string Decription;
 
-
     public int SizeMap;
-    public int[][,] Maps;
+    public int[][][] Maps;
     public float[][][] ViewMap;
 
     public List<string> UnitMaterials;
@@ -24,7 +23,7 @@ public class Map
 
 public class MapPlay
 {
-    public int[][,] Maps;
+    public int[][][] Maps;
 }
 
 public class MapInfo
