@@ -133,7 +133,8 @@ public class MenuEditorManager : MonoBehaviour
         ActiveDeactivatePanel(filePanel, !filePanel.activeSelf);
         map = new Map();
 
-        MapEditorManager.NewTerrain();
+        UnityEngine.SceneManagement.SceneManager.LoadScene("Editor");
+        //MapEditorManager.NewTerrain();
     }
 
     public void Save()

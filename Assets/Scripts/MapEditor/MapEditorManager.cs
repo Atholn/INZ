@@ -91,21 +91,63 @@ public class MapEditorManager : MonoBehaviour
         }
     }
 
+    internal void InitializeStartTerrain(int sizeX, int sizeY)
+    {
+        foreach (GameObject panel in panelsToActive)
+        {
+            panel.SetActive(true);
+        }
+        sizeMapPanel.SetActive(false);
+
+        GameObject basicTerrainPrefab = ItemButtons[BasicTerrainID].item.ItemPrefab;
+        basicTerrainPrefab.gameObject.transform.localScale = new Vector3(sizeX * ItemButtons[BasicTerrainID].firstScale.x, ItemButtons[BasicTerrainID].firstScale.y, sizeY * ItemButtons[BasicTerrainID].firstScale.z);
+        Terrain = Instantiate(basicTerrainPrefab, new Vector3(sizeX / 2 - 0.5f, 0, sizeY / 2 - 0.5f), basicTerrainPrefab.transform.rotation);
+        basicTerrainPrefab.gameObject.transform.localScale = ItemButtons[BasicTerrainID].firstScale;
+
+        InitializeTerrainArrays(sizeX, sizeY);
+    }
+
+    private void InitializeTerrainArrays(int sizeX, int sizeY)
+    {
+        sizeMapX = sizeX;
+        sizeMapY = sizeY;
+
+        for (int i = 0; i < mapCount; i++)
+        {
+            maps[i] = new int[sizeX][];
+            mapsPrefabs[i] = new GameObject[sizeX][];
+
+            for (int j = 0; j < sizeX; j++)
+            {
+                maps[i][j] = new int[sizeY];
+                mapsPrefabs[i][j] = new GameObject[sizeY];
+            }
+        }
+    }
+
     private void Update()
     {
-        UpdateCreateTerrain();
-        UpdateButtonOff();
-        UpdateLocation();
         UpdateSettingsPanel();
+        UpdateLocation();
+        UpdateCreate();
+        UpdateButtonOff();
 
         //--
         UpdateCheckMap();
     }
 
+    private void UpdateLocation()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(ray, out hit, 1000.0f))
+        {
+            v = hit.point;
+        }
+    }
+
     private void UpdateSettingsPanel()
     {
         valueSizeSliderText.text = sizeSlider.value.ToString() + "x" + sizeSlider.value.ToString();
-
 
         if (singleMultiToggle.isOn)
         {
@@ -134,7 +176,8 @@ public class MapEditorManager : MonoBehaviour
 
     }
 
-    private void UpdateCreateTerrain()
+    #region CreateEditor
+    private void UpdateCreate()
     {
         if (singleMultiToggle.isOn && Input.GetMouseButtonDown(0))
         {
@@ -169,16 +212,25 @@ public class MapEditorManager : MonoBehaviour
                 }
             }
         }
+    }
 
-        //if (map[vx, vz] == 0)
-        //{
-        //    Instantiate(ItemButtons[CurrentButtonPressed].ItemPrefab,
-        //            new Vector3(vx, ItemButtons[CurrentButtonPressed].ItemHeightLevel, vz),
-        //            ItemButtons[CurrentButtonPressed].ItemPrefab.transform.rotation);
+    private void GenerateTerrain(int vx, int vz, int level)
+    {
+        for (int i = 0; i < sizeSlider.value; i++)
+        {
+            for (int j = 0; j < sizeSlider.value; j++)
+            {
+                int vxSlider = vx - (int)sizeSlider.value / 2 + i;
+                int vySlider = vz - (int)sizeSlider.value / 2 + j;
 
-        //    map[vx, vz] = CurrentButtonPressed;
-        //    mapGameObjects[vx, vz] = ItemButtons[CurrentButtonPressed].ItemPrefab;
-        //}
+                if (vxSlider < 0 || vxSlider >= sizeMapX || vySlider < 0 || vySlider >= sizeMapY)
+                {
+                    continue;
+                }
+
+                CreateGameObject(vxSlider, vySlider, level);
+            }
+        }
     }
 
     private void GenerateNatureUnit(int vx, int vz, int level)
@@ -219,25 +271,6 @@ public class MapEditorManager : MonoBehaviour
         CreateGameObject(vx, vz, level);
     }
 
-    private void GenerateTerrain(int vx, int vz, int level)
-    {
-        for (int i = 0; i < sizeSlider.value; i++)
-        {
-            for (int j = 0; j < sizeSlider.value; j++)
-            {
-                int vxSlider = vx - (int)sizeSlider.value / 2 + i;
-                int vySlider = vz - (int)sizeSlider.value / 2 + j;
-
-                if (vxSlider < 0 || vxSlider >= sizeMapX || vySlider < 0 || vySlider >= sizeMapY)
-                {
-                    continue;
-                }
-
-                CreateGameObject(vxSlider, vySlider, level);
-            }
-        }
-    }
-
     private void CreateGameObject(int vx, int vz, int level)
     {
         if (replaceToggle.isOn && maps[level][vx][vz] > 0 && maps[level][vx][vz] != CurrentButtonPressed)
@@ -264,7 +297,6 @@ public class MapEditorManager : MonoBehaviour
             }
 
             DeleteGameObject(vx, vz, level);
-
         }
 
         if (maps[level][vx][vz] == 0)
@@ -278,7 +310,6 @@ public class MapEditorManager : MonoBehaviour
             mapsPrefabs[level][vx][vz] = Instantiate(ItemButtons[CurrentButtonPressed].item.ItemPrefab,
                 new Vector3(vx, ItemButtons[CurrentButtonPressed].item.ItemHeightPosY, vz),
                 ItemButtons[CurrentButtonPressed].item.ItemPrefab.transform.rotation);
-            //mapsPrefabs[level][vx, vz] = ItemButtons[CurrentButtonPressed].ItemPrefab;
         }
     }
 
@@ -309,8 +340,7 @@ public class MapEditorManager : MonoBehaviour
             }
         }
 
-        GameObjectToDelete(mapsPrefabs[level][(int)spu.unitStartLocation.x][(int)spu.unitStartLocation.z]);
-        mapsPrefabs[level][(int)spu.unitStartLocation.x][(int)spu.unitStartLocation.z] = null;
+        DeleteGameObject((int)spu.unitStartLocation.x, (int)spu.unitStartLocation.z, level);
         spu.unitStartLocation = new Vector3(vx, ItemButtons[CurrentButtonPressed].item.ItemHeightPosY, vz);
     }
 
@@ -327,14 +357,28 @@ public class MapEditorManager : MonoBehaviour
         Destroy(gameObject.transform.gameObject);
     }
 
-    private void UpdateLocation()
+    private void UpdateButtonOff()
     {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(ray, out hit, 1000.0f))
+        if (Input.GetMouseButtonDown(1))
         {
-            v = hit.point;
+            for (int i = 0; i < ItemButtons.Length; i++)
+            {
+                ItemButtons[i].Clicked = false;
+                if (ItemButtons[i].item.ItemHeightLevel == 0)
+                {
+                    ItemButtons[i].item.ItemImage.transform.localScale = ItemButtons[i].firstScale;
+                }
+            }
+
+            GameObject[] itemImages = GameObject.FindGameObjectsWithTag("ItemImage");
+
+            for (int i = 0; i < itemImages.Length; i++)
+            {
+                Destroy(itemImages[i]);
+            }
         }
     }
+    #endregion
 
     private void UpdateCheckMap()
     {
@@ -369,62 +413,7 @@ public class MapEditorManager : MonoBehaviour
         }
     }
 
-    private void UpdateButtonOff()
-    {
-        if (Input.GetMouseButtonDown(1))
-        {
-            for (int i = 0; i < ItemButtons.Length; i++)
-            {
-                ItemButtons[i].Clicked = false;
-                if (ItemButtons[i].item.ItemHeightLevel == 0)
-                {
-                    ItemButtons[i].item.ItemImage.transform.localScale = ItemButtons[i].firstScale;
-                }
-            }
-
-            GameObject[] itemImages = GameObject.FindGameObjectsWithTag("ItemImage");
-
-            for (int i = 0; i < itemImages.Length; i++)
-            {
-                Destroy(itemImages[i]);
-            }
-        }
-    }
-
-    internal void InitializeStartTerrain(int sizeX, int sizeY)
-    {
-        foreach (GameObject panel in panelsToActive)
-        {
-            panel.SetActive(true);
-        }
-        sizeMapPanel.SetActive(false);
-
-        GameObject basicTerrainPrefab = ItemButtons[BasicTerrainID].item.ItemPrefab;
-
-        basicTerrainPrefab.gameObject.transform.localScale = new Vector3(sizeX * ItemButtons[BasicTerrainID].firstScale.x, ItemButtons[BasicTerrainID].firstScale.y, sizeY * ItemButtons[BasicTerrainID].firstScale.z);
-        Terrain = Instantiate(basicTerrainPrefab, new Vector3(sizeX / 2 - 0.5f, 0, sizeY / 2 - 0.5f), basicTerrainPrefab.transform.rotation);
-        basicTerrainPrefab.gameObject.transform.localScale = ItemButtons[BasicTerrainID].firstScale;
-        InitializeTerrainArrays(sizeX, sizeY);
-    }
-
-    private void InitializeTerrainArrays(int sizeX, int sizeY)
-    {
-        sizeMapX = sizeX;
-        sizeMapY = sizeY;
-
-        for (int i = 0; i < mapCount; i++)
-        {
-            maps[i] = new int[sizeX][];
-            mapsPrefabs[i] = new GameObject[sizeX][];
-
-            for (int j = 0; j < sizeX; j++)
-            {
-                maps[i][j] = new int[sizeY];
-                mapsPrefabs[i][j] = new GameObject[sizeY];
-            }
-        }
-    }
-
+    #region Export Import
     public Map ExportMap()
     {
         List<string> unitMaterials = new List<string>();
@@ -454,9 +443,27 @@ public class MapEditorManager : MonoBehaviour
     public void ImportMap(Map map)
     {
         DeleteMapGameObjects();
-        InitializeTerrainArrays(map.SizeMapX, map.SizeMapY);
         InitializeStartTerrain(sizeMapX, sizeMapY);
         InitializeNewMap(map);
+    }
+
+    public void DeleteMapGameObjects()
+    {
+        for (int k = 0; k < mapCount; k++)
+        {
+            for (int i = 0; i < sizeMapX; i++)
+            {
+                for (int j = 0; j < sizeMapY; j++)
+                {
+                    if (mapsPrefabs[k][i][j] != null)
+                    {
+                        DeleteGameObject(i, j, k);
+                    }
+                }
+            }
+        }
+
+        GameObjectToDelete(Terrain);
     }
 
     private void InitializeNewMap(Map map)
@@ -476,30 +483,11 @@ public class MapEditorManager : MonoBehaviour
             }
         }
     }
+    #endregion
 
-    public void NewTerrain()
-    {
-        DeleteMapGameObjects();
-        InitializeOpenEditor();
-    }
-
-    public void DeleteMapGameObjects()
-    {
-        for (int k = 0; k < mapCount; k++)
-        {
-            for (int i = 0; i < sizeMapX; i++)
-            {
-                for (int j = 0; j < sizeMapY; j++)
-                {
-                    if (mapsPrefabs[k][i][j] != null)
-                    {
-                        GameObjectToDelete(mapsPrefabs[k][i][j]);
-                    }
-                }
-            }
-        }
-
-        GameObjectToDelete(Terrain);
-    }
-
+    //public void NewTerrain()
+    //{
+    //    DeleteMapGameObjects();
+    //    InitializeOpenEditor();
+    //}
 }

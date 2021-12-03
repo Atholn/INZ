@@ -7,7 +7,7 @@ using System.Linq;
 
 public static class Pathe
 {
-    public static string GamePath
+    public static string GameAppPath
     {
         get
         {
@@ -28,7 +28,7 @@ public class FileMapSystem
         Load
     }
 
-    private string _path = Pathe.GamePath + $"/Game/Maps/";
+    private string _path = Pathe.GameAppPath + $"/Game/Maps/";
     public string FolderName;
 
     private void SaveLoadMapFile(string tmpPath, ref Map map, FileMode fileMode, Flag flag)
