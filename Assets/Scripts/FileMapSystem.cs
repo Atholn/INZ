@@ -28,8 +28,6 @@ public class FileMapSystem
         Load
     }
 
-
-
     private string _path = Pathe.GamePath + $"/Game/Maps/";
     public string FolderName;
 

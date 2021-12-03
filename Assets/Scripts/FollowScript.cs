@@ -23,8 +23,8 @@ public class FollowScript : MonoBehaviour
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
         if (Physics.Raycast(ray, out hit, 500.0f) &&
-            hit.point.x > limit && hit.point.x <= levelEditorManager.sizeMap - limit &&
-            hit.point.z > limit && hit.point.z <= levelEditorManager.sizeMap - limit)
+            hit.point.x > limit && hit.point.x <= levelEditorManager.sizeMapX - limit &&
+            hit.point.z > limit && hit.point.z <= levelEditorManager.sizeMapY - limit)
         {
 
             transform.position = new Vector3(hit.point.x - hit.point.x % 1, height, hit.point.z - hit.point.z % 1);

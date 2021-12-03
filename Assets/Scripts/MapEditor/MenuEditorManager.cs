@@ -110,7 +110,8 @@ public class MenuEditorManager : MonoBehaviour
 
     public void Size(int size)
     {
-        MapEditorManager.InitializeStartTerrain(size);
+        MapEditorManager.InitializeStartTerrain(size, size);
+        //todo
     }
 
     public void File()
@@ -188,7 +189,8 @@ public class MenuEditorManager : MonoBehaviour
         map.CreateTime = tmpMap.CreateTime;
         map.UpdateTime = tmpMap.UpdateTime;
 
-        map.SizeMap = tmpMap.SizeMap;
+        map.SizeMapX = tmpMap.SizeMapX;
+        map.SizeMapY = tmpMap.SizeMapY;
         map.Maps = tmpMap.Maps;
         map.UnitStartLocations = tmpMap.UnitStartLocations;
         map.UnitMaterials = tmpMap.UnitMaterials;
@@ -244,7 +246,7 @@ public class MenuEditorManager : MonoBehaviour
             infoTexts[0].text = "Map info:";
             infoTexts[1].text = map.Name == "" ? "Name: untitled" : "Name: " + map.Name;
             infoTexts[2].text = map.Type == "" ? "Type: no chose yet" : "Type: " + map.Type;
-            infoTexts[3].text = $"Size: {MapEditorManager.sizeMap} x {MapEditorManager.sizeMap}";
+            infoTexts[3].text = $"Size: {MapEditorManager.sizeMapX} x {MapEditorManager.sizeMapY}";
             infoTexts[4].text = $"Create time: {map.CreateTime}";
             infoTexts[5].text = $"Last update: {map.UpdateTime}";
 
@@ -259,8 +261,8 @@ public class MenuEditorManager : MonoBehaviour
         InitializePixelsColors();
         GeneratePixelsColors();
 
-        Texture2D texture = new Texture2D(MapEditorManager.sizeMap, MapEditorManager.sizeMap);
-        Sprite sprite = Sprite.Create(texture, new Rect(0, 0, MapEditorManager.sizeMap, MapEditorManager.sizeMap), Vector2.zero);
+        Texture2D texture = new Texture2D(MapEditorManager.sizeMapX, MapEditorManager.sizeMapY);
+        Sprite sprite = Sprite.Create(texture, new Rect(0, 0, MapEditorManager.sizeMapX, MapEditorManager.sizeMapY), Vector2.zero);
         mapViewImage.sprite = sprite;
 
         for (int i = 0; i < texture.height; i++)
@@ -278,12 +280,12 @@ public class MenuEditorManager : MonoBehaviour
     {
         if (mapViewColors == null)
         {
-            mapViewColors = new float[MapEditorManager.sizeMap][][];
+            mapViewColors = new float[MapEditorManager.sizeMapX][][];
 
-            for (int i = 0; i < MapEditorManager.sizeMap; i++)
+            for (int i = 0; i < MapEditorManager.sizeMapX; i++)
             {
-                mapViewColors[i] = new float[MapEditorManager.sizeMap][];
-                for (int j = 0; j < MapEditorManager.sizeMap; j++)
+                mapViewColors[i] = new float[MapEditorManager.sizeMapY][];
+                for (int j = 0; j < MapEditorManager.sizeMapY; j++)
                 {
                     mapViewColors[i][j] = new float[3];
                 }
@@ -293,9 +295,9 @@ public class MenuEditorManager : MonoBehaviour
 
     private void GeneratePixelsColors()
     {
-        for (int i = 0; i < MapEditorManager.sizeMap; i++)
+        for (int i = 0; i < MapEditorManager.sizeMapX; i++)
         {
-            for (int j = 0; j < MapEditorManager.sizeMap; j++)
+            for (int j = 0; j < MapEditorManager.sizeMapY; j++)
             {
                 for (int k = 0; k < MapEditorManager.mapCount; k++)
                 {

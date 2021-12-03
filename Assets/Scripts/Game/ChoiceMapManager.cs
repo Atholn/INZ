@@ -110,7 +110,7 @@ public class ChoiceMapManager : MonoBehaviour
         Map map = FileMapSystem.GetMapInfo(FileMapSystem.FolderName, MapsDropdown.options[MapsDropdown.value].text);
         InfoTexts[0].text = map.Name;
         InfoTexts[1].text = map.Decription;
-        InfoTexts[2].text = map.SizeMap.ToString();
+        InfoTexts[2].text = map.SizeMapX.ToString() + "x" +map.SizeMapY.ToString();
 
         if (PanelPlayerList.Count > 1)
         {
@@ -129,10 +129,11 @@ public class ChoiceMapManager : MonoBehaviour
         }
 
         RectTransform rT = MapView.GetComponent<RectTransform>();
-        float scale = rT.rect.height / map.SizeMap;
+        float scaleX = rT.rect.width / map.SizeMapX;
+        float scaleY = rT.rect.height / map.SizeMapY;
 
         GeneratingDifferentFeatures(PanelPlayerList[0], map.UnitStartLocations.Count, 0);
-        PlaceNumbersList[0].transform.localPosition = new Vector3(-scale * ((map.SizeMap / 2) - map.UnitStartLocations[0][0]), -scale * ((map.SizeMap / 2) - map.UnitStartLocations[0][2]), 0);
+        PlaceNumbersList[0].transform.localPosition = new Vector3(-scaleX * ((map.SizeMapX / 2) - map.UnitStartLocations[0][0]), -scaleY * ((map.SizeMapY / 2) - map.UnitStartLocations[0][2]), 0);
         PlaceNumbersList[0].text = (1).ToString();
         
         for (int i = 1; i < map.UnitStartLocations.Count; i++)
@@ -145,7 +146,7 @@ public class ChoiceMapManager : MonoBehaviour
 
             PlaceNumbersList.Add(Instantiate(NumberText, new Vector3(), NumberText.transform.rotation));
             PlaceNumbersList[i].transform.SetParent(MapView.transform);
-            PlaceNumbersList[i].transform.localPosition = new Vector3(-scale * (map.SizeMap / 2 - map.UnitStartLocations[i][0]), -scale * (map.SizeMap / 2 - map.UnitStartLocations[i][2]), 0);
+            PlaceNumbersList[i].transform.localPosition = new Vector3(-scaleX * (map.SizeMapX / 2 - map.UnitStartLocations[i][0]), -scaleY * (map.SizeMapY / 2 - map.UnitStartLocations[i][2]), 0);
             PlaceNumbersList[i].text = (i + 1).ToString();
 
             TypeOfPlayerTmpList.Add(0);
@@ -154,8 +155,8 @@ public class ChoiceMapManager : MonoBehaviour
         }
         ChangeTypeOfPlayer();
 
-        Texture2D texture = new Texture2D(map.SizeMap, map.SizeMap);
-        Sprite sprite = Sprite.Create(texture, new Rect(0, 0, map.SizeMap, map.SizeMap), Vector2.zero);
+        Texture2D texture = new Texture2D(map.SizeMapX, map.SizeMapY);
+        Sprite sprite = Sprite.Create(texture, new Rect(0, 0, map.SizeMapX, map.SizeMapY), Vector2.zero);
         MapView.sprite = sprite;
 
         for (int i = 0; i < texture.height; i++)

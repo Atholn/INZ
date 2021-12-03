@@ -12,7 +12,8 @@ public class GameManager : MonoBehaviour
     private List<List<GameObject>> _playersGameObjects;
     private List<Material> _playersMaterials;
 
-    private int sizeMap;
+    private int sizeMapX;
+    private int sizeMapY;
     private int mapCount = 2; //Level 0 - terrain; Level 1 - Nature/Unit
     private int[][][] maps;
     private GameObject[][][] mapsPrefabs;
@@ -28,9 +29,7 @@ public class GameManager : MonoBehaviour
 
     private GameObject _worker;
     private GameObject _townHall;
-
     private int _countOfWorkers = 5;
-
     private GameObject _gameObjectToMove;
     private GameObject _profileCamera;
     private Vector3 _shiftProfileCamera = new Vector3(-0.6f, 6f, 3.7f);
@@ -43,12 +42,12 @@ public class GameManager : MonoBehaviour
         _profileCamera = GameObject.FindGameObjectWithTag("ProfileCamera");
 
         basicScale = new Vector3(basicTerrain.transform.localScale.x, basicTerrain.transform.localScale.y, basicTerrain.transform.localScale.z);
+
         InitializeStartMaps();
         ImportMap(_map);
 
         _worker = UnitsPrefabs.Where(w => w.name == "Worker").FirstOrDefault();
         _townHall = BuildingsPrefabs.Where(w => w.name == "TownHall").FirstOrDefault();
-
 
         InitializePlayers();
     }
@@ -59,48 +58,53 @@ public class GameManager : MonoBehaviour
         mapsPrefabs = new GameObject[mapCount][][];
     }
 
-    public void ImportMap(Map map)
+    private void ImportMap(Map map)
     {
-        InitializeTerrainArrays(map.SizeMap);
-        InitializeStartTerrain(sizeMap);
+        InitializeSizesMaps(map.SizeMapX, map.SizeMapY);
+        InitializeStartTerrain();
+        InitializeTerrainArrays();
         InitializeNewMap(map);
     }
 
-    private void InitializeTerrainArrays(int size)
+    private void InitializeSizesMaps(int sizeMapX, int sizeMapY)
     {
-        sizeMap = size;
+        this.sizeMapX = sizeMapX;
+        this.sizeMapY = sizeMapY;
+    }
 
+    private void InitializeStartTerrain()
+    {
+        GameObject basicTerrainPrefab = basicTerrain;
+
+        basicTerrainPrefab.gameObject.transform.localScale = new Vector3(sizeMapX * basicScale.x, basicScale.y, sizeMapY * basicScale.x);
+        Terrain = Instantiate(basicTerrainPrefab, new Vector3(sizeMapX / 2 - 0.5f, -0.5f, sizeMapY / 2 - 0.5f), basicTerrainPrefab.transform.rotation);
+        basicTerrainPrefab.gameObject.transform.localScale = basicScale;
+    }
+
+    private void InitializeTerrainArrays()
+    {
         for (int i = 0; i < mapCount; i++)
         {
-            maps[i] = new int[size][];
-            mapsPrefabs[i] = new GameObject[size][];
+            maps[i] = new int[sizeMapX][];
+            mapsPrefabs[i] = new GameObject[sizeMapX][];
 
-            for (int j = 0; j < size; j++)
+            for (int j = 0; j < sizeMapX; j++)
             {
-                maps[i][j] = new int[size];
-                mapsPrefabs[i][j] = new GameObject[size];
+                maps[i][j] = new int[sizeMapY];
+                mapsPrefabs[i][j] = new GameObject[sizeMapY];
             }
         }
     }
 
-    internal void InitializeStartTerrain(int size)
-    {
-        GameObject basicTerrainPrefab = basicTerrain;
-
-        basicTerrainPrefab.gameObject.transform.localScale = new Vector3(size * basicScale.x, basicScale.y, size * basicScale.x);
-        Terrain = Instantiate(basicTerrainPrefab, new Vector3(size / 2 - 0.5f, -0.5f, size / 2 - 0.5f), basicTerrainPrefab.transform.rotation);
-        basicTerrainPrefab.gameObject.transform.localScale = basicScale;
-        InitializeTerrainArrays(size);
-    }
 
     private void InitializeNewMap(Map map)
     {
         maps = map.Maps;
         for (int i = 0; i < mapCount; i++)
         {
-            for (int j = 0; j < sizeMap; j++)
+            for (int j = 0; j < sizeMapX; j++)
             {
-                for (int k = 0; k < sizeMap; k++)
+                for (int k = 0; k < sizeMapY; k++)
                 {
                     if (maps[i][j][k] > 0)
                     {
@@ -124,7 +128,6 @@ public class GameManager : MonoBehaviour
                     }
 
                     maps[i][j][k] = 0;
-
                 }
             }
         }
