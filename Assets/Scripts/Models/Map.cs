@@ -42,11 +42,6 @@ public class MapInfo
 
 public class MapSettingsEditor
 {
-    public bool ifExist = false;
-    public bool ifGenerated = false;
-    public bool saveAs = false;
-    public bool nameToChange = false;
-
     public string CreateTime;
     public string UpdateTime;
 }

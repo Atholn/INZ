@@ -5,6 +5,21 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Linq;
 
+public static class Pathe
+{
+    public static string GamePath
+    {
+        get
+        {
+#if UNITY_EDITOR
+            return Application.dataPath;
+#else
+            return Directory.GetCurrentDirectory();
+#endif
+        }
+    }
+}
+
 public class FileMapSystem
 {
     enum Flag
@@ -13,7 +28,9 @@ public class FileMapSystem
         Load
     }
 
-    private string path = Application.dataPath + $"/Game/Maps/";
+
+
+    private string _path = Pathe.GamePath + $"/Game/Maps/";
     public string FolderName;
 
     private void SaveLoadMapFile(string tmpPath, ref Map map, FileMode fileMode, Flag flag)
@@ -36,7 +53,7 @@ public class FileMapSystem
 
     public bool CheckIfExist(string mapName)
     {
-        string tmpPath = path + $"/{FolderName}/{mapName}";
+        string tmpPath = _path + $"/{FolderName}/{mapName}";
 
         if (File.Exists(tmpPath))
         {
@@ -48,7 +65,7 @@ public class FileMapSystem
 
     public void SaveEditorMap(ref Map map)
     {
-        string tmpPath = path + $"/{FolderName}/{map.Name}";
+        string tmpPath = _path + $"/{FolderName}/{map.Name}";
 
         if (File.Exists(tmpPath))
         {
@@ -62,7 +79,7 @@ public class FileMapSystem
 
     public Map LoadEditorMap(string nameMap)
     {
-        string tmpPath = path + $"/{FolderName}/{nameMap}";
+        string tmpPath = _path + $"/{FolderName}/{nameMap}";
 
         if (File.Exists(tmpPath))
         {
@@ -77,7 +94,7 @@ public class FileMapSystem
 
     public void GenerateEditorMap(Map map)
     {
-        string tmpPath = path + $"/{map.Type}/{map.Name}";
+        string tmpPath = _path + $"/{map.Type}/{map.Name}";
 
         if (File.Exists(tmpPath))
         {
@@ -96,7 +113,7 @@ public class FileMapSystem
 
     public List<string> GetNamesMaps(string type)
     {
-        string tmpPath = path + $"/{type}/";
+        string tmpPath = _path + $"/{type}/";
         var info = new DirectoryInfo(tmpPath);
         var fileInfo = info.GetFiles();
 
@@ -116,7 +133,7 @@ public class FileMapSystem
 
     public Map GetMapInfo(string type, string nameMap)
     {
-        string tmpPath = path + $"/{type}/{nameMap}";
+        string tmpPath = _path + $"/{type}/{nameMap}";
 
         if (File.Exists(tmpPath))
         {

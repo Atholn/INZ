@@ -152,8 +152,8 @@ public class MenuEditorManager : MonoBehaviour
 
     public void SaveAs()
     {
-        //ActiveDeactivatePanel(filePanel, !filePanel.activeSelf);
-        //ActiveDeactivatePanel(saveMapPanel, true);
+        ActiveDeactivatePanel(filePanel, !filePanel.activeSelf);
+        ActiveDeactivatePanel(saveMapPanel, true);
     }
 
     public void SaveClickAccept()
@@ -167,7 +167,6 @@ public class MenuEditorManager : MonoBehaviour
             text.text = "Please write name of map";
             text.gameObject.SetActive(true);
 
-            //ActiveDeactivatePanel(saveMapPanel, false);
             return;
         }
 
