@@ -7,16 +7,12 @@ using UnityEngine.UI;
 
 public class MapEditorManager : MonoBehaviour
 {
-    public ItemController[] ItemButtons;
-    internal int CurrentButtonPressed;
+    private Map _map = new Map();
 
-    internal int sizeMapX;
-    internal int sizeMapY;
-    internal int mapCount = 2; //Level 0 - terrain; Level 1 - Nature/Unit
-    internal int[][][] maps;
     internal GameObject[][][] mapsPrefabs;
     internal GameObject Terrain;
-    internal int BasicTerrainID = 0;
+    public ItemController[] ItemButtons;
+    internal int CurrentButtonPressed;
 
     RaycastHit hit;
     internal Vector3 v;
@@ -37,17 +33,11 @@ public class MapEditorManager : MonoBehaviour
 
     private void Start()
     {
-        InitializeBasicTerrain();
         InitializeOpenEditor();
         InitializeIDButtons();
         InitializeStartMaps();
 
         InitializeStartPointUnitsList();
-    }
-
-    private void InitializeBasicTerrain()
-    {
-        ItemButtons[BasicTerrainID].firstScale = ItemButtons[BasicTerrainID].item.ItemPrefab.transform.localScale;
     }
 
     private void InitializeOpenEditor()
@@ -73,8 +63,8 @@ public class MapEditorManager : MonoBehaviour
 
     private void InitializeStartMaps()
     {
-        maps = new int[mapCount][][];
-        mapsPrefabs = new GameObject[mapCount][][];
+        _map.Maps = new int[_map.MapsCount][][];
+        mapsPrefabs = new GameObject[_map.MapsCount][][];
     }
 
     private void InitializeStartPointUnitsList()
@@ -91,7 +81,7 @@ public class MapEditorManager : MonoBehaviour
         }
     }
 
-    internal void InitializeStartTerrain(int sizeX, int sizeY)
+    internal void InitializeStartTerrain(int sizeX, int sizeY, int mainGround = 0)
     {
         foreach (GameObject panel in panelsToActive)
         {
@@ -99,27 +89,30 @@ public class MapEditorManager : MonoBehaviour
         }
         sizeMapPanel.SetActive(false);
 
-        GameObject basicTerrainPrefab = ItemButtons[BasicTerrainID].item.ItemPrefab;
-        basicTerrainPrefab.gameObject.transform.localScale = new Vector3(sizeX * ItemButtons[BasicTerrainID].firstScale.x, ItemButtons[BasicTerrainID].firstScale.y, sizeY * ItemButtons[BasicTerrainID].firstScale.z);
+        Vector3 firstScale =  ItemButtons[mainGround].item.ItemPrefab.transform.localScale;
+
+        GameObject basicTerrainPrefab = ItemButtons[mainGround].item.ItemPrefab;
+        basicTerrainPrefab.gameObject.transform.localScale = new Vector3(sizeX * firstScale.x, firstScale.y, sizeY * firstScale.z);
         Terrain = Instantiate(basicTerrainPrefab, new Vector3(sizeX / 2 - 0.5f, 0, sizeY / 2 - 0.5f), basicTerrainPrefab.transform.rotation);
-        basicTerrainPrefab.gameObject.transform.localScale = ItemButtons[BasicTerrainID].firstScale;
+
+        basicTerrainPrefab.gameObject.transform.localScale = firstScale;
 
         InitializeTerrainArrays(sizeX, sizeY);
     }
 
     private void InitializeTerrainArrays(int sizeX, int sizeY)
     {
-        sizeMapX = sizeX;
-        sizeMapY = sizeY;
+        _map.SizeMapX = sizeX;
+        _map.SizeMapY = sizeY;
 
-        for (int i = 0; i < mapCount; i++)
+        for (int i = 0; i < _map.MapsCount; i++)
         {
-            maps[i] = new int[sizeX][];
+            _map.Maps[i] = new int[sizeX][];
             mapsPrefabs[i] = new GameObject[sizeX][];
 
             for (int j = 0; j < sizeX; j++)
             {
-                maps[i][j] = new int[sizeY];
+                _map.Maps[i][j] = new int[sizeY];
                 mapsPrefabs[i][j] = new GameObject[sizeY];
             }
         }
@@ -173,7 +166,6 @@ public class MapEditorManager : MonoBehaviour
         {
             valueReplaceToggleText.text = "No replace";
         }
-
     }
 
     #region CreateEditor
@@ -199,7 +191,7 @@ public class MapEditorManager : MonoBehaviour
             int vx = (int)(v.x - v.x % 1);
             int vz = (int)(v.z - v.z % 1);
 
-            if ((vx < sizeMapX && vx > -1) && (vz < sizeMapY && vz > -1))
+            if ((vx < _map.SizeMapX && vx > -1) && (vz < _map.SizeMapY && vz > -1))
             {
                 if (ItemButtons[CurrentButtonPressed].item.ItemHeightLevel == 0)
                 {
@@ -223,7 +215,7 @@ public class MapEditorManager : MonoBehaviour
                 int vxSlider = vx - (int)sizeSlider.value / 2 + i;
                 int vySlider = vz - (int)sizeSlider.value / 2 + j;
 
-                if (vxSlider < 0 || vxSlider >= sizeMapX || vySlider < 0 || vySlider >= sizeMapY)
+                if (vxSlider < 0 || vxSlider >= _map.SizeMapX || vySlider < 0 || vySlider >= _map.SizeMapY)
                 {
                     continue;
                 }
@@ -239,10 +231,12 @@ public class MapEditorManager : MonoBehaviour
         {
             int fullSize = ItemButtons[CurrentButtonPressed].item.ItemPrefab.GetComponent<StartPointUnit>().buildSize;
 
-            if (vx < fullSize / 2 || vx >= sizeMapX - fullSize / 2 || vz < fullSize / 2 || vz >= sizeMapY - fullSize / 2) return;
+            if (vx < fullSize / 2 || vx >= _map.SizeMapX - fullSize / 2 || vz < fullSize / 2 || vz >= _map.SizeMapY - fullSize / 2)
+            {
+                return;
+            }
 
-            int tempvx;
-            int tempvz;
+            int tempvx, tempvz;
 
             for (int i = 0; i < fullSize; i++)
             {
@@ -251,8 +245,7 @@ public class MapEditorManager : MonoBehaviour
                     tempvx = vx - fullSize / 2 + i;
                     tempvz = vz - fullSize / 2 + j;
 
-                    if (vx < 0 || vx >= sizeMapX || vz < 0 || vz >= sizeMapY) return;
-                    if (maps[level][tempvx][tempvz] != 0) return;
+                    if (vx < 0 || vx >= _map.SizeMapX || vz < 0 || vz >= _map.SizeMapY || _map.Maps[level][tempvx][tempvz] != 0) return;
                 }
             }
 
@@ -263,7 +256,7 @@ public class MapEditorManager : MonoBehaviour
                     tempvx = vx - fullSize / 2 + i;
                     tempvz = vz - fullSize / 2 + j;
                     if (tempvx == vx && tempvz == vz) continue;
-                    maps[level][tempvx][tempvz] = -1;
+                    _map.Maps[level][tempvx][tempvz] = -1;
                 }
             }
         }
@@ -273,7 +266,7 @@ public class MapEditorManager : MonoBehaviour
 
     private void CreateGameObject(int vx, int vz, int level)
     {
-        if (replaceToggle.isOn && maps[level][vx][vz] > 0 && maps[level][vx][vz] != CurrentButtonPressed)
+        if (replaceToggle.isOn && _map.Maps[level][vx][vz] > 0 && _map.Maps[level][vx][vz] != CurrentButtonPressed)
         {
             if (mapsPrefabs[level][vx][vz].GetComponent<StartPointUnit>() != null)
             {
@@ -289,7 +282,7 @@ public class MapEditorManager : MonoBehaviour
                         tempvx = vx - areaToReset / 2 + i;
                         tempvz = vz - areaToReset / 2 + j;
 
-                        maps[level][tempvx][tempvz] = 0;
+                        _map.Maps[level][tempvx][tempvz] = 0;
                     }
                 }
 
@@ -299,14 +292,14 @@ public class MapEditorManager : MonoBehaviour
             DeleteGameObject(vx, vz, level);
         }
 
-        if (maps[level][vx][vz] == 0)
+        if (_map.Maps[level][vx][vz] == 0)
         {
             if (ItemButtons[CurrentButtonPressed] is ItemUnitController)
             {
                 UpdateStartUnitList(vx, vz, level);
             }
 
-            maps[level][vx][vz] = CurrentButtonPressed;
+            _map.Maps[level][vx][vz] = CurrentButtonPressed;
             mapsPrefabs[level][vx][vz] = Instantiate(ItemButtons[CurrentButtonPressed].item.ItemPrefab,
                 new Vector3(vx, ItemButtons[CurrentButtonPressed].item.ItemHeightPosY, vz),
                 ItemButtons[CurrentButtonPressed].item.ItemPrefab.transform.rotation);
@@ -323,7 +316,7 @@ public class MapEditorManager : MonoBehaviour
             return;
         }
 
-        if (maps[level][(int)spu.unitStartLocation.x][(int)spu.unitStartLocation.z] == CurrentButtonPressed)
+        if (_map.Maps[level][(int)spu.unitStartLocation.x][(int)spu.unitStartLocation.z] == CurrentButtonPressed)
         {
             int tempvx, tempvz;
             int fullSize = ItemButtons[CurrentButtonPressed].item.ItemPrefab.GetComponent<StartPointUnit>().buildSize;
@@ -335,7 +328,7 @@ public class MapEditorManager : MonoBehaviour
                     tempvx = (int)spu.unitStartLocation.x - fullSize / 2 + i;
                     tempvz = (int)spu.unitStartLocation.z - fullSize / 2 + j;
 
-                    maps[level][tempvx][tempvz] = 0;
+                    _map.Maps[level][tempvx][tempvz] = 0;
                 }
             }
         }
@@ -348,7 +341,7 @@ public class MapEditorManager : MonoBehaviour
     {
         GameObjectToDelete(mapsPrefabs[level][vx][vz]);
 
-        maps[level][vx][vz] = 0;
+        _map.Maps[level][vx][vz] = 0;
         mapsPrefabs[level][vx][vz] = null;
     }
 
@@ -384,15 +377,15 @@ public class MapEditorManager : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(2))
         {
-            for (int k = 0; k < mapCount; k++)
+            for (int k = 0; k < _map.MapsCount; k++)
             {
                 string test;
-                for (int i = 0; i < sizeMapX; i++)
+                for (int i = 0; i < _map.SizeMapX; i++)
                 {
                     test = "";
-                    for (int j = 0; j < sizeMapY; j++)
+                    for (int j = 0; j < _map.SizeMapY; j++)
                     {
-                        test += maps[k][i][j];
+                        test += _map.Maps[k][i][j];
                     }
                     Debug.Log(test);
                 }
@@ -416,44 +409,34 @@ public class MapEditorManager : MonoBehaviour
     #region Export Import
     public Map ExportMap()
     {
-        List<string> unitMaterials = new List<string>();
-        List<float[]> unitStartLocations = new List<float[]>();
+        //List<float[]> unitStartLocations = new List<float[]>();
 
-        foreach (EditorStartPoint sp in startPoints)
-        {
-            if (sp.unitStartLocation != Vector3.zero)
-            {
-                unitStartLocations.Add(sp.uSL);
-                unitMaterials.Add(sp.unitMaterialName);
-            }
-        }
+        //foreach (EditorStartPoint sp in startPoints)
+        //{
+        //    if (sp.unitStartLocation != Vector3.zero)
+        //    {
+        //        unitStartLocations.Add(sp.uSL);
+        //    }
+        //}
 
-        return new Map()
-        {
-            SizeMapX = this.sizeMapX,
-            SizeMapY = this.sizeMapY,
-            Maps = this.maps,
-            UnitMaterials = unitMaterials,
-            UnitStartLocations = unitStartLocations,
-            CreateTime = System.DateTime.UtcNow.ToLocalTime().ToString("dd-MM-yyyy HH-mm-ss"),
-            UpdateTime = System.DateTime.UtcNow.ToLocalTime().ToString("dd-MM-yyyy HH-mm-ss"),
-        };
+
+        return _map;
     }
 
     public void ImportMap(Map map)
     {
         DeleteMapGameObjects();
-        InitializeStartTerrain(sizeMapX, sizeMapY);
+        InitializeStartTerrain(map.SizeMapX, map.SizeMapY);
         InitializeNewMap(map);
     }
 
     public void DeleteMapGameObjects()
     {
-        for (int k = 0; k < mapCount; k++)
+        for (int k = 0; k < _map.MapsCount; k++)
         {
-            for (int i = 0; i < sizeMapX; i++)
+            for (int i = 0; i < _map.SizeMapX; i++)
             {
-                for (int j = 0; j < sizeMapY; j++)
+                for (int j = 0; j < _map.SizeMapY; j++)
                 {
                     if (mapsPrefabs[k][i][j] != null)
                     {
@@ -468,16 +451,17 @@ public class MapEditorManager : MonoBehaviour
 
     private void InitializeNewMap(Map map)
     {
-        maps = map.Maps;
-        for (int i = 0; i < mapCount; i++)
+        _map = map;
+        //_map.Maps = map.Maps;
+        for (int i = 0; i < _map.MapsCount; i++)
         {
-            for (int j = 0; j < sizeMapX; j++)
+            for (int j = 0; j < _map.SizeMapX; j++)
             {
-                for (int k = 0; k < sizeMapY; k++)
+                for (int k = 0; k < _map.SizeMapY; k++)
                 {
-                    if (maps[i][j][k] > 0)
+                    if (_map.Maps[i][j][k] > 0)
                     {
-                        mapsPrefabs[i][j][k] = Instantiate(ItemButtons[maps[i][j][k]].item.ItemPrefab, new Vector3(j, ItemButtons[maps[i][j][k]].item.ItemHeightPosY, k), ItemButtons[maps[i][j][k]].item.ItemPrefab.transform.rotation);
+                        mapsPrefabs[i][j][k] = Instantiate(ItemButtons[_map.Maps[i][j][k]].item.ItemPrefab, new Vector3(j, ItemButtons[_map.Maps[i][j][k]].item.ItemHeightPosY, k), ItemButtons[_map.Maps[i][j][k]].item.ItemPrefab.transform.rotation);
                     }
                 }
             }
@@ -490,4 +474,10 @@ public class MapEditorManager : MonoBehaviour
     //    DeleteMapGameObjects();
     //    InitializeOpenEditor();
     //}
+
+    public int[] GetSizeMap()
+    {
+
+        return new int[3] { _map.SizeMapX, _map.SizeMapY, _map.MapsCount };
+    }
 }

@@ -3,43 +3,24 @@ using System.Collections.Generic;
 [System.Serializable]
 public class Map
 {
-    public string CreateTime;//
-    public string UpdateTime;//
-
-    public string Name = "";//
-    public string Type = "";//
-    public string Decription;//
+    #region Map create Info 
+    public int MapsCount = 2;//Level 0 - terrain; Level 1 - Nature/Unit
+    public int[][][] Maps;
+    public List<float[]> UnitStartLocations;
 
     public int SizeMapX;
     public int SizeMapY;
-    public float[][][] ViewMap;
+    #endregion
 
-    public List<string> UnitMaterials;
-    public List<float[]> UnitStartLocations;
-    
-    public int[][][] Maps;
-}
-
-public class MapPlay
-{
-    public int[][][] Maps;
-}
-
-public class MapInfo
-{
+    #region Map selection info 
     public string Name = "";
     public string Type = "";
-    public int PlayersCount;
     public string Decription = "";
     public float[][][] ViewMap;
+    #endregion
 
-    public int SizeMapX;
-    public int SizeMapY;
-
-}
-
-public class MapSettingsEditor
-{
+    #region Map editor info
     public string CreateTime;
     public string UpdateTime;
+    #endregion
 }

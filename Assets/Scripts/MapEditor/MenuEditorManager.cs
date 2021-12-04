@@ -110,7 +110,7 @@ public class MenuEditorManager : MonoBehaviour
 
     public void Size(int size)
     {
-        MapEditorManager.InitializeStartTerrain(size, size);
+        MapEditorManager.InitializeStartTerrain(size, size, 0);
         //todo
     }
 
@@ -181,22 +181,19 @@ public class MenuEditorManager : MonoBehaviour
             return;
         }
 
+        map.Name = nameOfMapInputField.text;
+
         Map tmpMap = MapEditorManager.ExportMap();
 
-        map.Name = nameOfMapInputField.text;
-        map.Type = dropdownTypeOfMap.options[dropdownTypeOfMap.value].text;
-        map.ViewMap = mapViewColors;
+        tmpMap.Type = dropdownTypeOfMap.options[dropdownTypeOfMap.value].text;
+        tmpMap.Name = nameOfMapInputField.text;
+        tmpMap.Decription = mapInfoPanel.GetComponentInChildren<InputField>().text;
+        tmpMap.ViewMap = mapViewColors;
 
-        map.CreateTime = tmpMap.CreateTime;
-        map.UpdateTime = tmpMap.UpdateTime;
+        tmpMap.CreateTime = DateTime.UtcNow.ToLocalTime().ToString();
+        tmpMap.UpdateTime = DateTime.UtcNow.ToLocalTime().ToString();
 
-        map.SizeMapX = tmpMap.SizeMapX;
-        map.SizeMapY = tmpMap.SizeMapY;
-        map.Maps = tmpMap.Maps;
-        map.UnitStartLocations = tmpMap.UnitStartLocations;
-        map.UnitMaterials = tmpMap.UnitMaterials;
-
-        fileMapSystem.SaveEditorMap(ref map);
+        fileMapSystem.SaveEditorMap(ref tmpMap);
 
         ActiveDeactivatePanel(saveMapPanel, false);
     }
@@ -247,7 +244,7 @@ public class MenuEditorManager : MonoBehaviour
             infoTexts[0].text = "Map info:";
             infoTexts[1].text = map.Name == "" ? "Name: untitled" : "Name: " + map.Name;
             infoTexts[2].text = map.Type == "" ? "Type: no chose yet" : "Type: " + map.Type;
-            infoTexts[3].text = $"Size: {MapEditorManager.sizeMapX} x {MapEditorManager.sizeMapY}";
+            infoTexts[3].text = $"Size: {MapEditorManager.GetSizeMap()[0]} x {MapEditorManager.GetSizeMap()[0]}";
             infoTexts[4].text = $"Create time: {map.CreateTime}";
             infoTexts[5].text = $"Last update: {map.UpdateTime}";
 
@@ -262,8 +259,8 @@ public class MenuEditorManager : MonoBehaviour
         InitializePixelsColors();
         GeneratePixelsColors();
 
-        Texture2D texture = new Texture2D(MapEditorManager.sizeMapX, MapEditorManager.sizeMapY);
-        Sprite sprite = Sprite.Create(texture, new Rect(0, 0, MapEditorManager.sizeMapX, MapEditorManager.sizeMapY), Vector2.zero);
+        Texture2D texture = new Texture2D(MapEditorManager.GetSizeMap()[0], MapEditorManager.GetSizeMap()[1]);
+        Sprite sprite = Sprite.Create(texture, new Rect(0, 0, MapEditorManager.GetSizeMap()[0], MapEditorManager.GetSizeMap()[1]), Vector2.zero);
         mapViewImage.sprite = sprite;
 
         for (int i = 0; i < texture.height; i++)
@@ -281,12 +278,12 @@ public class MenuEditorManager : MonoBehaviour
     {
         if (mapViewColors == null)
         {
-            mapViewColors = new float[MapEditorManager.sizeMapX][][];
+            mapViewColors = new float[MapEditorManager.GetSizeMap()[0]][][];
 
-            for (int i = 0; i < MapEditorManager.sizeMapX; i++)
+            for (int i = 0; i < MapEditorManager.GetSizeMap()[0]; i++)
             {
-                mapViewColors[i] = new float[MapEditorManager.sizeMapY][];
-                for (int j = 0; j < MapEditorManager.sizeMapY; j++)
+                mapViewColors[i] = new float[MapEditorManager.GetSizeMap()[1]][];
+                for (int j = 0; j < MapEditorManager.GetSizeMap()[1]; j++)
                 {
                     mapViewColors[i][j] = new float[3];
                 }
@@ -296,21 +293,23 @@ public class MenuEditorManager : MonoBehaviour
 
     private void GeneratePixelsColors()
     {
-        for (int i = 0; i < MapEditorManager.sizeMapX; i++)
+        for (int k = 0; k < MapEditorManager.GetSizeMap()[2]; k++)
         {
-            for (int j = 0; j < MapEditorManager.sizeMapY; j++)
+            for (int i = 0; i < MapEditorManager.GetSizeMap()[0]; i++)
             {
-                for (int k = 0; k < MapEditorManager.mapCount; k++)
+                for (int j = 0; j < MapEditorManager.GetSizeMap()[1]; j++)
                 {
-                    MeshRenderer mesh = MapEditorManager.mapsPrefabs[k][i][j] != null ?
-                        MapEditorManager.mapsPrefabs[k][i][j].gameObject.GetComponent<MeshRenderer>() :
-                        k == 0 ? MapEditorManager.Terrain.gameObject.GetComponent<MeshRenderer>() : null;
-
-                    if (mesh != null)
                     {
-                        mapViewColors[i][j][0] = mesh.material.color.r;
-                        mapViewColors[i][j][1] = mesh.material.color.g;
-                        mapViewColors[i][j][2] = mesh.material.color.b;
+                        MeshRenderer mesh = MapEditorManager.mapsPrefabs[k][i][j] != null ?
+                            MapEditorManager.mapsPrefabs[k][i][j].gameObject.GetComponent<MeshRenderer>() :
+                            k == 0 ? MapEditorManager.Terrain.gameObject.GetComponent<MeshRenderer>() : null;
+
+                        if (mesh != null)
+                        {
+                            mapViewColors[i][j][0] = mesh.material.color.r;
+                            mapViewColors[i][j][1] = mesh.material.color.g;
+                            mapViewColors[i][j][2] = mesh.material.color.b;
+                        }
                     }
                 }
             }
