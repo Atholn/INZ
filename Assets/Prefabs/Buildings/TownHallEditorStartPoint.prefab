@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4934979993822876935}
   - component: {fileID: 4709760042762045960}
   - component: {fileID: 5368470063649467056}
-  - component: {fileID: -6700114417387942060}
+  - component: {fileID: -430661602683964436}
   m_Layer: 0
   m_Name: TownHallEditorStartPoint
   m_TagString: Untagged
@@ -61,7 +61,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 59cc6d3497edad54b804888cc84e2809, type: 2}
+  - {fileID: 2100000, guid: 6e69bebdfb715b84c9a99315896b8a55, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -83,7 +83,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &-6700114417387942060
+--- !u!114 &-430661602683964436
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -92,7 +92,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 5919578388576820400}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0a68ea99a9ed69441a4d794bb6f40a16, type: 3}
+  m_Script: {fileID: 11500000, guid: bd4192f90bc4e11469d22e8b26e6ad26, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buildSize: 7
+  ItemPrefab: {fileID: 5919578388576820400}
+  ItemImage: {fileID: 826525227639827491, guid: f549e40adb9a6e4498a3993c700a14d8, type: 3}
+  ItemHeightLevel: 1
+  ItemHeightPosY: 0.5
+  BuildSize: 0

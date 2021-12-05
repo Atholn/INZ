@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6832069899374386204}
   - component: {fileID: 1468784907748266591}
   - component: {fileID: 8237769709968818512}
+  - component: {fileID: -1008777722759392735}
   m_Layer: 0
   m_Name: Stone2
   m_TagString: Untagged
@@ -82,3 +83,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &-1008777722759392735
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6981954615339529793}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7c1fa7a823bd1f49a6909ffdbaf02e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ItemPrefab: {fileID: 6981954615339529793}
+  ItemImage: {fileID: 3863060362449770671, guid: eb2a4809aefbc314484d5bae15118a47, type: 3}
+  ItemHeightLevel: 1
+  ItemHeightPosY: 0.65

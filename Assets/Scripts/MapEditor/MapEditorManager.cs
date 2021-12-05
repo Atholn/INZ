@@ -11,6 +11,7 @@ public class MapEditorManager : MonoBehaviour
 
     internal GameObject[][][] mapsPrefabs;
     internal GameObject Terrain;
+
     public ItemController[] ItemButtons;
     internal int CurrentButtonPressed;
 
@@ -24,9 +25,7 @@ public class MapEditorManager : MonoBehaviour
     public Toggle replaceToggle;
     public Text valueReplaceToggleText;
 
-    private List<EditorStartPoint> startPoints = new List<EditorStartPoint>();
     public UnitEditorPanel unitEditorPanel;
-
     public GameObject[] panelsToActive;
     public GameObject[] craftingPanels;
     public GameObject sizeMapPanel;
@@ -36,8 +35,6 @@ public class MapEditorManager : MonoBehaviour
         InitializeOpenEditor();
         InitializeIDButtons();
         InitializeStartMaps();
-
-        InitializeStartPointUnitsList();
     }
 
     private void InitializeOpenEditor()
@@ -67,29 +64,19 @@ public class MapEditorManager : MonoBehaviour
         mapsPrefabs = new GameObject[_map.MapsCount][][];
     }
 
-    private void InitializeStartPointUnitsList()
-    {
-        foreach (Button button in unitEditorPanel.ColorsUnitsButtons)
-        {
-            UnitEditorButton unitEditorButton = button.gameObject.GetComponent<UnitEditorButton>();
-
-            startPoints.Add(new EditorStartPoint
-            {
-                unitMaterialName = unitEditorButton.unitMaterial.name,
-                unitStartLocation = Vector3.zero,
-            });
-        }
-    }
-
     internal void InitializeStartTerrain(int sizeX, int sizeY, int mainGround = 0)
     {
         foreach (GameObject panel in panelsToActive)
         {
             panel.SetActive(true);
         }
+        foreach (GameObject panel in craftingPanels)
+        {
+            panel.SetActive(false);
+        }
         sizeMapPanel.SetActive(false);
 
-        Vector3 firstScale =  ItemButtons[mainGround].item.ItemPrefab.transform.localScale;
+        Vector3 firstScale = ItemButtons[mainGround].item.ItemPrefab.transform.localScale;
 
         GameObject basicTerrainPrefab = ItemButtons[mainGround].item.ItemPrefab;
         basicTerrainPrefab.gameObject.transform.localScale = new Vector3(sizeX * firstScale.x, firstScale.y, sizeY * firstScale.z);
@@ -229,7 +216,9 @@ public class MapEditorManager : MonoBehaviour
     {
         if (ItemButtons[CurrentButtonPressed] is ItemUnitController)
         {
-            int fullSize = ItemButtons[CurrentButtonPressed].item.ItemPrefab.GetComponent<StartPointUnit>().buildSize;
+            InitializeEditorStartPoints();
+
+            int fullSize = ItemButtons[CurrentButtonPressed].item.ItemPrefab.GetComponent<ItemStartPoint>().BuildSize;
 
             if (vx < fullSize / 2 || vx >= _map.SizeMapX - fullSize / 2 || vz < fullSize / 2 || vz >= _map.SizeMapY - fullSize / 2)
             {
@@ -264,15 +253,32 @@ public class MapEditorManager : MonoBehaviour
         CreateGameObject(vx, vz, level);
     }
 
+    private void InitializeEditorStartPoints()
+    {
+        if (_map.EditorStartPoints == null)
+        {
+            _map.EditorStartPoints = new List<EditorStartPoint>();
+
+            foreach (Button button in unitEditorPanel.ColorsUnitsButtons)
+            {
+                _map.EditorStartPoints.Add(new EditorStartPoint()
+                {
+                    UnitMaterialName = button.GetComponent<UnitColorButton>().unitMaterial.name,
+                    UnitStartLocation = new float[3] { 0, 0, 0 },
+                });
+            }
+        }
+    }
+
     private void CreateGameObject(int vx, int vz, int level)
     {
         if (replaceToggle.isOn && _map.Maps[level][vx][vz] > 0 && _map.Maps[level][vx][vz] != CurrentButtonPressed)
         {
-            if (mapsPrefabs[level][vx][vz].GetComponent<StartPointUnit>() != null)
+            if (mapsPrefabs[level][vx][vz].GetComponent<ItemStartPoint>() != null)
             {
-                EditorStartPoint spu = startPoints.Where(u => u.unitStartLocation.x == vx && u.unitStartLocation.z == vz).First();
+                EditorStartPoint spu = _map.EditorStartPoints.Where(u => u.UnitStartLocation[0] == vx && u.UnitStartLocation[2] == vz).First();
 
-                int areaToReset = mapsPrefabs[level][vx][vz].GetComponent<StartPointUnit>().buildSize;
+                int areaToReset = mapsPrefabs[level][vx][vz].GetComponent<ItemStartPoint>().BuildSize;
                 int tempvx, tempvz;
 
                 for (int i = 0; i < areaToReset; i++)
@@ -286,8 +292,11 @@ public class MapEditorManager : MonoBehaviour
                     }
                 }
 
-                spu.unitStartLocation = Vector3.zero;
+                spu.UnitStartLocation[0] = 0;
+                spu.UnitStartLocation[1] = 0;
+                spu.UnitStartLocation[2] = 0;
             }
+
 
             DeleteGameObject(vx, vz, level);
         }
@@ -308,33 +317,39 @@ public class MapEditorManager : MonoBehaviour
 
     private void UpdateStartUnitList(int vx, int vz, int level)
     {
-        EditorStartPoint spu = startPoints.Where(u => u.unitMaterialName == unitEditorPanel.ActualMaterial.name).First();
+        EditorStartPoint spu = _map.EditorStartPoints.Where(u => u.UnitMaterialName == unitEditorPanel.ActualMaterial.name).First();
 
-        if (spu.unitStartLocation == Vector3.zero)
+        if (ArrayToVector3(spu.UnitStartLocation) == Vector3.zero)
         {
-            spu.unitStartLocation = new Vector3(vx, ItemButtons[CurrentButtonPressed].item.ItemHeightPosY, vz);
+            //spu.UnitStartLocation = Vector3ToArray(new Vector3(vx, ItemButtons[CurrentButtonPressed].item.ItemHeightPosY, vz));
+            spu.UnitStartLocation[0] = vx;
+            spu.UnitStartLocation[1] = ItemButtons[CurrentButtonPressed].item.ItemHeightPosY;
+            spu.UnitStartLocation[2] = vz;
+
             return;
         }
 
-        if (_map.Maps[level][(int)spu.unitStartLocation.x][(int)spu.unitStartLocation.z] == CurrentButtonPressed)
+        if (_map.Maps[level][(int)spu.UnitStartLocation[0]][(int)spu.UnitStartLocation[2]] == CurrentButtonPressed)
         {
             int tempvx, tempvz;
-            int fullSize = ItemButtons[CurrentButtonPressed].item.ItemPrefab.GetComponent<StartPointUnit>().buildSize;
+            int fullSize = ItemButtons[CurrentButtonPressed].item.ItemPrefab.GetComponent<ItemStartPoint>().BuildSize;
 
             for (int i = 0; i < fullSize; i++)
             {
                 for (int j = 0; j < fullSize; j++)
                 {
-                    tempvx = (int)spu.unitStartLocation.x - fullSize / 2 + i;
-                    tempvz = (int)spu.unitStartLocation.z - fullSize / 2 + j;
+                    tempvx = (int)spu.UnitStartLocation[0] - fullSize / 2 + i;
+                    tempvz = (int)spu.UnitStartLocation[2] - fullSize / 2 + j;
 
                     _map.Maps[level][tempvx][tempvz] = 0;
                 }
             }
         }
 
-        DeleteGameObject((int)spu.unitStartLocation.x, (int)spu.unitStartLocation.z, level);
-        spu.unitStartLocation = new Vector3(vx, ItemButtons[CurrentButtonPressed].item.ItemHeightPosY, vz);
+        DeleteGameObject((int)spu.UnitStartLocation[0], (int)spu.UnitStartLocation[2], level);
+        spu.UnitStartLocation[0] = vx;
+        spu.UnitStartLocation[1] = ItemButtons[CurrentButtonPressed].item.ItemHeightPosY;
+        spu.UnitStartLocation[2] = vz;
     }
 
     private void DeleteGameObject(int vx, int vz, int level)
@@ -396,38 +411,40 @@ public class MapEditorManager : MonoBehaviour
 
         if (Input.GetMouseButtonDown(3))
         {
-            foreach (EditorStartPoint sP in startPoints)
+            foreach (EditorStartPoint editorStartPoint in _map.EditorStartPoints)
             {
-                if (sP.unitStartLocation != Vector3.zero)
-                {
-                    Debug.Log(sP.unitMaterialName);
-                }
+                Debug.Log(editorStartPoint.UnitStartLocation + " " + editorStartPoint.UnitMaterialName);
             }
+
         }
     }
 
     #region Export Import
     public Map ExportMap()
     {
-        //List<float[]> unitStartLocations = new List<float[]>();
+        _map.GameStartPoints = new List<float[]>();
 
-        //foreach (EditorStartPoint sp in startPoints)
-        //{
-        //    if (sp.unitStartLocation != Vector3.zero)
-        //    {
-        //        unitStartLocations.Add(sp.uSL);
-        //    }
-        //}
-
+        if (_map.EditorStartPoints != null)
+        {
+            foreach (EditorStartPoint eSP in _map.EditorStartPoints)
+            {
+                if (eSP.UnitStartLocation[0] != 0 && eSP.UnitStartLocation[1] != 0 && eSP.UnitStartLocation[2] != 0)
+                {
+                    _map.GameStartPoints.Add(new float[3] { eSP.UnitStartLocation[0], eSP.UnitStartLocation[1], eSP.UnitStartLocation[2] });
+                }
+            }
+        }
 
         return _map;
     }
 
     public void ImportMap(Map map)
     {
-        DeleteMapGameObjects();
-        InitializeStartTerrain(map.SizeMapX, map.SizeMapY);
-        InitializeNewMap(map);
+        DeleteMapGameObjects(); // Delete objects
+        InitializeStartTerrain(_map.SizeMapX, _map.SizeMapY); //  zero arrays 
+
+        _map = map;
+        InitializeNewMap();
     }
 
     public void DeleteMapGameObjects()
@@ -449,10 +466,8 @@ public class MapEditorManager : MonoBehaviour
         GameObjectToDelete(Terrain);
     }
 
-    private void InitializeNewMap(Map map)
+    private void InitializeNewMap()
     {
-        _map = map;
-        //_map.Maps = map.Maps;
         for (int i = 0; i < _map.MapsCount; i++)
         {
             for (int j = 0; j < _map.SizeMapX; j++)
@@ -477,7 +492,147 @@ public class MapEditorManager : MonoBehaviour
 
     public int[] GetSizeMap()
     {
-
         return new int[3] { _map.SizeMapX, _map.SizeMapY, _map.MapsCount };
     }
+
+    private Vector3 ArrayToVector3(float[] array)
+    {
+        return new Vector3(array[0], array[1], array[2]);
+    }
+
+    private float[] Vector3ToArray(Vector3 vec)
+    {
+        return new float[3] { vec.x, vec.y, vec.z };
+    }
+
+
+}
+
+
+public class test
+{
+
+    // in generate unit nature
+    //            if (ItemButtons[CurrentButtonPressed] is ItemUnitController)
+    //        {
+    //            int fullSize = ItemButtons[CurrentButtonPressed].item.ItemPrefab.GetComponent<StartPointUnit>().buildSize;
+
+    //            if (vx<fullSize / 2 || vx >= _map.SizeMapX - fullSize / 2 || vz<fullSize / 2 || vz >= _map.SizeMapY - fullSize / 2)
+    //            {
+    //                return;
+    //            }
+
+    //int tempvx, tempvz;
+
+    //for (int i = 0; i < fullSize; i++)
+    //{
+    //    for (int j = 0; j < fullSize; j++)
+    //    {
+    //        tempvx = vx - fullSize / 2 + i;
+    //        tempvz = vz - fullSize / 2 + j;
+
+    //        if (vx < 0 || vx >= _map.SizeMapX || vz < 0 || vz >= _map.SizeMapY || _map.Maps[level][tempvx][tempvz] != 0) return;
+    //    }
+    //}
+
+    //for (int i = 0; i < fullSize; i++)
+    //{
+    //    for (int j = 0; j < fullSize; j++)
+    //    {
+    //        tempvx = vx - fullSize / 2 + i;
+    //        tempvz = vz - fullSize / 2 + j;
+    //        if (tempvx == vx && tempvz == vz) continue;
+    //        _map.Maps[level][tempvx][tempvz] = -1;
+    //    }
+    //}
+    //        }
+
+
+
+
+    //InitializeStartPointUnitsList();
+
+
+    //private void InitializeStartPointUnitsList()
+    //{
+    //    foreach (Button button in unitEditorPanel.ColorsUnitsButtons)
+    //    {
+    //        UnitEditorButton unitEditorButton = button.gameObject.GetComponent<UnitEditorButton>();
+
+    //        startPoints.Add(new EditorStartPoint
+    //        {
+    //            unitMaterialName = unitEditorButton.unitMaterial.name,
+    //            unitStartLocation = Vector3.zero,
+    //        });
+    //    }
+    //}
+
+
+
+    //// w create game object
+    ///
+    //        if (mapsPrefabs[level][vx][vz].GetComponent<StartPointUnit>() != null)
+    //        {
+    //            EditorStartPoint spu = startPoints.Where(u => u.unitStartLocation.x == vx && u.unitStartLocation.z == vz).First();
+
+    //int areaToReset = mapsPrefabs[level][vx][vz].GetComponent<StartPointUnit>().buildSize;
+    //int tempvx, tempvz;
+
+    //            for (int i = 0; i<areaToReset; i++)
+    //            {
+    //                for (int j = 0; j<areaToReset; j++)
+    //                {
+    //                    tempvx = vx - areaToReset / 2 + i;
+    //                    tempvz = vz - areaToReset / 2 + j;
+
+    //                    _map.Maps[level][tempvx][tempvz] = 0;
+    //                }
+    //            }
+
+    //            spu.unitStartLocation = Vector3.zero;
+    //        }
+
+
+
+    /* 
+     *             if (ItemButtons[CurrentButtonPressed] is ItemUnitController)
+            {
+                UpdateStartUnitList(vx, vz, level);
+            }
+
+
+         private void UpdateStartUnitList(int vx, int vz, int level)
+    {
+        EditorStartPoint spu = startPoints.Where(u => u.unitMaterialName == unitEditorPanel.ActualMaterial.name).First();
+
+        if (spu.unitStartLocation == Vector3.zero)
+        {
+            spu.unitStartLocation = new Vector3(vx, ItemButtons[CurrentButtonPressed].item.ItemHeightPosY, vz);
+            return;
+        }
+
+        if (_map.Maps[level][(int)spu.unitStartLocation.x][(int)spu.unitStartLocation.z] == CurrentButtonPressed)
+        {
+            int tempvx, tempvz;
+            int fullSize = ItemButtons[CurrentButtonPressed].item.ItemPrefab.GetComponent<StartPointUnit>().buildSize;
+
+            for (int i = 0; i < fullSize; i++)
+            {
+                for (int j = 0; j < fullSize; j++)
+                {
+                    tempvx = (int)spu.unitStartLocation.x - fullSize / 2 + i;
+                    tempvz = (int)spu.unitStartLocation.z - fullSize / 2 + j;
+
+                    _map.Maps[level][tempvx][tempvz] = 0;
+                }
+            }
+        }
+
+        DeleteGameObject((int)spu.unitStartLocation.x, (int)spu.unitStartLocation.z, level);
+        spu.unitStartLocation = new Vector3(vx, ItemButtons[CurrentButtonPressed].item.ItemHeightPosY, vz);
+    }
+     */
+
+
+
 }

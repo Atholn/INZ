@@ -141,10 +141,12 @@ public class MenuEditorManager : MonoBehaviour
     {
         ActiveDeactivatePanel(filePanel, !filePanel.activeSelf);
         DrawMapView();
+
         map.ViewMap = mapViewColors;
 
         if (fileMapSystem.CheckIfExist(map.Name))
         {
+            map.UpdateTime = DateTime.UtcNow.ToLocalTime().ToString();
             fileMapSystem.SaveEditorMap(ref map);
             return;
         }

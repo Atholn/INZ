@@ -31,7 +31,7 @@ public class UnitEditorPanel : MonoBehaviour
             ColorsUnitsButtons[i].transform.SetParent(gameObject.transform);
             ColorsUnitsButtons[i].transform.localScale = ButtonToCopy.transform.localScale;
 
-            UnitEditorButton unitEditorButton = ColorsUnitsButtons[i].GetComponent<UnitEditorButton>();
+            UnitColorButton unitEditorButton = ColorsUnitsButtons[i].GetComponent<UnitColorButton>();
             unitEditorButton.ID = i;
             unitEditorButton.unitMaterial = materialList[i];
 

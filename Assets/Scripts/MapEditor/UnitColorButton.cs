@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UnitEditorButton : MonoBehaviour
+public class UnitColorButton : MonoBehaviour
 {
     internal Material unitMaterial;   
     internal int ID;
