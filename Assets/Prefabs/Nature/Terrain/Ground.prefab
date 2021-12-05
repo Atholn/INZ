@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5404080173904699848}
   - component: {fileID: 3499223278458233931}
   - component: {fileID: 4095982365988984530}
-  - component: {fileID: 8998730082733194195}
+  - component: {fileID: 6013503852072562852}
   m_Layer: 0
   m_Name: Ground
   m_TagString: Untagged
@@ -83,7 +83,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &8998730082733194195
+--- !u!114 &6013503852072562852
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -92,10 +92,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 426985600659949882}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b7c1fa7a823bd1f49a6909ffdbaf02e4, type: 3}
+  m_Script: {fileID: 11500000, guid: a564e2afdef5bcb4e84afd2a1c566fad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   ItemPrefab: {fileID: 426985600659949882}
   ItemImage: {fileID: 1643027924844237403, guid: c803417a66c2d984888fe49b0b83b525, type: 3}
   ItemHeightLevel: 0
   ItemHeightPosY: 0
+  AllowsBuild: 1

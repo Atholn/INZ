@@ -34,6 +34,7 @@ public class MapEditorManager : MonoBehaviour
     {
         InitializeOpenEditor();
         InitializeIDButtons();
+        InitializeHeightMainTerrain();
     }
 
     private void InitializeOpenEditor()
@@ -54,6 +55,16 @@ public class MapEditorManager : MonoBehaviour
         for (int i = 0; i < ItemControllers.Length; i++)
         {
             ItemControllers[i].item.ID = i;
+        }
+    }
+    private void InitializeHeightMainTerrain()
+    {
+        foreach (ItemController itemController in ItemControllers)
+        {
+            if (itemController.item is ItemTerrain)
+            {
+                (itemController.item as ItemTerrain).Initialize();
+            }
         }
     }
 
@@ -457,36 +468,7 @@ public class MapEditorManager : MonoBehaviour
         _map.SizeMapY = sizeY;
 
         MapLoader.InitializeNewMap(ref _map, ref mapsPrefabs, ref Terrain, ItemControllers, mainGroundID);
-        //Vector3 firstScale = ItemControllers[mainGroundID].item.ItemPrefab.transform.localScale;
-
-        //GameObject basicTerrainPrefab = ItemControllers[mainGroundID].item.ItemPrefab;
-        //basicTerrainPrefab.gameObject.transform.localScale = new Vector3(sizeX * firstScale.x, firstScale.y, sizeY * firstScale.z);
-        //Terrain = Instantiate(basicTerrainPrefab, new Vector3(sizeX / 2 - 0.5f, 0, sizeY / 2 - 0.5f), basicTerrainPrefab.transform.rotation);
-
-        //basicTerrainPrefab.gameObject.transform.localScale = firstScale;
-
-        ////-----
-        //_map.Maps = new int[_map.MapsCount][][];
-        //mapsPrefabs = new GameObject[_map.MapsCount][][];
-
-        //_map.SizeMapX = sizeX;
-        //_map.SizeMapY = sizeY;
-
-        //for (int i = 0; i < _map.MapsCount; i++)
-        //{
-        //    _map.Maps[i] = new int[sizeX][];
-        //    mapsPrefabs[i] = new GameObject[sizeX][];
-
-        //    for (int j = 0; j < sizeX; j++)
-        //    {
-        //        _map.Maps[i][j] = new int[sizeY];
-        //        mapsPrefabs[i][j] = new GameObject[sizeY];
-        //    }
-        //}
     }
-
-
-
     #endregion
 
     //public void NewTerrain()
