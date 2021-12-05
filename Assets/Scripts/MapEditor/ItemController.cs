@@ -19,11 +19,11 @@ public class ItemController : MonoBehaviour
 
     public virtual void ButtonClicked()
     {
-        Vector3 screenPosition = new Vector3(Input.mousePosition.x, editor.ItemButtons[item.ID].item.ItemHeightLevel, Input.mousePosition.z);
+        Vector3 screenPosition = new Vector3(Input.mousePosition.x, editor.ItemControllers[item.ID].item.ItemHeightLevel, Input.mousePosition.z);
         Vector3 worldPosition = Camera.main.ScreenToWorldPoint(screenPosition);
         Clicked = true;
         
-        Instantiate(editor.ItemButtons[item.ID].item.ItemImage, new Vector3(worldPosition.x, editor.ItemButtons[item.ID].item.ItemHeightLevel, worldPosition.z), item.ItemPrefab.transform.rotation);
+        Instantiate(editor.ItemControllers[item.ID].item.ItemImage, new Vector3(worldPosition.x, editor.ItemControllers[item.ID].item.ItemHeightLevel, worldPosition.z), item.ItemPrefab.transform.rotation);
 
         editor.CurrentButtonPressed = item.ID;
     }

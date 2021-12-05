@@ -12,9 +12,9 @@ public class FollowScript : MonoBehaviour
     private void Start()
     {
         levelEditorManager = FindObjectOfType<MapEditorManager>();
-        height = levelEditorManager.ItemButtons[levelEditorManager.CurrentButtonPressed].item.ItemHeightPosY;
+        height = levelEditorManager.ItemControllers[levelEditorManager.CurrentButtonPressed].item.ItemHeightPosY;
 
-        ItemStartPoint startPointUnit = levelEditorManager.ItemButtons[levelEditorManager.CurrentButtonPressed].item.ItemPrefab.GetComponent<ItemStartPoint>();
+        ItemStartPoint startPointUnit = levelEditorManager.ItemControllers[levelEditorManager.CurrentButtonPressed].item.ItemPrefab.GetComponent<ItemStartPoint>();
         limit = startPointUnit != null ? startPointUnit.BuildSize / 2 : 0;
     }
 

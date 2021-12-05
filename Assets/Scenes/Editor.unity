@@ -11045,7 +11045,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf30ba09a3e82134086c14ad922b4353, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ItemButtons:
+  ItemControllers:
   - {fileID: 1871055850}
   - {fileID: 889626573}
   - {fileID: 882083171}
