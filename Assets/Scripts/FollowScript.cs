@@ -27,7 +27,7 @@ public class FollowScript : MonoBehaviour
             hit.point.z > limit && hit.point.z <= levelEditorManager.GetSizeMap()[1] - limit)
         {
 
-            transform.position = new Vector3(hit.point.x - hit.point.x % 1, height, hit.point.z - hit.point.z % 1);
+            transform.position = new Vector3(hit.point.x - hit.point.x % 1, height+0.2f, hit.point.z - hit.point.z % 1);
         }
     }
 }

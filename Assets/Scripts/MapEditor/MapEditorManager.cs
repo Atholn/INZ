@@ -34,7 +34,6 @@ public class MapEditorManager : MonoBehaviour
     {
         InitializeOpenEditor();
         InitializeIDButtons();
-        InitializeStartMaps();
     }
 
     private void InitializeOpenEditor()
@@ -55,53 +54,6 @@ public class MapEditorManager : MonoBehaviour
         for (int i = 0; i < ItemControllers.Length; i++)
         {
             ItemControllers[i].item.ID = i;
-        }
-    }
-
-    private void InitializeStartMaps()
-    {
-        _map.Maps = new int[_map.MapsCount][][];
-        mapsPrefabs = new GameObject[_map.MapsCount][][];
-    }
-
-    internal void InitializeStartTerrain(int sizeX, int sizeY, int mainGround = 0)
-    {
-        foreach (GameObject panel in panelsToActive)
-        {
-            panel.SetActive(true);
-        }
-        foreach (GameObject panel in craftingPanels)
-        {
-            panel.SetActive(false);
-        }
-        sizeMapPanel.SetActive(false);
-
-        Vector3 firstScale = ItemControllers[mainGround].item.ItemPrefab.transform.localScale;
-
-        GameObject basicTerrainPrefab = ItemControllers[mainGround].item.ItemPrefab;
-        basicTerrainPrefab.gameObject.transform.localScale = new Vector3(sizeX * firstScale.x, firstScale.y, sizeY * firstScale.z);
-        Terrain = Instantiate(basicTerrainPrefab, new Vector3(sizeX / 2 - 0.5f, 0, sizeY / 2 - 0.5f), basicTerrainPrefab.transform.rotation);
-
-        basicTerrainPrefab.gameObject.transform.localScale = firstScale;
-
-        InitializeTerrainArrays(sizeX, sizeY);
-    }
-
-    private void InitializeTerrainArrays(int sizeX, int sizeY)
-    {
-        _map.SizeMapX = sizeX;
-        _map.SizeMapY = sizeY;
-
-        for (int i = 0; i < _map.MapsCount; i++)
-        {
-            _map.Maps[i] = new int[sizeX][];
-            mapsPrefabs[i] = new GameObject[sizeX][];
-
-            for (int j = 0; j < sizeX; j++)
-            {
-                _map.Maps[i][j] = new int[sizeY];
-                mapsPrefabs[i][j] = new GameObject[sizeY];
-            }
         }
     }
 
@@ -453,49 +405,24 @@ public class MapEditorManager : MonoBehaviour
         return _map;
     }
 
-    public void ImportMap(Map map)
+    public void ImportMap(Map newMap)
     {
-        DeleteMapGameObjects(); // Delete objects
-        InitializeStartTerrain(_map.SizeMapX, _map.SizeMapY); //  zero arrays 
+        MapLoader.ResetAndLoad(ref _map, ref newMap, ref mapsPrefabs, ref Terrain, ItemControllers, newMap.MainGroundID); 
 
-        _map = map;
-        InitializeNewMap();
-    }
+        //InitializeStartTerrain(_map.SizeMapX, _map.SizeMapY); //  zero arrays 
 
-    public void DeleteMapGameObjects()
-    {
-        for (int k = 0; k < _map.MapsCount; k++)
+        //_map = newMap;
+        //InitializeNewMap();
+
+        foreach (GameObject panel in panelsToActive)
         {
-            for (int i = 0; i < _map.SizeMapX; i++)
-            {
-                for (int j = 0; j < _map.SizeMapY; j++)
-                {
-                    if (mapsPrefabs[k][i][j] != null)
-                    {
-                        DeleteGameObject(i, j, k);
-                    }
-                }
-            }
+            panel.SetActive(true);
         }
-
-        GameObjectToDelete(Terrain);
-    }
-
-    private void InitializeNewMap()
-    {
-        for (int i = 0; i < _map.MapsCount; i++)
+        foreach (GameObject panel in craftingPanels)
         {
-            for (int j = 0; j < _map.SizeMapX; j++)
-            {
-                for (int k = 0; k < _map.SizeMapY; k++)
-                {
-                    if (_map.Maps[i][j][k] > 0)
-                    {
-                        mapsPrefabs[i][j][k] = Instantiate(ItemControllers[_map.Maps[i][j][k]].item.ItemPrefab, new Vector3(j, ItemControllers[_map.Maps[i][j][k]].item.ItemHeightPosY, k), ItemControllers[_map.Maps[i][j][k]].item.ItemPrefab.transform.rotation);
-                    }
-                }
-            }
+            panel.SetActive(false);
         }
+        sizeMapPanel.SetActive(false);
 
         ItemController startPointPrefab = ItemControllers.Where(i => i is ItemUnitController).FirstOrDefault();
         foreach (EditorStartPoint eSP in _map.EditorStartPoints)
@@ -512,6 +439,54 @@ public class MapEditorManager : MonoBehaviour
             mapsPrefabs[startPointPrefab.item.ItemHeightLevel][(int)eSP.UnitStartLocation[0]][(int)eSP.UnitStartLocation[2]] = Instantiate(startPointPrefab.item.ItemPrefab, new Vector3(eSP.UnitStartLocation[0], startPointPrefab.item.ItemHeightPosY, eSP.UnitStartLocation[2]), startPointPrefab.item.ItemPrefab.transform.rotation);
         }
     }
+
+    internal void InitializeStartTerrain(int sizeX, int sizeY, int mainGroundID = 0)
+    {
+        _map.MainGroundID = mainGroundID;
+        foreach (GameObject panel in panelsToActive)
+        {
+            panel.SetActive(true);
+        }
+        foreach (GameObject panel in craftingPanels)
+        {
+            panel.SetActive(false);
+        }
+        sizeMapPanel.SetActive(false);
+
+        _map.SizeMapX = sizeX;
+        _map.SizeMapY = sizeY;
+
+        MapLoader.InitializeNewMap(ref _map, ref mapsPrefabs, ref Terrain, ItemControllers, mainGroundID);
+        //Vector3 firstScale = ItemControllers[mainGroundID].item.ItemPrefab.transform.localScale;
+
+        //GameObject basicTerrainPrefab = ItemControllers[mainGroundID].item.ItemPrefab;
+        //basicTerrainPrefab.gameObject.transform.localScale = new Vector3(sizeX * firstScale.x, firstScale.y, sizeY * firstScale.z);
+        //Terrain = Instantiate(basicTerrainPrefab, new Vector3(sizeX / 2 - 0.5f, 0, sizeY / 2 - 0.5f), basicTerrainPrefab.transform.rotation);
+
+        //basicTerrainPrefab.gameObject.transform.localScale = firstScale;
+
+        ////-----
+        //_map.Maps = new int[_map.MapsCount][][];
+        //mapsPrefabs = new GameObject[_map.MapsCount][][];
+
+        //_map.SizeMapX = sizeX;
+        //_map.SizeMapY = sizeY;
+
+        //for (int i = 0; i < _map.MapsCount; i++)
+        //{
+        //    _map.Maps[i] = new int[sizeX][];
+        //    mapsPrefabs[i] = new GameObject[sizeX][];
+
+        //    for (int j = 0; j < sizeX; j++)
+        //    {
+        //        _map.Maps[i][j] = new int[sizeY];
+        //        mapsPrefabs[i][j] = new GameObject[sizeY];
+        //    }
+        //}
+    }
+
+
+
     #endregion
 
     //public void NewTerrain()

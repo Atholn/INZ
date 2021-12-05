@@ -6,6 +6,7 @@ public class Map
     #region Map create Info 
     public int MapsCount = 2;//Level 0 - terrain; Level 1 - Nature/Unit
     public int[][][] Maps;
+    public int MainGroundID = 0;
 
     public int SizeMapX;
     public int SizeMapY;
