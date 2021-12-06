@@ -110,7 +110,7 @@ public class MenuEditorManager : MonoBehaviour
 
     public void Size(int size)
     {
-        MapEditorManager.InitializeStartTerrain(size, size, 1);
+        MapEditorManager.InitializeStartTerrain(size, size, 0);
         //todo
     }
 
