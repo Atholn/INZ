@@ -275,7 +275,7 @@ public class MapEditorManager : MonoBehaviour
             DeleteGameObject(vx, vz, level);
         }
 
-        if (_map.Maps[level][vx][vz] == 0 && CanCreate(vx, vz))
+        if (_map.Maps[level][vx][vz] == 0)
         {
             if (ItemControllers[CurrentButtonPressed] is ItemUnitController)
             {
@@ -492,14 +492,38 @@ public class MapEditorManager : MonoBehaviour
         return new float[3] { vec.x, vec.y, vec.z };
     }
 
-    public bool CanCreate(int x, int z)
+    public int CanCreate(int x, int z)
     {
-        if (_map.Maps[1][x][z] != 0) return false;
-
-        if (!(ItemControllers[_map.Maps[0][x][z]].item as ItemTerrain).AllowsBuild)
+        if (ItemControllers[CurrentButtonPressed].item.ItemHeightLevel == 1)
         {
-            return false;
+            if (ItemControllers[CurrentButtonPressed].item is ItemStartPoint)
+            {
+                int area = (ItemControllers[CurrentButtonPressed].GetComponent<ItemUnitController>().item as ItemStartPoint).BuildSize;
+                int tempvx, tempvz;
+
+                for (int i = 0; i < area; i++)
+                {
+                    for (int j = 0; j < area; j++)
+                    {
+                        tempvx = x - area / 2 + i;
+                        tempvz = z - area / 2 + j;
+
+                        if (_map.Maps[1][tempvx][tempvz] != 0 || !(ItemControllers[_map.Maps[0][tempvx][tempvz]].item as ItemTerrain).AllowsBuild)
+                        {
+                            return 0;
+                        }
+                    }
+                }
+
+                return 1;
+            }
+
+            if (_map.Maps[1][x][z] == 0 && mapsPrefabs[1][x][z] == null && (ItemControllers[_map.Maps[0][x][z]].item as ItemTerrain).AllowsBuild) return 1;
+
+            if (!replaceToggle.isOn && (_map.Maps[1][x][z] != 0 || mapsPrefabs[1][x][z] != null || !((ItemControllers[_map.Maps[0][x][z]].item as ItemTerrain).AllowsBuild))) return 0;
+            if (replaceToggle.isOn && !((ItemControllers[_map.Maps[0][x][z]].item as ItemTerrain).AllowsBuild)) return 0;
         }
-        return true;
+
+        return -1;
     }
 }

@@ -8,7 +8,6 @@ public class FollowScript : MonoBehaviour
     public Material MaterialNotAllowsBuild;
     public Material MaterialRebuild;
 
-    private RaycastHit hit;
     private float height;
     private int limit;
     private MapEditorManager _mapEditorManager;
@@ -24,20 +23,12 @@ public class FollowScript : MonoBehaviour
 
     private void Update()
     {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
         CheckIfCan((int)(_mapEditorManager.v.x - _mapEditorManager.v.x % 1), (int)(_mapEditorManager.v.z - _mapEditorManager.v.z % 1));
 
-        //if (Physics.Raycast(ray, out hit, 500.0f) &&
-        //    hit.point.x > limit && hit.point.x <= _mapEditorManager.GetSizeMap()[0] - limit &&
-        //    hit.point.z > limit && hit.point.z <= _mapEditorManager.GetSizeMap()[1] - limit)
-        //{
-        //transform.position = new Vector3(hit.point.x - hit.point.x % 1, height + 0.2f, hit.point.z - hit.point.z % 1);
-        //}
         int vx = (int)(_mapEditorManager.v.x - _mapEditorManager.v.x % 1);
         int vz = (int)(_mapEditorManager.v.z - _mapEditorManager.v.z % 1);
-        if (vx > limit && vx <= _mapEditorManager.GetSizeMap()[0] - limit &&
-            vz > limit && vz <= _mapEditorManager.GetSizeMap()[1] - limit)
+        if (vx >= limit && vx <= _mapEditorManager.GetSizeMap()[0] - limit &&
+            vz >= limit && vz <= _mapEditorManager.GetSizeMap()[1] - limit)
         {
             transform.position = new Vector3(vx, height + 0.2f, vz);
         }
@@ -45,21 +36,17 @@ public class FollowScript : MonoBehaviour
 
     private void CheckIfCan(int x, int z)
     {
-        if (_mapEditorManager.ItemControllers[_mapEditorManager.CurrentButtonPressed].item.ItemHeightLevel == 1)
+        if (x < limit || x > _mapEditorManager.GetSizeMap()[0] - limit || z < limit || z > _mapEditorManager.GetSizeMap()[1] - limit)
         {
-            if (_mapEditorManager.mapsPrefabs[1][x][z] == null && _mapEditorManager.CanCreate(x, z) )
-            {
-                gameObject.GetComponent<MeshRenderer>().material = MaterialAllowsBuild;
-                return;
-            }
+            gameObject.GetComponent<MeshRenderer>().material = MaterialNotAllowsBuild; 
+            return;
+        }
 
-            if (_mapEditorManager.mapsPrefabs[1][x][z] != null && _mapEditorManager.replaceToggle.isOn)
-            {
-                gameObject.GetComponent<MeshRenderer>().material = MaterialRebuild;
-                return;
-            }
-
-            gameObject.GetComponent<MeshRenderer>().material = MaterialNotAllowsBuild;
+        switch (_mapEditorManager.CanCreate(x, z))
+        {
+            case -1: gameObject.GetComponent<MeshRenderer>().material = MaterialRebuild; break;
+            case 0: gameObject.GetComponent<MeshRenderer>().material = MaterialNotAllowsBuild; break;
+            case 1: gameObject.GetComponent<MeshRenderer>().material = MaterialAllowsBuild; break;
         }
     }
 }
