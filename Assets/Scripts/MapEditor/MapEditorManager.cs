@@ -275,7 +275,7 @@ public class MapEditorManager : MonoBehaviour
             DeleteGameObject(vx, vz, level);
         }
 
-        if (_map.Maps[level][vx][vz] == 0)
+        if (_map.Maps[level][vx][vz] == 0 && CanCreate(vx, vz))
         {
             if (ItemControllers[CurrentButtonPressed] is ItemUnitController)
             {
@@ -418,7 +418,7 @@ public class MapEditorManager : MonoBehaviour
 
     public void ImportMap(Map newMap)
     {
-        MapLoader.ResetAndLoad(ref _map, ref newMap, ref mapsPrefabs, ref Terrain, ItemControllers, newMap.MainGroundID); 
+        MapLoader.ResetAndLoad(ref _map, ref newMap, ref mapsPrefabs, ref Terrain, ItemControllers, newMap.MainGroundID);
 
         //InitializeStartTerrain(_map.SizeMapX, _map.SizeMapY); //  zero arrays 
 
@@ -490,5 +490,16 @@ public class MapEditorManager : MonoBehaviour
     private float[] Vector3ToArray(Vector3 vec)
     {
         return new float[3] { vec.x, vec.y, vec.z };
+    }
+
+    public bool CanCreate(int x, int z)
+    {
+        if (_map.Maps[1][x][z] != 0) return false;
+
+        if (!(ItemControllers[_map.Maps[0][x][z]].item as ItemTerrain).AllowsBuild)
+        {
+            return false;
+        }
+        return true;
     }
 }

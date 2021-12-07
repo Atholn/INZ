@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 840160154515845874}
   - component: {fileID: 4691227175583071409}
   - component: {fileID: 2822303079073443774}
-  - component: {fileID: -8132399335201960603}
+  - component: {fileID: -6516326792678481401}
   m_Layer: 0
   m_Name: Stone2Image
   m_TagString: ItemImage
@@ -83,7 +83,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &-8132399335201960603
+--- !u!114 &-6516326792678481401
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -95,3 +95,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 061a7d0c5f0fb524d883b71302491eaa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MaterialAllowsBuild: {fileID: 2100000, guid: 4bf1e3a88c6641a4ba85777cfd8be0ee, type: 2}
+  MaterialNotAllowsBuild: {fileID: 2100000, guid: 12fecc9e2f802c740a9976fdb4f8c1a8, type: 2}
+  MaterialRebuild: {fileID: 2100000, guid: 426d27071a9941e4d9d084e627416204, type: 2}

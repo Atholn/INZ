@@ -164,7 +164,7 @@ public class MenuEditorManager : MonoBehaviour
     public void SaveClickAccept()
     {
         InputField nameOfMapInputField = saveMapPanel.GetComponentInChildren<InputField>();
-        Text text = saveMapPanel.GetComponentsInChildren<Text>(true).Where(t => t.tag == "InfoSaveErrorText").FirstOrDefault();
+        Text text = saveMapPanel.GetComponentsInChildren<Text>(true).Where(t => t.CompareTag("InfoSaveErrorText")).FirstOrDefault();
         text.gameObject.SetActive(false);
 
         if (nameOfMapInputField.text == "")
