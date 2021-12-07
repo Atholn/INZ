@@ -246,33 +246,38 @@ public class MapEditorManager : MonoBehaviour
 
     private void CreateGameObject(int vx, int vz, int level)
     {
-        if (replaceToggle.isOn && _map.Maps[level][vx][vz] > 0 && _map.Maps[level][vx][vz] != CurrentButtonPressed)
+        if (replaceToggle.isOn && _map.Maps[level][vx][vz] != 0 && _map.Maps[level][vx][vz] != CurrentButtonPressed)
         {
-            if (mapsPrefabs[level][vx][vz].GetComponent<ItemStartPoint>() != null)
+            if (_map.Maps[level][vx][vz] == -1 && mapsPrefabs[level][vx][vz] == null)
             {
-                EditorStartPoint spu = _map.EditorStartPoints.Where(u => u.UnitStartLocation[0] == vx && u.UnitStartLocation[2] == vz).First();
-
-                int areaToReset = mapsPrefabs[level][vx][vz].GetComponent<ItemStartPoint>().BuildSize;
-                int tempvx, tempvz;
-
-                for (int i = 0; i < areaToReset; i++)
+                float tmpMin, min = -1;
+                int j = -1;
+                for (int i = 0; i < _map.EditorStartPoints.Count; i++)
                 {
-                    for (int j = 0; j < areaToReset; j++)
+                    if (_map.EditorStartPoints[i].UnitStartLocation[0] == 0 && _map.EditorStartPoints[i].UnitStartLocation[1] == 0 && _map.EditorStartPoints[i].UnitStartLocation[2] == 0)
                     {
-                        tempvx = vx - areaToReset / 2 + i;
-                        tempvz = vz - areaToReset / 2 + j;
+                        continue;
+                    }
 
-                        _map.Maps[level][tempvx][tempvz] = 0;
+                    tmpMin = (vx - _map.EditorStartPoints[i].UnitStartLocation[0]) * (vx - _map.EditorStartPoints[i].UnitStartLocation[0]) - (vz - _map.EditorStartPoints[i].UnitStartLocation[2]) * (vx - _map.EditorStartPoints[i].UnitStartLocation[2]);
+                    if (min == -1 || tmpMin < min)
+                    {
+                        min = tmpMin;
+                        j = i;
                     }
                 }
 
-                spu.UnitStartLocation[0] = 0;
-                spu.UnitStartLocation[1] = 0;
-                spu.UnitStartLocation[2] = 0;
+                ResetAreaAfterCreate((int)_map.EditorStartPoints[j].UnitStartLocation[0], (int)_map.EditorStartPoints[j].UnitStartLocation[2], level);           
             }
+            else
+            {
+                if (mapsPrefabs[level][vx][vz].GetComponent<ItemStartPoint>() != null)
+                {
+                    ResetAreaAfterCreate(vx, vz, level);                 
+                }
 
-
-            DeleteGameObject(vx, vz, level);
+                DeleteGameObject(vx, vz, level);
+            }
         }
 
         if (_map.Maps[level][vx][vz] == 0)
@@ -291,6 +296,31 @@ public class MapEditorManager : MonoBehaviour
                 new Vector3(vx, ItemControllers[CurrentButtonPressed].item.ItemHeightPosY, vz),
                 ItemControllers[CurrentButtonPressed].item.ItemPrefab.transform.rotation);
         }
+    }
+
+    private void ResetAreaAfterCreate(int vx, int vz, int level)
+    {
+        EditorStartPoint spu = _map.EditorStartPoints.Where(u => u.UnitStartLocation[0] == vx && u.UnitStartLocation[2] == vz).First();
+
+        int areaToReset = mapsPrefabs[level][vx][vz].GetComponent<ItemStartPoint>().BuildSize;
+        int tempvx, tempvz;
+
+        for (int i = 0; i < areaToReset; i++)
+        {
+            for (int j = 0; j < areaToReset; j++)
+            {
+                tempvx = vx - areaToReset / 2 + i;
+                tempvz = vz - areaToReset / 2 + j;
+
+                _map.Maps[level][tempvx][tempvz] = 0;
+            }
+        }
+
+        DeleteGameObject(vx, vz, level);
+
+        spu.UnitStartLocation[0] = 0;
+        spu.UnitStartLocation[1] = 0;
+        spu.UnitStartLocation[2] = 0;
     }
 
     private void UpdateStartUnitList(int vx, int vz, int level)
@@ -332,6 +362,9 @@ public class MapEditorManager : MonoBehaviour
 
     private void DeleteGameObject(int vx, int vz, int level)
     {
+        //Debug.LogError("d");
+        Debug.Log(_map.Maps[level][vx][vz]);
+        Debug.Log(mapsPrefabs[level][vx][vz].name);
         GameObjectToDelete(mapsPrefabs[level][vx][vz]);
 
         _map.Maps[level][vx][vz] = 0;
