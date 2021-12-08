@@ -143,7 +143,10 @@ public class MapEditorManager : MonoBehaviour
 
             if ((vx < _map.SizeMapX && vx > -1) && (vz < _map.SizeMapY && vz > -1))
             {
-                if (CanCreate(vx, vz) == 0) return;
+                if (CanCreate(vx, vz) == 0)
+                {
+                    return;
+                }
 
                 if (ItemControllers[CurrentButtonPressed].item.ItemHeightLevel == 0)
                 {

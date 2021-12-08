@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 
 public class ItemController : MonoBehaviour
@@ -12,6 +13,10 @@ public class ItemController : MonoBehaviour
 
     private void Awake()
     {
+        var colors = gameObject.GetComponent<Button>().colors;
+        colors.selectedColor = transform.parent.gameObject.GetComponentInParent<Image>().color;
+        gameObject.GetComponent<Button>().colors = colors;
+
         firstScale = item.ItemPrefab.transform.localScale;
         item.ItemImage.transform.localScale = item.ItemPrefab.transform.localScale;
         editor = GameObject.FindGameObjectWithTag("LevelEditorManager").GetComponent<MapEditorManager>();        
