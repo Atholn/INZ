@@ -179,8 +179,6 @@ public class MapEditorManager : MonoBehaviour
 
     private void GenerateNatureUnit(int vx, int vz, int level)
     {
-
-
         if (ItemControllers[CurrentButtonPressed] is ItemUnitController)
         {
             if (_map.EditorStartPoints == null)
@@ -226,8 +224,6 @@ public class MapEditorManager : MonoBehaviour
                     _map.Maps[level][tempvx][tempvz] = -1;
                 }
             }
-
-
         }
 
         CreateGameObject(vx, vz, level);
@@ -250,8 +246,6 @@ public class MapEditorManager : MonoBehaviour
 
     private void CreateGameObject(int vx, int vz, int level)
     {
-
-
         if (replaceToggle.isOn && _map.Maps[level][vx][vz] != 0 && _map.Maps[level][vx][vz] != CurrentButtonPressed)
         {
             if (_map.Maps[level][vx][vz] == -1 && mapsPrefabs[level][vx][vz] == null)
@@ -457,7 +451,6 @@ public class MapEditorManager : MonoBehaviour
         MapLoader.ResetAndLoad(ref _map, ref newMap, ref mapsPrefabs, ref Terrain, ItemControllers, newMap.MainGroundID);
 
         //InitializeStartTerrain(_map.SizeMapX, _map.SizeMapY); //  zero arrays 
-
         //_map = newMap;
         //InitializeNewMap();
 
