@@ -267,13 +267,13 @@ public class MapEditorManager : MonoBehaviour
                     }
                 }
 
-                ResetAreaAfterCreate((int)_map.EditorStartPoints[j].UnitStartLocation[0], (int)_map.EditorStartPoints[j].UnitStartLocation[2], level);           
+                ResetAreaAfterCreate((int)_map.EditorStartPoints[j].UnitStartLocation[0], (int)_map.EditorStartPoints[j].UnitStartLocation[2], level);
             }
             else
             {
                 if (mapsPrefabs[level][vx][vz].GetComponent<ItemStartPoint>() != null)
                 {
-                    ResetAreaAfterCreate(vx, vz, level);                 
+                    ResetAreaAfterCreate(vx, vz, level);
                 }
 
                 DeleteGameObject(vx, vz, level);
@@ -362,9 +362,6 @@ public class MapEditorManager : MonoBehaviour
 
     private void DeleteGameObject(int vx, int vz, int level)
     {
-        //Debug.LogError("d");
-        Debug.Log(_map.Maps[level][vx][vz]);
-        Debug.Log(mapsPrefabs[level][vx][vz].name);
         GameObjectToDelete(mapsPrefabs[level][vx][vz]);
 
         _map.Maps[level][vx][vz] = 0;
@@ -554,8 +551,15 @@ public class MapEditorManager : MonoBehaviour
             if (_map.Maps[1][x][z] == 0 && mapsPrefabs[1][x][z] == null && (ItemControllers[_map.Maps[0][x][z]].item as ItemTerrain).AllowsBuild) return 1;
 
             if (!replaceToggle.isOn && (_map.Maps[1][x][z] != 0 || mapsPrefabs[1][x][z] != null || !((ItemControllers[_map.Maps[0][x][z]].item as ItemTerrain).AllowsBuild))) return 0;
+
             if (replaceToggle.isOn && !((ItemControllers[_map.Maps[0][x][z]].item as ItemTerrain).AllowsBuild)) return 0;
+
+            return -1;
         }
+
+        if (mapsPrefabs[0][x][z] == null && ((_map.Maps[1][x][z] == 0 ) || ((ItemControllers[CurrentButtonPressed].item as ItemTerrain).AllowsBuild && _map.Maps[1][x][z] != 0))) return 1;
+
+        if ((!replaceToggle.isOn && mapsPrefabs[0][x][z] != null) || (!(ItemControllers[CurrentButtonPressed].item as ItemTerrain).AllowsBuild) && _map.Maps[1][x][z] != 0) return 0;
 
         return -1;
     }
