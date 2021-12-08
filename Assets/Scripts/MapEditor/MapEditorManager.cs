@@ -143,6 +143,8 @@ public class MapEditorManager : MonoBehaviour
 
             if ((vx < _map.SizeMapX && vx > -1) && (vz < _map.SizeMapY && vz > -1))
             {
+                if (CanCreate(vx, vz) == 0) return;
+
                 if (ItemControllers[CurrentButtonPressed].item.ItemHeightLevel == 0)
                 {
                     GenerateTerrain(vx, vz, ItemControllers[CurrentButtonPressed].item.ItemHeightLevel);
@@ -177,6 +179,8 @@ public class MapEditorManager : MonoBehaviour
 
     private void GenerateNatureUnit(int vx, int vz, int level)
     {
+
+
         if (ItemControllers[CurrentButtonPressed] is ItemUnitController)
         {
             if (_map.EditorStartPoints == null)
@@ -246,6 +250,8 @@ public class MapEditorManager : MonoBehaviour
 
     private void CreateGameObject(int vx, int vz, int level)
     {
+
+
         if (replaceToggle.isOn && _map.Maps[level][vx][vz] != 0 && _map.Maps[level][vx][vz] != CurrentButtonPressed)
         {
             if (_map.Maps[level][vx][vz] == -1 && mapsPrefabs[level][vx][vz] == null)
@@ -280,7 +286,7 @@ public class MapEditorManager : MonoBehaviour
             }
         }
 
-        if (_map.Maps[level][vx][vz] == 0)
+        if (_map.Maps[level][vx][vz] == 0 )
         {
             if (ItemControllers[CurrentButtonPressed] is ItemUnitController)
             {
