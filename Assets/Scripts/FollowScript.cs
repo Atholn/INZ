@@ -27,8 +27,8 @@ public class FollowScript : MonoBehaviour
 
         int vx = (int)(_mapEditorManager.v.x - _mapEditorManager.v.x % 1);
         int vz = (int)(_mapEditorManager.v.z - _mapEditorManager.v.z % 1);
-        if (vx >= limit && vx <= _mapEditorManager.GetSizeMap()[0] - limit &&
-            vz >= limit && vz <= _mapEditorManager.GetSizeMap()[1] - limit)
+        if (vx >= limit && vx <= _mapEditorManager.GetSizeMap()[0] - limit - 1 &&
+            vz >= limit && vz <= _mapEditorManager.GetSizeMap()[1] - limit -1)
         {
             transform.position = new Vector3(vx, height + 0.2f, vz);
         }
@@ -36,7 +36,7 @@ public class FollowScript : MonoBehaviour
 
     private void CheckIfCan(int x, int z)
     {
-        if (x < limit || x > _mapEditorManager.GetSizeMap()[0] - limit || z < limit || z > _mapEditorManager.GetSizeMap()[1] - limit)
+        if (x < limit || x > _mapEditorManager.GetSizeMap()[0] - limit -1 || z < limit || z > _mapEditorManager.GetSizeMap()[1] - limit-1)
         {
             gameObject.GetComponent<MeshRenderer>().material = MaterialNotAllowsBuild; 
             return;

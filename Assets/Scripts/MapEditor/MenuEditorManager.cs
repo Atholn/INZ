@@ -246,7 +246,7 @@ public class MenuEditorManager : MonoBehaviour
             infoTexts[0].text = "Map info:";
             infoTexts[1].text = map.Name == "" ? "Name: untitled" : "Name: " + map.Name;
             infoTexts[2].text = map.Type == "" ? "Type: no chose yet" : "Type: " + map.Type;
-            infoTexts[3].text = $"Size: {MapEditorManager.GetSizeMap()[0]} x {MapEditorManager.GetSizeMap()[0]}";
+            infoTexts[3].text = $"Size: {MapEditorManager.GetSizeMap()[0]} x {MapEditorManager.GetSizeMap()[1]}";
             infoTexts[4].text = $"Create time: {map.CreateTime}";
             infoTexts[5].text = $"Last update: {map.UpdateTime}";
 
@@ -265,9 +265,9 @@ public class MenuEditorManager : MonoBehaviour
         Sprite sprite = Sprite.Create(texture, new Rect(0, 0, MapEditorManager.GetSizeMap()[0], MapEditorManager.GetSizeMap()[1]), Vector2.zero);
         mapViewImage.sprite = sprite;
 
-        for (int i = 0; i < texture.height; i++)
+        for (int i = 0; i < texture.width; i++)
         {
-            for (int j = 0; j < texture.width; j++)
+            for (int j = 0; j < texture.height; j++)
             {
                 Color pixelColour = new Color(mapViewColors[i][j][0], mapViewColors[i][j][1], mapViewColors[i][j][2], 1);
                 texture.SetPixel(i, j, pixelColour);
