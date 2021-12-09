@@ -11,13 +11,12 @@ public class MapEditorManager : MonoBehaviour
 
     internal GameObject[][][] mapsPrefabs;
     internal GameObject Terrain;
-
-    public ItemController[] ItemControllers;
     internal int CurrentButtonPressed;
 
     RaycastHit hit;
     internal Vector3 v;
 
+    public ItemController[] ItemControllers;
     public Slider sizeSlider;
     public Text valueSizeSliderText;
     public Toggle singleMultiToggle;
@@ -483,9 +482,10 @@ public class MapEditorManager : MonoBehaviour
         }
     }
 
-    internal void InitializeStartTerrain(int sizeX, int sizeY, int mainGroundID = 0)
+    internal void InitializeStartTerrain(int sizeX, int sizeY, int mainGroundID)
     {
         _map.MainGroundID = mainGroundID;
+
         foreach (GameObject panel in panelsToActive)
         {
             panel.SetActive(true);
@@ -499,7 +499,7 @@ public class MapEditorManager : MonoBehaviour
         _map.SizeMapX = sizeX;
         _map.SizeMapY = sizeY;
 
-        MapLoader.InitializeNewMap(ref _map, ref mapsPrefabs, ref Terrain, ItemControllers, mainGroundID);
+        MapLoader.InitializeNewMap(ref _map, ref mapsPrefabs, ref Terrain, ItemControllers, _map.MainGroundID);
     }
     #endregion
 

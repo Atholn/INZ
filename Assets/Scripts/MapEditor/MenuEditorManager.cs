@@ -108,12 +108,6 @@ public class MenuEditorManager : MonoBehaviour
         locationText.text = (MapEditorManager.v.x - MapEditorManager.v.x % 1).ToString() + " x " + (MapEditorManager.v.z - MapEditorManager.v.z % 1).ToString() + " y";
     }
 
-    public void Size(int size)
-    {
-        MapEditorManager.InitializeStartTerrain(size, size, 0);
-        //todo
-    }
-
     public void File()
     {
         ActiveDeactivatePanel(filePanel, !filePanel.activeSelf);
