@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class Item : MonoBehaviour
 {
-    internal int ID;
     public GameObject ItemPrefab;
     public GameObject ItemImage;
     public int ItemHeightLevel;
     public float ItemHeightPosY = 0;
+
+    internal int ID;
 }

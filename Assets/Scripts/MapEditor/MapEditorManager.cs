@@ -7,6 +7,13 @@ using UnityEngine.UI;
 
 public class MapEditorManager : MonoBehaviour
 {
+    enum TypeOfDestroy
+    {
+        Terrain = 0,
+        Nature = 1,
+        All = 2,
+    }
+
     private Map _map = new Map();
 
     internal GameObject[][][] mapsPrefabs;
@@ -17,12 +24,14 @@ public class MapEditorManager : MonoBehaviour
     internal Vector3 v;
 
     public ItemController[] ItemControllers;
+    public ItemDeleteController ItemDelete;
     public Slider sizeSlider;
     public Text valueSizeSliderText;
     public Toggle singleMultiToggle;
     public Text valueSingleMultiToggleText;
     public Toggle replaceToggle;
     public Text valueReplaceToggleText;
+    public Dropdown TypeTerrainToDestroy;
 
     public UnitEditorPanel unitEditorPanel;
     public GameObject[] panelsToActive;
@@ -34,6 +43,7 @@ public class MapEditorManager : MonoBehaviour
         InitializeOpenEditor();
         InitializeIDButtons();
         InitializeHeightMainTerrain();
+        InitializeDestroyDropdown();
     }
 
     private void InitializeOpenEditor()
@@ -67,11 +77,18 @@ public class MapEditorManager : MonoBehaviour
         }
     }
 
+    private void InitializeDestroyDropdown()
+    {
+        List<string> typeOfDestroy = Enum.GetValues(typeof(TypeOfDestroy)).Cast<TypeOfDestroy>().Select(s => s.ToString()).ToList();
+        TypeTerrainToDestroy.AddOptions(typeOfDestroy);
+        TypeTerrainToDestroy.value = TypeTerrainToDestroy.options.Count - 1;
+    }
     private void Update()
     {
         UpdateSettingsPanel();
         UpdateLocation();
         UpdateCreate();
+        UpdateDestroy();
         UpdateButtonOff();
 
         //--
@@ -243,7 +260,6 @@ public class MapEditorManager : MonoBehaviour
                 UnitStartLocation = new float[3] { 0, 0, 0 },
             });
         }
-
     }
 
     private void CreateGameObject(int vx, int vz, int level)
@@ -282,7 +298,7 @@ public class MapEditorManager : MonoBehaviour
             }
         }
 
-        if (_map.Maps[level][vx][vz] == 0 )
+        if (_map.Maps[level][vx][vz] == 0)
         {
             if (ItemControllers[CurrentButtonPressed] is ItemUnitController)
             {
@@ -362,6 +378,43 @@ public class MapEditorManager : MonoBehaviour
         spu.UnitStartLocation[2] = vz;
     }
 
+    private void UpdateDestroy()
+    {
+        if (ItemDelete.Pressed)
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                switch (TypeTerrainToDestroy.value)
+                {
+                    case 0:
+                        if (mapsPrefabs[0][(int)v.x][(int)v.z] != null)
+                        {
+                            DeleteGameObject((int)v.x, (int)v.z, 0);
+                        }
+                        break;
+                    case 1:
+                        if (mapsPrefabs[1][(int)v.x][(int)v.z] != null)
+                        {
+                            DeleteGameObject((int)v.x, (int)v.z, 1);
+                        }
+                        break;
+                    case 2:
+                        if (mapsPrefabs[0][(int)v.x][(int)v.z] != null)
+                        {
+                            DeleteGameObject((int)v.x, (int)v.z, 0);
+                        }
+                        if (mapsPrefabs[1][(int)v.x][(int)v.z] != null)
+                        {
+                            DeleteGameObject((int)v.x, (int)v.z, 1);
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+    }
+
     private void DeleteGameObject(int vx, int vz, int level)
     {
         GameObjectToDelete(mapsPrefabs[level][vx][vz]);
@@ -387,6 +440,8 @@ public class MapEditorManager : MonoBehaviour
                     ItemControllers[i].item.ItemImage.transform.localScale = ItemControllers[i].firstScale;
                 }
             }
+
+            ItemDelete.Pressed = false;
 
             GameObject[] itemImages = GameObject.FindGameObjectsWithTag("ItemImage");
 
@@ -559,7 +614,7 @@ public class MapEditorManager : MonoBehaviour
             return -1;
         }
 
-        if (mapsPrefabs[0][x][z] == null && ((_map.Maps[1][x][z] == 0 ) || ((ItemControllers[CurrentButtonPressed].item as ItemTerrain).AllowsBuild && _map.Maps[1][x][z] != 0))) return 1;
+        if (mapsPrefabs[0][x][z] == null && ((_map.Maps[1][x][z] == 0) || ((ItemControllers[CurrentButtonPressed].item as ItemTerrain).AllowsBuild && _map.Maps[1][x][z] != 0))) return 1;
 
         if ((!replaceToggle.isOn && mapsPrefabs[0][x][z] != null) || (!(ItemControllers[CurrentButtonPressed].item as ItemTerrain).AllowsBuild) && _map.Maps[1][x][z] != 0) return 0;
 
