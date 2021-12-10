@@ -496,6 +496,7 @@ public class MapEditorManager : MonoBehaviour
                 if (eSP.UnitStartLocation[0] != 0 && eSP.UnitStartLocation[1] != 0 && eSP.UnitStartLocation[2] != 0)
                 {
                     _map.GameStartPoints.Add(new float[3] { eSP.UnitStartLocation[0], eSP.UnitStartLocation[1], eSP.UnitStartLocation[2] });
+
                 }
             }
         }
@@ -529,9 +530,13 @@ public class MapEditorManager : MonoBehaviour
                 continue;
             }
 
-            startPointPrefab.item.ItemPrefab.GetComponent<MeshRenderer>().material = unitEditorPanel.ColorsUnitsButtons
-                           .Where(m => m.GetComponent<UnitColorButton>().unitMaterial.name == eSP.UnitMaterialName)
-                           .Select(m => m.GetComponent<UnitColorButton>().unitMaterial).FirstOrDefault();
+            //startPointPrefab.item.ItemPrefab.GetComponent<MeshRenderer>().material = unitEditorPanel.ColorsUnitsButtons
+            //               .Where(m => m.GetComponent<UnitColorButton>().unitMaterial.name == eSP.UnitMaterialName)
+            //               .Select(m => m.GetComponent<UnitColorButton>().unitMaterial).FirstOrDefault(); 
+            // sprawdza sie tylko wtedy kiedy wejdziesz w panel z kolorami i startpointemm
+
+            List<Material> materialList = MapToPlayStorage.ImportResources<Material>("Materials/Units/", ".mat");
+                        startPointPrefab.item.ItemPrefab.GetComponent<MeshRenderer>().material = materialList.Where(m => m.name == eSP.UnitMaterialName).FirstOrDefault();
 
             mapsPrefabs[startPointPrefab.item.ItemHeightLevel][(int)eSP.UnitStartLocation[0]][(int)eSP.UnitStartLocation[2]] = Instantiate(startPointPrefab.item.ItemPrefab, new Vector3(eSP.UnitStartLocation[0], startPointPrefab.item.ItemHeightPosY, eSP.UnitStartLocation[2]), startPointPrefab.item.ItemPrefab.transform.rotation);
         }
