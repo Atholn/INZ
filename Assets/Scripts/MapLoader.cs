@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class MapLoader : MonoBehaviour
 {
-    internal static void ResetAndLoad(ref Map actualMap, ref Map newMap, ref GameObject[][][] mapsPrefabs, ref GameObject terrain, ItemController[] itemControllers, int mainGroundID = 0)
+    internal static void ResetAndLoad(ref MapWorld actualMap, ref MapWorld newMap, ref GameObject[][][] mapsPrefabs, ref GameObject terrain, ItemController[] itemControllers, int mainGroundID = 0)
     {
         DeleteMapGameObjects(ref actualMap, ref mapsPrefabs, ref terrain);
 
@@ -16,13 +16,13 @@ public class MapLoader : MonoBehaviour
         InitializeNewMap(ref actualMap, ref mapsPrefabs, itemControllers);
     }
 
-    internal static void InitializeNewMap(ref Map newMap, ref GameObject[][][] mapsPrefabs, ref GameObject terrain, ItemController[] itemControllers, int mainGroundID = 0)
+    internal static void InitializeNewMap(ref MapWorld newMap, ref GameObject[][][] mapsPrefabs, ref GameObject terrain, ItemController[] itemControllers, int mainGroundID = 0)
     {
         InitializeStartTerrain(newMap.SizeMapX, newMap.SizeMapY, itemControllers[mainGroundID], ref terrain);
         InitializeTerrainArrays(newMap.SizeMapX, newMap.SizeMapY, ref newMap, ref mapsPrefabs);
     }
 
-    public static void DeleteMapGameObjects(ref Map map, ref GameObject[][][] mapsPrefabs, ref GameObject terrain)
+    public static void DeleteMapGameObjects(ref MapWorld map, ref GameObject[][][] mapsPrefabs, ref GameObject terrain)
     {
         for (int k = 0; k < map.MapsCount; k++)
         {
@@ -32,18 +32,13 @@ public class MapLoader : MonoBehaviour
                 {
                     if (mapsPrefabs[k][i][j] != null)
                     {
-                        GameObjectToDelete(mapsPrefabs[k][i][j]);
+                        Destroy(mapsPrefabs[k][i][j]);
                     }
                 }
             }
         }
 
-        GameObjectToDelete(terrain);
-    }
-
-    private static void GameObjectToDelete(GameObject gameObject)
-    {
-        Destroy(gameObject.transform.gameObject);
+        Destroy(terrain);
     }
 
     private static void InitializeStartTerrain(int sizeX, int sizeY, ItemController mainGround, ref GameObject terrain)
@@ -58,7 +53,7 @@ public class MapLoader : MonoBehaviour
         basicTerrainPrefab.gameObject.transform.localScale = firstScale;
     }
 
-    private static void InitializeTerrainArrays(int sizeX, int sizeY, ref Map actualMap, ref GameObject[][][] mapsPrefabs)
+    private static void InitializeTerrainArrays(int sizeX, int sizeY, ref MapWorld actualMap, ref GameObject[][][] mapsPrefabs)
     {
         actualMap.Maps = new int[actualMap.MapsCount][][];
         mapsPrefabs = new GameObject[actualMap.MapsCount][][];
@@ -79,7 +74,7 @@ public class MapLoader : MonoBehaviour
         }
     }
 
-    private static void InitializeNewMap(ref Map actualMap, ref GameObject[][][] mapsPrefabs, ItemController[] itemControllers)
+    private static void InitializeNewMap(ref MapWorld actualMap, ref GameObject[][][] mapsPrefabs, ItemController[] itemControllers)
     {
         for (int i = 0; i < actualMap.MapsCount; i++)
         {

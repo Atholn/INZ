@@ -25,6 +25,7 @@ public class MenuEditorManager : MonoBehaviour
 
     public GameObject saveMapPanel;
     private Dropdown dropdownTypeOfMap;
+    private InputField nameOfMapInputField;
 
     public GameObject loadMapPanel;
     private Dropdown dropdownMapsToLoad;
@@ -39,7 +40,7 @@ public class MenuEditorManager : MonoBehaviour
 
     public GameObject optionsEditorPanel;
 
-    private Map map = new Map();
+    private MapInfo _mapInfo = new MapInfo();
 
     private FileMapSystem fileMapSystem;
 
@@ -48,7 +49,7 @@ public class MenuEditorManager : MonoBehaviour
         InitializeFileMapSystem();
         InitializePanels();
         InitializeScrollRectLoadMap();
-        InitializeDropDownTypeOfMap();
+        InitializeFirstSavePanel();
         InitializeMapLoadInfo();
         InitializeMapInfo();
         InitializeCreateSettingsPanel();
@@ -75,11 +76,13 @@ public class MenuEditorManager : MonoBehaviour
         dropdownMapsToLoad = loadMapPanel.GetComponentInChildren<Dropdown>();
     }
 
-    private void InitializeDropDownTypeOfMap()
+    private void InitializeFirstSavePanel()
     {
         dropdownTypeOfMap = saveMapPanel.GetComponentInChildren<Dropdown>();
         List<string> types = new List<string>(Enum.GetNames(typeof(TypeOfMap)));
         dropdownTypeOfMap.AddOptions(types);
+
+        nameOfMapInputField = saveMapPanel.GetComponentInChildren<InputField>();
     }
 
     private void InitializeMapLoadInfo()
@@ -125,7 +128,6 @@ public class MenuEditorManager : MonoBehaviour
     public void New()
     {
         ActiveDeactivatePanel(filePanel, !filePanel.activeSelf);
-        map = new Map();
 
         UnityEngine.SceneManagement.SceneManager.LoadScene("Editor");
         //MapEditorManager.NewTerrain();
@@ -133,34 +135,32 @@ public class MenuEditorManager : MonoBehaviour
 
     public void Save()
     {
-        //LoadMapList
-
         ActiveDeactivatePanel(filePanel, !filePanel.activeSelf);
-        DrawMapView();
-
-        map.ViewMap = mapViewColors;
-
-        if (fileMapSystem.CheckIfExist(map.Name))
+        
+        if (_mapInfo.Name != "" && fileMapSystem.CheckIfExist(_mapInfo.Name))
         {
-            Map tmpMap = MapEditorManager.ExportMap();
-
-            tmpMap.Type = map.Type;
-            tmpMap.Name = map.Name;
-            tmpMap.Decription = mapInfoPanel.GetComponentInChildren<InputField>().text;
-            tmpMap.ViewMap = mapViewColors;
-
-            tmpMap.CreateTime = DateTime.UtcNow.ToLocalTime().ToString();
-            tmpMap.UpdateTime = DateTime.UtcNow.ToLocalTime().ToString();
-
-
-
-            fileMapSystem.SaveEditorMap(ref tmpMap);
+            Map map = MapMerging();
+            fileMapSystem.SaveEditorMap(ref map);
             return;
         }
 
-        
         ActiveDeactivatePanel(saveMapPanel, true);
         return;
+    }
+
+    private Map MapMerging()
+    {
+        _mapInfo.CreateTime = _mapInfo.Name == "" && _mapInfo.Type == "" ? DateTime.UtcNow.ToLocalTime().ToString() : _mapInfo.CreateTime;
+        _mapInfo.UpdateTime = DateTime.UtcNow.ToLocalTime().ToString();
+
+        _mapInfo.Name = _mapInfo.Name == "" ? nameOfMapInputField.text : _mapInfo.Name;
+        _mapInfo.Type = _mapInfo.Type == "" ? dropdownTypeOfMap.options[dropdownTypeOfMap.value].text : _mapInfo.Type;
+        _mapInfo.Decription = mapInfoPanel.GetComponentInChildren<InputField>().text;
+
+        GeneratePixelsColors();
+        _mapInfo.ViewMap = mapViewColors;
+
+        return new Map() { MapInfo = _mapInfo, MapWorldCreate = MapEditorManager.ExportMap() };
     }
 
     public void SaveAs()
@@ -171,7 +171,6 @@ public class MenuEditorManager : MonoBehaviour
 
     public void SaveClickAccept()
     {
-        InputField nameOfMapInputField = saveMapPanel.GetComponentInChildren<InputField>();
         Text text = saveMapPanel.GetComponentsInChildren<Text>(true).Where(t => t.CompareTag("InfoSaveErrorText")).FirstOrDefault();
         text.gameObject.SetActive(false);
 
@@ -191,28 +190,10 @@ public class MenuEditorManager : MonoBehaviour
             return;
         }
 
-        map.Name = nameOfMapInputField.text;
-
-        Map tmpMap = MapEditorManager.ExportMap();
-
-        tmpMap.Type = dropdownTypeOfMap.options[dropdownTypeOfMap.value].text;
-        tmpMap.Name = nameOfMapInputField.text;
-        tmpMap.Decription = mapInfoPanel.GetComponentInChildren<InputField>().text;
-        tmpMap.ViewMap = mapViewColors;
-
-        tmpMap.CreateTime = DateTime.UtcNow.ToLocalTime().ToString();
-        tmpMap.UpdateTime = DateTime.UtcNow.ToLocalTime().ToString();
-
-        fileMapSystem.SaveEditorMap(ref tmpMap);
+        Map map = MapMerging();
+        fileMapSystem.SaveEditorMap(ref map);
 
         ActiveDeactivatePanel(saveMapPanel, false);
-    }
-
-
-    private Map UpdateMap()
-    {
-
-        return null;
     }
 
     public void Load()
@@ -229,11 +210,13 @@ public class MenuEditorManager : MonoBehaviour
 
     public void LoadMapAccept()
     {
-        map = new Map();
-        map = fileMapSystem.LoadEditorMap(dropdownMapsToLoad.options[dropdownMapsToLoad.value].text);
-        mapViewColors = map.ViewMap;
+        Map map = fileMapSystem.LoadEditorMap(dropdownMapsToLoad.options[dropdownMapsToLoad.value].text);
 
-        MapEditorManager.ImportMap(map);
+        _mapInfo = map.MapInfo;
+        mapViewColors = _mapInfo.ViewMap;
+        mapInfoPanel.GetComponentInChildren<InputField>().text = _mapInfo.Decription;
+
+        MapEditorManager.ImportMap(map.MapWorldCreate);
 
         ActiveDeactivatePanel(loadMapPanel, !loadMapPanel.activeSelf);
     }
@@ -242,24 +225,13 @@ public class MenuEditorManager : MonoBehaviour
     {
         Map mapInfo = fileMapSystem.GetMapInfo("Editor", dropdownMapsToLoad.options[dropdownMapsToLoad.value].text);
 
-        infoLoadTexts[1].text = "Type: " + mapInfo.Type;
+        infoLoadTexts[1].text = "Type: " + mapInfo.MapInfo.Type;
     }
 
     public void Generate()
     {
         ActiveDeactivatePanel(filePanel, !filePanel.activeSelf);
-        Map tmpMap = MapEditorManager.ExportMap();
-
-        tmpMap.Type = dropdownTypeOfMap.options[dropdownTypeOfMap.value].text;
-        tmpMap.Name = map.Name;
-        tmpMap.Decription = mapInfoPanel.GetComponentInChildren<InputField>().text;
-        tmpMap.ViewMap = mapViewColors;
-
-        tmpMap.CreateTime = DateTime.UtcNow.ToLocalTime().ToString();
-        tmpMap.UpdateTime = DateTime.UtcNow.ToLocalTime().ToString();
-
-
-        fileMapSystem.GenerateEditorMap(tmpMap);
+        fileMapSystem.GenerateEditorMap(MapMerging());
     }
 
     public void Info()
@@ -270,13 +242,13 @@ public class MenuEditorManager : MonoBehaviour
         if (mapInfoPanel.activeSelf)
         {
             infoTexts[0].text = "Map info:";
-            infoTexts[1].text = map.Name == "" ? "Name: untitled" : "Name: " + map.Name;
-            infoTexts[2].text = map.Type == "" ? "Type: no chose yet" : "Type: " + map.Type;
+            infoTexts[1].text = _mapInfo.Name == "" ? "Name: untitled" : "Name: " + _mapInfo.Name;
+            infoTexts[2].text = _mapInfo.Type == "" ? "Type: no chose yet" : "Type: " + _mapInfo.Type;
             infoTexts[3].text = $"Size: {MapEditorManager.GetSizeMap()[0]} x {MapEditorManager.GetSizeMap()[1]}";
-            infoTexts[4].text = $"Create time: {map.CreateTime}";
-            infoTexts[5].text = $"Last update: {map.UpdateTime}";
+            infoTexts[4].text = $"Create time: {_mapInfo.CreateTime}";
+            infoTexts[5].text = $"Last update: {_mapInfo.UpdateTime}";
 
-            mapInfoPanel.GetComponentInChildren<InputField>().text = map.Decription;
+            mapInfoPanel.GetComponentInChildren<InputField>().text = _mapInfo.Decription;
 
             DrawMapView();
         }
@@ -284,7 +256,6 @@ public class MenuEditorManager : MonoBehaviour
 
     private void DrawMapView()
     {
-        InitializePixelsColors();
         GeneratePixelsColors();
 
         Texture2D texture = new Texture2D(MapEditorManager.GetSizeMap()[0], MapEditorManager.GetSizeMap()[1]);
@@ -302,25 +273,10 @@ public class MenuEditorManager : MonoBehaviour
         texture.Apply();
     }
 
-    private void InitializePixelsColors()
-    {
-        if (mapViewColors == null)
-        {
-            mapViewColors = new float[MapEditorManager.GetSizeMap()[0]][][];
-
-            for (int i = 0; i < MapEditorManager.GetSizeMap()[0]; i++)
-            {
-                mapViewColors[i] = new float[MapEditorManager.GetSizeMap()[1]][];
-                for (int j = 0; j < MapEditorManager.GetSizeMap()[1]; j++)
-                {
-                    mapViewColors[i][j] = new float[3];
-                }
-            }
-        }
-    }
-
     private void GeneratePixelsColors()
     {
+        InitializePixelsColors();
+
         for (int k = 0; k < MapEditorManager.GetSizeMap()[2]; k++)
         {
             for (int i = 0; i < MapEditorManager.GetSizeMap()[0]; i++)
@@ -344,9 +300,26 @@ public class MenuEditorManager : MonoBehaviour
         }
     }
 
+    private void InitializePixelsColors()
+    {
+        if (mapViewColors == null)
+        {
+            mapViewColors = new float[MapEditorManager.GetSizeMap()[0]][][];
+
+            for (int i = 0; i < MapEditorManager.GetSizeMap()[0]; i++)
+            {
+                mapViewColors[i] = new float[MapEditorManager.GetSizeMap()[1]][];
+                for (int j = 0; j < MapEditorManager.GetSizeMap()[1]; j++)
+                {
+                    mapViewColors[i][j] = new float[3];
+                }
+            }
+        }
+    }
+
     public void SaveDescription()
     {
-        map.Decription = mapInfoPanel.GetComponentInChildren<InputField>().text;
+        _mapInfo.Decription = mapInfoPanel.GetComponentInChildren<InputField>().text;
         ActiveDeactivatePanel(mapInfoPanel, false);
     }
 

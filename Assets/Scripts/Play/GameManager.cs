@@ -60,10 +60,9 @@ public class GameManager : MonoBehaviour
 
     private void ImportMap(Map map)
     {
-        InitializeSizesMaps(map.SizeMapX, map.SizeMapY);
+        InitializeSizesMaps(map.MapWorldCreate.SizeMapX, map.MapWorldCreate.SizeMapY);
         InitializeStartTerrain();
         InitializeTerrainArrays();
-        //InitializeNewMap(map);
     }
 
     private void InitializeSizesMaps(int sizeMapX, int sizeMapY)
@@ -95,43 +94,6 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-
-
-    //private void InitializeNewMap(Map map)
-    //{
-    //    maps = map.Maps;
-    //    for (int i = 0; i < mapCount; i++)
-    //    {
-    //        for (int j = 0; j < sizeMapX; j++)
-    //        {
-    //            for (int k = 0; k < sizeMapY; k++)
-    //            {
-    //                if (maps[i][j][k] > 0)
-    //                {
-
-    //                    bool ifCreate = true;
-    //                    foreach (float[] gameStartPoint in map.UnitStartLocations)
-    //                    {
-    //                        if (gameStartPoint[0] == j && gameStartPoint[2] == k)
-    //                        {
-    //                            ifCreate = false;
-    //                            break;
-    //                        }
-    //                    }
-
-    //                    if (ifCreate)
-    //                    {
-    //                        mapsPrefabs[i][j][k] = Instantiate(TerrainPrefabs[maps[i][j][k]], new Vector3(j, i, k), TerrainPrefabs[maps[i][j][k]].transform.rotation);
-
-    //                    }
-    //                    continue;
-    //                }
-
-    //                maps[i][j][k] = 0;
-    //            }
-    //        }
-    //    }
-    //}
 
     private void InitializePlayers()
     {

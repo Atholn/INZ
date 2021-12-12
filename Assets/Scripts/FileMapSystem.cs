@@ -63,7 +63,7 @@ public class FileMapSystem
 
     public void SaveEditorMap(ref Map map)
     {
-        string tmpPath = _path + $"/{FolderName}/{map.Name}";
+        string tmpPath = _path + $"/{FolderName}/{map.MapInfo.Name}";
 
         if (File.Exists(tmpPath))
         {
@@ -92,7 +92,7 @@ public class FileMapSystem
 
     public void GenerateEditorMap(Map map)
     {
-        string tmpPath = _path + $"/{map.Type}/{map.Name}";
+        string tmpPath = _path + $"/{map.MapInfo.Type}/{map.MapInfo.Name}";
 
         if (File.Exists(tmpPath))
         {
