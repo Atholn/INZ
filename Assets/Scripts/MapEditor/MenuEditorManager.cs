@@ -346,6 +346,8 @@ public class MenuEditorManager : MonoBehaviour
     {
         MapInfo mapInfo = fileMapSystem.GetMapInfo("Editor", dropdownMapsToLoad.options[dropdownMapsToLoad.value].text).MapInfo;
         infoLoadTexts[1].text = "Type: " + mapInfo.Type;
+        infoLoadTexts[2].text = $"Create time: {mapInfo.CreateTime}";
+        infoLoadTexts[3].text = $"Last update: {mapInfo.UpdateTime}";
     }
 
     private Map MapMerging()
