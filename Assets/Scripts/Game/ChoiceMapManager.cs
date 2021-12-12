@@ -7,7 +7,7 @@ using System.Linq;
 
 public class ChoiceMapManager : MonoBehaviour
 {
-    public string TypeOfGame;
+    public string TypeOfGame = "Sirmish";
     public GameObject ChoiceMapPanel;
     public GameObject PlaySettingsPanel;
     public GameObject MapInfoPanel;
@@ -159,9 +159,9 @@ public class ChoiceMapManager : MonoBehaviour
         Sprite sprite = Sprite.Create(texture, new Rect(0, 0, map.SizeMapX, map.SizeMapY), Vector2.zero);
         MapView.sprite = sprite;
 
-        for (int i = 0; i < texture.height; i++)
+        for (int i = 0; i < texture.width; i++)
         {
-            for (int j = 0; j < texture.width; j++)
+            for (int j = 0; j < texture.height; j++)
             {
                 Color pixelColour = new Color(map.ViewMap[i][j][0], map.ViewMap[i][j][1], map.ViewMap[i][j][2], 1);
                 texture.SetPixel(i, j, pixelColour);

@@ -133,6 +133,8 @@ public class MenuEditorManager : MonoBehaviour
 
     public void Save()
     {
+        //LoadMapList
+
         ActiveDeactivatePanel(filePanel, !filePanel.activeSelf);
         DrawMapView();
 
@@ -140,11 +142,23 @@ public class MenuEditorManager : MonoBehaviour
 
         if (fileMapSystem.CheckIfExist(map.Name))
         {
-            map.UpdateTime = DateTime.UtcNow.ToLocalTime().ToString();
-            fileMapSystem.SaveEditorMap(ref map);
+            Map tmpMap = MapEditorManager.ExportMap();
+
+            tmpMap.Type = map.Type;
+            tmpMap.Name = map.Name;
+            tmpMap.Decription = mapInfoPanel.GetComponentInChildren<InputField>().text;
+            tmpMap.ViewMap = mapViewColors;
+
+            tmpMap.CreateTime = DateTime.UtcNow.ToLocalTime().ToString();
+            tmpMap.UpdateTime = DateTime.UtcNow.ToLocalTime().ToString();
+
+
+
+            fileMapSystem.SaveEditorMap(ref tmpMap);
             return;
         }
 
+        
         ActiveDeactivatePanel(saveMapPanel, true);
         return;
     }
@@ -194,6 +208,13 @@ public class MenuEditorManager : MonoBehaviour
         ActiveDeactivatePanel(saveMapPanel, false);
     }
 
+
+    private Map UpdateMap()
+    {
+
+        return null;
+    }
+
     public void Load()
     {
         ActiveDeactivatePanel(loadMapPanel, !loadMapPanel.activeSelf);
@@ -227,7 +248,18 @@ public class MenuEditorManager : MonoBehaviour
     public void Generate()
     {
         ActiveDeactivatePanel(filePanel, !filePanel.activeSelf);
-        fileMapSystem.GenerateEditorMap(map);
+        Map tmpMap = MapEditorManager.ExportMap();
+
+        tmpMap.Type = dropdownTypeOfMap.options[dropdownTypeOfMap.value].text;
+        tmpMap.Name = map.Name;
+        tmpMap.Decription = mapInfoPanel.GetComponentInChildren<InputField>().text;
+        tmpMap.ViewMap = mapViewColors;
+
+        tmpMap.CreateTime = DateTime.UtcNow.ToLocalTime().ToString();
+        tmpMap.UpdateTime = DateTime.UtcNow.ToLocalTime().ToString();
+
+
+        fileMapSystem.GenerateEditorMap(tmpMap);
     }
 
     public void Info()
