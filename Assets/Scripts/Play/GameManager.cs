@@ -127,6 +127,13 @@ public class GameManager : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(1))
         {
+            _gameObjectToMove = null;
+            _profileCamera.transform.SetParent(null);
+
+        }
+
+        if (Input.GetMouseButtonDown(0))
+        {
             var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
 
@@ -159,8 +166,8 @@ public class GameManager : MonoBehaviour
 
                 if (Physics.Raycast(ray, out hit, 1000.0f))
                     _gameObjectToMove.transform.position = hit.point;
-                _profileCamera.transform.SetParent(null);
             }
         }
+
     }
 }

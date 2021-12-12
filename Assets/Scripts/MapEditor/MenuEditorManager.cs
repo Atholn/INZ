@@ -136,7 +136,7 @@ public class MenuEditorManager : MonoBehaviour
     public void Save()
     {
         ActiveDeactivatePanel(filePanel, !filePanel.activeSelf);
-        
+
         if (_mapInfo.Name != "" && fileMapSystem.CheckIfExist(_mapInfo.Name))
         {
             Map map = MapMerging();
@@ -242,7 +242,7 @@ public class MenuEditorManager : MonoBehaviour
 
     private void DrawMapView()
     {
-        GeneratePixelsColors();
+        mapViewColors = MapEditorManager.GeneratePixelsColors();
 
         Texture2D texture = new Texture2D(MapEditorManager.GetSizeMap()[0], MapEditorManager.GetSizeMap()[1]);
         Sprite sprite = Sprite.Create(texture, new Rect(0, 0, MapEditorManager.GetSizeMap()[0], MapEditorManager.GetSizeMap()[1]), Vector2.zero);
@@ -257,33 +257,6 @@ public class MenuEditorManager : MonoBehaviour
             }
         }
         texture.Apply();
-    }
-
-    private void GeneratePixelsColors()
-    {
-        InitializePixelsColors();
-
-        for (int k = 0; k < MapEditorManager.GetSizeMap()[2]; k++)
-        {
-            for (int i = 0; i < MapEditorManager.GetSizeMap()[0]; i++)
-            {
-                for (int j = 0; j < MapEditorManager.GetSizeMap()[1]; j++)
-                {
-                    {
-                        MeshRenderer mesh = MapEditorManager.mapsPrefabs[k][i][j] != null ?
-                            MapEditorManager.mapsPrefabs[k][i][j].gameObject.GetComponent<MeshRenderer>() :
-                            k == 0 ? MapEditorManager.Terrain.gameObject.GetComponent<MeshRenderer>() : null;
-
-                        if (mesh != null)
-                        {
-                            mapViewColors[i][j][0] = mesh.material.color.r;
-                            mapViewColors[i][j][1] = mesh.material.color.g;
-                            mapViewColors[i][j][2] = mesh.material.color.b;
-                        }
-                    }
-                }
-            }
-        }
     }
 
     private void InitializePixelsColors()
@@ -358,9 +331,7 @@ public class MenuEditorManager : MonoBehaviour
         _mapInfo.Name = _mapInfo.Name == "" ? nameOfMapInputField.text : _mapInfo.Name;
         _mapInfo.Type = _mapInfo.Type == "" ? dropdownTypeOfMap.options[dropdownTypeOfMap.value].text : _mapInfo.Type;
         _mapInfo.Decription = mapInfoPanel.GetComponentInChildren<InputField>().text;
-
-        GeneratePixelsColors();
-        _mapInfo.ViewMap = mapViewColors;
+        _mapInfo.ViewMap = MapEditorManager.GeneratePixelsColors();
 
         return new Map() { MapInfo = _mapInfo, MapWorldCreate = MapEditorManager.ExportMap() };
     }

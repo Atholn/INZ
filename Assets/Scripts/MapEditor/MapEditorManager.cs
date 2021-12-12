@@ -598,4 +598,30 @@ public class MapEditorManager : MonoBehaviour
 
         return -1;
     }
+
+    internal float[][][] GeneratePixelsColors()
+    {
+        float[][][] newPixelsColors = new float[GetSizeMap()[0]][][];
+
+        for (int i = 0; i < newPixelsColors.Length; i++)
+        {
+            newPixelsColors[i] = new float[GetSizeMap()[1]][];
+
+            for (int j = 0; j < newPixelsColors[i].Length; j++)
+            {
+                newPixelsColors[i][j] = new float[3];
+
+                GameObject prefab = mapsPrefabs[1][i][j] != null ? mapsPrefabs[1][i][j] :
+                    mapsPrefabs[0][i][j] != null ? mapsPrefabs[0][i][j] : Terrain;
+
+                MeshRenderer mesh = prefab.gameObject.GetComponent<MeshRenderer>();
+
+                newPixelsColors[i][j][0] = mesh.material.color.r;
+                newPixelsColors[i][j][1] = mesh.material.color.g;
+                newPixelsColors[i][j][2] = mesh.material.color.b;
+            }
+        }
+
+        return newPixelsColors;
+    }
 }
