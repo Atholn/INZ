@@ -148,21 +148,6 @@ public class MenuEditorManager : MonoBehaviour
         return;
     }
 
-    private Map MapMerging()
-    {
-        _mapInfo.CreateTime = _mapInfo.Name == "" && _mapInfo.Type == "" ? DateTime.UtcNow.ToLocalTime().ToString() : _mapInfo.CreateTime;
-        _mapInfo.UpdateTime = DateTime.UtcNow.ToLocalTime().ToString();
-
-        _mapInfo.Name = _mapInfo.Name == "" ? nameOfMapInputField.text : _mapInfo.Name;
-        _mapInfo.Type = _mapInfo.Type == "" ? dropdownTypeOfMap.options[dropdownTypeOfMap.value].text : _mapInfo.Type;
-        _mapInfo.Decription = mapInfoPanel.GetComponentInChildren<InputField>().text;
-
-        GeneratePixelsColors();
-        _mapInfo.ViewMap = mapViewColors;
-
-        return new Map() { MapInfo = _mapInfo, MapWorldCreate = MapEditorManager.ExportMap() };
-    }
-
     public void SaveAs()
     {
         ActiveDeactivatePanel(filePanel, !filePanel.activeSelf);
@@ -205,6 +190,8 @@ public class MenuEditorManager : MonoBehaviour
         {
             dropdownMapsToLoad.options.Clear();
             dropdownMapsToLoad.AddOptions(fileMapSystem.GetNamesMaps("Editor"));
+
+            UpdateInfoMapToLoad();
         }
     }
 
@@ -213,6 +200,7 @@ public class MenuEditorManager : MonoBehaviour
         Map map = fileMapSystem.LoadEditorMap(dropdownMapsToLoad.options[dropdownMapsToLoad.value].text);
 
         _mapInfo = map.MapInfo;
+
         mapViewColors = _mapInfo.ViewMap;
         mapInfoPanel.GetComponentInChildren<InputField>().text = _mapInfo.Decription;
 
@@ -223,9 +211,7 @@ public class MenuEditorManager : MonoBehaviour
 
     public void ChosingMapToLoad()
     {
-        Map mapInfo = fileMapSystem.GetMapInfo("Editor", dropdownMapsToLoad.options[dropdownMapsToLoad.value].text);
-
-        infoLoadTexts[1].text = "Type: " + mapInfo.MapInfo.Type;
+        UpdateInfoMapToLoad();
     }
 
     public void Generate()
@@ -354,5 +340,26 @@ public class MenuEditorManager : MonoBehaviour
 
         ActiveDeactivatePanel(mainEditorPanel, true);
         ActiveDeactivatePanel(panelToHideShow, false);
+    }
+
+    private void UpdateInfoMapToLoad()
+    {
+        MapInfo mapInfo = fileMapSystem.GetMapInfo("Editor", dropdownMapsToLoad.options[dropdownMapsToLoad.value].text).MapInfo;
+        infoLoadTexts[1].text = "Type: " + mapInfo.Type;
+    }
+
+    private Map MapMerging()
+    {
+        _mapInfo.CreateTime = _mapInfo.Name == "" && _mapInfo.Type == "" ? DateTime.UtcNow.ToLocalTime().ToString() : _mapInfo.CreateTime;
+        _mapInfo.UpdateTime = DateTime.UtcNow.ToLocalTime().ToString();
+
+        _mapInfo.Name = _mapInfo.Name == "" ? nameOfMapInputField.text : _mapInfo.Name;
+        _mapInfo.Type = _mapInfo.Type == "" ? dropdownTypeOfMap.options[dropdownTypeOfMap.value].text : _mapInfo.Type;
+        _mapInfo.Decription = mapInfoPanel.GetComponentInChildren<InputField>().text;
+
+        GeneratePixelsColors();
+        _mapInfo.ViewMap = mapViewColors;
+
+        return new Map() { MapInfo = _mapInfo, MapWorldCreate = MapEditorManager.ExportMap() };
     }
 }

@@ -485,10 +485,6 @@ public class MapEditorManager : MonoBehaviour
     {
         MapLoader.ResetAndLoad(ref _mapWorldInfo, ref newMap, ref mapsPrefabs, ref Terrain, ItemControllers, newMap.MainGroundID);
 
-        //InitializeStartTerrain(_map.SizeMapX, _map.SizeMapY); //  zero arrays 
-        //_map = newMap;
-        //InitializeNewMap();
-
         foreach (GameObject panel in panelsToActive)
         {
             panel.SetActive(true);
