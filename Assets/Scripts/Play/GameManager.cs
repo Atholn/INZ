@@ -34,12 +34,8 @@ public class GameManager : MonoBehaviour
         _map = new MapWorld();
         _gameStartPoints = MapToPlayStorage.GameStartPoints;
 
-
-
         _worker = UnitsPrefabs.Where(w => w.name == "Worker").FirstOrDefault();
         _townHall = BuildingsPrefabs.Where(w => w.name == "TownHall").FirstOrDefault();
-
-
 
         MapLoader.ResetAndLoad(ref _map, ref MapToPlayStorage.Map.MapWorldCreate , ref _gameObjects, ref _terrain, TerrainPrefabs);
         InitializePlayers();
@@ -48,11 +44,11 @@ public class GameManager : MonoBehaviour
         _minimapCamera = GameObject.FindGameObjectWithTag("MinimapCamera");
 
         RenderTexture texture = _minimapCamera.GetComponent<Camera>().targetTexture;
-        texture.width = _map.SizeMapX > _map.SizeMapY ? _map.SizeMapX : _map.SizeMapY;
-        texture.height = _map.SizeMapX > _map.SizeMapY ? _map.SizeMapX : _map.SizeMapY;
+        int size = _map.SizeMapX > _map.SizeMapY ? _map.SizeMapX : _map.SizeMapY;
+        texture.width = size;
+        texture.height = size;
 
-        _minimapCamera.transform.position = new Vector3(_terrain.transform.position.x, _map.SizeMapX > _map.SizeMapY ? _map.SizeMapX  : _map.SizeMapY , _terrain.transform.position.z);
-
+        _minimapCamera.transform.position = new Vector3(_terrain.transform.position.x, size, _terrain.transform.position.z);
     }
 
 
