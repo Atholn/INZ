@@ -15,6 +15,7 @@ TagManager:
   - ProfileCamera
   - Undefined
   - InfoSaveErrorText
+  - MinimapCamera
   layers:
   - Default
   - TransparentFX

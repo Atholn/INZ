@@ -18,10 +18,13 @@ public class GameManager : MonoBehaviour
     public List<GameObject> BuildingsPrefabs;
 
     private GameObject[][][] _gameObjects;
-    private GameObject terrain;
+    private GameObject _terrain;
     private GameObject _worker;
-    private GameObject _townHall;
     private int _countOfWorkers = 5;
+    private GameObject _townHall;
+
+    private GameObject _minimapCamera;
+
     private GameObject _gameObjectToMove;
     private GameObject _profileCamera;
     private Vector3 _shiftProfileCamera = new Vector3(-0.6f, 6f, 3.7f);
@@ -31,17 +34,26 @@ public class GameManager : MonoBehaviour
         _map = new MapWorld();
         _gameStartPoints = MapToPlayStorage.GameStartPoints;
 
-        _profileCamera = GameObject.FindGameObjectWithTag("ProfileCamera");
+
 
         _worker = UnitsPrefabs.Where(w => w.name == "Worker").FirstOrDefault();
         _townHall = BuildingsPrefabs.Where(w => w.name == "TownHall").FirstOrDefault();
 
 
-        MapLoader.ResetAndLoad(ref _map, ref MapToPlayStorage.Map.MapWorldCreate , ref _gameObjects, ref terrain, TerrainPrefabs);
 
+        MapLoader.ResetAndLoad(ref _map, ref MapToPlayStorage.Map.MapWorldCreate , ref _gameObjects, ref _terrain, TerrainPrefabs);
         InitializePlayers();
-    }
 
+        _profileCamera = GameObject.FindGameObjectWithTag("ProfileCamera");
+        _minimapCamera = GameObject.FindGameObjectWithTag("MinimapCamera");
+
+        RenderTexture texture = _minimapCamera.GetComponent<Camera>().targetTexture;
+        texture.width = _map.SizeMapX > _map.SizeMapY ? _map.SizeMapX : _map.SizeMapY;
+        texture.height = _map.SizeMapX > _map.SizeMapY ? _map.SizeMapX : _map.SizeMapY;
+
+        _minimapCamera.transform.position = new Vector3(_terrain.transform.position.x, _map.SizeMapX > _map.SizeMapY ? _map.SizeMapX  : _map.SizeMapY , _terrain.transform.position.z);
+
+    }
 
 
     private void InitializePlayers()
@@ -78,7 +90,6 @@ public class GameManager : MonoBehaviour
         {
             _gameObjectToMove = null;
             _profileCamera.transform.SetParent(null);
-
         }
 
         if (Input.GetMouseButtonDown(0))
