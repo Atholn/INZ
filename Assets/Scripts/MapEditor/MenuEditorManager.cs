@@ -240,24 +240,6 @@ public class MenuEditorManager : MonoBehaviour
         }
     }
 
-    private void DrawMapView()
-    {
-        mapViewColors = MapEditorManager.GeneratePixelsColors();
-
-        Texture2D texture = new Texture2D(MapEditorManager.GetSizeMap()[0], MapEditorManager.GetSizeMap()[1]);
-        Sprite sprite = Sprite.Create(texture, new Rect(0, 0, MapEditorManager.GetSizeMap()[0], MapEditorManager.GetSizeMap()[1]), Vector2.zero);
-        mapViewImage.sprite = sprite;
-
-        for (int i = 0; i < texture.width; i++)
-        {
-            for (int j = 0; j < texture.height; j++)
-            {
-                Color pixelColour = new Color(mapViewColors[i][j][0], mapViewColors[i][j][1], mapViewColors[i][j][2], 1);
-                texture.SetPixel(i, j, pixelColour);
-            }
-        }
-        texture.Apply();
-    }
 
     public void SaveDescription()
     {
@@ -280,11 +262,6 @@ public class MenuEditorManager : MonoBehaviour
         ActiveDeactivatePanel(panel, false);
     }
 
-    private void ActiveDeactivatePanel(GameObject panel, bool activeDesactive)
-    {
-        panel.SetActive(activeDesactive);
-    }
-
     public void SetActivePanel(GameObject panelToHideShow)
     {
         if (mainEditorPanel.activeSelf)
@@ -298,12 +275,36 @@ public class MenuEditorManager : MonoBehaviour
         ActiveDeactivatePanel(panelToHideShow, false);
     }
 
+    private void ActiveDeactivatePanel(GameObject panel, bool activeDesactive)
+    {
+        panel.SetActive(activeDesactive);
+    }
+
     private void UpdateInfoMapToLoad()
     {
         MapInfo mapInfo = fileMapSystem.GetMapInfo("Editor", dropdownMapsToLoad.options[dropdownMapsToLoad.value].text).MapInfo;
         infoLoadTexts[1].text = "Type: " + mapInfo.Type;
         infoLoadTexts[2].text = $"Create time: {mapInfo.CreateTime}";
         infoLoadTexts[3].text = $"Last update: {mapInfo.UpdateTime}";
+    }
+
+    private void DrawMapView()
+    {
+        mapViewColors = MapEditorManager.GeneratePixelsColors();
+
+        Texture2D texture = new Texture2D(MapEditorManager.GetSizeMap()[0], MapEditorManager.GetSizeMap()[1]);
+        Sprite sprite = Sprite.Create(texture, new Rect(0, 0, MapEditorManager.GetSizeMap()[0], MapEditorManager.GetSizeMap()[1]), Vector2.zero);
+        mapViewImage.sprite = sprite;
+
+        for (int i = 0; i < texture.width; i++)
+        {
+            for (int j = 0; j < texture.height; j++)
+            {
+                Color pixelColour = new Color(mapViewColors[i][j][0], mapViewColors[i][j][1], mapViewColors[i][j][2], 1);
+                texture.SetPixel(i, j, pixelColour);
+            }
+        }
+        texture.Apply();
     }
 
     private Map MapMerging()

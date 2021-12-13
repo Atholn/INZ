@@ -483,8 +483,6 @@ public class MapEditorManager : MonoBehaviour
 
     public void ImportMap(MapWorld newMap)
     {
-        MapLoader.ResetAndLoad(ref _mapWorldInfo, ref newMap, ref mapsPrefabs, ref Terrain, ItemControllers, newMap.MainGroundID);
-
         foreach (GameObject panel in panelsToActive)
         {
             panel.SetActive(true);
@@ -494,6 +492,8 @@ public class MapEditorManager : MonoBehaviour
             panel.SetActive(false);
         }
         sizeMapPanel.SetActive(false);
+
+        MapLoader.ResetAndLoad(ref _mapWorldInfo, ref newMap, ref mapsPrefabs, ref Terrain, GetPrefabsOnly());
 
         ItemController startPointPrefab = ItemControllers.Where(i => i is ItemUnitController).FirstOrDefault();
         foreach (EditorStartPoint eSP in _mapWorldInfo.StartPoints)
@@ -517,8 +517,6 @@ public class MapEditorManager : MonoBehaviour
 
     internal void InitializeStartTerrain(int sizeX, int sizeY, int mainGroundID)
     {
-        _mapWorldInfo.MainGroundID = mainGroundID;
-
         foreach (GameObject panel in panelsToActive)
         {
             panel.SetActive(true);
@@ -529,18 +527,19 @@ public class MapEditorManager : MonoBehaviour
         }
         sizeMapPanel.SetActive(false);
 
+        _mapWorldInfo.MainGroundID = mainGroundID;
+        
         _mapWorldInfo.SizeMapX = sizeX;
         _mapWorldInfo.SizeMapY = sizeY;
 
-        MapLoader.InitializeNewMap(ref _mapWorldInfo, ref mapsPrefabs, ref Terrain, ItemControllers, _mapWorldInfo.MainGroundID);
+        MapLoader.InitializeNewMap(ref _mapWorldInfo, ref mapsPrefabs, ref Terrain, GetPrefabsOnly(), _mapWorldInfo.MainGroundID);
     }
     #endregion
 
-    //public void NewTerrain()
-    //{
-    //    DeleteMapGameObjects();
-    //    InitializeOpenEditor();
-    //}
+    private List<Item> GetPrefabsOnly()
+    {
+        return ItemControllers.Select(t => t.item).ToList();
+    }
 
     public int[] GetSizeMap()
     {

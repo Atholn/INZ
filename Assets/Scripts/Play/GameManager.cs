@@ -7,26 +7,18 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    private Map _map;
+    private MapWorld _map;
     private List<GameStartPoint> _gameStartPoints;
     private List<List<GameObject>> _playersGameObjects;
     private List<Material> _playersMaterials;
 
-    private int sizeMapX;
-    private int sizeMapY;
-    private int mapCount = 2; //Level 0 - terrain; Level 1 - Nature/Unit
-    private int[][][] maps;
-    private GameObject[][][] mapsPrefabs;
-    private GameObject Terrain;
-    public int BasicTerrainID = 0;
-
-    public GameObject basicTerrain;
-    private Vector3 basicScale;
-
-    public List<GameObject> TerrainPrefabs;
+    public List<Item> TerrainPrefabs;
+    //public List<GameObject> TerrainPrefabs;
     public List<GameObject> UnitsPrefabs;
     public List<GameObject> BuildingsPrefabs;
 
+    private GameObject[][][] _gameObjects;
+    private GameObject terrain;
     private GameObject _worker;
     private GameObject _townHall;
     private int _countOfWorkers = 5;
@@ -36,64 +28,21 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        _map = MapToPlayStorage.Map;
+        _map = new MapWorld();
         _gameStartPoints = MapToPlayStorage.GameStartPoints;
 
         _profileCamera = GameObject.FindGameObjectWithTag("ProfileCamera");
 
-        basicScale = new Vector3(basicTerrain.transform.localScale.x, basicTerrain.transform.localScale.y, basicTerrain.transform.localScale.z);
-
-        InitializeStartMaps();
-        ImportMap(_map);
-
         _worker = UnitsPrefabs.Where(w => w.name == "Worker").FirstOrDefault();
         _townHall = BuildingsPrefabs.Where(w => w.name == "TownHall").FirstOrDefault();
+
+
+        MapLoader.ResetAndLoad(ref _map, ref MapToPlayStorage.Map.MapWorldCreate , ref _gameObjects, ref terrain, TerrainPrefabs);
 
         InitializePlayers();
     }
 
-    private void InitializeStartMaps()
-    {
-        maps = new int[mapCount][][];
-        mapsPrefabs = new GameObject[mapCount][][];
-    }
 
-    private void ImportMap(Map map)
-    {
-        InitializeSizesMaps(map.MapWorldCreate.SizeMapX, map.MapWorldCreate.SizeMapY);
-        InitializeStartTerrain();
-        InitializeTerrainArrays();
-    }
-
-    private void InitializeSizesMaps(int sizeMapX, int sizeMapY)
-    {
-        this.sizeMapX = sizeMapX;
-        this.sizeMapY = sizeMapY;
-    }
-
-    private void InitializeStartTerrain()
-    {
-        GameObject basicTerrainPrefab = basicTerrain;
-
-        basicTerrainPrefab.gameObject.transform.localScale = new Vector3(sizeMapX * basicScale.x, basicScale.y, sizeMapY * basicScale.x);
-        Terrain = Instantiate(basicTerrainPrefab, new Vector3(sizeMapX / 2 - 0.5f, -0.5f, sizeMapY / 2 - 0.5f), basicTerrainPrefab.transform.rotation);
-        basicTerrainPrefab.gameObject.transform.localScale = basicScale;
-    }
-
-    private void InitializeTerrainArrays()
-    {
-        for (int i = 0; i < mapCount; i++)
-        {
-            maps[i] = new int[sizeMapX][];
-            mapsPrefabs[i] = new GameObject[sizeMapX][];
-
-            for (int j = 0; j < sizeMapX; j++)
-            {
-                maps[i][j] = new int[sizeMapY];
-                mapsPrefabs[i][j] = new GameObject[sizeMapY];
-            }
-        }
-    }
 
     private void InitializePlayers()
     {

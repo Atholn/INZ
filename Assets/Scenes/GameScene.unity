@@ -923,22 +923,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f2362e0de9b5974a956b3499bd31cdc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BasicTerrainID: 0
-  basicTerrain: {fileID: 5770076833996844587, guid: 2d15e7a89d6abcf498bb4d5c7dbdee7a, type: 3}
   TerrainPrefabs:
-  - {fileID: 426985600659949882, guid: 0f2062c14435e4549ae2a76bdf2a0cc6, type: 3}
-  - {fileID: 6333110819727023937, guid: 99e24d61b4f638c49ac48e410929925d, type: 3}
-  - {fileID: 4471362363148010571, guid: 45dac4c7f27c13f46a3f915133e8e691, type: 3}
-  - {fileID: 138189565154114163, guid: d401ef25e16c9f948892eadc15b307ae, type: 3}
-  - {fileID: 2580478140243336824, guid: 733511be29b96e9439766b98986704d0, type: 3}
-  - {fileID: 6967734365383964538, guid: b3edac712f97c47449c9f4371e9a8b84, type: 3}
-  - {fileID: 2277358033861606612, guid: 7737af21f03b77e41b2c9cf1e7d59004, type: 3}
-  - {fileID: 4631402345741991413, guid: 6eb429d60fee2cf43b1ecae9fa241957, type: 3}
-  - {fileID: 4064079335615023328, guid: c07212c48641f044db73bf3da1bb8e95, type: 3}
-  - {fileID: 6981954615339529793, guid: 477e206ff18f0cb41ab70d4e38e1bf74, type: 3}
-  - {fileID: 4755938419018921687, guid: 315b260d10d7acd409cd1bfc9842e4e5, type: 3}
-  - {fileID: 2681721045036282386, guid: 08aae598e8e3c21419da11965a22c468, type: 3}
-  - {fileID: 2681721045036282386, guid: 08aae598e8e3c21419da11965a22c468, type: 3}
+  - {fileID: 6013503852072562852, guid: 0f2062c14435e4549ae2a76bdf2a0cc6, type: 3}
+  - {fileID: 6641381536954698891, guid: 99e24d61b4f638c49ac48e410929925d, type: 3}
+  - {fileID: -3507339343188145475, guid: 45dac4c7f27c13f46a3f915133e8e691, type: 3}
+  - {fileID: 6980170147475680988, guid: d401ef25e16c9f948892eadc15b307ae, type: 3}
+  - {fileID: -873587080814962569, guid: 733511be29b96e9439766b98986704d0, type: 3}
+  - {fileID: -869536532803739833, guid: b3edac712f97c47449c9f4371e9a8b84, type: 3}
+  - {fileID: -5106711291145510644, guid: 7737af21f03b77e41b2c9cf1e7d59004, type: 3}
+  - {fileID: -6899137464236558226, guid: 6eb429d60fee2cf43b1ecae9fa241957, type: 3}
+  - {fileID: -7632072988235444466, guid: c07212c48641f044db73bf3da1bb8e95, type: 3}
+  - {fileID: -1008777722759392735, guid: 477e206ff18f0cb41ab70d4e38e1bf74, type: 3}
+  - {fileID: 8548267444395514896, guid: 315b260d10d7acd409cd1bfc9842e4e5, type: 3}
+  - {fileID: 8861128955406523054, guid: 08aae598e8e3c21419da11965a22c468, type: 3}
+  - {fileID: 0}
   UnitsPrefabs:
   - {fileID: 3446284451790535581, guid: 4b59cc05a6d5c384abdef9af2257c520, type: 3}
   BuildingsPrefabs:
