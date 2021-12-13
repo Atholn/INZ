@@ -103,7 +103,6 @@ public class GameManager : MonoBehaviour
 
                         _gameObjectToMove = obj;
 
-
                         _profileCamera.transform.SetParent(_gameObjectToMove.transform);
                         _profileCamera.transform.localPosition = _shiftProfileCamera;
                         break;
