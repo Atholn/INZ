@@ -111,8 +111,8 @@ public class ChoiceMapManager : MonoBehaviour
     {
         Map map = FileMapSystem.GetMapInfo(FileMapSystem.FolderName, MapsDropdown.options[MapsDropdown.value].text);
         InfoTexts[0].text = map.MapInfo.Name;
-        InfoTexts[1].text = map.MapInfo.Decription;
-        InfoTexts[2].text = map.MapWorldCreate.SizeMapX.ToString() + "x" + map.MapWorldCreate.SizeMapY.ToString();
+        InfoTexts[1].text = $"{map.MapWorldCreate.SizeMapX} x {map.MapWorldCreate.SizeMapY}";
+        InfoTexts[2].text = map.MapInfo.Decription;
 
         _gameStartPoints = map.MapWorldCreate.StartPoints.Where(s => s.UnitStartLocation[0] != 0 && s.UnitStartLocation[1] != 0 && s.UnitStartLocation[2] != 0).Select(s => s.UnitStartLocation).ToList();
 
@@ -172,6 +172,8 @@ public class ChoiceMapManager : MonoBehaviour
             }
         }
         texture.Apply();
+
+
     }
 
     private void GeneratingDifferentFeatures(GameObject panel, int countPlayers, int whichColour)
