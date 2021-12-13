@@ -259,23 +259,6 @@ public class MenuEditorManager : MonoBehaviour
         texture.Apply();
     }
 
-    private void InitializePixelsColors()
-    {
-        if (mapViewColors == null)
-        {
-            mapViewColors = new float[MapEditorManager.GetSizeMap()[0]][][];
-
-            for (int i = 0; i < MapEditorManager.GetSizeMap()[0]; i++)
-            {
-                mapViewColors[i] = new float[MapEditorManager.GetSizeMap()[1]][];
-                for (int j = 0; j < MapEditorManager.GetSizeMap()[1]; j++)
-                {
-                    mapViewColors[i][j] = new float[3];
-                }
-            }
-        }
-    }
-
     public void SaveDescription()
     {
         _mapInfo.Decription = mapInfoPanel.GetComponentInChildren<InputField>().text;
