@@ -40,23 +40,23 @@ public class MapEditorManager : MonoBehaviour
 
     private void Start()
     {
-        InitializeOpenEditor();
+        InitializeShowHidePanels(true);
         InitializeIDButtons();
         InitializeHeightMainTerrain();
         InitializeDestroyDropdown();
     }
 
-    private void InitializeOpenEditor()
+    private void InitializeShowHidePanels(bool sizePanel)
     {
         foreach (GameObject panel in panelsToActive)
         {
-            panel.SetActive(false);
+            panel.SetActive(!sizePanel);
         }
         foreach (GameObject panel in craftingPanels)
         {
             panel.SetActive(false);
         }
-        sizeMapPanel.SetActive(true);
+        sizeMapPanel.SetActive(sizePanel);
     }
 
     private void InitializeIDButtons()
@@ -483,15 +483,7 @@ public class MapEditorManager : MonoBehaviour
 
     public void ImportMap(MapWorld newMap)
     {
-        foreach (GameObject panel in panelsToActive)
-        {
-            panel.SetActive(true);
-        }
-        foreach (GameObject panel in craftingPanels)
-        {
-            panel.SetActive(false);
-        }
-        sizeMapPanel.SetActive(false);
+        InitializeShowHidePanels(false);
 
         MapLoader.ResetAndLoad(ref _mapWorldInfo, ref newMap, ref mapsPrefabs, ref Terrain, GetPrefabsOnly());
 
@@ -517,15 +509,7 @@ public class MapEditorManager : MonoBehaviour
 
     internal void InitializeStartTerrain(int sizeX, int sizeY, int mainGroundID)
     {
-        foreach (GameObject panel in panelsToActive)
-        {
-            panel.SetActive(true);
-        }
-        foreach (GameObject panel in craftingPanels)
-        {
-            panel.SetActive(false);
-        }
-        sizeMapPanel.SetActive(false);
+        InitializeShowHidePanels(false);
 
         _mapWorldInfo.MainGroundID = mainGroundID;
         
