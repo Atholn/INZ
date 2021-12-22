@@ -1,50 +1,9 @@
 fileFormatVersion: 2
-guid: 95b0630c79ee55146a260a9936c06373
+guid: 5c7ae4af52aa1f1489384df1503bad9b
 ModelImporter:
   serializedVersion: 21100
-  internalIDToNameTable:
-  - first:
-      74: -5676900101320421398
-    second: Worker|Chopping
-  - first:
-      74: 5319631339197335421
-    second: Worker|Indle
-  - first:
-      74: 7637718077751740905
-    second: Worker|Dead
-  - first:
-      74: -5895302573467177531
-    second: Worker|IndleGold
-  - first:
-      74: -6152602577782181558
-    second: Worker|IndleWood
-  - first:
-      74: -3434538902375472428
-    second: Worker|RuningGold
-  - first:
-      74: -6940048076330862218
-    second: Worker|RuningWood
-  externalObjects:
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Pants
-    second: {fileID: 2100000, guid: 7071472ffa02ad04a8c1daf90db7ab10, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Skin
-    second: {fileID: 2100000, guid: d131da8239ae56848b14c6e2ec92090a, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: UnitColor
-    second: {fileID: 2100000, guid: a7c57963f5f3fad4eb3f58e50228ed55, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Wood
-    second: {fileID: 2100000, guid: 7d80a230a4d94ae4c9d66fdc7b566cc3, type: 2}
+  internalIDToNameTable: []
+  externalObjects: {}
   materials:
     materialImportMode: 2
     materialName: 0
