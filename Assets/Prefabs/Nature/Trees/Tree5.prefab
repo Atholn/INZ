@@ -40,7 +40,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4631402345741991413}
-  m_Mesh: {fileID: -3759369761827887443, guid: 34902913879b8bb419135c3193e61453, type: 3}
+  m_Mesh: {fileID: -3759369761827887443, guid: f2124609b48a6924aa4277f23f25e9e8, type: 3}
 --- !u!23 &7765922521456873881
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -61,8 +61,8 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -1929036172255054197, guid: 34902913879b8bb419135c3193e61453, type: 3}
-  - {fileID: 5942243781359145451, guid: 34902913879b8bb419135c3193e61453, type: 3}
+  - {fileID: 2100000, guid: fde4e72a45b02be4eb6d9958b79544b3, type: 2}
+  - {fileID: 2100000, guid: 571a986d581fb6e4fa2cc550228bd1ab, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -99,4 +99,4 @@ MonoBehaviour:
   ItemPrefab: {fileID: 4631402345741991413}
   ItemImage: {fileID: 1227970020964644609, guid: c3df1c7188a3bc54b9c2f7dffd03d946, type: 3}
   ItemHeightLevel: 1
-  ItemHeightPosY: 0.6
+  ItemHeightPosY: 4.25
