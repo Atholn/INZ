@@ -65,19 +65,15 @@ public class GameManager : MonoBehaviour
 
         for (int i = 0; i < _gameStartPoints.Count; i++)
         {
-            MeshRenderer mesh = _townHall.GetComponent<MeshRenderer>();
-            mesh.material = _playersMaterials[i];
             _playersGameObjects[i].Add(Instantiate(_townHall, _gameStartPoints[i].UnitStartLocation, _townHall.transform.rotation));
-
-            SkinnedMeshRenderer skinnedMesh = _worker.GetComponentInChildren<SkinnedMeshRenderer>();
-            skinnedMesh.material = _playersMaterials[i];
+            _playersGameObjects[i][0].transform.GetComponent<MeshRenderer>().materials[1].color = _playersMaterials[i].color;
 
             for (int j = 0; j < _countOfWorkers; j++)
             {
                 _playersGameObjects[i].Add(Instantiate(_worker, _gameStartPoints[i].UnitStartLocation + new Vector3(5 + j * 1, 0, 5), _worker.transform.rotation));
+                _playersGameObjects[i][j + 1].transform.GetChild(0).GetComponentInChildren<SkinnedMeshRenderer>().materials[1].color = _playersMaterials[i].color;
             }
         }
-
     }
 
     void Update()
@@ -123,6 +119,5 @@ public class GameManager : MonoBehaviour
                     _gameObjectToMove.transform.position = hit.point;
             }
         }
-
     }
 }

@@ -1532,13 +1532,13 @@ MonoBehaviour:
   - {fileID: 8861128955406523054, guid: 08aae598e8e3c21419da11965a22c468, type: 3}
   - {fileID: 0}
   UnitsPrefabs:
-  - {fileID: 5773470143281253758, guid: 5da336bb6abae714c82fe6fbf0e90e59, type: 3}
+  - {fileID: 3490850715836948646, guid: 5da336bb6abae714c82fe6fbf0e90e59, type: 3}
   BuildingsPrefabs:
-  - {fileID: 8397447937223229580, guid: f9f450868aa36894daa1a9183ba955a3, type: 3}
-  - {fileID: 6196479725781274550, guid: 7b7ab6b43b77a6647bd3627c5515f81d, type: 3}
-  - {fileID: 6303766625921578736, guid: 46a73ab1cb95a4044a93a0a2421a551f, type: 3}
-  - {fileID: 9083036302659961125, guid: d75495dfce41b1f42a3ca78754e5025f, type: 3}
-  - {fileID: 5574618783113357630, guid: 0cf1a775b0aab70408cc20f75b9247c2, type: 3}
+  - {fileID: 4545978525857756237, guid: 76ff432532ecc13438bac08f419d85b8, type: 3}
+  - {fileID: 8054880855524684351, guid: 7b7ab6b43b77a6647bd3627c5515f81d, type: 3}
+  - {fileID: 2591485293969951501, guid: 46a73ab1cb95a4044a93a0a2421a551f, type: 3}
+  - {fileID: 7964747631741463486, guid: d75495dfce41b1f42a3ca78754e5025f, type: 3}
+  - {fileID: 9082014104220431091, guid: 0cf1a775b0aab70408cc20f75b9247c2, type: 3}
 --- !u!4 &1251306219
 Transform:
   m_ObjectHideFlags: 0
