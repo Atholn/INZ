@@ -13,7 +13,6 @@ public class GameManager : MonoBehaviour
     private List<Material> _playersMaterials;
 
     public List<Item> TerrainPrefabs;
-    //public List<GameObject> TerrainPrefabs;
     public List<GameObject> UnitsPrefabs;
     public List<GameObject> BuildingsPrefabs;
 
