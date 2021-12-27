@@ -5,11 +5,11 @@ using UnityEngine.UI;
 
 public class Unit : MonoBehaviour
 {
-    public int Hp;
+    public int HpMax;
     public string Name;
-
     public int Defense;
     public int Attack;
-
     public Texture2D Profile;
+
+    internal int Hp;
 }

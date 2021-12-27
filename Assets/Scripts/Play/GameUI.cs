@@ -47,6 +47,12 @@ public class GameUI : MonoBehaviour
 
     #region BottomPanel
 
+    public void SetLookBottomPanel(Color color)
+    {
+        CharacterPanel.GetComponent<Image>().color = color;
+        CharacterPanel.GetComponentInChildren<Text>().color = color == new Color(0, 0, 0) ? new Color(1, 1, 1) : new Color(0, 0, 0);
+    }
+
     public void SetFoto(GameObject gameObject)
     {
         RawImage[] rawImages = CharacterPanel.GetComponentsInChildren<RawImage>();
@@ -59,7 +65,6 @@ public class GameUI : MonoBehaviour
         rawImages[1].texture = gameObject.GetComponent<Unit>().Profile;
 
         CharacterPanel.GetComponentInChildren<Text>().text = gameObject.GetComponent<Unit>().Name;
-
     }
 
     #endregion
