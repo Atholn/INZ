@@ -84,7 +84,8 @@ public class GameManager : MonoBehaviour
 
     public void SetProfileCamera(GameObject gameObject)
     {
-        _gameUI.SetFoto(gameObject.GetComponent<Unit>().Profile);
+        //_gameUI.SetFoto(gameObject.GetComponent<Unit>().Profile);
+        _gameUI.SetFoto(gameObject);
     }
 
 }

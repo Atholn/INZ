@@ -93,21 +93,33 @@ public class CameraControll : MonoBehaviour
     {
         _selectUnits.Clear();
 
-        foreach (GameObject obj in _gameManager._playersGameObjects[0])
+        for (int i = 0; i < _gameManager._playersGameObjects.Count; i++)
         {
-            if (obj == null) continue;
-
-            var pos = obj.transform.position;
-            var posScreen = camera.WorldToScreenPoint(pos);
-            bool inRect = IsPointInRect(_boxRect, posScreen);
-
-            if (inRect)
+            List<GameObject> objects = new List<GameObject>();
+            for (int j = 0; j < _gameManager._playersGameObjects[i].Count; j++)
             {
-                _selectUnits.Add(obj);
+                var position = _gameManager._playersGameObjects[i][j].transform.position;
+                var positionScreen = camera.WorldToScreenPoint(position);
+                bool inRect = IsPointInRect(_boxRect, positionScreen);
+
+                if (inRect)
+                {
+                    objects.Add(_gameManager._playersGameObjects[i][j]);
+                }
+            }
+
+            foreach(GameObject gameObject in objects)
+            {
+                _selectUnits.Add(gameObject);
+            }
+
+            if (i == 0 && objects.Count != 0)
+            {
+                break;
             }
         }
 
-        if(_selectUnits.Count == 1)
+        if (_selectUnits.Count == 1)
         {
             _gameManager.SetProfileCamera(_selectUnits[0]);
         }

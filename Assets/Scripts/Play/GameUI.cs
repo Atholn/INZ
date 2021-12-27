@@ -8,6 +8,7 @@ public class GameUI : MonoBehaviour
     public GameObject TopPanel;
     public GameObject MenuPanel;
     public GameObject BottomPanel;
+    public GameObject CharacterPanel;
 
     #region TopPanel
 
@@ -46,9 +47,19 @@ public class GameUI : MonoBehaviour
 
     #region BottomPanel
 
-    public void SetFoto(Texture2D texture)
-    { 
-        BottomPanel.GetComponentInChildren<RawImage>().texture = texture;
+    public void SetFoto(GameObject gameObject)
+    {
+        RawImage[] rawImages = CharacterPanel.GetComponentsInChildren<RawImage>();
+
+        rawImages[0].color = 
+            gameObject.transform.GetComponent<MeshRenderer>() == null ?
+            gameObject.transform.GetChild(0).GetComponentInChildren<SkinnedMeshRenderer>().materials[1].color :
+            gameObject.transform.GetComponent<MeshRenderer>().materials[1].color;
+
+        rawImages[1].texture = gameObject.GetComponent<Unit>().Profile;
+
+        CharacterPanel.GetComponentInChildren<Text>().text = gameObject.GetComponent<Unit>().Name;
+
     }
 
     #endregion
