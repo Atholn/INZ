@@ -77,46 +77,46 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(1))
-        {
-            _gameObjectToMove = null;
-            _profileCamera.transform.SetParent(null);
-        }
+        //if (Input.GetMouseButtonDown(1))
+        //{
+        //    _gameObjectToMove = null;
+        //    _profileCamera.transform.SetParent(null);
+        //}
 
-        if (Input.GetMouseButtonDown(0))
-        {
-            var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
+        //if (Input.GetMouseButtonDown(0))
+        //{
+        //    var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        //    RaycastHit hit;
 
-            if (Physics.Raycast(ray, out hit))
-            {
-                foreach (GameObject obj in _playersGameObjects[0])
-                {
-                    if (hit.collider.gameObject == obj)
-                    {
-                        Debug.Log(obj.name);
+        //    if (Physics.Raycast(ray, out hit))
+        //    {
+        //        foreach (GameObject obj in _playersGameObjects[0])
+        //        {
+        //            if (hit.collider.gameObject == obj)
+        //            {
+        //                Debug.Log(obj.name);
 
-                        _gameObjectToMove = obj;
+        //                _gameObjectToMove = obj;
 
-                        _profileCamera.transform.SetParent(_gameObjectToMove.transform);
-                        _profileCamera.transform.localPosition = _shiftProfileCamera;
-                        break;
-                    }
-                }
-            }
-        }
+        //                _profileCamera.transform.SetParent(_gameObjectToMove.transform);
+        //                _profileCamera.transform.localPosition = _shiftProfileCamera;
+        //                break;
+        //            }
+        //        }
+        //    }
+        //}
 
-        if (Input.GetMouseButtonDown(2))
-        {
-            if (_gameObjectToMove != null)
-            {
-                var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                RaycastHit hit;
+        //if (Input.GetMouseButtonDown(2))
+        //{
+        //    if (_gameObjectToMove != null)
+        //    {
+        //        var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        //        RaycastHit hit;
 
 
-                if (Physics.Raycast(ray, out hit, 1000.0f))
-                    _gameObjectToMove.transform.position = hit.point;
-            }
-        }
+        //        if (Physics.Raycast(ray, out hit, 1000.0f))
+        //            _gameObjectToMove.transform.position = hit.point;
+        //    }
+        //}
     }
 }
