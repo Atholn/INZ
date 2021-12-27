@@ -16,12 +16,18 @@ public class CameraControll : MonoBehaviour
     private RectTransform _selectionBox;
     private Rect _selectionRect, _boxRect;
 
+    private List<GameObject> _selectUnits = new List<GameObject>();
+    private GameManager _gameManager;
+
+
     private void Awake()
     {
         cameraControl = this;
         _selectionBox = GetComponentInChildren<Image>().transform as RectTransform;
         camera = GetComponent<Camera>();
         _selectionBox.gameObject.SetActive(false);
+
+        _gameManager = GameObject.FindObjectOfType<GameManager>();
     }
 
     void Update()
@@ -45,6 +51,7 @@ public class CameraControll : MonoBehaviour
         {
             _selectionBox.gameObject.SetActive(true);
             _selectionRect.position = mousePos;
+
         }
         else if (Input.GetMouseButtonUp(0))
         {
@@ -56,7 +63,60 @@ public class CameraControll : MonoBehaviour
             _boxRect = AbsRect(_selectionRect);
             _selectionBox.anchoredPosition = _boxRect.position;
             _selectionBox.sizeDelta = _boxRect.size;
+
+            if (_boxRect.size.x != 0 || _boxRect.size.y != 0)
+                UpdateSelecting();
         }
+
+        if (Input.GetMouseButtonDown(2))
+        {
+            foreach (GameObject obj in _selectUnits)
+            {
+                Debug.LogError(obj.name);
+            }
+
+            //Debug.LogError(_gameManager._playersGameObjects.Count);
+            //foreach (List<GameObject> objs in _gameManager._playersGameObjects)
+            //{
+            //    foreach (GameObject obj in objs)
+            //    {
+            //        Debug.LogError(obj.name);
+            //    }
+            //}
+        }
+
+    }
+
+
+
+    private void UpdateSelecting()
+    {
+        _selectUnits.Clear();
+
+        foreach (GameObject obj in _gameManager._playersGameObjects[0])
+        {
+            if (obj == null) continue;
+
+            var pos = obj.transform.position;
+            var posScreen = camera.WorldToScreenPoint(pos);
+            bool inRect = IsPointInRect(_boxRect, posScreen);
+
+            if (inRect)
+            {
+                _selectUnits.Add(obj);
+            }
+        }
+
+        if(_selectUnits.Count == 1)
+        {
+            _gameManager.SetProfileCamera(_selectUnits[0]);
+        }
+    }
+
+    bool IsPointInRect(Rect rect, Vector2 point)
+    {
+        return point.x >= rect.position.x && point.x <= (rect.position.x + rect.size.x) &&
+            point.y >= rect.position.y && point.y <= (rect.position.y + rect.size.y);
     }
 
     private Rect AbsRect(Rect selectionRect)

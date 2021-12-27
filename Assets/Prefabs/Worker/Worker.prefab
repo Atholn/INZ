@@ -1182,6 +1182,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7218427115013621323}
   - component: {fileID: -9064093320660039509}
+  - component: {fileID: -7887217350929735103}
   m_Layer: 0
   m_Name: Worker
   m_TagString: Untagged
@@ -1225,6 +1226,23 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &-7887217350929735103
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8027333852737248497}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eef6d0f6c9d49174e8bf1e2fcc334da5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Hp: 100
+  Name: Worker
+  Defense: 1
+  Attack: 1
+  Profile: {fileID: 2800000, guid: 0e40c2edb22c03e4285a5aa2e98c295a, type: 3}
 --- !u!1 &8052114468558325162
 GameObject:
   m_ObjectHideFlags: 0

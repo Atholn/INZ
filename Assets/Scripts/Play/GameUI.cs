@@ -1,13 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameUI : MonoBehaviour
 {
     public GameObject TopPanel;
     public GameObject MenuPanel;
     public GameObject BottomPanel;
-
 
     #region TopPanel
 
@@ -46,6 +46,10 @@ public class GameUI : MonoBehaviour
 
     #region BottomPanel
 
+    public void SetFoto(Texture2D texture)
+    { 
+        BottomPanel.GetComponentInChildren<RawImage>().texture = texture;
+    }
 
     #endregion
 }

@@ -7,14 +7,15 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    private MapWorld _map;
-    private List<GameStartPoint> _gameStartPoints;
-    private List<List<GameObject>> _playersGameObjects;
-    private List<Material> _playersMaterials;
-
     public List<Item> TerrainPrefabs;
     public List<GameObject> UnitsPrefabs;
     public List<GameObject> BuildingsPrefabs;
+
+    internal List<List<GameObject>> _playersGameObjects;
+
+    private MapWorld _map;
+    private List<GameStartPoint> _gameStartPoints;
+    private List<Material> _playersMaterials;
 
     private GameObject[][][] _gameObjects;
     private GameObject _terrain;
@@ -24,22 +25,23 @@ public class GameManager : MonoBehaviour
 
     private GameObject _minimapCamera;
 
-    private GameObject _gameObjectToMove;
-    private GameObject _profileCamera;
-    private Vector3 _shiftProfileCamera = new Vector3(-0.6f, 6f, 3.7f);
+
+    private GameUI _gameUI;
 
     void Start()
     {
+        _gameUI = FindObjectOfType<GameUI>();
+
         _map = new MapWorld();
         _gameStartPoints = MapToPlayStorage.GameStartPoints;
 
         _worker = UnitsPrefabs.Where(w => w.name == "Worker").FirstOrDefault();
         _townHall = BuildingsPrefabs.Where(w => w.name == "TownHall").FirstOrDefault();
 
-        MapLoader.ResetAndLoad(ref _map, ref MapToPlayStorage.Map.MapWorldCreate , ref _gameObjects, ref _terrain, TerrainPrefabs);
+        MapLoader.ResetAndLoad(ref _map, ref MapToPlayStorage.Map.MapWorldCreate, ref _gameObjects, ref _terrain, TerrainPrefabs);
         InitializePlayers();
 
-        _profileCamera = GameObject.FindGameObjectWithTag("ProfileCamera");
+
         _minimapCamera = GameObject.FindGameObjectWithTag("MinimapCamera");
 
         RenderTexture texture = _minimapCamera.GetComponent<Camera>().targetTexture;
@@ -77,46 +79,12 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        //if (Input.GetMouseButtonDown(1))
-        //{
-        //    _gameObjectToMove = null;
-        //    _profileCamera.transform.SetParent(null);
-        //}
 
-        //if (Input.GetMouseButtonDown(0))
-        //{
-        //    var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        //    RaycastHit hit;
-
-        //    if (Physics.Raycast(ray, out hit))
-        //    {
-        //        foreach (GameObject obj in _playersGameObjects[0])
-        //        {
-        //            if (hit.collider.gameObject == obj)
-        //            {
-        //                Debug.Log(obj.name);
-
-        //                _gameObjectToMove = obj;
-
-        //                _profileCamera.transform.SetParent(_gameObjectToMove.transform);
-        //                _profileCamera.transform.localPosition = _shiftProfileCamera;
-        //                break;
-        //            }
-        //        }
-        //    }
-        //}
-
-        //if (Input.GetMouseButtonDown(2))
-        //{
-        //    if (_gameObjectToMove != null)
-        //    {
-        //        var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        //        RaycastHit hit;
-
-
-        //        if (Physics.Raycast(ray, out hit, 1000.0f))
-        //            _gameObjectToMove.transform.position = hit.point;
-        //    }
-        //}
     }
+
+    public void SetProfileCamera(GameObject gameObject)
+    {
+        _gameUI.SetFoto(gameObject.GetComponent<Unit>().Profile);
+    }
+
 }
