@@ -6,17 +6,17 @@ using UnityEngine.UI;
 
 public class Minimap : MonoBehaviour
 {
-    public Camera MinimapCamera;
-
-    private Texture2D _renderTexture;
+    private Camera _minimapCamera;
+    private RenderTexture _renderTexture;
     private GameManager _gameManager;
-
-    public RenderTexture renderTexture;
-    public Image image;
+    private Image _image;
 
     private void Start()
     {
+        _minimapCamera = GameObject.FindGameObjectWithTag("MinimapCamera").GetComponent<Camera>();
+        _renderTexture = _minimapCamera.targetTexture;
         _gameManager = FindObjectOfType<GameManager>();
+        _image = gameObject.GetComponentInParent<Image>();
     }
 
     private void Update()
@@ -26,10 +26,9 @@ public class Minimap : MonoBehaviour
 
     private void UpdateUnitPixels()
     {
-        Texture2D texture = GetRTPixels(renderTexture);
-
-        Sprite sprite = Sprite.Create(texture, new Rect(0, 0, 100, 100), Vector2.zero);
-        image.sprite = sprite;
+        Texture2D texture = GetRTPixels(_renderTexture);
+        Sprite sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.zero);
+        _image.sprite = sprite;
 
         foreach (List<GameObject> objects in _gameManager._playersGameObjects)
         {
@@ -47,10 +46,7 @@ public class Minimap : MonoBehaviour
         }
 
         texture.Apply();
-
     }
-
-
 
     static public Texture2D GetRTPixels(RenderTexture rt)
     {
