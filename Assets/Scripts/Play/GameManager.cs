@@ -25,7 +25,6 @@ public class GameManager : MonoBehaviour
 
     private GameObject _minimapCamera;
 
-
     private GameUI _gameUI;
 
     void Start()
@@ -84,9 +83,13 @@ public class GameManager : MonoBehaviour
 
     }
 
-    public void SetProfileCamera(GameObject gameObject)
+    public void SetProfile(GameObject gameObject)
     {
-        _gameUI.SetFoto(gameObject);
+        _gameUI.SetCharacterInfo(gameObject);
     }
 
+    internal void SetNonProfile()
+    {
+        _gameUI.SetNonProfile();
+    }
 }

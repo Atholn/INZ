@@ -12,4 +12,9 @@ public class Unit : MonoBehaviour
     public Texture2D Profile;
 
     internal int Hp;
+
+    private void Start()
+    {
+        Hp = HpMax;
+    }
 }

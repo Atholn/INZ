@@ -121,8 +121,14 @@ public class CameraControll : MonoBehaviour
 
         if (_selectUnits.Count == 1)
         {
-            _gameManager.SetProfileCamera(_selectUnits[0]);
+            _gameManager.SetProfile(_selectUnits[0]);
         }
+
+        if (_selectUnits.Count == 0)
+        {
+            _gameManager.SetNonProfile();
+        }
+
     }
 
     bool IsPointInRect(Rect rect, Vector2 point)

@@ -98,7 +98,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4394740e29547e54ea832fef4a81be1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Hp: 1000
+  HpMax: 1000
   Name: TownHall
   Defense: 10
   Attack: 0
