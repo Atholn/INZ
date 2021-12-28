@@ -8911,11 +8911,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27ada15c4bb6b7d4f867bd5cb084f1af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cameraSpeed: 10
-  zoomSpeed: 0
-  groundHeight: 0
-  cameraHeightMinMax: {x: 0, y: 0}
-  cameraRotationMinMax: {x: 0, y: 0}
+  Speed: 0
 --- !u!1 &1164435211
 GameObject:
   m_ObjectHideFlags: 0
@@ -10861,7 +10857,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1383593434
 RectTransform:
   m_ObjectHideFlags: 0
