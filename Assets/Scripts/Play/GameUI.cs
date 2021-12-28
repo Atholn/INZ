@@ -9,12 +9,13 @@ public class GameUI : MonoBehaviour
     public GameObject TopPanel;
     public GameObject MenuPanel;
     public GameObject BottomPanel;
-    public GameObject CharacterPanel;
 
-    private Image _mainCharacterImage;
+    public GameObject OneCharacterPanel;
+    public GameObject ManyCharactersPanel;
+
     private RawImage[] _characterImages;
     private Text[] _characterInfos;
-
+    private List<RawImage> images = new List<RawImage>();
     #region TopPanel
 
     public void Menu()
@@ -54,10 +55,13 @@ public class GameUI : MonoBehaviour
 
     public void SetLookBottomPanel(Color color)
     {
-        _mainCharacterImage = CharacterPanel.GetComponent<Image>();
-        _mainCharacterImage.color = color;
-        _characterImages = CharacterPanel.GetComponentsInChildren<RawImage>();
-        _characterInfos = CharacterPanel.GetComponentsInChildren<Text>();
+        BottomPanel.SetActive(true);
+        BottomPanel.GetComponent<Image>().color = color;
+        OneCharacterPanel.SetActive(false);
+        ManyCharactersPanel.SetActive(false);
+
+        _characterImages = OneCharacterPanel.GetComponentsInChildren<RawImage>();
+        _characterInfos = OneCharacterPanel.GetComponentsInChildren<Text>();
 
         foreach (RawImage image in _characterImages)
         {
@@ -70,17 +74,27 @@ public class GameUI : MonoBehaviour
             text.color = textColor;
             text.text = "";
         }
+
+        images.Add(ManyCharactersPanel.GetComponentInChildren<RawImage>(true));
+    }
+
+    internal void SetNonProfile()
+    {
+        OneCharacterPanel.SetActive(false);
+        ManyCharactersPanel.SetActive(false);
     }
 
     internal void SetCharacterInfo(GameObject gameObject)
     {
+        OneCharacterPanel.SetActive(true);
+        ManyCharactersPanel.SetActive(false);
+
         _characterImages[0].color =
             gameObject.transform.GetComponent<MeshRenderer>() == null ?
             gameObject.transform.GetChild(0).GetComponentInChildren<SkinnedMeshRenderer>().materials[1].color :
             gameObject.transform.GetComponent<MeshRenderer>().materials[1].color;
         _characterImages[1].texture = gameObject.GetComponent<Unit>().Profile;
         _characterImages[1].color = new Color(255, 255, 255);
-        _characterImages[2].color = new Color(_characterImages[2].color.r, _characterImages[2].color.g, _characterImages[2].color.b, 0);
 
         Unit unit = gameObject.GetComponent<Unit>();
         _characterInfos[0].text = unit.Name;
@@ -89,18 +103,31 @@ public class GameUI : MonoBehaviour
         _characterInfos[3].text = $"{unit.Hp} / {unit.Hp}";
     }
 
-    internal void SetNonProfile()
+    internal void SetCharactersProfiles(List<GameObject> selectUnits)
     {
-        _characterImages[0].color = _mainCharacterImage.color;
-        _characterImages[2].color = new Color(_characterImages[2].color.r, _characterImages[2].color.g, _characterImages[2].color.b, 255);
+        OneCharacterPanel.SetActive(false);
+        ManyCharactersPanel.SetActive(true);
 
-        foreach (Text text in _characterInfos)
+        for (int i = images.Count - 1; i > 0; i--)
         {
-            text.text = "";
+            Destroy(images[i].gameObject);
+            images.Remove(images[i]);
+        }
+
+        images[0].texture = selectUnits[0].GetComponent<Unit>().Profile;
+
+        for (int i = 0; i < selectUnits.Count; i++)
+        {
+            images.Add(Instantiate(images[0],
+                new Vector3(
+                    images[0].transform.position.x + (((i + 1) % 12) * (images[0].GetComponent<RectTransform>().rect.width + 10)),
+                    i + 1 > 11 ? (int)images[0].transform.position.y - (images[0].GetComponent<RectTransform>().rect.height + 10) : (int)images[0].transform.position.y,
+                    0),
+                images[0].transform.rotation));
+            images[i].transform.SetParent(ManyCharactersPanel.transform);
+            images[i].texture = selectUnits[i].GetComponent<Unit>().Profile;
         }
     }
-
-
 
     #endregion
 }

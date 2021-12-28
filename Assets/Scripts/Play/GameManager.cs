@@ -70,7 +70,7 @@ public class GameManager : MonoBehaviour
             _playersGameObjects[i].Add(Instantiate(_townHall, _gameStartPoints[i].UnitStartLocation, _townHall.transform.rotation));
             _playersGameObjects[i][0].transform.GetComponent<MeshRenderer>().materials[1].color = _playersMaterials[i].color;
 
-            for (int j = 0; j < _countOfWorkers; j++)
+            for (int j = 0; j < (i == 0 ? 25 : _countOfWorkers); j++)
             {
                 _playersGameObjects[i].Add(Instantiate(_worker, _gameStartPoints[i].UnitStartLocation + new Vector3(5 + j * 1, 0, 5), _worker.transform.rotation));
                 _playersGameObjects[i][j + 1].transform.GetChild(0).GetComponentInChildren<SkinnedMeshRenderer>().materials[1].color = _playersMaterials[i].color;
@@ -83,13 +83,18 @@ public class GameManager : MonoBehaviour
 
     }
 
+    internal void SetNonProfile()
+    {
+        _gameUI.SetNonProfile();
+    }
+
     public void SetProfile(GameObject gameObject)
     {
         _gameUI.SetCharacterInfo(gameObject);
     }
 
-    internal void SetNonProfile()
+    internal void SetProfiles(List<GameObject> selectUnits)
     {
-        _gameUI.SetNonProfile();
+        _gameUI.SetCharactersProfiles(selectUnits);
     }
 }

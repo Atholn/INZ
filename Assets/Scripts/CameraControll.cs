@@ -74,17 +74,7 @@ public class CameraControll : MonoBehaviour
             {
                 Debug.LogError(obj.name);
             }
-
-            //Debug.LogError(_gameManager._playersGameObjects.Count);
-            //foreach (List<GameObject> objs in _gameManager._playersGameObjects)
-            //{
-            //    foreach (GameObject obj in objs)
-            //    {
-            //        Debug.LogError(obj.name);
-            //    }
-            //}
         }
-
     }
 
 
@@ -93,10 +83,12 @@ public class CameraControll : MonoBehaviour
     {
         _selectUnits.Clear();
 
-        for (int i = 0; i < _gameManager._playersGameObjects.Count; i++)
+        int i;
+
+        for (i = 0; i < _gameManager._playersGameObjects.Count; i++)
         {
             List<GameObject> objects = new List<GameObject>();
-            for (int j = 0; j < _gameManager._playersGameObjects[i].Count; j++)
+            for (int j = 0; j < _gameManager._playersGameObjects[i].Count && objects.Count < 24; j++)
             {
                 var position = _gameManager._playersGameObjects[i][j].transform.position;
                 var positionScreen = camera.WorldToScreenPoint(position);
@@ -108,7 +100,7 @@ public class CameraControll : MonoBehaviour
                 }
             }
 
-            foreach(GameObject gameObject in objects)
+            foreach (GameObject gameObject in objects)
             {
                 _selectUnits.Add(gameObject);
             }
@@ -119,16 +111,24 @@ public class CameraControll : MonoBehaviour
             }
         }
 
-        if (_selectUnits.Count == 1)
-        {
-            _gameManager.SetProfile(_selectUnits[0]);
-        }
-
         if (_selectUnits.Count == 0)
         {
             _gameManager.SetNonProfile();
+            return;
         }
 
+        if (_selectUnits.Count == 1)
+        {
+            _gameManager.SetProfile(_selectUnits[0]);
+            return;
+        }
+
+        if (_selectUnits.Count > 0)
+        {
+            if (i > 0) return;
+            _gameManager.SetProfiles(_selectUnits);
+            return;
+        }
     }
 
     bool IsPointInRect(Rect rect, Vector2 point)

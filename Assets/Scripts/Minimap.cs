@@ -48,10 +48,7 @@ public class Minimap : MonoBehaviour
                 {
                     for (int j = 0; j < size; j++)
                     {
-                        int x = (int)obj.transform.position.x - size / 2 + i;
-                        int y = (int)obj.transform.position.z - size / 2 + j;
-                        texture.SetPixel(x, y, pixelColor);
-
+                        texture.SetPixel((int)obj.transform.position.x - size / 2 + i, (int)obj.transform.position.z - size / 2 + j, pixelColor);
                     }
                 }
             }
