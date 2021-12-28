@@ -84,8 +84,8 @@ public class GameUI : MonoBehaviour
 
         Unit unit = gameObject.GetComponent<Unit>();
         _characterInfos[0].text = unit.Name;
-        _characterInfos[1].text = unit.Attack.ToString();
-        _characterInfos[2].text = unit.Defense.ToString();
+        _characterInfos[1].text = $"Attack {unit.Attack}";
+        _characterInfos[2].text = $"Defense {unit.Defense}";
         _characterInfos[3].text = $"{unit.Hp} / {unit.Hp}";
     }
 
