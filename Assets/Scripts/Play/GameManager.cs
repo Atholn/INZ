@@ -48,7 +48,7 @@ public class GameManager : MonoBehaviour
         texture.width = size;
         texture.height = size;
 
-        _minimapCamera.transform.position = new Vector3(_terrain.transform.position.x, size, _terrain.transform.position.z);
+        _minimapCamera.transform.position = new Vector3(_terrain.transform.position.x, size - 0.1f * size, _terrain.transform.position.z);
 
         _gameUI.SetLookBottomPanel(_playersMaterials[0].color);
     }

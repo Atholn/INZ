@@ -39,9 +39,21 @@ public class Minimap : MonoBehaviour
             objects[0].transform.GetChild(0).GetComponentInChildren<SkinnedMeshRenderer>().materials[1].color :
             objects[0].transform.GetComponent<MeshRenderer>().materials[1].color;
 
+
             foreach (GameObject obj in objects)
             {
-                texture.SetPixel((int)obj.transform.position.x, (int)obj.transform.position.z, pixelColor);
+                int size = obj.GetComponent<BuildingUnit>() == null ? 1 : obj.GetComponent<BuildingUnit>().Size;
+
+                for (int i = 0; i < size; i++)
+                {
+                    for (int j = 0; j < size; j++)
+                    {
+                        int x = (int)obj.transform.position.x - size / 2 + i;
+                        int y = (int)obj.transform.position.z - size / 2 + j;
+                        texture.SetPixel(x, y, pixelColor);
+
+                    }
+                }
             }
         }
 

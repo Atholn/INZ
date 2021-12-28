@@ -4,5 +4,5 @@ using UnityEngine;
 
 public class BuildingUnit : Unit
 {
-    int Size;
+    public int Size;
 }
