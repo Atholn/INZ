@@ -96,6 +96,12 @@ public class GameManager : MonoBehaviour
 
     internal void SetProfiles(List<GameObject> selectUnits)
     {
+        selectUnits = selectUnits.OrderBy(x => x.GetComponent<Unit>().Priority).ToList();
         _gameUI.SetCharactersProfiles(selectUnits, _maxSelected);
+    }
+
+    internal int GetMaxSelected()
+    {
+        return _maxSelected;
     }
 }

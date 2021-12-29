@@ -15,7 +15,7 @@ public class GameUI : MonoBehaviour
 
     private RawImage[] _characterImages;
     private Text[] _characterInfos;
-    private List<RawImage> images = new List<RawImage>();
+    private List<RawImage> _images = new List<RawImage>();
 
     #region TopPanel
     public void Menu()
@@ -75,7 +75,7 @@ public class GameUI : MonoBehaviour
             text.text = "";
         }
 
-        images.Add(ManyCharactersPanel.GetComponentInChildren<RawImage>(true));
+        _images.Add(ManyCharactersPanel.GetComponentInChildren<RawImage>(true));
     }
 
     internal void SetNonProfile()
@@ -108,24 +108,24 @@ public class GameUI : MonoBehaviour
         OneCharacterPanel.SetActive(false);
         ManyCharactersPanel.SetActive(true);
 
-        for (int i = images.Count - 1; i > 0; i--)
+        for (int i = _images.Count - 1; i > 0; i--)
         {
-            Destroy(images[i].gameObject);
-            images.Remove(images[i]);
+            Destroy(_images[i].gameObject);
+            _images.Remove(_images[i]);
         }
 
-        images[0].texture = selectUnits[0].GetComponent<Unit>().Profile;
+        _images[0].texture = selectUnits[0].GetComponent<Unit>().Profile;
 
         for (int i = 0; i < selectUnits.Count; i++)
         {
-            images.Add(Instantiate(images[0],
+            _images.Add(Instantiate(_images[0],
                 new Vector3(
-                    images[0].transform.position.x + (((i + 1) % (maxSelected / 2)) * (images[0].GetComponent<RectTransform>().rect.width + 10)),
-                    i + 1 > (maxSelected / 2) - 1 ? (int)images[0].transform.position.y - (images[0].GetComponent<RectTransform>().rect.height + 10) : (int)images[0].transform.position.y,
+                    _images[0].transform.position.x + (((i + 1) % (maxSelected / 2)) * (_images[0].GetComponent<RectTransform>().rect.width + 10)),
+                    i + 1 > (maxSelected / 2) - 1 ? (int)_images[0].transform.position.y - (_images[0].GetComponent<RectTransform>().rect.height + 10) : (int)_images[0].transform.position.y,
                     0),
-                images[0].transform.rotation));
-            images[i].transform.SetParent(ManyCharactersPanel.transform);
-            images[i].texture = selectUnits[i].GetComponent<Unit>().Profile;
+                _images[0].transform.rotation));
+            _images[i].transform.SetParent(ManyCharactersPanel.transform);
+            _images[i].texture = selectUnits[i].GetComponent<Unit>().Profile;
         }
     }
 

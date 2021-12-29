@@ -19,7 +19,6 @@ public class CameraControll : MonoBehaviour
     private List<GameObject> _selectUnits = new List<GameObject>();
     private GameManager _gameManager;
 
-
     private void Awake()
     {
         cameraControl = this;
@@ -88,7 +87,7 @@ public class CameraControll : MonoBehaviour
         for (i = 0; i < _gameManager._playersGameObjects.Count; i++)
         {
             List<GameObject> objects = new List<GameObject>();
-            for (int j = 0; j < _gameManager._playersGameObjects[i].Count && objects.Count < 24; j++)
+            for (int j = 0; j < _gameManager._playersGameObjects[i].Count && objects.Count < _gameManager.GetMaxSelected(); j++)
             {
                 var position = _gameManager._playersGameObjects[i][j].transform.position;
                 var positionScreen = camera.WorldToScreenPoint(position);
@@ -125,7 +124,11 @@ public class CameraControll : MonoBehaviour
 
         if (_selectUnits.Count > 0)
         {
-            if (i > 0) return;
+            if (i > 0)
+            {
+                return;
+            }
+
             _gameManager.SetProfiles(_selectUnits);
             return;
         }

@@ -10,6 +10,7 @@ public class Unit : MonoBehaviour
     public int Defense;
     public int Attack;
     public Texture2D Profile;
+    public int Priority;
 
     internal int Hp;
 
