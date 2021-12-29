@@ -20,12 +20,14 @@ public class GameManager : MonoBehaviour
     private GameObject[][][] _gameObjects;
     private GameObject _terrain;
     private GameObject _worker;
-    private int _countOfWorkers = 5;
     private GameObject _townHall;
 
     private GameObject _minimapCamera;
 
     private GameUI _gameUI;
+
+    private int _countOfWorkers = 5;
+    private int _maxSelected = 24;
 
     void Start()
     {
@@ -39,7 +41,6 @@ public class GameManager : MonoBehaviour
 
         MapLoader.ResetAndLoad(ref _map, ref MapToPlayStorage.Map.MapWorldCreate, ref _gameObjects, ref _terrain, TerrainPrefabs);
         InitializePlayers();
-
 
         _minimapCamera = GameObject.FindGameObjectWithTag("MinimapCamera");
 
@@ -70,7 +71,7 @@ public class GameManager : MonoBehaviour
             _playersGameObjects[i].Add(Instantiate(_townHall, _gameStartPoints[i].UnitStartLocation, _townHall.transform.rotation));
             _playersGameObjects[i][0].transform.GetComponent<MeshRenderer>().materials[1].color = _playersMaterials[i].color;
 
-            for (int j = 0; j < (i == 0 ? 25 : _countOfWorkers); j++)
+            for (int j = 0; j < _countOfWorkers; j++)
             {
                 _playersGameObjects[i].Add(Instantiate(_worker, _gameStartPoints[i].UnitStartLocation + new Vector3(5 + j * 1, 0, 5), _worker.transform.rotation));
                 _playersGameObjects[i][j + 1].transform.GetChild(0).GetComponentInChildren<SkinnedMeshRenderer>().materials[1].color = _playersMaterials[i].color;
@@ -95,6 +96,6 @@ public class GameManager : MonoBehaviour
 
     internal void SetProfiles(List<GameObject> selectUnits)
     {
-        _gameUI.SetCharactersProfiles(selectUnits);
+        _gameUI.SetCharactersProfiles(selectUnits, _maxSelected);
     }
 }

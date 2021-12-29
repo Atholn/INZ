@@ -16,8 +16,8 @@ public class GameUI : MonoBehaviour
     private RawImage[] _characterImages;
     private Text[] _characterInfos;
     private List<RawImage> images = new List<RawImage>();
-    #region TopPanel
 
+    #region TopPanel
     public void Menu()
     {
         MenuPanel.SetActive(true);
@@ -103,7 +103,7 @@ public class GameUI : MonoBehaviour
         _characterInfos[3].text = $"{unit.Hp} / {unit.Hp}";
     }
 
-    internal void SetCharactersProfiles(List<GameObject> selectUnits)
+    internal void SetCharactersProfiles(List<GameObject> selectUnits, int maxSelected)
     {
         OneCharacterPanel.SetActive(false);
         ManyCharactersPanel.SetActive(true);
@@ -120,8 +120,8 @@ public class GameUI : MonoBehaviour
         {
             images.Add(Instantiate(images[0],
                 new Vector3(
-                    images[0].transform.position.x + (((i + 1) % 12) * (images[0].GetComponent<RectTransform>().rect.width + 10)),
-                    i + 1 > 11 ? (int)images[0].transform.position.y - (images[0].GetComponent<RectTransform>().rect.height + 10) : (int)images[0].transform.position.y,
+                    images[0].transform.position.x + (((i + 1) % (maxSelected / 2)) * (images[0].GetComponent<RectTransform>().rect.width + 10)),
+                    i + 1 > (maxSelected / 2) - 1 ? (int)images[0].transform.position.y - (images[0].GetComponent<RectTransform>().rect.height + 10) : (int)images[0].transform.position.y,
                     0),
                 images[0].transform.rotation));
             images[i].transform.SetParent(ManyCharactersPanel.transform);
