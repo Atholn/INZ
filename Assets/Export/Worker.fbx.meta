@@ -1,17 +1,20 @@
 fileFormatVersion: 2
-guid: fdae935498f62074d820b19c9a393b66
+guid: e9f1ab06d4d98f64587cdc228d6e708a
 ModelImporter:
   serializedVersion: 21100
   internalIDToNameTable:
   - first:
+      74: 699419442994422378
+    second: Worker|Building
+  - first:
       74: -5676900101320421398
     second: Worker|Chopping
   - first:
-      74: 5319631339197335421
-    second: Worker|Indle
-  - first:
       74: 7637718077751740905
     second: Worker|Dead
+  - first:
+      74: 5319631339197335421
+    second: Worker|Indle
   - first:
       74: -5895302573467177531
     second: Worker|IndleGold
@@ -27,7 +30,27 @@ ModelImporter:
   - first:
       74: -6940048076330862218
     second: Worker|RuningWood
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Pants
+    second: {fileID: 2100000, guid: b13a3175030b0af46af898276df01e28, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Skin
+    second: {fileID: 2100000, guid: 4faf80786e407cd42b108f55e49d44a7, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: UnitColor
+    second: {fileID: 2100000, guid: ee2c33462a5b7f3459795c7752f7009d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Wood
+    second: {fileID: 2100000, guid: 4ce25b1f7774a814aabba50c630d27cb, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -56,11 +79,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Worker|Chopping
-      takeName: Worker|Chopping
+      name: Worker|Building
+      takeName: Worker|Building
       internalID: 0
       firstFrame: 0
-      lastFrame: 49
+      lastFrame: 50
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -85,8 +108,8 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Worker|Indle
-      takeName: Worker|Indle
+      name: Worker|Chopping
+      takeName: Worker|Chopping
       internalID: 0
       firstFrame: 0
       lastFrame: 49
@@ -126,6 +149,35 @@ ModelImporter:
       loop: 0
       hasAdditiveReferencePose: 0
       loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Worker|Indle
+      takeName: Worker|Indle
+      internalID: 0
+      firstFrame: 0
+      lastFrame: 49
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0

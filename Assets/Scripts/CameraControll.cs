@@ -74,9 +74,43 @@ public class CameraControll : MonoBehaviour
                 Debug.LogError(obj.name);
             }
         }
+
+        if (Input.GetMouseButtonDown(1))
+        {
+            GiveCommands();
+        }
     }
 
+    Ray ray;
+    RaycastHit rayHit;
+    public LayerMask commandLayerMask = -1;
+    void GiveCommands()
+    {
+        ray = camera.ViewportPointToRay(mousePosScreen);
+        if (Physics.Raycast(ray, out rayHit, 1000, commandLayerMask))
+        {
+            object commandData = null;
+            if (rayHit.collider is TerrainCollider)
+            {
+                Debug.Log("Terrain: " + rayHit.point.ToString());
+                commandData = rayHit.point;
+            }
+            else
+            {
+                Debug.Log(rayHit.collider);
+                commandData = rayHit.collider.gameObject.GetComponent<Unit>();
+            }
+            GiveCommands(commandData, "Command");
+        }
+    }
 
+    void GiveCommands(object dataCommand, string commandName)
+    {
+        foreach (GameObject selectable in _selectUnits)
+        {
+            selectable.GetComponent<Unit>().SendMessage(commandName, dataCommand, SendMessageOptions.DontRequireReceiver);
+        }
+    }
 
     private void UpdateSelecting()
     {

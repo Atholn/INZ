@@ -12,7 +12,8 @@ GameObject:
   - component: {fileID: 3499223278458233931}
   - component: {fileID: 4095982365988984530}
   - component: {fileID: 6013503852072562852}
-  m_Layer: 0
+  - component: {fileID: 5048293355935676941}
+  m_Layer: 7
   m_Name: Ground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -100,3 +101,14 @@ MonoBehaviour:
   ItemHeightLevel: 0
   ItemHeightPosY: 0
   AllowsBuild: 1
+--- !u!154 &5048293355935676941
+TerrainCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 426985600659949882}
+  m_Material: {fileID: 0}
+  m_Enabled: 1
+  m_TerrainData: {fileID: 0}
+  m_EnableTreeColliders: 1
