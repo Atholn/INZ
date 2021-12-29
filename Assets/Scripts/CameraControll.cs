@@ -95,9 +95,14 @@ public class CameraControll : MonoBehaviour
 
                 if (inRect)
                 {
-                    objects.Add(_gameManager._playersGameObjects[i][j]);
+                    if (TryAddGameObject(_gameManager._playersGameObjects[i][j], ref objects))
+                    {
+                        objects.Add(_gameManager._playersGameObjects[i][j]);
+                    }
                 }
             }
+
+
 
             foreach (GameObject gameObject in objects)
             {
@@ -126,12 +131,49 @@ public class CameraControll : MonoBehaviour
         {
             if (i > 0)
             {
+                //todo show health 
                 return;
             }
 
             _gameManager.SetProfiles(_selectUnits);
             return;
         }
+    }
+
+    private bool TryAddGameObject(GameObject gameObject, ref List<GameObject> objects)
+    {
+        Unit unit = gameObject.GetComponent<Unit>();
+
+        if (unit is HumanUnit)
+        {
+            for (int i = objects.Count - 1; i >= 0; i--)
+            {
+                Unit tmpUnit = objects[i].GetComponent<Unit>();
+                if (tmpUnit is BuildingUnit)
+                {
+                    objects.Remove(objects[i]);
+                }
+            }
+
+            return true;
+        }
+
+        if (unit is BuildingUnit)
+        {
+            for (int i = 0; i < objects.Count; i++)
+            {
+                Unit tmpUnit = objects[i].GetComponent<Unit>();
+                if (tmpUnit is HumanUnit)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        return false;
+
     }
 
     bool IsPointInRect(Rect rect, Vector2 point)
