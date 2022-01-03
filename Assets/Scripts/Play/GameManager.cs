@@ -7,6 +7,9 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    public ItemController[] ItemControllers;
+    internal int CurrentButtonPressed;
+
     public List<Item> TerrainPrefabs;
     public List<GameObject> UnitsPrefabs;
     public List<GameObject> BuildingsPrefabs;
@@ -28,6 +31,9 @@ public class GameManager : MonoBehaviour
 
     private int _countOfWorkers = 5;
     private int _maxSelected = 24;
+
+    RaycastHit hit;
+    internal Vector3 v;
 
     void Start()
     {
@@ -52,6 +58,11 @@ public class GameManager : MonoBehaviour
         _minimapCamera.transform.position = new Vector3(_terrain.transform.position.x, size - 0.1f * size, _terrain.transform.position.z);
 
         _gameUI.SetLookBottomPanel(_playersMaterials[0].color);
+
+        for (int i = 0; i < ItemControllers.Length; i++)
+        {
+            ItemControllers[i].item.ID = i;
+        }
     }
 
 
@@ -81,7 +92,11 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(ray, out hit, 1000.0f))
+        {
+            v = hit.point;
+        }
     }
 
     internal void SetNonProfile()

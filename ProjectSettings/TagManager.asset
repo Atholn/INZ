@@ -15,6 +15,7 @@ TagManager:
   - Undefined
   - InfoSaveErrorText
   - MinimapCamera
+  - GameManager
   layers:
   - Default
   - TransparentFX

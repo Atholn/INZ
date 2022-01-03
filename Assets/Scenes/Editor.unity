@@ -8912,6 +8912,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Speed: 0
+  commandLayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
 --- !u!1 &1164435211
 GameObject:
   m_ObjectHideFlags: 0

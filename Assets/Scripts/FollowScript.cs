@@ -11,22 +11,37 @@ public class FollowScript : MonoBehaviour
     private float height;
     private int limit;
     private MapEditorManager _mapEditorManager;
+    private GameManager _gameManager;
 
     private void Start()
     {
         _mapEditorManager = FindObjectOfType<MapEditorManager>();
-        height = _mapEditorManager.ItemControllers[_mapEditorManager.CurrentButtonPressed].item.ItemHeightPosY;
+        _gameManager = FindObjectOfType<GameManager>();
+        height = _mapEditorManager != null ? 
+            _mapEditorManager.ItemControllers[_mapEditorManager!=null? _mapEditorManager.CurrentButtonPressed : _gameManager.CurrentButtonPressed].item.ItemHeightPosY:
+            _gameManager.ItemControllers[_mapEditorManager!=null? _mapEditorManager.CurrentButtonPressed : _gameManager.CurrentButtonPressed].item.ItemHeightPosY;
 
-        ItemStartPoint startPointUnit = _mapEditorManager.ItemControllers[_mapEditorManager.CurrentButtonPressed].item.ItemPrefab.GetComponent<ItemStartPoint>();
+        ItemStartPoint startPointUnit = _mapEditorManager != null ?
+            _mapEditorManager.ItemControllers[_mapEditorManager != null ? _mapEditorManager.CurrentButtonPressed : _gameManager.CurrentButtonPressed].item.ItemPrefab.GetComponent<ItemStartPoint>():
+            _gameManager.ItemControllers[_mapEditorManager != null ? _mapEditorManager.CurrentButtonPressed : _gameManager.CurrentButtonPressed].item.ItemPrefab.GetComponent<ItemStartPoint>();
+
         limit = startPointUnit != null ? startPointUnit.BuildSize / 2 : 0;
     }
 
     private void Update()
     {
+        if(_mapEditorManager != null)
         CheckIfCan((int)(_mapEditorManager.v.x - _mapEditorManager.v.x % 1), (int)(_mapEditorManager.v.z - _mapEditorManager.v.z % 1));
 
-        int vx = (int)(_mapEditorManager.v.x - _mapEditorManager.v.x % 1);
-        int vz = (int)(_mapEditorManager.v.z - _mapEditorManager.v.z % 1);
+        int vx = (int)((_mapEditorManager != null ? _mapEditorManager.v.x : _gameManager.v.x) - ((_mapEditorManager != null ? _mapEditorManager.v.x : _gameManager.v.x) % 1));
+        int vz = (int)((_mapEditorManager != null ? _mapEditorManager.v.z : _gameManager.v.z) - ((_mapEditorManager != null ? _mapEditorManager.v.z : _gameManager.v.z) % 1));
+
+        if(_mapEditorManager == null)
+        {
+            transform.position = new Vector3(vx, height + 0.2f, vz);
+            return;
+        }
+
         if (vx >= limit && vx <= _mapEditorManager.GetSizeMap()[0] - limit - 1 &&
             vz >= limit && vz <= _mapEditorManager.GetSizeMap()[1] - limit -1)
         {
