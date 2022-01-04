@@ -97,6 +97,32 @@ public class GameManager : MonoBehaviour
         {
             v = hit.point;
         }
+
+
+        if (Input.GetMouseButtonDown(1))
+        {
+            DestroyItemImages();
+        }
+    }
+
+    internal void DestroyItemImages()
+    {
+        for (int i = 0; i < ItemControllers.Length; i++)
+        {
+            ItemControllers[i].Clicked = false;
+            if (ItemControllers[i].item.ItemHeightLevel == 0)
+            {
+                ItemControllers[i].item.ItemImage.transform.localScale = ItemControllers[i].firstScale;
+            }
+        }
+
+
+        GameObject[] itemImages = GameObject.FindGameObjectsWithTag("ItemImage");
+
+        for (int i = 0; i < itemImages.Length; i++)
+        {
+            Destroy(itemImages[i]);
+        }
     }
 
     internal void SetNonProfile()

@@ -432,23 +432,30 @@ public class MapEditorManager : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(1))
         {
-            for (int i = 0; i < ItemControllers.Length; i++)
+            DestroyItemImages();
+            
+        }
+    }
+
+
+    internal void DestroyItemImages()
+    {
+        for (int i = 0; i < ItemControllers.Length; i++)
+        {
+            ItemControllers[i].Clicked = false;
+            if (ItemControllers[i].item.ItemHeightLevel == 0)
             {
-                ItemControllers[i].Clicked = false;
-                if (ItemControllers[i].item.ItemHeightLevel == 0)
-                {
-                    ItemControllers[i].item.ItemImage.transform.localScale = ItemControllers[i].firstScale;
-                }
+                ItemControllers[i].item.ItemImage.transform.localScale = ItemControllers[i].firstScale;
             }
+        }
 
-            ItemDelete.Pressed = false;
+        ItemDelete.Pressed = false;
 
-            GameObject[] itemImages = GameObject.FindGameObjectsWithTag("ItemImage");
+        GameObject[] itemImages = GameObject.FindGameObjectsWithTag("ItemImage");
 
-            for (int i = 0; i < itemImages.Length; i++)
-            {
-                Destroy(itemImages[i]);
-            }
+        for (int i = 0; i < itemImages.Length; i++)
+        {
+            Destroy(itemImages[i]);
         }
     }
     #endregion

@@ -78,7 +78,8 @@ PrefabInstance:
       propertyPath: m_TagString
       value: ItemImage
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3325733010334055243, guid: 7b7ab6b43b77a6647bd3627c5515f81d, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 7b7ab6b43b77a6647bd3627c5515f81d, type: 3}
 --- !u!1 &4229408423562624710 stripped
 GameObject:

@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1131973113762959798}
   - component: {fileID: 2007851661433131824}
   - component: {fileID: 7902678141639924222}
+  - component: {fileID: 3869488595939552205}
   m_Layer: 0
   m_Name: Blacksmiths
   m_TagString: Untagged
@@ -84,3 +85,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &3869488595939552205
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2591485293969951501}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7c1fa7a823bd1f49a6909ffdbaf02e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ItemPrefab: {fileID: 2591485293969951501}
+  ItemImage: {fileID: 6959904957535371669, guid: 6847133db4bf9654f81ecc79f60aabc9, type: 3}
+  ItemHeightLevel: 1
+  ItemHeightPosY: 0

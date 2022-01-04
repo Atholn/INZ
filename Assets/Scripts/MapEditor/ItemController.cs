@@ -35,6 +35,18 @@ public class ItemController : MonoBehaviour
 
     public virtual void ButtonClicked()
     {
+        if (GameObject.FindGameObjectWithTag("LevelEditorManager") != null)
+        {
+
+            _editor.DestroyItemImages();
+
+        }
+        else
+        {
+            _gameManager.DestroyItemImages();
+        }
+
+
         Vector3 screenPosition = new Vector3(Input.mousePosition.x, _editor != null ? _editor.ItemControllers[item.ID].item.ItemHeightLevel : _gameManager.ItemControllers[item.ID].item.ItemHeightLevel, Input.mousePosition.z);
         Vector3 worldPosition = Camera.main.ScreenToWorldPoint(screenPosition);
         Clicked = true;

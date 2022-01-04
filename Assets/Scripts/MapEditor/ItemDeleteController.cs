@@ -8,11 +8,11 @@ public class ItemDeleteController : MonoBehaviour
 
     internal bool Pressed = false;
 
-    private MapEditorManager _editor;
+    //private MapEditorManager _editor;
 
     private void Awake()
     {
-        _editor = GameObject.FindGameObjectWithTag("LevelEditorManager").GetComponent<MapEditorManager>();
+        //_editor = GameObject.FindGameObjectWithTag("LevelEditorManager").GetComponent<MapEditorManager>();
     }
 
     public virtual void ButtonClicked()
