@@ -122,9 +122,11 @@ public class GameUI : MonoBehaviour
         {
             switch (gameObject.GetComponent<Unit>().Name)
             {
+                //Human Unit
                 case "Worker": ShowSpecialButtons(WorkerActions); break;
-                default:
-                    break;
+
+                // Building Unit
+                default: break;
             }
         }
 
