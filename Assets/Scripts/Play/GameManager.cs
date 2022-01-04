@@ -129,9 +129,9 @@ public class GameManager : MonoBehaviour
         _gameUI.SetNonProfile();
     }
 
-    public void SetProfile(GameObject gameObject)
+    public void SetProfile(GameObject gameObject, int i)
     {
-        _gameUI.SetCharacterInfo(gameObject);
+        _gameUI.SetCharacterInfo(gameObject, i);
     }
 
     internal void SetProfiles(List<GameObject> selectUnits)

@@ -11,9 +11,7 @@ public class Unit : MonoBehaviour
     public int Attack;
     public Texture2D Profile;
     public int Priority;
-
     
-
     internal int Hp;
 
     private void Start()

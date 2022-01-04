@@ -157,7 +157,7 @@ public class CameraControll : MonoBehaviour
 
         if (_selectUnits.Count == 1)
         {
-            _gameManager.SetProfile(_selectUnits[0]);
+            _gameManager.SetProfile(_selectUnits[0], i);
             return;
         }
 
