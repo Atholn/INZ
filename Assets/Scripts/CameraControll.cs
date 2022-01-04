@@ -19,6 +19,8 @@ public class CameraControll : MonoBehaviour
     private List<GameObject> _selectUnits = new List<GameObject>();
     private GameManager _gameManager;
 
+    private bool _ifPlayerUnits = false;
+
     private void Awake()
     {
         cameraControl = this;
@@ -64,21 +66,33 @@ public class CameraControll : MonoBehaviour
             _selectionBox.sizeDelta = _boxRect.size;
 
             if (_boxRect.size.x != 0 || _boxRect.size.y != 0)
-                UpdateSelecting();
-        }
-
-        if (Input.GetMouseButtonDown(2))
-        {
-            foreach (GameObject obj in _selectUnits)
             {
-                Debug.LogError(obj.name);
+                UpdateSelecting();
             }
         }
 
-        if (Input.GetMouseButtonDown(1))
+
+        if (Input.GetMouseButtonDown(0))
         {
-            GiveCommands();
+            if (_ifPlayerUnits)
+            {
+                GiveCommands();
+            }
         }
+
+        if(Input.GetMouseButtonDown(1))
+        {
+            _selectUnits.Clear();
+            _gameManager.SetNonProfile();
+        }
+
+        //if (Input.GetMouseButtonDown(2))
+        //{
+        //    foreach (GameObject obj in _selectUnits)
+        //    {
+        //        Debug.LogError(obj.name);
+        //    }
+        //}
     }
 
     Ray ray;
@@ -92,12 +106,10 @@ public class CameraControll : MonoBehaviour
             object commandData = null;
             if (rayHit.collider is TerrainCollider)
             {
-                Debug.Log("Terrain: " + rayHit.point.ToString());
                 commandData = rayHit.point;
             }
             else
             {
-                Debug.Log(rayHit.collider);
                 commandData = rayHit.collider.gameObject.GetComponent<Unit>();
             }
             GiveCommands(commandData, "Command");
@@ -114,6 +126,7 @@ public class CameraControll : MonoBehaviour
 
     private void UpdateSelecting()
     {
+        _ifPlayerUnits = false;
         _selectUnits.Clear();
 
         int i;
@@ -136,8 +149,6 @@ public class CameraControll : MonoBehaviour
                 }
             }
 
-
-
             foreach (GameObject gameObject in objects)
             {
                 _selectUnits.Add(gameObject);
@@ -148,6 +159,8 @@ public class CameraControll : MonoBehaviour
                 break;
             }
         }
+
+        _ifPlayerUnits = i == 0 ? true : false;
 
         if (_selectUnits.Count == 0)
         {
