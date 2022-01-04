@@ -9,6 +9,7 @@ public class GameUI : MonoBehaviour
     public GameObject TopPanel;
     public GameObject MenuPanel;
     public GameObject BottomPanel;
+    public GameObject ActionPanel;
 
     public GameObject OneCharacterPanel;
     public GameObject ManyCharactersPanel;
@@ -128,6 +129,23 @@ public class GameUI : MonoBehaviour
             _images[i].texture = selectUnits[i].GetComponent<Unit>().Profile;
         }
     }
+
+
+    #region ActionPanel
+    public void ActionPanelShowHide(GameObject panel)
+    {
+        if(ActionPanel.gameObject.activeSelf)
+        {
+            ActionPanel.gameObject.SetActive(false);
+            panel.SetActive(true);
+            return;
+        }
+
+        ActionPanel.gameObject.SetActive(true);
+        panel.SetActive(false);
+    }
+
+    #endregion
 
     #endregion
 }

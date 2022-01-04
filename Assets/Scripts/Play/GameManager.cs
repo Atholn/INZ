@@ -116,7 +116,6 @@ public class GameManager : MonoBehaviour
             }
         }
 
-
         GameObject[] itemImages = GameObject.FindGameObjectsWithTag("ItemImage");
 
         for (int i = 0; i < itemImages.Length; i++)
