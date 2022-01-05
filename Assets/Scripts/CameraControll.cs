@@ -48,11 +48,11 @@ public class CameraControll : MonoBehaviour
 
     private void UpdateSelection()
     {
+
         if (Input.GetMouseButtonDown(0))
         {
             _selectionBox.gameObject.SetActive(true);
             _selectionRect.position = mousePos;
-
         }
         else if (Input.GetMouseButtonUp(0))
         {
@@ -71,16 +71,16 @@ public class CameraControll : MonoBehaviour
             }
         }
 
-
         if (Input.GetMouseButtonDown(0))
         {
             if (_ifPlayerUnits)
             {
+                
                 GiveCommands();
             }
         }
 
-        if(Input.GetMouseButtonDown(1))
+        if (Input.GetMouseButtonDown(1))
         {
             _selectUnits.Clear();
             _gameManager.SetNonProfile();
@@ -111,6 +111,8 @@ public class CameraControll : MonoBehaviour
             else
             {
                 commandData = rayHit.collider.gameObject.GetComponent<Unit>();
+                // todo follow
+                return;
             }
             GiveCommands(commandData, "Command");
         }

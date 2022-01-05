@@ -14,6 +14,9 @@ public class GameUI : MonoBehaviour
     public GameObject OneCharacterPanel;
     public GameObject ManyCharactersPanel;
 
+    private GameObject _tmpSpecialPanel;
+    public GameObject WorkerSpecialPanel;
+    public GameObject TownHallSpecialPanel;
 
     public List<GameObject> WorkerActions;
     private List<GameObject> _tmpActions = new List<GameObject>();
@@ -28,6 +31,9 @@ public class GameUI : MonoBehaviour
         {
             button.SetActive(false);
         }
+
+        WorkerSpecialPanel.SetActive(false);
+        TownHallSpecialPanel.SetActive(false);
     }
 
     #region TopPanel
@@ -95,7 +101,9 @@ public class GameUI : MonoBehaviour
     {
         OneCharacterPanel.SetActive(false);
         ManyCharactersPanel.SetActive(false);
-        HideSpecialButtons();
+
+        //HideSpecialButtons();
+        HideSpecialPanel();
     }
 
     internal void SetCharacterInfo(GameObject gameObject, int i)
@@ -116,20 +124,39 @@ public class GameUI : MonoBehaviour
         _characterInfos[2].text = $"Defense {unit.Defense}";
         _characterInfos[3].text = $"{unit.Hp} / {unit.Hp}";
 
-        HideSpecialButtons();
+        //HideSpecialButtons();
+        HideSpecialPanel();
 
         if (i == 0)
         {
             switch (gameObject.GetComponent<Unit>().Name)
             {
                 //Human Unit
-                case "Worker": ShowSpecialButtons(WorkerActions); break;
+                case "Worker":
+                    //ShowSpecialButtons(WorkerActions); 
+                    ShowSpecialPanel(WorkerSpecialPanel);
+                    break;
 
                 // Building Unit
+                case "TownHall":
+                    ShowSpecialPanel(TownHallSpecialPanel);
+                    break;
                 default: break;
             }
         }
+    }
 
+
+    private void HideSpecialPanel()
+    {
+        if(_tmpSpecialPanel !=null) _tmpSpecialPanel.SetActive(false);
+        _tmpSpecialPanel = null;
+    }
+
+    private void ShowSpecialPanel(GameObject gameObject)
+    {
+        _tmpSpecialPanel = gameObject;
+        _tmpSpecialPanel.SetActive(true);
     }
 
     private void HideSpecialButtons()
@@ -140,6 +167,7 @@ public class GameUI : MonoBehaviour
         }
         _tmpActions.Clear();
     }
+
 
     private void ShowSpecialButtons(List<GameObject> gameObjects)
     {
@@ -152,7 +180,8 @@ public class GameUI : MonoBehaviour
 
     internal void SetCharactersProfiles(List<GameObject> selectUnits, int maxSelected)
     {
-        HideSpecialButtons();
+        //HideSpecialButtons();
+        HideSpecialPanel();
 
         OneCharacterPanel.SetActive(false);
         ManyCharactersPanel.SetActive(true);
