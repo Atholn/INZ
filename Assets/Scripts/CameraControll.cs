@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class CameraControll : MonoBehaviour
@@ -58,6 +59,9 @@ public class CameraControll : MonoBehaviour
         {
             _selectionBox.gameObject.SetActive(false);
         }
+
+        if (EventSystem.current.IsPointerOverGameObject()) return;
+
         if (Input.GetMouseButton(0))
         {
             _selectionRect.size = mousePos - _selectionRect.position;
