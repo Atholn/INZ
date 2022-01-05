@@ -30,6 +30,8 @@ public class Minimap : MonoBehaviour
         Sprite sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.zero);
         _image.sprite = sprite;
 
+        if (_gameManager._playersGameObjects == null) UnityEngine.SceneManagement.SceneManager.LoadScene("SirmishChose");
+
         foreach (List<GameObject> objects in _gameManager._playersGameObjects)
         {
             if (objects.Count == 0) continue;
