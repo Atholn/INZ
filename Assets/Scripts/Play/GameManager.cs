@@ -32,6 +32,8 @@ public class GameManager : MonoBehaviour
     private int _countOfWorkers = 5;
     private int _maxSelected = 24;
 
+    internal bool building = false;
+
     RaycastHit hit;
     internal Vector3 v;
 
@@ -64,7 +66,6 @@ public class GameManager : MonoBehaviour
             ItemControllers[i].item.ID = i;
         }
     }
-
 
     private void InitializePlayers()
     {
@@ -102,6 +103,17 @@ public class GameManager : MonoBehaviour
         if (Input.GetMouseButtonDown(1))
         {
             DestroyItemImages();
+            building = false;
+        }
+
+        if(building && Input.GetMouseButtonDown(0))
+        {
+            Instantiate(ItemControllers[CurrentButtonPressed].item.ItemPrefab,
+                new Vector3(v.x, ItemControllers[CurrentButtonPressed].item.ItemHeightPosY, v.z),
+                ItemControllers[CurrentButtonPressed].item.ItemPrefab.transform.rotation);
+
+            DestroyItemImages();
+            building = false;
         }
     }
 
@@ -126,16 +138,24 @@ public class GameManager : MonoBehaviour
 
     internal void SetNonProfile()
     {
+        worker = null;
         _gameUI.SetNonProfile();
     }
+
+    HumanUnit worker = null;
 
     public void SetProfile(GameObject gameObject, int i)
     {
         _gameUI.SetCharacterInfo(gameObject, i);
+        if(gameObject.GetComponent<HumanUnit>())
+        {
+            worker = gameObject.GetComponent<HumanUnit>();
+        }
     }
 
     internal void SetProfiles(List<GameObject> selectUnits)
     {
+        worker = null;
         selectUnits = selectUnits.OrderBy(x => x.GetComponent<Unit>().Priority).ToList();
         _gameUI.SetCharactersProfiles(selectUnits, _maxSelected);
     }

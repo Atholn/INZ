@@ -49,7 +49,6 @@ public class CameraControll : MonoBehaviour
 
     private void UpdateSelection()
     {
-
         if (Input.GetMouseButtonDown(0))
         {
             _selectionBox.gameObject.SetActive(true);
@@ -79,7 +78,6 @@ public class CameraControll : MonoBehaviour
         {
             if (_ifPlayerUnits)
             {
-                
                 GiveCommands();
             }
         }
@@ -112,12 +110,24 @@ public class CameraControll : MonoBehaviour
             {
                 commandData = rayHit.point;
             }
+            else if (rayHit.collider is BoxCollider)
+            {
+                if (rayHit.collider.gameObject.GetComponent<Tree>() != null)
+                {
+                    commandData = rayHit.collider.gameObject.GetComponent<Tree>();
+                }
+            }
             else
             {
                 commandData = rayHit.collider.gameObject.GetComponent<Unit>();
                 // todo follow
-                return;
+                //return;
             }
+
+
+
+           
+
             GiveCommands(commandData, "Command");
         }
     }

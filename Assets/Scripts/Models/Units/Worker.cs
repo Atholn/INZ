@@ -16,6 +16,19 @@ public class Worker : HumanUnit
         task = Task.move;
     }
 
+    void Command(BuildingUnit buildingToCreate)
+    {
+        task = Task.build;
+    }
+
+    void Command(Tree tree)
+    {
+        //nav.SetDestination(tree.transform.position);
+
+        target = tree.transform;
+        task = Task.chopping;
+    }
+
     //void Command(Worker workerToFollow)
     //{
 

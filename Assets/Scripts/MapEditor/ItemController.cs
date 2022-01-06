@@ -37,15 +37,13 @@ public class ItemController : MonoBehaviour
     {
         if (GameObject.FindGameObjectWithTag("LevelEditorManager") != null)
         {
-
             _editor.DestroyItemImages();
-
         }
         else
         {
             _gameManager.DestroyItemImages();
+            _gameManager.building = true;
         }
-
 
         Vector3 screenPosition = new Vector3(Input.mousePosition.x, _editor != null ? _editor.ItemControllers[item.ID].item.ItemHeightLevel : _gameManager.ItemControllers[item.ID].item.ItemHeightLevel, Input.mousePosition.z);
         Vector3 worldPosition = Camera.main.ScreenToWorldPoint(screenPosition);

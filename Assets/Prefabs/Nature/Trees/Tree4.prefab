@@ -12,7 +12,9 @@ GameObject:
   - component: {fileID: 8242726093042335032}
   - component: {fileID: 6670658565227091811}
   - component: {fileID: -5106711291145510644}
-  m_Layer: 0
+  - component: {fileID: 488240713948608097}
+  - component: {fileID: 4035291477283912991}
+  m_Layer: 7
   m_Name: Tree4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -99,3 +101,29 @@ MonoBehaviour:
   ItemImage: {fileID: 9022125891854832521, guid: 7c38998613ef19241924c0fcd3e31545, type: 3}
   ItemHeightLevel: 1
   ItemHeightPosY: 0.65
+--- !u!114 &488240713948608097
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2277358033861606612}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff29100cd53ab2e46998173b75bbf6a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  WoodResource: 120
+--- !u!65 &4035291477283912991
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2277358033861606612}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.04621037, y: 0.049618244, z: 0.07942707}
+  m_Center: {x: 0.00000046286732, y: 0.00092409656, z: 0.039685648}
