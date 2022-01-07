@@ -11,4 +11,10 @@ public class Tree : MonoBehaviour
         if (WoodResource <= 0) Destroy(gameObject);
     }
 
+    internal void ChoppingProcess(int choppingStrenght = 10)
+    {
+        if(WoodResource > 0)
+        WoodResource -= choppingStrenght;
+    }
+
 }

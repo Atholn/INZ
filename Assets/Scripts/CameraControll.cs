@@ -88,6 +88,18 @@ public class CameraControll : MonoBehaviour
             _gameManager.SetNonProfile();
         }
 
+        if (_gameManager.building && Input.GetMouseButtonDown(0))
+        {
+            GameObject building = Instantiate(_gameManager.ItemControllers[_gameManager.CurrentButtonPressed].item.ItemPrefab,
+                new Vector3(_gameManager.v.x, _gameManager.ItemControllers[_gameManager.CurrentButtonPressed].item.ItemHeightPosY, _gameManager.v.z),
+                _gameManager.ItemControllers[_gameManager.CurrentButtonPressed].item.ItemPrefab.transform.rotation);
+
+            _gameManager.DestroyItemImages();
+            _gameManager.building = false;
+
+            GiveCommands(building, "Command");
+        }
+
         //if (Input.GetMouseButtonDown(2))
         //{
         //    foreach (GameObject obj in _selectUnits)
@@ -123,10 +135,6 @@ public class CameraControll : MonoBehaviour
                 // todo follow
                 //return;
             }
-
-
-
-           
 
             GiveCommands(commandData, "Command");
         }

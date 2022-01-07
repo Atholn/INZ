@@ -103,18 +103,19 @@ public class GameManager : MonoBehaviour
         if (Input.GetMouseButtonDown(1))
         {
             DestroyItemImages();
+            
             building = false;
         }
 
-        if(building && Input.GetMouseButtonDown(0))
-        {
-            Instantiate(ItemControllers[CurrentButtonPressed].item.ItemPrefab,
-                new Vector3(v.x, ItemControllers[CurrentButtonPressed].item.ItemHeightPosY, v.z),
-                ItemControllers[CurrentButtonPressed].item.ItemPrefab.transform.rotation);
+        //if(building && Input.GetMouseButtonDown(0))
+        //{
+        //    Instantiate(ItemControllers[CurrentButtonPressed].item.ItemPrefab,
+        //        new Vector3(v.x, ItemControllers[CurrentButtonPressed].item.ItemHeightPosY, v.z),
+        //        ItemControllers[CurrentButtonPressed].item.ItemPrefab.transform.rotation);
 
-            DestroyItemImages();
-            building = false;
-        }
+        //    DestroyItemImages();
+        //    building = false;
+        //}
     }
 
     internal void DestroyItemImages()

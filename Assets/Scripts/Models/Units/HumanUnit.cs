@@ -27,14 +27,17 @@ public class HumanUnit : Unit
                     attackCooldown = 1,
                     attackDamage = 0,
                     stoppingDistance = 1,
-                    buildingDistance = 2,
-                    choppingDistance = 2;
+                    buildingDistance = 4,
+                    choppingDistance = 2,
+                    stopChoppingDistance = 4,
+                    buildingFullBuild = 1;
 
+    internal Tree choppingTree;
     protected Transform target;
     bool running = false;
     bool chopping = false;
     int woodInBack = 0;
-    int woodMax = 1000;
+    int woodMax = 100;
     bool goToChopping = false;
 
     private void Start()
@@ -64,8 +67,6 @@ public class HumanUnit : Unit
         //var speedVector = nav.velocity;
         //speedVector.y = 0;
         //float speed = speedVector.magnitude;
-
-
 
         animator.SetBool(ANIMATOR_RUNNING, running);
         //animator.SetBool(ANIMATOR_DEAD, destroy);
@@ -99,16 +100,46 @@ public class HumanUnit : Unit
 
     protected virtual void Building()
     {
+        nav.SetDestination(target.position);
         float distance = Vector3.Magnitude(nav.destination - transform.position);
-        if (distance <= stoppingDistance)
+
+        BuildingUnit bU = target.GetComponent<BuildingUnit>();
+        Item it = target.GetComponent<Item>();
+
+        if (distance > bU.SizeBuilding)
         {
-            task = Task.build;
+            target.transform.position = new Vector3(target.transform.position.x, -bU.HeightBuilding, target.transform.position.z);
+
+            running = true;
+            return;
         }
+
+        if (distance <= bU.SizeBuilding)
+        {
+            nav.velocity = Vector3.zero;
+            running = false;
+        }
+
+        animator.SetBool(ANIMATOR_BUILD, true);
+        if (bU.BuildingPercent < buildingFullBuild)
+        {
+            bU.BuildingPercent += 0.001f;
+
+            Debug.LogError(it.ItemHeightPosY + bU.HeightBuilding);
+
+
+            target.transform.position = new Vector3(target.transform.position.x, -bU.HeightBuilding  + bU.BuildingPercent*(it.ItemHeightPosY + bU.HeightBuilding), target.transform.position.z);
+            Debug.Log(bU.BuildingPercent);
+            return;
+        }
+
+        Debug.Log(bU.BuildingPercent + " full ");
+        animator.SetBool(ANIMATOR_BUILD, false);
+        task = Task.idle;
     }
 
     protected virtual void Chopping()
     {
-
         if (animator.GetInteger(ANIMATOR_WOOD) < woodMax)
         {
             goToChopping = true;
@@ -122,6 +153,23 @@ public class HumanUnit : Unit
             return;
         }
 
+        if (goToChopping && target == null)
+        {
+            target = SearchNearTreePlace();
+
+            if (target == null)
+            {
+                target = SearchNearWoodPlace();
+
+                if (target == null)
+                {
+                    task = Task.idle;
+                    running = false;
+                }
+            }
+
+        }
+
         nav.SetDestination(target.position);
         float distance = Vector3.Magnitude(nav.destination - transform.position);
 
@@ -129,18 +177,25 @@ public class HumanUnit : Unit
         {
             if (distance > choppingDistance)
             {
+                animator.SetBool(ANIMATOR_CHOPPING, false);
                 running = true;
                 return;
             }
 
             if (distance <= choppingDistance && animator.GetInteger(ANIMATOR_WOOD) < woodMax)
             {
+                if (target == null)
+                {
+                    target = SearchNearTreePlace();
+                    return;
+                }
+
                 nav.velocity = Vector3.zero;
                 running = false;
                 animator.SetBool(ANIMATOR_CHOPPING, true);
-                animator.SetInteger(ANIMATOR_WOOD, animator.GetInteger(ANIMATOR_WOOD) + 10);
+                animator.SetInteger(ANIMATOR_WOOD, animator.GetInteger(ANIMATOR_WOOD) + 1);
 
-                //Debug.Log(animator.GetInteger(ANIMATOR_WOOD));
+                target.transform.GetComponent<Tree>().ChoppingProcess(1);
 
                 if (animator.GetInteger(ANIMATOR_WOOD) >= woodMax)
                 {
@@ -161,18 +216,19 @@ public class HumanUnit : Unit
         }
         else
         {
-            if (distance > choppingDistance)
+            animator.SetBool(ANIMATOR_CHOPPING, false);
+            if (distance > stopChoppingDistance)
             {
                 running = true;
                 return;
             }
 
-            if (distance <= choppingDistance)
+            if (distance <= stopChoppingDistance)
             {
-                nav.velocity = Vector3.zero;
-                //running = false;
+                //nav.velocity = Vector3.zero;
+
                 animator.SetInteger(ANIMATOR_WOOD, 0);
-                goToChopping = false;
+                goToChopping = true;
 
                 target = SearchNearTreePlace();
 

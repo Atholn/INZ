@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3055725709438477716}
   - component: {fileID: 3246930087360198606}
   - component: {fileID: 6050567393845203802}
+  - component: {fileID: -896336626308895949}
   m_Layer: 0
   m_Name: FarmHouse
   m_TagString: Untagged
@@ -100,3 +101,25 @@ MonoBehaviour:
   ItemImage: {fileID: 6540401223022280601, guid: 3f37a7a0c3582d64a8ed275cb3b7eff2, type: 3}
   ItemHeightLevel: 1
   ItemHeightPosY: 0
+--- !u!114 &-896336626308895949
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7964747631741463486}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4394740e29547e54ea832fef4a81be1c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HpMax: 200
+  Name: FarmHouse
+  Defense: 0
+  Attack: 0
+  Profile: {fileID: 2800000, guid: ec017144467513442a7b3efb1727b0d1, type: 3}
+  Priority: 0
+  Size: 0
+  PlaceWood: 0
+  PlaceGold: 0
+  BuildingPercent: 0

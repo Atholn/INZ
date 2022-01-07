@@ -16,23 +16,27 @@ public class Worker : HumanUnit
         task = Task.move;
     }
 
-    void Command(BuildingUnit buildingToCreate)
-    {
-        task = Task.build;
-    }
-
     void Command(Tree tree)
     {
-        //nav.SetDestination(tree.transform.position);
-
         target = tree.transform;
         task = Task.chopping;
     }
 
-    //void Command(Worker workerToFollow)
-    //{
+    void Command(GameObject gameObject)
+    {
+        if (gameObject.GetComponent<BuildingUnit>() != null)
+        {
+            target = gameObject.transform;
+            task = Task.build;
 
-    //    task = Task.follow;
+            return;
+        }
+    }
+
+    //void Command(BuildingUnit building)
+    //{
+    //    target = building.transform;
+    //    task = Task.build;
     //}
 
     //void Command(BuildingUnit building)
