@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -33,8 +34,8 @@ public class HumanUnit : Unit
     bool running = false;
     bool chopping = false;
     int woodInBack = 0;
-    int woodMax = 10000;
-    bool chooppingProces = false;
+    int woodMax = 1000;
+    bool goToChopping = false;
 
     private void Start()
     {
@@ -107,19 +108,30 @@ public class HumanUnit : Unit
 
     protected virtual void Chopping()
     {
-        if (target)
-        {
-            nav.SetDestination(target.position);
-            float distance = Vector3.Magnitude(nav.destination - transform.position);
 
+        if (animator.GetInteger(ANIMATOR_WOOD) < woodMax)
+        {
+            goToChopping = true;
+        }
+        else if (animator.GetInteger(ANIMATOR_WOOD) >= woodMax)
+        {
+            goToChopping = false;
+        }
+        else
+        {
+            return;
+        }
+
+        nav.SetDestination(target.position);
+        float distance = Vector3.Magnitude(nav.destination - transform.position);
+
+        if (goToChopping)
+        {
             if (distance > choppingDistance)
             {
                 running = true;
                 return;
             }
-
-            //Debug.LogError(distance+ "d " +  target.position + "target - trans " + transform.position);
-            //Debug.Log(animator.GetInteger(ANIMATOR_WOOD));
 
             if (distance <= choppingDistance && animator.GetInteger(ANIMATOR_WOOD) < woodMax)
             {
@@ -128,28 +140,89 @@ public class HumanUnit : Unit
                 animator.SetBool(ANIMATOR_CHOPPING, true);
                 animator.SetInteger(ANIMATOR_WOOD, animator.GetInteger(ANIMATOR_WOOD) + 10);
 
+                //Debug.Log(animator.GetInteger(ANIMATOR_WOOD));
 
+                if (animator.GetInteger(ANIMATOR_WOOD) >= woodMax)
+                {
+                    goToChopping = false;
+                    running = true;
+
+                    target = SearchNearWoodPlace();
+                    if (target == null)
+                    {
+                        task = Task.idle;
+                        running = false;
+                    }
+                    animator.SetBool(ANIMATOR_CHOPPING, false);
+                    return;
+                }
                 return;
             }
-
-            if (animator.GetInteger(ANIMATOR_WOOD) >= woodMax)
-            {
-
-
-                animator.SetBool(ANIMATOR_CHOPPING, false);
-                task = Task.idle;
-                return;
-            }
-
         }
         else
         {
+            if (distance > choppingDistance)
+            {
+                running = true;
+                return;
+            }
 
+            if (distance <= choppingDistance)
+            {
+                nav.velocity = Vector3.zero;
+                //running = false;
+                animator.SetInteger(ANIMATOR_WOOD, 0);
+                goToChopping = false;
 
-            // todo 
+                target = SearchNearTreePlace();
+
+                if (target == null)
+                {
+                    task = Task.idle;
+                    running = false;
+                }
+
+                return;
+            }
+
         }
-
 
     }
 
+    private Transform SearchNearWoodPlace()
+    {
+        List<List<GameObject>> list = GameObject.FindObjectOfType<GameManager>()._playersGameObjects;
+
+        int search = -1;
+        for (int i = 0; i < list.Count(); i++)
+        {
+            for (int j = 0; j < list[i].Count(); j++)
+            {
+                if (list[i][j].transform == transform) search = i;
+            }
+        }
+
+        List<GameObject> buildings = new List<GameObject>();
+        if (search != -1)
+        {
+            for (int i = 0; i < list[search].Count(); i++)
+            {
+                BuildingUnit build = list[search][i].GetComponent<BuildingUnit>();
+
+                if (build != null && build.PlaceWood)
+                {
+                    buildings.Add(list[search][i]);
+                }
+            }
+        }
+
+        return buildings.OrderBy(x => Vector3.Distance(x.transform.position, transform.position))
+            .Select(x => x.transform)
+            .FirstOrDefault();
+    }
+
+    private Transform SearchNearTreePlace()
+    {
+        return GameObject.FindGameObjectsWithTag("Tree").OrderBy(x => Vector3.Distance(x.transform.position, transform.position)).Select(x => x.transform).FirstOrDefault(); ;
+    }
 }

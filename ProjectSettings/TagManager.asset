@@ -16,6 +16,7 @@ TagManager:
   - InfoSaveErrorText
   - MinimapCamera
   - GameManager
+  - Tree
   layers:
   - Default
   - TransparentFX
