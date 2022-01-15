@@ -48,6 +48,13 @@ public class CreateHumanUnitButton : MonoBehaviour
 
     public void Create()
     {
+        if(isCreate)
+        {
+            //todo 
+            //sprawdzaj czy jest full do zrobienia
+           
+            return;
+        }
         isCreate = true;
         unitCreateProgress = 0f;
         buildingParent = gameManager.actualClickBuild;
