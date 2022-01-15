@@ -13,8 +13,8 @@ public class BuildingUnit : Unit
     internal float BuildingPercent = 0f;
 
     internal bool createUnit = false;
-    private float unitCreateProgress;
-    private GameObject acutalUnitCreate;
+    internal GameObject acutalUnitCreate;
+    internal float unitCreateProgress;
     private int whichPlayerUnit;
 
     private GameManager gameManager;
@@ -55,5 +55,11 @@ public class BuildingUnit : Unit
             acutalUnitCreate = null;
             createUnit = false;
         }
+    }
+
+    internal void UpdateProgressInfo(ref Texture2D texture, ref float val)
+    {
+        texture = acutalUnitCreate.GetComponent<Unit>().Profile;
+        val = unitCreateProgress / acutalUnitCreate.GetComponent<Unit>().CreateTime;
     }
 }

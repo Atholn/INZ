@@ -35,6 +35,8 @@ public class GameManager : MonoBehaviour
 
     internal bool building = false;
 
+    private GameObject onlyOneSelectGO = null;
+
     RaycastHit hit;
     internal Vector3 v;
 
@@ -117,6 +119,13 @@ public class GameManager : MonoBehaviour
         //    DestroyItemImages();
         //    building = false;
         //}
+
+
+
+        if(onlyOneSelectGO != null)
+        {
+            _gameUI.ShowProgressCreateUnitPanel(onlyOneSelectGO);
+        }
     }
 
     internal void DestroyItemImages()
@@ -145,6 +154,8 @@ public class GameManager : MonoBehaviour
         actualClickBuild = null;
 
         _gameUI.SetNonProfile();
+
+        onlyOneSelectGO = null;
     }
 
     HumanUnit worker = null;
@@ -161,6 +172,7 @@ public class GameManager : MonoBehaviour
         {
             actualClickBuild = gameObject.GetComponent<BuildingUnit>();
         }
+        onlyOneSelectGO = gameObject;
     }
 
     internal void SetProfiles(List<GameObject> selectUnits)
@@ -170,6 +182,7 @@ public class GameManager : MonoBehaviour
         _gameUI.SetCharactersProfiles(selectUnits, _maxSelected);
 
         actualClickBuild = null;
+        onlyOneSelectGO = null;
     }
 
     internal int GetMaxSelected()

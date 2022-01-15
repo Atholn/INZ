@@ -145,8 +145,32 @@ public class GameUI : MonoBehaviour
                 default: break;
             }
         }
+
+        ShowProgressCreateUnitPanel(gameObject);
     }
 
+    internal void ShowProgressCreateUnitPanel(GameObject gameObject)
+    {
+        if (gameObject.GetComponent<BuildingUnit>() != null && gameObject.GetComponent<BuildingUnit>().createUnit)
+        {
+            CreateProgressPanel.SetActive(true);
+
+            BuildingUnit buildingUnit = gameObject.GetComponent<BuildingUnit>();
+
+            Texture2D texture = null;
+            float value = 0f;
+            buildingUnit.UpdateProgressInfo(ref texture, ref value);
+
+            CreateProgressPanel.GetComponentInChildren<RawImage>().texture = texture;
+            CreateProgressPanel.GetComponentInChildren<Slider>().value = value;
+        }
+        else
+        {
+            CreateProgressPanel.SetActive(false);
+        }
+    }
+
+    
 
     private void HideSpecialPanel()
     {
@@ -168,7 +192,6 @@ public class GameUI : MonoBehaviour
         }
         _tmpActions.Clear();
     }
-
 
     private void ShowSpecialButtons(List<GameObject> gameObjects)
     {
