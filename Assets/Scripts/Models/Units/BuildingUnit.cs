@@ -11,5 +11,4 @@ public class BuildingUnit : Unit
     public float HeightBuilding;
     public float SizeBuilding;
     internal float BuildingPercent = 0f;
-
 }

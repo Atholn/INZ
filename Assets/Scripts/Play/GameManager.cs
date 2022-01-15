@@ -15,6 +15,8 @@ public class GameManager : MonoBehaviour
     public List<GameObject> BuildingsPrefabs;
 
     internal List<List<GameObject>> _playersGameObjects;
+    internal BuildingUnit actualClickBuild;
+
 
     private MapWorld _map;
     private List<GameStartPoint> _gameStartPoints;
@@ -103,7 +105,7 @@ public class GameManager : MonoBehaviour
         if (Input.GetMouseButtonDown(1))
         {
             DestroyItemImages();
-            
+
             building = false;
         }
 
@@ -140,6 +142,9 @@ public class GameManager : MonoBehaviour
     internal void SetNonProfile()
     {
         worker = null;
+
+        actualClickBuild = null;
+
         _gameUI.SetNonProfile();
     }
 
@@ -148,9 +153,14 @@ public class GameManager : MonoBehaviour
     public void SetProfile(GameObject gameObject, int i)
     {
         _gameUI.SetCharacterInfo(gameObject, i);
-        if(gameObject.GetComponent<HumanUnit>())
+        if (gameObject.GetComponent<HumanUnit>())
         {
             worker = gameObject.GetComponent<HumanUnit>();
+        }
+
+        if (gameObject.GetComponent<BuildingUnit>() != null)
+        {
+            actualClickBuild = gameObject.GetComponent<BuildingUnit>();
         }
     }
 
@@ -159,10 +169,23 @@ public class GameManager : MonoBehaviour
         worker = null;
         selectUnits = selectUnits.OrderBy(x => x.GetComponent<Unit>().Priority).ToList();
         _gameUI.SetCharactersProfiles(selectUnits, _maxSelected);
+
+        actualClickBuild = null;
     }
 
     internal int GetMaxSelected()
     {
         return _maxSelected;
     }
+
+
+    #region GamePlayer
+
+    public void UnitCreate(int whichPlayer, GameObject unitToCreate, Vector3 position)
+    {
+        _playersGameObjects[whichPlayer][_playersGameObjects[whichPlayer].Count-1].transform.GetChild(0).GetComponentInChildren<SkinnedMeshRenderer>().materials[1].color = _playersMaterials[whichPlayer].color;
+    }
+
+
+    #endregion
 }

@@ -548,6 +548,7 @@ GameObject:
   - component: {fileID: 347031667}
   - component: {fileID: 347031666}
   - component: {fileID: 347031665}
+  - component: {fileID: 347031668}
   m_Layer: 5
   m_Name: Worker
   m_TagString: Untagged
@@ -617,7 +618,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 347031666}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 347031668}
+        m_TargetAssemblyTypeName: CreateHumanUnitButton, Assembly-CSharp
+        m_MethodName: Create
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &347031666
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -656,6 +669,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 347031663}
   m_CullTransparentMesh: 1
+--- !u!114 &347031668
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 347031663}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec4dbc937cc34a841b54d2da6d5e4f62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Unit: {fileID: 9021965350081321010, guid: 5da336bb6abae714c82fe6fbf0e90e59, type: 3}
 --- !u!1 &413294691
 GameObject:
   m_ObjectHideFlags: 0
@@ -3929,7 +3955,7 @@ GameObject:
   - component: {fileID: 1860349095}
   - component: {fileID: 1860349094}
   m_Layer: 5
-  m_Name: BuildPanel
+  m_Name: WorkerPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

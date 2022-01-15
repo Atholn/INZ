@@ -9,9 +9,11 @@ public class Unit : MonoBehaviour
     public string Name;
     public int Defense;
     public int Attack;
+
     public Texture2D Profile;
     public int Priority;
-    
+    public float CreateTime;
+
     internal int Hp;
 
     private void Start()
