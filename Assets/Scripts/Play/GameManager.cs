@@ -17,7 +17,6 @@ public class GameManager : MonoBehaviour
     internal List<List<GameObject>> _playersGameObjects;
     internal BuildingUnit actualClickBuild;
 
-
     private MapWorld _map;
     private List<GameStartPoint> _gameStartPoints;
     private List<Material> _playersMaterials;

@@ -13,6 +13,7 @@ public class GameUI : MonoBehaviour
 
     public GameObject OneCharacterPanel;
     public GameObject ManyCharactersPanel;
+    public GameObject CreateProgressPanel;
 
     private GameObject _tmpSpecialPanel;
     public GameObject WorkerSpecialPanel;
