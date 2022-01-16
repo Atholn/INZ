@@ -119,6 +119,7 @@ MonoBehaviour:
   Attack: 10
   Profile: {fileID: 0}
   Priority: 0
+  CreateTime: 20
   Size: 0
   PlaceWood: 0
   PlaceGold: 0

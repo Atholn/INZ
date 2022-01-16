@@ -132,13 +132,13 @@ public class GameUI : MonoBehaviour
         {
             switch (gameObject.GetComponent<Unit>().Name)
             {
-                //Human Unit
+                //Human Units
                 case "Worker":
                     //ShowSpecialButtons(WorkerActions); 
                     ShowSpecialPanel(WorkerSpecialPanel);
                     break;
 
-                // Building Unit
+                // Building Units
                 case "TownHall":
                     ShowSpecialPanel(TownHallSpecialPanel);
                     break;

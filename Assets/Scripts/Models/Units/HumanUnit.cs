@@ -29,8 +29,7 @@ public class HumanUnit : Unit
                     stoppingDistance = 1,
                     buildingDistance = 4,
                     choppingDistance = 2,
-                    stopChoppingDistance = 4,
-                    buildingFullBuild = 1;
+                    stopChoppingDistance = 4;
 
     internal Tree choppingTree;
     protected Transform target;
@@ -79,6 +78,7 @@ public class HumanUnit : Unit
 
     protected virtual void Moving()
     {
+        animator.SetBool(ANIMATOR_BUILD, false);
         float distance = Vector3.Magnitude(nav.destination - transform.position);
 
         if (distance > stoppingDistance)
@@ -121,14 +121,11 @@ public class HumanUnit : Unit
         }
 
         animator.SetBool(ANIMATOR_BUILD, true);
-        if (bU.BuildingPercent < buildingFullBuild)
+        if (bU.BuildingPercent < bU.CreateTime)
         {
-            bU.BuildingPercent += 0.001f;
+            bU.BuildingPercent += Time.deltaTime;
 
-            Debug.LogError(it.ItemHeightPosY + bU.HeightBuilding);
-
-
-            target.transform.position = new Vector3(target.transform.position.x, -bU.HeightBuilding  + bU.BuildingPercent*(it.ItemHeightPosY + bU.HeightBuilding), target.transform.position.z);
+            target.transform.position = new Vector3(target.transform.position.x, -bU.HeightBuilding  + (bU.BuildingPercent/bU.CreateTime)*(it.ItemHeightPosY + bU.HeightBuilding), target.transform.position.z);
             Debug.Log(bU.BuildingPercent);
             return;
         }

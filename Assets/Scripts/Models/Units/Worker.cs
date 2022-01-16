@@ -13,6 +13,7 @@ public class Worker : HumanUnit
     void Command(Vector3 destination)
     {
         nav.SetDestination(destination);
+
         task = Task.move;
     }
 
