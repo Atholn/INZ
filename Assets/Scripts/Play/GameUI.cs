@@ -128,6 +128,12 @@ public class GameUI : MonoBehaviour
         //HideSpecialButtons();
         HideSpecialPanel();
 
+        BuildingUnit buildingUnit = gameObject.GetComponent<BuildingUnit>();
+        if (buildingUnit != null && buildingUnit.CreateTime > buildingUnit.BuildingPercent)
+        {
+            return;
+        }
+
         if (i == 0)
         {
             switch (gameObject.GetComponent<Unit>().Name)
@@ -151,11 +157,11 @@ public class GameUI : MonoBehaviour
 
     internal void ShowProgressCreateUnitPanel(GameObject gameObject)
     {
-        if (gameObject.GetComponent<BuildingUnit>() != null && gameObject.GetComponent<BuildingUnit>().createUnit)
+        BuildingUnit buildingUnit = gameObject.GetComponent<BuildingUnit>();
+
+        if (buildingUnit != null && buildingUnit.createUnit)
         {
             CreateProgressPanel.SetActive(true);
-
-            BuildingUnit buildingUnit = gameObject.GetComponent<BuildingUnit>();
 
             Texture2D texture = null;
             float value = 0f;
@@ -170,11 +176,9 @@ public class GameUI : MonoBehaviour
         }
     }
 
-    
-
     private void HideSpecialPanel()
     {
-        if(_tmpSpecialPanel !=null) _tmpSpecialPanel.SetActive(false);
+        if (_tmpSpecialPanel != null) _tmpSpecialPanel.SetActive(false);
         _tmpSpecialPanel = null;
     }
 
