@@ -18,6 +18,7 @@ public class GameUI : MonoBehaviour
     private GameObject _tmpSpecialPanel;
     public GameObject WorkerSpecialPanel;
     public GameObject TownHallSpecialPanel;
+    public GameObject BarracksSpecialPanel;
 
     public List<GameObject> WorkerActions;
     private List<GameObject> _tmpActions = new List<GameObject>();
@@ -35,6 +36,7 @@ public class GameUI : MonoBehaviour
 
         WorkerSpecialPanel.SetActive(false);
         TownHallSpecialPanel.SetActive(false);
+        BarracksSpecialPanel.SetActive(false);
     }
 
     #region TopPanel
@@ -147,6 +149,9 @@ public class GameUI : MonoBehaviour
                 // Building Units
                 case "TownHall":
                     ShowSpecialPanel(TownHallSpecialPanel);
+                    break;
+                case "Barracks":
+                    ShowSpecialPanel(BarracksSpecialPanel);
                     break;
                 default: break;
             }

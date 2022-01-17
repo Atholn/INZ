@@ -2861,6 +2861,7 @@ MonoBehaviour:
   CreateProgressPanel: {fileID: 672844436}
   WorkerSpecialPanel: {fileID: 1860349092}
   TownHallSpecialPanel: {fileID: 1314900380}
+  BarracksSpecialPanel: {fileID: 1825980618}
   WorkerActions:
   - {fileID: 1860349092}
 --- !u!222 &1154579020
@@ -4461,7 +4462,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Building: {fileID: 0}
-  Unit: {fileID: 9021965350081321010, guid: 5da336bb6abae714c82fe6fbf0e90e59, type: 3}
+  Unit: {fileID: 1876881228447981026, guid: 898b5ff9c1c116543b528ae3ef41076d, type: 3}
 --- !u!114 &1852887034
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4918,7 +4919,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Building: {fileID: 0}
-  Unit: {fileID: 9021965350081321010, guid: 5da336bb6abae714c82fe6fbf0e90e59, type: 3}
+  Unit: {fileID: 864852103316053753, guid: fcbe62d3f647dcf4c8a1b09015325d5e, type: 3}
 --- !u!114 &1921684422
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5317,7 +5318,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Building: {fileID: 0}
-  Unit: {fileID: 9021965350081321010, guid: 5da336bb6abae714c82fe6fbf0e90e59, type: 3}
+  Unit: {fileID: 151386186512295329, guid: 59a7587de95fb8146ac03a5c72cc565b, type: 3}
 --- !u!114 &2060828602
 MonoBehaviour:
   m_ObjectHideFlags: 0

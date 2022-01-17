@@ -68,7 +68,7 @@ public class HumanUnit : Unit
         //var speedVector = nav.velocity;
         //speedVector.y = 0;
         //float speed = speedVector.magnitude;
-
+        if (animator == null) return;
         animator.SetBool(ANIMATOR_RUNNING, running);
         //animator.SetBool(ANIMATOR_DEAD, destroy);
     }
