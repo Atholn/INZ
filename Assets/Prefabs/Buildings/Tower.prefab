@@ -105,10 +105,9 @@ MonoBehaviour:
   Profile: {fileID: 0}
   Priority: 0
   CreateTime: 20
-  Size: 0
+  Size: 2
   PlaceWood: 0
   PlaceGold: 0
-  HeightBuilding: 6.4
   SizeBuilding: 2
 --- !u!65 &1697795457767455444
 BoxCollider:

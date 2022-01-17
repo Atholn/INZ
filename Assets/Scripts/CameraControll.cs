@@ -91,10 +91,10 @@ public class CameraControll : MonoBehaviour
 
         if (_gameManager.building && Input.GetMouseButtonDown(0))
         {
-            GameObject building = Instantiate(_gameManager.ItemControllers[_gameManager.CurrentButtonPressed].item.ItemPrefab,
+            GameObject building = (Instantiate(_gameManager.ItemControllers[_gameManager.CurrentButtonPressed].item.ItemPrefab,
                 new Vector3(_gameManager.v.x, -(_gameManager.ItemControllers[_gameManager.CurrentButtonPressed].item as ItemGame).HeightBuilding, _gameManager.v.z),
-                _gameManager.ItemControllers[_gameManager.CurrentButtonPressed].item.ItemPrefab.transform.rotation);
-
+                _gameManager.ItemControllers[_gameManager.CurrentButtonPressed].item.ItemPrefab.transform.rotation));
+            _gameManager._playersGameObjects[0].Add(building);
             _gameManager.DestroyItemImages();
             _gameManager.building = false;
 
