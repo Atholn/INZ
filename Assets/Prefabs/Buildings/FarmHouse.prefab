@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 6791987644198280475}
   - component: {fileID: 3055725709438477716}
   - component: {fileID: 3246930087360198606}
-  - component: {fileID: 6050567393845203802}
   - component: {fileID: -896336626308895949}
+  - component: {fileID: 3273914794899771695}
   m_Layer: 0
   m_Name: FarmHouse
   m_TagString: Untagged
@@ -85,22 +85,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &6050567393845203802
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7964747631741463486}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b7c1fa7a823bd1f49a6909ffdbaf02e4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ItemPrefab: {fileID: 7964747631741463486}
-  ItemImage: {fileID: 6540401223022280601, guid: 3f37a7a0c3582d64a8ed275cb3b7eff2, type: 3}
-  ItemHeightLevel: 1
-  ItemHeightPosY: 0
 --- !u!114 &-896336626308895949
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -119,7 +103,25 @@ MonoBehaviour:
   Attack: 0
   Profile: {fileID: 2800000, guid: ec017144467513442a7b3efb1727b0d1, type: 3}
   Priority: 0
-  Size: 0
+  CreateTime: 30
+  Size: 2
   PlaceWood: 0
   PlaceGold: 0
-  BuildingPercent: 0
+  SizeBuilding: 2
+--- !u!114 &3273914794899771695
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7964747631741463486}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a9328567897e7742bf8f79a7c149ec2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ItemPrefab: {fileID: 7964747631741463486}
+  ItemImage: {fileID: 6540401223022280601, guid: 3f37a7a0c3582d64a8ed275cb3b7eff2, type: 3}
+  ItemHeightLevel: 1
+  ItemHeightPosY: 0.35
+  HeightBuilding: 3.3
