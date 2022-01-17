@@ -48,7 +48,37 @@ ModelImporter:
   - first:
       74: 2808714396835539526
     second: metarig|Run.001
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ArmorBowman
+    second: {fileID: 2100000, guid: 119d7bb4b51a2bf4abe92bc14367610d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: BagBowman
+    second: {fileID: 2100000, guid: b5a2c8c6b33032a4ca4321e84660f566, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: PantsBowman
+    second: {fileID: 2100000, guid: 3f58a842586072b45893217623fc3784, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: SkinBowman
+    second: {fileID: 2100000, guid: bcd54ad59bb229b4bbc19ea6d3c5a254, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: StickBowman
+    second: {fileID: 2100000, guid: 2387854a8ec94874a98f3b59ac348d67, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Unit
+    second: {fileID: 2100000, guid: 0203b06a8f684b04ea05dd3c04d0b9af, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -76,7 +106,7 @@ ModelImporter:
     extraExposedTransformPaths: []
     extraUserProperties: []
     clipAnimations: []
-    isReadable: 0
+    isReadable: 1
   meshes:
     lODScreenPercentages: []
     globalScale: 1

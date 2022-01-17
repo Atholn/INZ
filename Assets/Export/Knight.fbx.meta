@@ -69,7 +69,27 @@ ModelImporter:
   - first:
       74: 8016608208641201251
     second: Plane.003|Dead.001
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: PantsKnight
+    second: {fileID: 2100000, guid: 9f8c3fe2962eacd48ba2c18e63db929d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: SkinKnight
+    second: {fileID: 2100000, guid: e6f9b104251bf3e4b8226e01d9178c68, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: StealKnight
+    second: {fileID: 2100000, guid: e2ca36d450950424294863e6df7171e9, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Unit
+    second: {fileID: 2100000, guid: 8bb69e9f1131eeb4ea945ef8f9afab22, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -97,7 +117,7 @@ ModelImporter:
     extraExposedTransformPaths: []
     extraUserProperties: []
     clipAnimations: []
-    isReadable: 0
+    isReadable: 1
   meshes:
     lODScreenPercentages: []
     globalScale: 1
