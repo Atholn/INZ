@@ -100,16 +100,16 @@ public class HumanUnit : Unit
 
     protected virtual void Building()
     {
-        nav.SetDestination(target.position);
+        nav.SetDestination(new Vector3(target.position.x, 0 , target.position.z));
         float distance = Vector3.Magnitude(nav.destination - transform.position);
 
         BuildingUnit bU = target.GetComponent<BuildingUnit>();
-        Item it = target.GetComponent<Item>();
+        ItemGame it = target.GetComponent<ItemGame>();
 
         if (distance > bU.SizeBuilding)
         {
-            target.transform.position = new Vector3(target.transform.position.x, -bU.HeightBuilding, target.transform.position.z);
-
+            
+            animator.SetBool(ANIMATOR_BUILD, false);
             running = true;
             return;
         }
@@ -125,7 +125,7 @@ public class HumanUnit : Unit
         {
             bU.BuildingPercent += Time.deltaTime;
 
-            target.transform.position = new Vector3(target.transform.position.x, -bU.HeightBuilding  + (bU.BuildingPercent/bU.CreateTime)*(it.ItemHeightPosY + bU.HeightBuilding), target.transform.position.z);
+            target.transform.position = new Vector3(target.transform.position.x, -it.HeightBuilding  + (bU.BuildingPercent/bU.CreateTime)*(it.ItemHeightPosY + it.HeightBuilding), target.transform.position.z);
             Debug.Log(bU.BuildingPercent);
             return;
         }

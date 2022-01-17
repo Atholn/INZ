@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
@@ -91,7 +92,7 @@ public class CameraControll : MonoBehaviour
         if (_gameManager.building && Input.GetMouseButtonDown(0))
         {
             GameObject building = Instantiate(_gameManager.ItemControllers[_gameManager.CurrentButtonPressed].item.ItemPrefab,
-                new Vector3(_gameManager.v.x, _gameManager.ItemControllers[_gameManager.CurrentButtonPressed].item.ItemHeightPosY, _gameManager.v.z),
+                new Vector3(_gameManager.v.x, -(_gameManager.ItemControllers[_gameManager.CurrentButtonPressed].item as ItemGame).HeightBuilding, _gameManager.v.z),
                 _gameManager.ItemControllers[_gameManager.CurrentButtonPressed].item.ItemPrefab.transform.rotation);
 
             _gameManager.DestroyItemImages();
@@ -127,6 +128,18 @@ public class CameraControll : MonoBehaviour
                 if (rayHit.collider.gameObject.GetComponent<Tree>() != null)
                 {
                     commandData = rayHit.collider.gameObject.GetComponent<Tree>();
+                    
+                }
+
+                if (rayHit.collider.gameObject.GetComponent<BuildingUnit>() != null)
+                {
+                    BuildingUnit buildingUnittt = rayHit.collider.gameObject.GetComponent<BuildingUnit>();
+                    if (buildingUnittt.BuildingPercent < buildingUnittt.CreateTime)
+                    {
+                        _selectUnits[0].GetComponent<NavMeshAgent>().velocity = Vector3.zero;
+
+                        commandData = rayHit.collider.gameObject;
+                    }
                 }
             }
             else
