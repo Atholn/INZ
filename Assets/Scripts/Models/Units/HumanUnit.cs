@@ -9,7 +9,7 @@ public class HumanUnit : Unit
 {
     public enum Task
     {
-        idle, move, follow, build, chopping
+        idle, move, follow, build, repair, chopping
     }
 
     const string ANIMATOR_RUNNING = "Run",
@@ -55,6 +55,7 @@ public class HumanUnit : Unit
             case Task.move: Moving(); break;
             case Task.follow: Following(); break;
             case Task.build: Building(); break;
+            case Task.repair: Repairing(); break;
             case Task.chopping: Chopping(); break;
         }
 
@@ -126,11 +127,44 @@ public class HumanUnit : Unit
             bU.BuildingPercent += Time.deltaTime;
 
             target.transform.position = new Vector3(target.transform.position.x, -it.HeightBuilding  + (bU.BuildingPercent/bU.CreateTime)*(it.ItemHeightPosY + it.HeightBuilding), target.transform.position.z);
-            Debug.Log(bU.BuildingPercent);
             return;
         }
 
-        Debug.Log(bU.BuildingPercent + " full ");
+        animator.SetBool(ANIMATOR_BUILD, false);
+        task = Task.idle;
+    }
+
+    protected virtual void Repairing()
+    {
+        nav.SetDestination(new Vector3(target.position.x, 0, target.position.z));
+        float distance = Vector3.Magnitude(nav.destination - transform.position);
+
+        BuildingUnit bU = target.GetComponent<BuildingUnit>();
+        ItemGame it = target.GetComponent<ItemGame>();
+
+        if (distance > bU.SizeBuilding)
+        {
+
+            animator.SetBool(ANIMATOR_BUILD, false);
+            running = true;
+            return;
+        }
+
+        if (distance <= bU.SizeBuilding)
+        {
+            nav.velocity = Vector3.zero;
+            running = false;
+        }
+
+        animator.SetBool(ANIMATOR_BUILD, true);
+        if (bU.Hp < bU.HpMax)
+        {
+            bU.Hp += 1;
+
+            // todo mniej ogni
+            return;
+        }
+
         animator.SetBool(ANIMATOR_BUILD, false);
         task = Task.idle;
     }

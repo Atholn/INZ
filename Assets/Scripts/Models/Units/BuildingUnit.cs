@@ -12,6 +12,10 @@ public class BuildingUnit : Unit
     public float SizeBuilding;
     internal float BuildingPercent = 0f;
 
+
+    /// <summary>
+    /// unit
+    /// </summary>
     internal bool createUnit = false;
     internal GameObject acutalUnitCreate;
     internal float unitCreateProgress;

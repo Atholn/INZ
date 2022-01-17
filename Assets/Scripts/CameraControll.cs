@@ -128,18 +128,17 @@ public class CameraControll : MonoBehaviour
                 if (rayHit.collider.gameObject.GetComponent<Tree>() != null)
                 {
                     commandData = rayHit.collider.gameObject.GetComponent<Tree>();
-                    
+
                 }
 
                 if (rayHit.collider.gameObject.GetComponent<BuildingUnit>() != null)
                 {
                     BuildingUnit buildingUnittt = rayHit.collider.gameObject.GetComponent<BuildingUnit>();
-                    if (buildingUnittt.BuildingPercent < buildingUnittt.CreateTime)
-                    {
-                        _selectUnits[0].GetComponent<NavMeshAgent>().velocity = Vector3.zero;
 
-                        commandData = rayHit.collider.gameObject;
-                    }
+                    _selectUnits[0].GetComponent<NavMeshAgent>().velocity = Vector3.zero;
+
+                    commandData = rayHit.collider.gameObject;
+
                 }
             }
             else

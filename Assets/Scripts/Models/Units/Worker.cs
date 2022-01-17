@@ -26,10 +26,22 @@ public class Worker : HumanUnit
     {
         if (gameObject.GetComponent<BuildingUnit>() != null)
         {
+            BuildingUnit buildingUnit = gameObject.GetComponent<BuildingUnit>();
             target = gameObject.transform;
-            task = Task.build;
 
-            return;
+            if (buildingUnit.BuildingPercent < buildingUnit.CreateTime)
+            {
+                task = Task.build;
+                return;
+            }
+
+            if (buildingUnit.Hp < HpMax)
+            {
+                task = Task.repair;
+                return;
+            }
+
+            task = Task.move;
         }
     }
 
