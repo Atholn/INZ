@@ -39,8 +39,9 @@ public class HumanUnit : Unit
     int woodMax = 100;
     bool goToChopping = false;
 
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
         nav = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
     }

@@ -16,7 +16,7 @@ public class Unit : MonoBehaviour
 
     internal int Hp;
 
-    private void Start()
+    protected virtual void  Start()
     {
         Hp = HpMax;
     }

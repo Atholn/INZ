@@ -8,7 +8,6 @@ public class BuildingUnit : Unit
     public bool PlaceWood;
     public bool PlaceGold;
 
-
     public float SizeBuilding;
     internal float BuildingPercent = 0f;
 
@@ -22,8 +21,9 @@ public class BuildingUnit : Unit
     private int whichPlayerUnit;
 
     private GameManager gameManager;
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
         gameManager = GameObject.FindObjectOfType<GameManager>();
     }
     private void Update()

@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 1714513411549047449}
   - component: {fileID: 4777316911915323961}
   - component: {fileID: 1040253030934339372}
-  - component: {fileID: 3325733010334055243}
   - component: {fileID: -5667301378311111717}
+  - component: {fileID: 6440763114986004256}
   m_Layer: 0
   m_Name: Barracks
   m_TagString: Untagged
@@ -85,22 +85,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &3325733010334055243
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8054880855524684351}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b7c1fa7a823bd1f49a6909ffdbaf02e4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ItemPrefab: {fileID: 8054880855524684351}
-  ItemImage: {fileID: 4229408423562624710, guid: 53e71e4151cd0444ea551deb5ee729f8, type: 3}
-  ItemHeightLevel: 1
-  ItemHeightPosY: 0
 --- !u!114 &-5667301378311111717
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -113,13 +97,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4394740e29547e54ea832fef4a81be1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HpMax: 0
+  HpMax: 500
   Name: s
   Defense: 0
   Attack: 0
   Profile: {fileID: 2800000, guid: f4e62da3b515f7a4399a2ed2c2ba3d57, type: 3}
   Priority: 0
-  Size: 0
+  CreateTime: 30
+  Size: 5
   PlaceWood: 0
   PlaceGold: 0
-  BuildingPercent: 0
+  SizeBuilding: 5
+--- !u!114 &6440763114986004256
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8054880855524684351}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a9328567897e7742bf8f79a7c149ec2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ItemPrefab: {fileID: 8054880855524684351}
+  ItemImage: {fileID: 4229408423562624710, guid: 53e71e4151cd0444ea551deb5ee729f8, type: 3}
+  ItemHeightLevel: 1
+  ItemHeightPosY: 0.4
+  HeightBuilding: 5.2

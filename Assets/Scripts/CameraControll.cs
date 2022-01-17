@@ -123,7 +123,7 @@ public class CameraControll : MonoBehaviour
             {
                 commandData = rayHit.point;
             }
-            else if (rayHit.collider is BoxCollider)
+            else if (_selectUnits[0].GetComponent<Worker>() != null && rayHit.collider is BoxCollider)
             {
                 if (rayHit.collider.gameObject.GetComponent<Tree>() != null)
                 {
