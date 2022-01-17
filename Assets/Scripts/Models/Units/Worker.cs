@@ -41,7 +41,7 @@ public class Worker : HumanUnit
                 return;
             }
 
-            task = Task.move;
+            task = Task.follow;
         }
     }
 

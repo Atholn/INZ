@@ -96,7 +96,16 @@ public class HumanUnit : Unit
 
     protected virtual void Following()
     {
+        nav.SetDestination(new Vector3(target.position.x, 0, target.position.z));
+        float distance = Vector3.Magnitude(nav.destination - transform.position);
 
+        if (distance <= stoppingDistance)
+        {
+            nav.velocity = Vector3.zero;
+            running = false;
+            task = Task.idle;
+            target = null;
+        }
     }
 
     protected virtual void Building()
