@@ -7,7 +7,7 @@ public class Worker : HumanUnit
     protected override void Update()
     {
         base.Update();
-        transform.position = new Vector3(transform.position.x, 0.5f, transform.position.z);
+        transform.position = new Vector3(transform.position.x, 0.2f, transform.position.z);
     }
 
     void Command(Vector3 destination)

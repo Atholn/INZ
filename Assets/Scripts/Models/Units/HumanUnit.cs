@@ -48,7 +48,7 @@ public class HumanUnit : Unit
 
     protected virtual void Update()
     {
-        transform.position = new Vector3(transform.position.x, 0, transform.position.z);
+        //transform.position = new Vector3(transform.position.x, 0, transform.position.z);
 
         switch (task)
         {
@@ -59,6 +59,8 @@ public class HumanUnit : Unit
             case Task.repair: Repairing(); break;
             case Task.chopping: Chopping(); break;
         }
+
+
 
         Animate();
     }

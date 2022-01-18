@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class GameManager : MonoBehaviour
 {
@@ -39,7 +40,7 @@ public class GameManager : MonoBehaviour
 
     RaycastHit hit;
     internal Vector3 v;
-
+    public NavMeshBaker navMeshBaker;
     void Start()
     {
         _gameUI = FindObjectOfType<GameUI>();
@@ -52,6 +53,27 @@ public class GameManager : MonoBehaviour
 
         MapLoader.ResetAndLoad(ref _map, ref MapToPlayStorage.Map.MapWorldCreate, ref _gameObjects, ref _terrain, TerrainPrefabs);
         InitializePlayers();
+
+
+
+
+        //for (int j = 0; j < _gameObjects[0].Length; j++)
+        //{
+        //    for (int k = 0; k < _gameObjects[0][j].Length; k++)
+        //    {
+        //        if (_gameObjects[0][j][k] != null)
+        //        {
+        //            navMeshBaker.navMeshSurfaces.Add(_gameObjects[0][j][k].GetComponent<NavMeshSurface>());
+        //        }
+        //    }
+        //}
+        navMeshBaker.navMeshSurfaces.Add(_terrain.GetComponent<NavMeshSurface>());
+        navMeshBaker.Bake();
+        NavMeshData nmd = _terrain.GetComponent<NavMeshSurface>().navMeshData;
+        nmd.sourceBounds.center.Set(500f, 0f, 500f);
+        nmd.sourceBounds.extents.Set(500f, 0f, 500f);
+
+        navMeshBaker.navMeshSurfaces[0].navMeshData = nmd;
 
         _minimapCamera = GameObject.FindGameObjectWithTag("MinimapCamera");
 
@@ -101,6 +123,8 @@ public class GameManager : MonoBehaviour
         {
             v = hit.point;
         }
+
+
 
 
         if (Input.GetMouseButtonDown(1))
