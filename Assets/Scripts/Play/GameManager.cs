@@ -41,6 +41,9 @@ public class GameManager : MonoBehaviour
     RaycastHit hit;
     internal Vector3 v;
     public NavMeshBaker navMeshBaker;
+
+    internal List<GameObject> Nature = new List<GameObject>();
+
     void Start()
     {
         _gameUI = FindObjectOfType<GameUI>();
@@ -52,9 +55,23 @@ public class GameManager : MonoBehaviour
         _townHall = BuildingsPrefabs.Where(w => w.name == "TownHall").FirstOrDefault();
 
         MapLoader.ResetAndLoad(ref _map, ref MapToPlayStorage.Map.MapWorldCreate, ref _gameObjects, ref _terrain, TerrainPrefabs);
+
         InitializePlayers();
 
 
+        for (int i = 0; i < _gameObjects.Length; i++)
+        {
+            for (int j = 0; j < _gameObjects[i].Length; j++)
+            {
+                for (int k = 0; k < _gameObjects[i][j].Length; k++)
+                {
+                    if (_gameObjects[i][j][k] != null)
+                    {
+                        Nature.Add(_gameObjects[i][j][k]);
+                    }
+                }
+            }
+        }
 
 
         //for (int j = 0; j < _gameObjects[0].Length; j++)
