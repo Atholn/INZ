@@ -26,10 +26,12 @@ public class CameraControll : MonoBehaviour
     private void Awake()
     {
         cameraControl = this;
-        _selectionBox = GetComponentInChildren<Image>().transform as RectTransform;
         camera = GetComponent<Camera>();
-        _selectionBox.gameObject.SetActive(false);
-
+        if (GetComponentInChildren<Image>() != null)
+        {
+            _selectionBox = GetComponentInChildren<Image>().transform as RectTransform;
+            _selectionBox.gameObject.SetActive(false);
+        }
         _gameManager = GameObject.FindObjectOfType<GameManager>();
     }
 
@@ -37,7 +39,7 @@ public class CameraControll : MonoBehaviour
     {
         _keyboardInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
         mousePos = Input.mousePosition;
-        mousePosScreen = camera.ScreenToViewportPoint(mousePos);
+        if(_gameManager !=null)mousePosScreen = camera.ScreenToViewportPoint(mousePos);
 
         Vector2 movementDirection = _keyboardInput;
 
@@ -45,7 +47,7 @@ public class CameraControll : MonoBehaviour
         delta *= Speed * Time.deltaTime;
         transform.localPosition += delta;
 
-        UpdateSelection();
+        if (_gameManager != null) UpdateSelection();
     }
 
     private void UpdateSelection()
