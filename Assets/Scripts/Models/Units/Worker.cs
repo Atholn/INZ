@@ -16,7 +16,7 @@ public class Worker : HumanUnit
     protected override void Update()
     {
         base.Update();
-        transform.position = new Vector3(transform.position.x, 0.2f, transform.position.z);
+        transform.position = new Vector3(transform.position.x, 0.5f, transform.position.z);
 
         switch (task)
         {
@@ -101,8 +101,8 @@ public class Worker : HumanUnit
                     attackDamage = 0,
                     stoppingDistance = 1,
                     buildingDistance = 0.5f,
-                    choppingDistance = 2,
-                    stopChoppingDistance = 7;
+                    choppingDistance = 1,
+                    stopChoppingDistance = 0.5f;
 
     internal Tree choppingTree;
     protected Transform target;
@@ -198,7 +198,7 @@ public class Worker : HumanUnit
 
     protected virtual void Repairing()
     {
-        nav.SetDestination(new Vector3(target.position.x, 0, target.position.z));
+        nav.SetDestination(target.position);
         float distance = Vector3.Magnitude(nav.destination - transform.position);
 
         BuildingUnit bU = target.GetComponent<BuildingUnit>();
@@ -263,7 +263,12 @@ public class Worker : HumanUnit
 
         }
 
-        nav.SetDestination(target.position);
+        //nav.SetDestination(new Vector3(target.position.x, 0, target.position.z));
+        //float distance = Vector2.Distance(new Vector2(nav.destination.x, nav.destination.z) , new Vector2(transform.position.x, transform.position.z));
+        if(!goToChopping)
+        nav.SetDestination(new Vector3(target.position.x, target.position.y, target.position.z - 4f));
+        else
+        nav.SetDestination(new Vector3(target.position.x, target.position.y, target.position.z));
         float distance = Vector3.Magnitude(nav.destination - transform.position);
 
         if (goToChopping)
@@ -309,6 +314,9 @@ public class Worker : HumanUnit
         }
         else
         {
+
+            Debug.LogError(target.position + " " + nav.destination + " " + transform.position + " " + distance);
+
             animator.SetBool(ANIMATOR_CHOPPING, false);
             if (distance > stopChoppingDistance)
             {

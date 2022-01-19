@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 3201060438935888629}
   - component: {fileID: 2859993949879681613}
   - component: {fileID: 3507001741036956390}
-  - component: {fileID: 7541676029855672078}
   - component: {fileID: -5982607791801554216}
-  - component: {fileID: 8585588373217394605}
+  - component: {fileID: 7541676029855672078}
+  - component: {fileID: 5682844408619401926}
   m_Layer: 3
   m_Name: TownHall
   m_TagString: Untagged
@@ -29,13 +29,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4545978525857756237}
-  m_LocalRotation: {x: -0.7069834, y: 0, z: 0, w: 0.7072302}
+  m_LocalRotation: {x: -0, y: -0.7069834, z: -0.7072302, w: 0}
   m_LocalPosition: {x: -0, y: 0, z: -29.59102}
   m_LocalScale: {x: 180, y: 180, z: 180}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: -89.98, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -89.98, y: 0, z: -180}
 --- !u!33 &3201060438935888629
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -107,24 +107,11 @@ MonoBehaviour:
   Attack: 0
   Profile: {fileID: 2800000, guid: 2ba387b9fdb456c4fa42eb34b5a0c178, type: 3}
   Priority: 1
-  CreateTime: 100
+  CreateTime: 10
   Size: 6
   PlaceWood: 1
   PlaceGold: 1
   SizeBuilding: 6
---- !u!65 &7541676029855672078
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4545978525857756237}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.049847223, y: 0.053550012, z: 0.03159719}
-  m_Center: {x: 0, y: 0, z: 0.016269341}
 --- !u!114 &-5982607791801554216
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -142,7 +129,20 @@ MonoBehaviour:
   ItemHeightLevel: 1
   ItemHeightPosY: 0.5
   HeightBuilding: 6
---- !u!208 &8585588373217394605
+--- !u!65 &7541676029855672078
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4545978525857756237}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.049847223, y: 0.053550012, z: 0.03159719}
+  m_Center: {x: 0, y: 0, z: 0.016269341}
+--- !u!208 &5682844408619401926
 NavMeshObstacle:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -152,7 +152,7 @@ NavMeshObstacle:
   m_Enabled: 1
   serializedVersion: 3
   m_Shape: 1
-  m_Extents: {x: 0.025, y: 0.027, z: 0.016}
+  m_Extents: {x: 0.0245, y: 0.0265, z: 0.0155}
   m_MoveThreshold: 0.1
   m_Carve: 1
   m_CarveOnlyStationary: 1
