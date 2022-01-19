@@ -105,7 +105,7 @@ MonoBehaviour:
   Attack: 0
   Profile: {fileID: 2800000, guid: f4e62da3b515f7a4399a2ed2c2ba3d57, type: 3}
   Priority: 0
-  CreateTime: 30
+  CreateTime: 10
   Size: 8
   PlaceWood: 0
   PlaceGold: 0

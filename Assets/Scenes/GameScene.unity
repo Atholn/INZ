@@ -1231,10 +1231,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1405973799554299390, guid: 59a7587de95fb8146ac03a5c72cc565b, type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: 1be2a4aef1122e14e8f4b01b6bf7fe89, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 59a7587de95fb8146ac03a5c72cc565b, type: 3}
 --- !u!1 &594155190
@@ -1815,10 +1811,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: -5203980940988498147, guid: fcbe62d3f647dcf4c8a1b09015325d5e, type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: 9474dfc961034794d815ee3bcb8372f9, type: 2}
     - target: {fileID: 525587223242294339, guid: fcbe62d3f647dcf4c8a1b09015325d5e, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -2941,10 +2933,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Axeman
       objectReference: {fileID: 0}
-    - target: {fileID: 2389729500574000067, guid: 898b5ff9c1c116543b528ae3ef41076d, type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: da17dd9e6b859864cad0e65fb9f2a8e4, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 898b5ff9c1c116543b528ae3ef41076d, type: 3}
 --- !u!1 &1136140573

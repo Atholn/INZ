@@ -28,8 +28,6 @@ public class Worker : HumanUnit
             case Task.chopping: Chopping(); break;
         }
 
-
-
         Animate();
 
     }

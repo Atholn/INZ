@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.EventSystems;
@@ -39,7 +40,7 @@ public class CameraControll : MonoBehaviour
     {
         _keyboardInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
         mousePos = Input.mousePosition;
-        if(_gameManager !=null)mousePosScreen = camera.ScreenToViewportPoint(mousePos);
+        if (_gameManager != null) mousePosScreen = camera.ScreenToViewportPoint(mousePos);
 
         Vector2 movementDirection = _keyboardInput;
 
@@ -79,10 +80,7 @@ public class CameraControll : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
-            if (_ifPlayerUnits)
-            {
-                GiveCommands();
-            }
+            GiveCommand();
         }
 
         if (Input.GetMouseButtonDown(1))
@@ -101,7 +99,7 @@ public class CameraControll : MonoBehaviour
             _gameManager.DestroyItemImages();
             _gameManager.building = false;
 
-            _gameManager._playersGameObjects[0][_gameManager._playersGameObjects[0].Count-1].GetComponent<MeshRenderer>().materials[1].color = _gameManager._playersMaterials[0].color;
+            _gameManager._playersGameObjects[0][_gameManager._playersGameObjects[0].Count - 1].GetComponent<MeshRenderer>().materials[1].color = _gameManager._playersMaterials[0].color;
 
             GiveCommands(building, "Command");
         }
@@ -113,6 +111,81 @@ public class CameraControll : MonoBehaviour
         //        Debug.LogError(obj.name);
         //    }
         //}
+    }
+    void GiveCommand()
+    {
+        if (_ifPlayerUnits)
+        {
+            if (_selectUnits.Count == 0)
+            {
+                return;
+            }
+
+            ray = camera.ViewportPointToRay(mousePosScreen);
+            if (Physics.Raycast(ray, out rayHit, 1000, commandLayerMask))
+            {
+
+
+
+            }
+
+            object commandData = null;
+
+            foreach (GameObject gameObject in _selectUnits)
+            {
+                if (rayHit.collider is TerrainCollider)
+                {
+                    commandData = rayHit.point;
+                    GiveCommands(commandData, "Command");
+                    continue;
+                }
+
+
+                if (gameObject.GetComponent<Soldier>() != null)
+                {
+
+                    int i = 0;
+                    int k = -1;
+                    for (i = 0; i < _gameManager._playersGameObjects.Count; i++)
+                    {
+                        if(_gameManager._playersGameObjects[i].Where(x => x == rayHit.collider.gameObject).FirstOrDefault() != null)
+                        {
+                            k = i;
+                            break;
+                        }
+                    }
+
+                    if (k == -1) continue;
+
+                    commandData = rayHit.collider.gameObject;
+
+                    if (k == 0)
+                    {
+                        GiveCommands(commandData, "CommandPlayer");
+                        continue;
+                    }
+
+                    GiveCommands(commandData, "CommandEnemy");
+
+                    //GiveCommands(commandData, "Command");
+
+                    continue;
+                }
+
+                if (gameObject.GetComponent<Worker>() != null)
+                {
+
+
+                    continue;
+                }
+            }
+
+
+
+
+
+
+        }
     }
 
     Ray ray;

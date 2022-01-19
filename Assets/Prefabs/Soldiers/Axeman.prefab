@@ -383,10 +383,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1245198176370935640}
-  - component: {fileID: -2002578213508622066}
   - component: {fileID: -3263764143553146358}
   - component: {fileID: 2123423553101472459}
   - component: {fileID: 2389729500574000067}
+  - component: {fileID: -3194243787047592191}
   m_Layer: 3
   m_Name: Axeman
   m_TagString: Untagged
@@ -411,25 +411,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &-2002578213508622066
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1876881228447981026}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e237873ebed26984b9abdd87e6169446, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  HpMax: 0
-  Name: 
-  Defense: 0
-  Attack: 0
-  Profile: {fileID: 0}
-  Priority: 0
-  CreateTime: 5
 --- !u!195 &-3263764143553146358
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -462,8 +443,8 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.5
-  m_Height: 1
+  m_Radius: 1.5
+  m_Height: 15
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!95 &2389729500574000067
@@ -476,7 +457,7 @@ Animator:
   m_GameObject: {fileID: 1876881228447981026}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: da17dd9e6b859864cad0e65fb9f2a8e4, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -485,6 +466,25 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &-3194243787047592191
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1876881228447981026}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4156c12a6699e6d429a0baa451252acc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HpMax: 100
+  Name: 
+  Defense: 0
+  Attack: 0
+  Profile: {fileID: 0}
+  Priority: 0
+  CreateTime: 2
 --- !u!1 &1898475520625527168
 GameObject:
   m_ObjectHideFlags: 0

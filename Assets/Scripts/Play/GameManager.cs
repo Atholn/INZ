@@ -239,7 +239,7 @@ public class GameManager : MonoBehaviour
 
     public void UnitCreate(int whichPlayer, GameObject unitToCreate, Vector3 position)
     {
-        _playersGameObjects[whichPlayer].Add(Instantiate(unitToCreate, position + new Vector3(3, 0, 3), unitToCreate.transform.rotation));
+        _playersGameObjects[whichPlayer].Add(Instantiate(unitToCreate, position + new Vector3(5, 1, 5), unitToCreate.transform.rotation));
         _playersGameObjects[whichPlayer][_playersGameObjects[whichPlayer].Count-1].transform.GetChild(0).GetComponentInChildren<SkinnedMeshRenderer>().materials[1].color = _playersMaterials[whichPlayer].color;
     }
 
