@@ -100,7 +100,7 @@ MonoBehaviour:
   ItemPrefab: {fileID: 6967734365383964538}
   ItemImage: {fileID: 5466163961409507805, guid: 5910229b3ef0b0c43a733ba163799883, type: 3}
   ItemHeightLevel: 1
-  ItemHeightPosY: 4.2
+  ItemHeightPosY: 7
 --- !u!114 &6368796251686863658
 MonoBehaviour:
   m_ObjectHideFlags: 0
