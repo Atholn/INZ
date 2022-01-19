@@ -27,9 +27,9 @@ public class HumanUnit : Unit
                     attackCooldown = 1,
                     attackDamage = 0,
                     stoppingDistance = 1,
-                    buildingDistance = 4,
+                    buildingDistance = 0.5f,
                     choppingDistance = 2,
-                    stopChoppingDistance = 4;
+                    stopChoppingDistance = 7;
 
     internal Tree choppingTree;
     protected Transform target;
@@ -113,12 +113,14 @@ public class HumanUnit : Unit
 
     protected virtual void Building()
     {
-        nav.SetDestination(new Vector3(target.position.x, 0 , target.position.z));
+        nav.SetDestination(new Vector3(target.position.x, 0, target.position.z));
+        //float distance = Vector3.Magnitude(nav.destination - new Vector3(transform.position.x, 0, transform.position.z));
         float distance = Vector3.Magnitude(nav.destination - transform.position);
 
         BuildingUnit bU = target.GetComponent<BuildingUnit>();
         ItemGame it = target.GetComponent<ItemGame>();
 
+        Debug.LogError(distance);
         if (distance > bU.SizeBuilding)
         {
             
@@ -141,6 +143,7 @@ public class HumanUnit : Unit
             target.transform.position = new Vector3(target.transform.position.x, -it.HeightBuilding  + (bU.BuildingPercent/bU.CreateTime)*(it.ItemHeightPosY + it.HeightBuilding), target.transform.position.z);
             return;
         }
+
 
         animator.SetBool(ANIMATOR_BUILD, false);
         task = Task.idle;

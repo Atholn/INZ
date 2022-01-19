@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 3507001741036956390}
   - component: {fileID: 7541676029855672078}
   - component: {fileID: -5982607791801554216}
+  - component: {fileID: 8585588373217394605}
   m_Layer: 3
   m_Name: TownHall
   m_TagString: Untagged
@@ -30,7 +31,7 @@ Transform:
   m_GameObject: {fileID: 4545978525857756237}
   m_LocalRotation: {x: -0.7069834, y: 0, z: 0, w: 0.7072302}
   m_LocalPosition: {x: -0, y: 0, z: -29.59102}
-  m_LocalScale: {x: 200, y: 200, z: 200}
+  m_LocalScale: {x: 180, y: 180, z: 180}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -107,10 +108,10 @@ MonoBehaviour:
   Profile: {fileID: 2800000, guid: 2ba387b9fdb456c4fa42eb34b5a0c178, type: 3}
   Priority: 1
   CreateTime: 100
-  Size: 4
+  Size: 6
   PlaceWood: 1
   PlaceGold: 1
-  SizeBuilding: 4
+  SizeBuilding: 6
 --- !u!65 &7541676029855672078
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -123,7 +124,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 0.049847223, y: 0.053550012, z: 0.03159719}
-  m_Center: {x: 0.00014484675, y: -0.0020995967, z: 0.016269341}
+  m_Center: {x: 0, y: 0, z: 0.016269341}
 --- !u!114 &-5982607791801554216
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -140,4 +141,20 @@ MonoBehaviour:
   ItemImage: {fileID: 3119096530777431148, guid: 134029e9afb4a1a4c83b0d34f28a6df7, type: 3}
   ItemHeightLevel: 1
   ItemHeightPosY: 0.5
-  HeightBuilding: 4.1
+  HeightBuilding: 6
+--- !u!208 &8585588373217394605
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4545978525857756237}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.025, y: 0.027, z: 0.016}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0.016}
+  m_TimeToStationary: 0.5

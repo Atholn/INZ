@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3213346689669805719}
   - component: {fileID: 1961249877362817330}
   - component: {fileID: 4382905233751002616}
+  - component: {fileID: 741062581}
   m_Layer: 0
   m_Name: GoldMine
   m_TagString: Untagged
@@ -84,3 +85,16 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &741062581
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2869858829959588909}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.018805804, y: 0.018718, z: 0.0072837006}
+  m_Center: {x: -0.00052516535, y: -0.000354635, z: 0.0016135519}

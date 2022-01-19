@@ -14,7 +14,8 @@ GameObject:
   - component: {fileID: 1113378364430127671}
   - component: {fileID: -8502003653892170541}
   - component: {fileID: 802356331}
-  m_Layer: 0
+  - component: {fileID: 5945532920684867348}
+  m_Layer: 3
   m_Name: Blacksmiths
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -140,3 +141,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.016363634, y: 0.013898988, z: 0.0136107635}
   m_Center: {x: 0, y: 0.002404041, z: 0.007215051}
+--- !u!208 &5945532920684867348
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2591485293969951501}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.008, y: 0.007, z: 0.007}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0.002, z: 0.007}
+  m_TimeToStationary: 0.5

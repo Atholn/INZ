@@ -14,7 +14,8 @@ GameObject:
   - component: {fileID: -5667301378311111717}
   - component: {fileID: 6440763114986004256}
   - component: {fileID: 1484801961}
-  m_Layer: 0
+  - component: {fileID: -6043320892807388759}
+  m_Layer: 3
   m_Name: Barracks
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -105,10 +106,10 @@ MonoBehaviour:
   Profile: {fileID: 2800000, guid: f4e62da3b515f7a4399a2ed2c2ba3d57, type: 3}
   Priority: 0
   CreateTime: 30
-  Size: 5
+  Size: 8
   PlaceWood: 0
   PlaceGold: 0
-  SizeBuilding: 5
+  SizeBuilding: 8
 --- !u!114 &6440763114986004256
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -139,3 +140,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.09230985, y: 0.091927454, z: 0.05692986}
   m_Center: {x: 0, y: 0.000180589, z: 0.02846493}
+--- !u!208 &-6043320892807388759
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8054880855524684351}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.046000004, y: 0.046000004, z: 0.028}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0.028}
+  m_TimeToStationary: 0.5

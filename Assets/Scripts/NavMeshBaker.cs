@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEditor.AI;
 
 public class NavMeshBaker : MonoBehaviour
 {
@@ -18,5 +20,10 @@ public class NavMeshBaker : MonoBehaviour
         {
             navMeshSurfaces[i].BuildNavMesh();
         }
+    }
+
+    internal void UpdateBake(NavMeshData navMeshData)
+    {
+        navMeshSurfaces[0].UpdateNavMesh(navMeshData);
     }
 }

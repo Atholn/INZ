@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: -8557482644963218616}
   - component: {fileID: 1697795457767455444}
   - component: {fileID: 8687993417490750042}
+  - component: {fileID: 5300992910509019917}
   m_Layer: 3
   m_Name: Tower
   m_TagString: Untagged
@@ -120,7 +121,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.030446753, y: 0.030446747, z: 0.06834841}
+  m_Size: {x: 0.034, y: 0.034, z: 0.07}
   m_Center: {x: 0, y: 0, z: 0.03359898}
 --- !u!114 &8687993417490750042
 MonoBehaviour:
@@ -139,3 +140,19 @@ MonoBehaviour:
   ItemHeightLevel: 1
   ItemHeightPosY: 0.5
   HeightBuilding: 6.4
+--- !u!208 &5300992910509019917
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9082014104220431091}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.015000001, y: 0.015000001, z: 0.034}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0.034}
+  m_TimeToStationary: 0.5

@@ -148,7 +148,6 @@ public class CameraControll : MonoBehaviour
                     _selectUnits[0].GetComponent<NavMeshAgent>().velocity = Vector3.zero;
 
                     commandData = rayHit.collider.gameObject;
-
                 }
             }
             else

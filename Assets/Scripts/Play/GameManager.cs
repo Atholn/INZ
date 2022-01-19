@@ -56,9 +56,6 @@ public class GameManager : MonoBehaviour
 
         MapLoader.ResetAndLoad(ref _map, ref MapToPlayStorage.Map.MapWorldCreate, ref _gameObjects, ref _terrain, TerrainPrefabs);
 
-        InitializePlayers();
-
-
         for (int i = 0; i < _gameObjects.Length; i++)
         {
             for (int j = 0; j < _gameObjects[i].Length; j++)
@@ -84,6 +81,7 @@ public class GameManager : MonoBehaviour
         //        }
         //    }
         //}
+        InitializePlayers();
         navMeshBaker.navMeshSurfaces.Add(_terrain.GetComponent<NavMeshSurface>());
         navMeshBaker.Bake();
         NavMeshData nmd = _terrain.GetComponent<NavMeshSurface>().navMeshData;
@@ -125,6 +123,10 @@ public class GameManager : MonoBehaviour
             _playersGameObjects[i].Add(Instantiate(_townHall, _gameStartPoints[i].UnitStartLocation, _townHall.transform.rotation));
             _playersGameObjects[i][0].transform.GetComponent<MeshRenderer>().materials[1].color = _playersMaterials[i].color;
             _playersGameObjects[i][0].GetComponent<BuildingUnit>().BuildingPercent = _playersGameObjects[i][0].GetComponent<BuildingUnit>().CreateTime + 0.01f;
+
+            //_playersGameObjects[i][0].GetComponent<NavMeshSurface>().BuildNavMesh();
+            //navMeshBaker.navMeshSurfaces.Add(_playersGameObjects[i][0].GetComponent<NavMeshSurface>());
+            //
 
             for (int j = 0; j < _countOfWorkers; j++)
             {
