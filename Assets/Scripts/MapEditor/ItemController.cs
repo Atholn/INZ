@@ -49,7 +49,7 @@ public class ItemController : MonoBehaviour
         Vector3 worldPosition = Camera.main.ScreenToWorldPoint(screenPosition);
         Clicked = true;
 
-        Instantiate(_editor != null ? _editor.ItemControllers[item.ID].item.ItemImage : _gameManager.ItemControllers[item.ID].item.ItemImage,
+        GameObject image =  Instantiate(_editor != null ? _editor.ItemControllers[item.ID].item.ItemImage : _gameManager.ItemControllers[item.ID].item.ItemImage,
             new Vector3(worldPosition.x, _editor != null ? _editor.ItemControllers[item.ID].item.ItemHeightLevel : _gameManager.ItemControllers[item.ID].item.ItemHeightLevel, worldPosition.z),
             item.ItemPrefab.transform.rotation);
 
@@ -60,6 +60,7 @@ public class ItemController : MonoBehaviour
         else
         {
             _gameManager.CurrentButtonPressed = item.ID;
+            image.GetComponent<MeshRenderer>().materials[1].color = _gameManager._playersMaterials[0].color;
         }
     }
 }
