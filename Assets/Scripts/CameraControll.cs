@@ -158,8 +158,6 @@ public class CameraControll : MonoBehaviour
                 //return;
             }
 
-
-
             GiveCommands(commandData, "Command");
         }
     }

@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7902678141639924222}
   - component: {fileID: 1113378364430127671}
   - component: {fileID: -8502003653892170541}
+  - component: {fileID: 802356331}
   m_Layer: 0
   m_Name: Blacksmiths
   m_TagString: Untagged
@@ -27,13 +28,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2591485293969951501}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
+  m_LocalRotation: {x: -0.7069834, y: 0, z: 0, w: 0.7072302}
   m_LocalPosition: {x: -0, y: 0, z: -82.89412}
-  m_LocalScale: {x: 281.6791, y: 442.81512, z: 281.6791}
+  m_LocalScale: {x: 300, y: 300, z: 300}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -89.98, y: 0, z: 0}
 --- !u!33 &2007851661433131824
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -126,3 +127,16 @@ MonoBehaviour:
   ItemHeightLevel: 1
   ItemHeightPosY: 0.3
   HeightBuilding: 3.5
+--- !u!65 &802356331
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2591485293969951501}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.016363634, y: 0.013898988, z: 0.0136107635}
+  m_Center: {x: 0, y: 0.002404041, z: 0.007215051}

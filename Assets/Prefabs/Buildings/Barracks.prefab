@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 1040253030934339372}
   - component: {fileID: -5667301378311111717}
   - component: {fileID: 6440763114986004256}
+  - component: {fileID: 1484801961}
   m_Layer: 0
   m_Name: Barracks
   m_TagString: Untagged
@@ -27,13 +28,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8054880855524684351}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
+  m_LocalRotation: {x: -0.7069834, y: 0, z: 0, w: 0.7072302}
   m_LocalPosition: {x: -0, y: 0, z: -50.864223}
-  m_LocalScale: {x: 100, y: 100, z: 100}
+  m_LocalScale: {x: 100, y: 100, z: 80}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -89.98, y: 0, z: 0}
 --- !u!33 &4777316911915323961
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -125,3 +126,16 @@ MonoBehaviour:
   ItemHeightLevel: 1
   ItemHeightPosY: 0.4
   HeightBuilding: 5.2
+--- !u!65 &1484801961
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8054880855524684351}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.09230985, y: 0.091927454, z: 0.05692986}
+  m_Center: {x: 0, y: 0.000180589, z: 0.02846493}
