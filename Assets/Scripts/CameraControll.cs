@@ -96,9 +96,12 @@ public class CameraControll : MonoBehaviour
             GameObject building = (Instantiate(_gameManager.ItemControllers[_gameManager.CurrentButtonPressed].item.ItemPrefab,
                 new Vector3(_gameManager.v.x, -(_gameManager.ItemControllers[_gameManager.CurrentButtonPressed].item as ItemGame).HeightBuilding, _gameManager.v.z),
                 _gameManager.ItemControllers[_gameManager.CurrentButtonPressed].item.ItemPrefab.transform.rotation));
+
             _gameManager._playersGameObjects[0].Add(building);
             _gameManager.DestroyItemImages();
             _gameManager.building = false;
+
+            _gameManager._playersGameObjects[0][_gameManager._playersGameObjects[0].Count-1].GetComponent<MeshRenderer>().materials[1].color = _gameManager._playersMaterials[0].color;
 
             GiveCommands(building, "Command");
         }

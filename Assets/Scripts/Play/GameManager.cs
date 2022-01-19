@@ -20,7 +20,7 @@ public class GameManager : MonoBehaviour
 
     private MapWorld _map;
     private List<GameStartPoint> _gameStartPoints;
-    private List<Material> _playersMaterials;
+    internal List<Material> _playersMaterials;
 
     private GameObject[][][] _gameObjects;
     private GameObject _terrain;
