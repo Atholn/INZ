@@ -123,6 +123,11 @@ public class CameraControll : MonoBehaviour
         ray = camera.ViewportPointToRay(mousePosScreen);
         if (Physics.Raycast(ray, out rayHit, 1000, commandLayerMask))
         {
+            if (_selectUnits.Count == 0)
+            {
+                return;
+            }
+
             object commandData = null;
             if (rayHit.collider is TerrainCollider)
             {
@@ -152,6 +157,8 @@ public class CameraControll : MonoBehaviour
                 // todo follow
                 //return;
             }
+
+
 
             GiveCommands(commandData, "Command");
         }
