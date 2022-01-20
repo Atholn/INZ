@@ -100,6 +100,9 @@ public class CameraControll : MonoBehaviour
             _gameManager.building = false;
 
             _gameManager._playersGameObjects[0][_gameManager._playersGameObjects[0].Count - 1].GetComponent<MeshRenderer>().materials[1].color = _gameManager._playersMaterials[0].color;
+            _gameManager._playersGameObjects[0][_gameManager._playersGameObjects[0].Count - 1].GetComponent<Unit>().whichPlayer = 0;
+            //todo zmiana do tego jak computer bedzie chcial budowac
+
 
             GiveCommands(building, "Command");
         }
@@ -111,6 +114,8 @@ public class CameraControll : MonoBehaviour
         //        Debug.LogError(obj.name);
         //    }
         //}
+
+        
     }
     void GiveCommand()
     {
@@ -143,7 +148,6 @@ public class CameraControll : MonoBehaviour
 
                 if (gameObject.GetComponent<Soldier>() != null)
                 {
-
                     int i = 0;
                     int k = -1;
                     for (i = 0; i < _gameManager._playersGameObjects.Count; i++)

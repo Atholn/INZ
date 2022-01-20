@@ -14,10 +14,24 @@ public class Unit : MonoBehaviour
     public int Priority;
     public float CreateTime;
 
+    internal int whichPlayer;
     internal int Hp;
 
     protected virtual void  Start()
     {
         Hp = HpMax;
+    }
+
+    private void Update()
+    {
+        if (Hp <= 0)
+        {
+            GameManager gameManager = GameObject.FindObjectOfType<GameManager>();
+
+            gameManager._playersGameObjects[whichPlayer].Remove(gameObject);
+            Destroy(gameObject);
+
+            gameManager.CheckWinLose();
+        }
     }
 }

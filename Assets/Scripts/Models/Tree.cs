@@ -13,7 +13,6 @@ public class Tree : MonoBehaviour
             GameObject.FindObjectOfType<GameManager>().Nature.Remove(gameObject);
             Destroy(gameObject);
         }
-
     }
 
     internal void ChoppingProcess(int choppingStrenght = 10)
@@ -21,5 +20,4 @@ public class Tree : MonoBehaviour
         if (WoodResource > 0)
             WoodResource -= choppingStrenght;
     }
-
 }

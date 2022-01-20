@@ -47,7 +47,6 @@ public class BuildingUnit : Unit
         }
 
         unitCreateProgress += Time.deltaTime;
-        Debug.LogError(unitCreateProgress % 60);
 
         if (unitCreateProgress > acutalUnitCreate.GetComponent<Unit>().CreateTime)
         {

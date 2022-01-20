@@ -74,7 +74,6 @@ public class Soldier : HumanUnit
             nav.SetDestination(target.position);
         }
 
-        //nav.SetDestination(target.position);
         float distance = Vector3.Magnitude(nav.destination - transform.position);
 
         if (distance > stoppingDistance)

@@ -123,15 +123,13 @@ public class GameManager : MonoBehaviour
             _playersGameObjects[i].Add(Instantiate(_townHall, _gameStartPoints[i].UnitStartLocation, _townHall.transform.rotation));
             _playersGameObjects[i][0].transform.GetComponent<MeshRenderer>().materials[1].color = _playersMaterials[i].color;
             _playersGameObjects[i][0].GetComponent<BuildingUnit>().BuildingPercent = _playersGameObjects[i][0].GetComponent<BuildingUnit>().CreateTime + 0.01f;
-
-            //_playersGameObjects[i][0].GetComponent<NavMeshSurface>().BuildNavMesh();
-            //navMeshBaker.navMeshSurfaces.Add(_playersGameObjects[i][0].GetComponent<NavMeshSurface>());
-            //
+            _playersGameObjects[i][0].GetComponent<Unit>().whichPlayer = i;
 
             for (int j = 0; j < _countOfWorkers; j++)
             {
                 _playersGameObjects[i].Add(Instantiate(_worker, _gameStartPoints[i].UnitStartLocation + new Vector3(5 + j * 1, 0, 5), _worker.transform.rotation));
                 _playersGameObjects[i][j + 1].transform.GetChild(0).GetComponentInChildren<SkinnedMeshRenderer>().materials[1].color = _playersMaterials[i].color;
+                _playersGameObjects[i][j + 1].GetComponent<Unit>().whichPlayer = i;
             }
         }
     }
@@ -143,9 +141,6 @@ public class GameManager : MonoBehaviour
         {
             v = hit.point;
         }
-
-
-
 
         if (Input.GetMouseButtonDown(1))
         {
@@ -163,13 +158,29 @@ public class GameManager : MonoBehaviour
         //    DestroyItemImages();
         //    building = false;
         //}
+        if (Input.GetMouseButtonDown(2))
+        {
+            foreach(List<GameObject> gos in _playersGameObjects)
+            {
+                string playerObjects = "";
+                foreach (GameObject go in gos)
+                {
+                    playerObjects += $"{go.name} ";
+                }
+                Debug.Log(playerObjects);
+            }
+        }
 
 
-
-        if(onlyOneSelectGO != null)
+        if (onlyOneSelectGO != null)
         {
             _gameUI.ShowProgressCreateUnitPanel(onlyOneSelectGO);
         }
+    }
+
+    internal void CheckWinLose()
+    {
+
     }
 
     internal void DestroyItemImages()
@@ -234,15 +245,12 @@ public class GameManager : MonoBehaviour
         return _maxSelected;
     }
 
-
     #region GamePlayer
-
     public void UnitCreate(int whichPlayer, GameObject unitToCreate, Vector3 position)
     {
         _playersGameObjects[whichPlayer].Add(Instantiate(unitToCreate, position + new Vector3(5, 1, 5), unitToCreate.transform.rotation));
-        _playersGameObjects[whichPlayer][_playersGameObjects[whichPlayer].Count-1].transform.GetChild(0).GetComponentInChildren<SkinnedMeshRenderer>().materials[1].color = _playersMaterials[whichPlayer].color;
+        _playersGameObjects[whichPlayer][_playersGameObjects[whichPlayer].Count - 1].transform.GetChild(0).GetComponentInChildren<SkinnedMeshRenderer>().materials[1].color = _playersMaterials[whichPlayer].color;
+        _playersGameObjects[whichPlayer][_playersGameObjects[whichPlayer].Count - 1].GetComponent<Unit>().whichPlayer = whichPlayer;
     }
-
-
     #endregion
 }
