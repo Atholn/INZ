@@ -8,7 +8,7 @@ public class Unit : MonoBehaviour
     public int HpMax;
     public string Name;
     public int Defense;
-    public int Attack;
+    public int AttackPower;
 
     public Texture2D Profile;
     public int Priority;
@@ -22,7 +22,7 @@ public class Unit : MonoBehaviour
         Hp = HpMax;
     }
 
-    private void Update()
+    protected virtual void Update()
     {
         if (Hp <= 0)
         {

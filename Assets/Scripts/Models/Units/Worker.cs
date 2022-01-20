@@ -158,14 +158,13 @@ public class Worker : HumanUnit
 
     protected virtual void Building()
     {
-        nav.SetDestination(new Vector3(target.position.x, 0, target.position.z));
+        nav.SetDestination(target.position);
         //float distance = Vector3.Magnitude(nav.destination - new Vector3(transform.position.x, 0, transform.position.z));
         float distance = Vector3.Magnitude(nav.destination - transform.position);
 
         BuildingUnit bU = target.GetComponent<BuildingUnit>();
         ItemGame it = target.GetComponent<ItemGame>();
 
-        Debug.LogError(distance);
         if (distance > bU.SizeBuilding)
         {
 

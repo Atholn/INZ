@@ -31,7 +31,10 @@ public class Soldier : HumanUnit
                     stoppingDistance = 2,
                     buildingDistance = 0.5f,
                     choppingDistance = 1,
-                    stopChoppingDistance = 1f;
+                    stopChoppingDistance = 1f,
+                    attacklenght = 2f;
+
+
 
     protected override void Start()
     {
@@ -63,11 +66,23 @@ public class Soldier : HumanUnit
         animator.SetBool(ANIMATOR_ATTACK, attack);
     }
 
+
+    private float timeAttack = 0;
     private void Attack()
     {
-        if(target.GetComponent<BuildingUnit>() != null)
+        if (target == null)
         {
-            nav.SetDestination(new Vector3(target.position.x+3, 0 , target.position.z + 3));
+            nav.velocity = Vector3.zero;
+            target = null;
+            task = Task.idle;
+            /// to do zeby reagowal na inne jednostki
+            /// near enemies
+            return;
+        }
+
+        if (target.GetComponent<BuildingUnit>() != null)
+        {
+            nav.SetDestination(new Vector3(target.position.x + 3, 0, target.position.z + 3));
         }
         else
         {
@@ -79,12 +94,21 @@ public class Soldier : HumanUnit
         if (distance > stoppingDistance)
         {
             run = true;
+            timeAttack = 0;
+            return;
         }
 
         if (distance <= stoppingDistance)
         {
             nav.velocity = Vector3.zero;
             attack = true;
+
+            timeAttack += Time.deltaTime;
+            if (timeAttack > attacklenght)
+            {
+                target.gameObject.GetComponent<Unit>().Hp -= base.AttackPower;
+                timeAttack = 0;
+            }
         }
     }
 

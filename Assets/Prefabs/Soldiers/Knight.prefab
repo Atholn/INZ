@@ -169,10 +169,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HpMax: 100
   Name: 
-  Defense: 0
-  Attack: 0
+  Defense: 10
+  AttackPower: 10
   Profile: {fileID: 0}
-  Priority: 0
+  Priority: 1
   CreateTime: 2
 --- !u!1 &165907552165573059
 GameObject:

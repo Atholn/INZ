@@ -480,8 +480,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HpMax: 100
   Name: 
-  Defense: 0
-  Attack: 0
+  Defense: 7
+  AttackPower: 20
   Profile: {fileID: 0}
   Priority: 0
   CreateTime: 2

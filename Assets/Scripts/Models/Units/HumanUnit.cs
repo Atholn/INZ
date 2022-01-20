@@ -14,12 +14,9 @@ public class HumanUnit : Unit
         base.Start();
     }
 
-    protected virtual void Update()
+    protected override void Update()
     {
         //transform.position = new Vector3(transform.position.x, 0, transform.position.z);
-
-        
-    }
-
-    
+        base.Update();    
+    } 
 }
