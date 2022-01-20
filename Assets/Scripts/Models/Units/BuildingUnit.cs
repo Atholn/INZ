@@ -26,9 +26,15 @@ public class BuildingUnit : Unit
         base.Start();
         gameManager = GameObject.FindObjectOfType<GameManager>();
     }
-    private void Update()
+    protected override void Update()
     {
         UpdateCreate();
+
+        base.Update();
+        if (Hp <= 0)
+        {
+            Destroy(gameObject);
+        }
     }
 
     internal void CreateUnit(GameObject unitToCreate, int whichPlayer)

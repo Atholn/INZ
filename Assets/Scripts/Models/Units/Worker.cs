@@ -13,10 +13,24 @@ public class Worker : HumanUnit
         animator = GetComponent<Animator>();
     }
 
+    internal void Die ()
+    {
+
+    }
+
     protected override void Update()
     {
         base.Update();
         transform.position = new Vector3(transform.position.x, 0.5f, transform.position.z);
+
+        if (IsDead)
+        {
+            task = Task.dead;
+            nav.velocity = Vector3.zero;
+            timmer = 0;
+            IsDead = false;
+            deading = true;
+        }
 
         switch (task)
         {
@@ -26,6 +40,7 @@ public class Worker : HumanUnit
             case Task.build: Building(); break;
             case Task.repair: Repairing(); break;
             case Task.chopping: Chopping(); break;
+            case Task.dead: Death(); break;
         }
 
         Animate();
@@ -80,7 +95,7 @@ public class Worker : HumanUnit
 
     public enum Task
     {
-        idle, move, follow, build, repair, chopping
+        idle, move, follow, build, repair, chopping, dead
     }
 
     const string ANIMATOR_RUNNING = "Run",
@@ -105,10 +120,12 @@ public class Worker : HumanUnit
     internal Tree choppingTree;
     protected Transform target;
     bool running = false;
+    bool deading = false;
     bool chopping = false;
     int woodInBack = 0;
     int woodMax = 100;
     bool goToChopping = false;
+    private float timmer;
 
     protected virtual void Animate()
     {
@@ -117,7 +134,7 @@ public class Worker : HumanUnit
         //float speed = speedVector.magnitude;
         if (animator == null) return;
         animator.SetBool(ANIMATOR_RUNNING, running);
-        //animator.SetBool(ANIMATOR_DEAD, destroy);
+        animator.SetBool(ANIMATOR_DEAD, deading);
     }
 
     protected virtual void Idling()
@@ -140,6 +157,17 @@ public class Worker : HumanUnit
             running = false;
             task = Task.idle;
         }
+    }
+
+    private void Death()
+    {
+        if (timmer > timeDeath)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        timmer += Time.deltaTime;
     }
 
     protected virtual void Following()

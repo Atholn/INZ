@@ -8,13 +8,13 @@ public class Soldier : HumanUnit
 {
     public enum Task
     {
-        idle, run, follow, attack
+        idle, run, follow, attack, dead
     }
 
     Task task = Task.idle;
-    bool dead = false;
     bool run = false;
     bool attack = false;
+    bool deading = false;
 
     const string ANIMATOR_RUNNING = "Run",
                     ANIMATOR_DEAD = "Dead",
@@ -34,7 +34,7 @@ public class Soldier : HumanUnit
                     stopChoppingDistance = 1f,
                     attacklenght = 2f;
 
-
+    private float timmer = 0;
 
     protected override void Start()
     {
@@ -48,26 +48,47 @@ public class Soldier : HumanUnit
         base.Update();
         transform.position = new Vector3(transform.position.x, 1.5f, transform.position.z);
 
+        if(IsDead)
+        {
+            task = Task.dead;
+            nav.velocity = Vector3.zero;
+            timmer = 0;
+            IsDead = false;
+            deading = true;
+        }
+
         switch (task)
         {
             case Task.idle: Idling(); break;
             case Task.run: Moving(); break;
             case Task.follow: Following(); break;
             case Task.attack: Attack(); break;
+            case Task.dead: Death(); break;
         }
 
         Animate();
     }
 
+    private void Death()
+    {
+        if(timmer > timeDeath)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        timmer += Time.deltaTime;
+    }
+
     private void Animate()
     {
         animator.SetBool(ANIMATOR_RUNNING, run);
-        animator.SetBool(ANIMATOR_DEAD, dead);
+        animator.SetBool(ANIMATOR_DEAD, IsDead);
         animator.SetBool(ANIMATOR_ATTACK, attack);
     }
 
 
-    private float timeAttack = 0;
+
     private void Attack()
     {
         if (target == null)
@@ -94,7 +115,7 @@ public class Soldier : HumanUnit
         if (distance > stoppingDistance)
         {
             run = true;
-            timeAttack = 0;
+            timmer = 0;
             return;
         }
 
@@ -103,11 +124,26 @@ public class Soldier : HumanUnit
             nav.velocity = Vector3.zero;
             attack = true;
 
-            timeAttack += Time.deltaTime;
-            if (timeAttack > attacklenght)
+            timmer += Time.deltaTime;
+            if (timmer > attacklenght)
             {
+                timmer = 0;
                 target.gameObject.GetComponent<Unit>().Hp -= base.AttackPower;
-                timeAttack = 0;
+                if(target.gameObject.GetComponent<Unit>().Hp <= 0 )
+                {
+                    if (target.gameObject.GetComponent<HumanUnit>().Hp <= 0)
+                    {
+                        target.gameObject.GetComponent<HumanUnit>().IsDead = true;
+                    }
+
+
+                    nav.velocity = Vector3.zero;
+                    target = null;
+                    task = Task.idle;
+                    /// to do zeby reagowal na inne jednostki
+                    /// near enemies
+                    return;
+                }
             }
         }
     }
