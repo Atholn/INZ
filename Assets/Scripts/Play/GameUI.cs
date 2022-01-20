@@ -9,12 +9,13 @@ public class GameUI : MonoBehaviour
     public GameObject TopPanel;
     public GameObject MenuPanel;
     public GameObject BottomPanel;
-    public GameObject ActionPanel;
+    public GameObject WinLosePanel;
 
     public GameObject OneCharacterPanel;
     public GameObject ManyCharactersPanel;
     public GameObject CreateProgressPanel;
 
+    public GameObject ActionPanel;
     private GameObject _tmpSpecialPanel;
     public GameObject WorkerSpecialPanel;
     public GameObject TownHallSpecialPanel;
@@ -34,6 +35,8 @@ public class GameUI : MonoBehaviour
             button.SetActive(false);
         }
 
+        WinLosePanel.SetActive(false);
+
         WorkerSpecialPanel.SetActive(false);
         TownHallSpecialPanel.SetActive(false);
         BarracksSpecialPanel.SetActive(false);
@@ -45,6 +48,7 @@ public class GameUI : MonoBehaviour
         MenuPanel.SetActive(true);
         TopPanel.SetActive(false);
         BottomPanel.SetActive(false);
+        WinLosePanel.SetActive(false);
     }
     #endregion
 
@@ -256,6 +260,22 @@ public class GameUI : MonoBehaviour
     }
 
     #endregion
+
+    #endregion
+
+
+    #region WinLose
+
+    public void ShowWinner(int winner, Color winnerColor)
+    {
+        TopPanel.SetActive(false);
+        MenuPanel.SetActive(false);
+        BottomPanel.SetActive(false);
+        WinLosePanel.SetActive(true);
+
+        WinLosePanel.GetComponent<Image>().color = new Color(winnerColor.r, winnerColor.g, winnerColor.b, 150/255f);
+        WinLosePanel.GetComponentInChildren<Text>().text = winner == 0 ? "You win!" : $"You lose!\nPlayer {winner} win!";
+    }
 
     #endregion
 }

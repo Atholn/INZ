@@ -105,6 +105,9 @@ public class GameManager : MonoBehaviour
         {
             ItemControllers[i].item.ID = i;
         }
+
+
+        CheckWinLose();
     }
 
     private void InitializePlayers()
@@ -160,7 +163,7 @@ public class GameManager : MonoBehaviour
         //}
         if (Input.GetMouseButtonDown(2))
         {
-            foreach(List<GameObject> gos in _playersGameObjects)
+            foreach (List<GameObject> gos in _playersGameObjects)
             {
                 string playerObjects = "";
                 foreach (GameObject go in gos)
@@ -180,7 +183,21 @@ public class GameManager : MonoBehaviour
 
     internal void CheckWinLose()
     {
+        int winner = -1;
+        for (int i = 0; i < _playersGameObjects.Count; i++)
+        {
+            if(_playersGameObjects[i].Count > 0)
+            {
+                if(winner != -1)
+                {
+                    return;
+                }
 
+                winner = i;
+            }
+        }
+
+        _gameUI.ShowWinner(winner, _playersMaterials[winner].color);
     }
 
     internal void DestroyItemImages()
