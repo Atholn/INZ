@@ -44,6 +44,8 @@ public class GameManager : MonoBehaviour
 
     internal List<GameObject> Nature = new List<GameObject>();
 
+    public GameObject Pointer;
+
     void Start()
     {
         _gameUI = FindObjectOfType<GameUI>();
@@ -106,6 +108,8 @@ public class GameManager : MonoBehaviour
             ItemControllers[i].item.ID = i;
         }
 
+        Pointer.SetActive(true);
+        Pointer.GetComponentInChildren<SkinnedMeshRenderer>().material = _playersMaterials[0];
 
         CheckWinLose();
     }
@@ -228,6 +232,8 @@ public class GameManager : MonoBehaviour
         _gameUI.SetNonProfile();
 
         onlyOneSelectGO = null;
+
+        Pointer.SetActive(false);
     }
 
     HumanUnit worker = null;
@@ -243,6 +249,12 @@ public class GameManager : MonoBehaviour
         if (gameObject.GetComponent<BuildingUnit>() != null)
         {
             actualClickBuild = gameObject.GetComponent<BuildingUnit>();
+            if(gameObject.GetComponent<BuildingUnit>().CanCreateUnit)
+            {
+                Pointer.SetActive(true);
+                Pointer.transform.position = gameObject.GetComponent<BuildingUnit>().PointerPosition;
+
+            }
         }
         onlyOneSelectGO = gameObject;
     }
@@ -255,6 +267,8 @@ public class GameManager : MonoBehaviour
 
         actualClickBuild = null;
         onlyOneSelectGO = null;
+
+        Pointer.SetActive(false);
     }
 
     internal int GetMaxSelected()
@@ -265,9 +279,24 @@ public class GameManager : MonoBehaviour
     #region GamePlayer
     public void UnitCreate(int whichPlayer, GameObject unitToCreate, Vector3 position)
     {
-        _playersGameObjects[whichPlayer].Add(Instantiate(unitToCreate, position + new Vector3(5, 1, 5), unitToCreate.transform.rotation));
+        _playersGameObjects[whichPlayer].Add(Instantiate(unitToCreate, position, unitToCreate.transform.rotation));
         _playersGameObjects[whichPlayer][_playersGameObjects[whichPlayer].Count - 1].transform.GetChild(0).GetComponentInChildren<SkinnedMeshRenderer>().materials[1].color = _playersMaterials[whichPlayer].color;
         _playersGameObjects[whichPlayer][_playersGameObjects[whichPlayer].Count - 1].GetComponent<Unit>().whichPlayer = whichPlayer;
+        _playersGameObjects[whichPlayer][_playersGameObjects[whichPlayer].Count - 1].GetComponent<Unit>().whichPlayer = whichPlayer;
+
+        if(_playersGameObjects[whichPlayer][_playersGameObjects[whichPlayer].Count - 1].GetComponent<Worker>() != null)
+        {
+            Worker w = _playersGameObjects[whichPlayer][_playersGameObjects[whichPlayer].Count - 1].GetComponent<Worker>();
+            w.GetComponents();
+            w.SendMessage("Command", Pointer.transform.position, SendMessageOptions.DontRequireReceiver);
+        }
+
+        if (_playersGameObjects[whichPlayer][_playersGameObjects[whichPlayer].Count - 1].GetComponent<Soldier>() != null)
+        {
+            Soldier s = _playersGameObjects[whichPlayer][_playersGameObjects[whichPlayer].Count - 1].GetComponent<Soldier>();
+            s.GetComponents();
+            _playersGameObjects[whichPlayer][_playersGameObjects[whichPlayer].Count - 1].GetComponent<Soldier>().SendMessage("Command", Pointer.transform.position, SendMessageOptions.DontRequireReceiver);
+        }
     }
     #endregion
 }

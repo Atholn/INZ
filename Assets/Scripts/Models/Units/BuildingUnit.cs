@@ -11,7 +11,9 @@ public class BuildingUnit : Unit
     public float SizeBuilding;
     internal float BuildingPercent = 0f;
 
+    internal Vector3 PointerPosition;
 
+    public bool CanCreateUnit = false;
     /// <summary>
     /// unit
     /// </summary>
@@ -59,7 +61,7 @@ public class BuildingUnit : Unit
             //Debug.LogError("Create!");
             //Debug.LogError(buildingParent.transform.position);
 
-            gameManager.UnitCreate(whichPlayerUnit, acutalUnitCreate, transform.position);
+            gameManager.UnitCreate(whichPlayerUnit, acutalUnitCreate, transform.position + new Vector3( 0,0, -SizeBuilding/2));
             unitCreateProgress = 0f;
             acutalUnitCreate = null;
             createUnit = false;

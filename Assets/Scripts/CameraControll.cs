@@ -117,6 +117,7 @@ public class CameraControll : MonoBehaviour
 
         
     }
+
     void GiveCommand()
     {
         if (_ifPlayerUnits)
@@ -141,6 +142,14 @@ public class CameraControll : MonoBehaviour
                 if (rayHit.collider is TerrainCollider)
                 {
                     commandData = rayHit.point;
+
+                    if (gameObject.GetComponent<BuildingUnit>() != null)
+                    {
+                        gameObject.GetComponent<BuildingUnit>().PointerPosition = rayHit.point;
+                        _gameManager.Pointer.transform.position = rayHit.point;
+                        continue;
+                    }
+
                     GiveCommands(commandData, "Command");
                     continue;
                 }
@@ -171,8 +180,6 @@ public class CameraControll : MonoBehaviour
 
                     GiveCommands(commandData, "CommandEnemy");
 
-                    //GiveCommands(commandData, "Command");
-
                     continue;
                 }
 
@@ -182,13 +189,9 @@ public class CameraControll : MonoBehaviour
 
                     continue;
                 }
+
+
             }
-
-
-
-
-
-
         }
     }
 

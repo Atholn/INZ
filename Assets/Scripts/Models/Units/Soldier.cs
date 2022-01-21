@@ -43,8 +43,16 @@ public class Soldier : HumanUnit
         animator = GetComponent<Animator>();
     }
 
+    internal void GetComponents()
+    {
+        base.Start();
+        nav = GetComponent<NavMeshAgent>();
+        animator = GetComponent<Animator>();
+    }
+
     protected override void Update()
     {
+
         base.Update();
         transform.position = new Vector3(transform.position.x, 1.5f, transform.position.z);
 
@@ -121,6 +129,16 @@ public class Soldier : HumanUnit
 
         if (distance <= stoppingDistance)
         {
+            if (target == null)
+            {
+                nav.velocity = Vector3.zero;
+                target = null;
+                task = Task.idle;
+                /// to do zeby reagowal na inne jednostki
+                /// near enemies
+                return;
+            }
+
             nav.velocity = Vector3.zero;
             attack = true;
 
@@ -131,10 +149,10 @@ public class Soldier : HumanUnit
                 target.gameObject.GetComponent<Unit>().Hp -= base.AttackPower;
                 if(target.gameObject.GetComponent<Unit>().Hp <= 0 )
                 {
-                    if (target.gameObject.GetComponent<HumanUnit>().Hp <= 0)
-                    {
-                        target.gameObject.GetComponent<HumanUnit>().IsDead = true;
-                    }
+
+                    if(target.gameObject.GetComponent<HumanUnit>() != null)
+                    target.gameObject.GetComponent<HumanUnit>().IsDead = true;
+                    
 
 
                     nav.velocity = Vector3.zero;

@@ -13,13 +13,21 @@ public class Worker : HumanUnit
         animator = GetComponent<Animator>();
     }
 
-    internal void Die ()
+    internal void GetComponents()
     {
-
+        base.Start();
+        nav = GetComponent<NavMeshAgent>();
+        animator = GetComponent<Animator>();
     }
 
     protected override void Update()
     {
+        if(nav == null)
+        {
+            base.Start();
+            nav = GetComponent<NavMeshAgent>();
+            animator = GetComponent<Animator>();
+        }
         base.Update();
         transform.position = new Vector3(transform.position.x, 0.5f, transform.position.z);
 
@@ -213,9 +221,13 @@ public class Worker : HumanUnit
             bU.BuildingPercent += Time.deltaTime;
 
             target.transform.position = new Vector3(target.transform.position.x, -it.HeightBuilding + (bU.BuildingPercent / bU.CreateTime) * (it.ItemHeightPosY + it.HeightBuilding), target.transform.position.z);
+
+
             return;
         }
 
+        BuildingUnit bu = target.GetComponent<BuildingUnit>();
+        bu.PointerPosition = new Vector3(target.transform.position.x, 0.5f, target.transform.position.z - (bu.SizeBuilding / 2) - 1);
 
         animator.SetBool(ANIMATOR_BUILD, false);
         task = Task.idle;
