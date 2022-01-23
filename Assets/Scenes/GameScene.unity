@@ -3382,6 +3382,7 @@ MonoBehaviour:
   - {fileID: 8548267444395514896, guid: 315b260d10d7acd409cd1bfc9842e4e5, type: 3}
   - {fileID: 8861128955406523054, guid: 08aae598e8e3c21419da11965a22c468, type: 3}
   - {fileID: 0}
+  - {fileID: -8730686178862457017, guid: 464a81ee380c2ab4f8585a5ffca18a92, type: 3}
   UnitsPrefabs:
   - {fileID: 9021965350081321010, guid: 5da336bb6abae714c82fe6fbf0e90e59, type: 3}
   BuildingsPrefabs:

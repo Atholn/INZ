@@ -48,6 +48,7 @@ public class Worker : HumanUnit
             case Task.build: Building(); break;
             case Task.repair: Repairing(); break;
             case Task.chopping: Chopping(); break;
+            case Task.digging: Digging(); break;
             case Task.dead: Death(); break;
         }
 
@@ -65,6 +66,12 @@ public class Worker : HumanUnit
     {
         target = tree.transform;
         task = Task.chopping;
+    }
+
+    void Command(GoldMine goldMine)
+    {
+        target = goldMine.transform;
+        task = Task.digging;
     }
 
     void Command(GameObject gameObject)
@@ -103,7 +110,7 @@ public class Worker : HumanUnit
 
     public enum Task
     {
-        idle, move, follow, build, repair, chopping, dead
+        idle, move, follow, build, repair, chopping, digging, dead
     }
 
     const string ANIMATOR_RUNNING = "Run",
@@ -133,6 +140,7 @@ public class Worker : HumanUnit
     int woodInBack = 0;
     int woodMax = 100;
     bool goToChopping = false;
+    bool goToDigging = false;
     private float timmer;
 
     protected virtual void Animate()
@@ -381,6 +389,11 @@ public class Worker : HumanUnit
 
         }
 
+    }
+
+    protected virtual void Digging()
+    {
+        
     }
 
     private Transform SearchNearWoodPlace()

@@ -94,6 +94,7 @@ public class CameraControll : MonoBehaviour
                 _gameManager.building = false;
                 return;
             }
+
             GameObject building = (Instantiate(_gameManager.ItemControllers[_gameManager.CurrentButtonPressed].item.ItemPrefab,
                 new Vector3(_gameManager.v.x, -(_gameManager.ItemControllers[_gameManager.CurrentButtonPressed].item as ItemGame).HeightBuilding, _gameManager.v.z),
                 _gameManager.ItemControllers[_gameManager.CurrentButtonPressed].item.ItemPrefab.transform.rotation));
@@ -198,7 +199,17 @@ public class CameraControll : MonoBehaviour
                 if (gameObject.GetComponent<Worker>() != null)
                 {
 
+                    if (rayHit.collider.gameObject.GetComponent<Tree>() != null)
+                    {
+                        commandData = rayHit.collider.gameObject.GetComponent<Tree>();
+                        GiveCommands(commandData, "Command");
+                    }
 
+                    if (rayHit.collider.gameObject.GetComponent<GoldMine>() != null)
+                    {
+                        commandData = rayHit.collider.gameObject.GetComponent<GoldMine>();
+                        GiveCommands(commandData, "Command");
+                    }
                     continue;
                 }
 
@@ -225,12 +236,17 @@ public class CameraControll : MonoBehaviour
             {
                 commandData = rayHit.point;
             }
+
             else if (_selectUnits[0].GetComponent<Worker>() != null && rayHit.collider is BoxCollider)
             {
                 if (rayHit.collider.gameObject.GetComponent<Tree>() != null)
                 {
                     commandData = rayHit.collider.gameObject.GetComponent<Tree>();
+                }
 
+                if (rayHit.collider.gameObject.GetComponent<GoldMine>() != null)
+                {
+                    commandData = rayHit.collider.gameObject.GetComponent<GoldMine>();
                 }
 
                 if (rayHit.collider.gameObject.GetComponent<BuildingUnit>() != null)
