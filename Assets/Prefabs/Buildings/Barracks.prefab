@@ -108,10 +108,10 @@ MonoBehaviour:
   CreateTime: 10
   GoldCost: 0
   WoodCost: 0
-  Size: 8
+  Size: 6
   PlaceWood: 0
   PlaceGold: 0
-  SizeBuilding: 8
+  SizeBuilding: 6
   CanCreateUnit: 1
   UnitToCreatePoints: 0
 --- !u!114 &6440763114986004256
