@@ -156,6 +156,7 @@ public class GameManager : MonoBehaviour
             _playersGameObjects[i][0].transform.GetComponent<MeshRenderer>().materials[1].color = _playersMaterials[i].color;
             _playersGameObjects[i][0].GetComponent<BuildingUnit>().BuildingPercent = _playersGameObjects[i][0].GetComponent<BuildingUnit>().CreateTime + 0.01f;
             _playersGameObjects[i][0].GetComponent<Unit>().whichPlayer = i;
+            _playersGameObjects[i][0].GetComponent<BuildingUnit>().PointerPosition = new Vector3(_playersGameObjects[i][0].transform.position.x, 0.5f, _playersGameObjects[i][0].transform.position.z - (_playersGameObjects[i][0].GetComponent<BuildingUnit>().SizeBuilding / 2) - 1);
 
             for (int j = 0; j < _countOfWorkers; j++)
             {
