@@ -216,7 +216,7 @@ public class Worker : HumanUnit
 
     protected virtual void Following()
     {
-        nav.SetDestination(new Vector3(target.position.x, 0, target.position.z));
+        nav.SetDestination(target.position);
         float distance = Vector3.Magnitude(nav.destination - transform.position);
 
         if (distance <= stoppingDistance)
@@ -228,23 +228,25 @@ public class Worker : HumanUnit
         }
     }
 
+
+
     protected virtual void Building()
     {
-        nav.SetDestination(target.position);
-        //float distance = Vector3.Magnitude(nav.destination - new Vector3(transform.position.x, 0, transform.position.z));
-        float distance = Vector3.Magnitude(nav.destination - transform.position);
-
         BuildingUnit bU = target.GetComponent<BuildingUnit>();
         ItemGame it = target.GetComponent<ItemGame>();
 
+        nav.SetDestination( new Vector3(target.position.x, 0, target.position.z - bU.Size / 2));
+        float distance = Vector3.Magnitude(nav.destination - transform.position);
+
+
         Debug.LogError(distance);
-        if (distance > bU.SizeBuilding/2)
+        if (distance > bU.SizeBuilding / 2)
         {
             animator.SetBool(ANIMATOR_BUILD, false);
             running = true;
             return;
         }
-        
+
 
         nav.velocity = Vector3.zero;
         running = false;
@@ -269,13 +271,12 @@ public class Worker : HumanUnit
 
     protected virtual void Repairing()
     {
-        nav.SetDestination(target.position);
+        BuildingUnit bU = target.GetComponent<BuildingUnit>();
+
+        nav.SetDestination(new Vector3(target.position.x, 0, target.position.z - bU.Size / 2));
         float distance = Vector3.Magnitude(nav.destination - transform.position);
 
-        BuildingUnit bU = target.GetComponent<BuildingUnit>();
-        ItemGame it = target.GetComponent<ItemGame>();
-
-        if (distance > bU.SizeBuilding)
+        if (distance > bU.SizeBuilding/2)
         {
 
             animator.SetBool(ANIMATOR_BUILD, false);
@@ -283,7 +284,7 @@ public class Worker : HumanUnit
             return;
         }
 
-        if (distance <= bU.SizeBuilding)
+        if (distance <= bU.SizeBuilding/2)
         {
             nav.velocity = Vector3.zero;
             running = false;
@@ -335,9 +336,9 @@ public class Worker : HumanUnit
         }
 
         if (goToChopping == -1)
-            nav.SetDestination(new Vector3(target.position.x, target.position.y, target.position.z));
+            nav.SetDestination(target.position);
         else if (goToChopping == 1)
-            nav.SetDestination(new Vector3(target.position.x, target.position.y, target.position.z - 6f));
+            nav.SetDestination(target.position + new Vector3(0,0, -target.GetComponent<BuildingUnit>().SizeBuilding/2));
         float distance = Vector3.Magnitude(nav.destination - transform.position);
 
         if (goToChopping == -1)
@@ -395,69 +396,6 @@ public class Worker : HumanUnit
 
             return;
         }
-
-        //    if (distance <= choppingDistance && animator.GetInteger(ANIMATOR_WOOD) < woodMax)
-        //    {
-        //        if (target == null)
-        //        {
-        //            target = SearchNearTreePlace();
-        //            return;
-        //        }
-
-        //        nav.velocity = Vector3.zero;
-        //        running = false;
-        //        animator.SetBool(ANIMATOR_CHOPPING, true);
-        //        animator.SetInteger(ANIMATOR_WOOD, animator.GetInteger(ANIMATOR_WOOD) + 1);
-
-        //        target.transform.GetComponent<Tree>().ChoppingProcess(1);
-
-        //        if (animator.GetInteger(ANIMATOR_WOOD) >= woodMax)
-        //        {
-        //            goToChopping = false;
-        //            running = true;
-
-        //            target = SearchNearWoodPlace();
-        //            if (target == null)
-        //            {
-        //                task = Task.idle;
-        //                running = false;
-        //            }
-        //            animator.SetBool(ANIMATOR_CHOPPING, false);
-        //            return;
-        //        }
-        //        return;
-        //    }
-        //}
-        //else
-        //{
-
-        //    animator.SetBool(ANIMATOR_CHOPPING, false);
-        //    if (distance > stopChoppingDistance)
-        //    {
-        //        running = true;
-        //        return;
-        //    }
-
-        //    if (distance <= stopChoppingDistance)
-        //    {
-        //        //nav.velocity = Vector3.zero;
-
-        //        animator.SetInteger(ANIMATOR_WOOD, 0);
-        //        goToChopping = true;
-
-        //        target = SearchNearTreePlace();
-
-        //        if (target == null)
-        //        {
-        //            task = Task.idle;
-        //            running = false;
-        //        }
-
-        //        return;
-        //    }
-
-        //}
-
     }
 
     protected virtual void Digging()
@@ -479,10 +417,20 @@ public class Worker : HumanUnit
             task = Task.idle;
         }
 
-        if (!goToDigging)
+        if (goToDigging)
             nav.SetDestination(new Vector3(target.position.x, target.position.y, target.position.z - 4f));
         else
-            nav.SetDestination(new Vector3(target.position.x, target.position.y, target.position.z - 4f));
+        {
+            if(target.GetComponent<BuildingUnit>()!=null)
+            {
+                nav.SetDestination(target.position + new Vector3(0, 0, -target.GetComponent<BuildingUnit>().SizeBuilding / 2));
+            }
+            else
+            {
+                nav.SetDestination(new Vector3(target.position.x, target.position.y, target.position.z - 4f));
+            }
+        }
+            
         float distance = Vector3.Magnitude(nav.destination - transform.position);
 
         if (goToDigging)
@@ -501,6 +449,7 @@ public class Worker : HumanUnit
             {
                 renderer.enabled = false;
             }
+            
             animator.SetInteger(ANIMATOR_GOLD, 10);
         }
         else
@@ -517,7 +466,6 @@ public class Worker : HumanUnit
                     goldMineTarget = target;
                     target.GetComponent<GoldMine>().DiggingGoldmine();
                     target = SearchNearGoldPlace();
-                    animator.SetInteger(ANIMATOR_GOLD, 10);
 
                     running = true;
                     GoldBag.SetActive(true);

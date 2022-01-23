@@ -29,13 +29,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8054880855524684351}
-  m_LocalRotation: {x: -0.7069834, y: 0, z: 0, w: 0.7072302}
+  m_LocalRotation: {x: 0, y: 0.7072302, z: 0.7069834, w: 0}
   m_LocalPosition: {x: -0, y: 0, z: -50.864223}
-  m_LocalScale: {x: 100, y: 100, z: 80}
+  m_LocalScale: {x: 90, y: 90, z: 90}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: -89.98, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -89.98, y: 180, z: 0}
 --- !u!33 &4777316911915323961
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -106,11 +106,14 @@ MonoBehaviour:
   Profile: {fileID: 2800000, guid: f4e62da3b515f7a4399a2ed2c2ba3d57, type: 3}
   Priority: 0
   CreateTime: 10
+  GoldCost: 0
+  WoodCost: 0
   Size: 8
   PlaceWood: 0
   PlaceGold: 0
   SizeBuilding: 8
   CanCreateUnit: 1
+  UnitToCreatePoints: 0
 --- !u!114 &6440763114986004256
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -32,9 +32,8 @@ public class Unit : MonoBehaviour
             GameManager gameManager = GameObject.FindObjectOfType<GameManager>();
 
             gameManager._playersGameObjects[whichPlayer].Remove(gameObject);
+            gameManager.UpdateUnitPoints(whichPlayer);
             gameManager.CheckWinLose();
-
-
         }
     }
 }

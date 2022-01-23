@@ -22,4 +22,7 @@ public class HumanUnit : Unit
         //transform.position = new Vector3(transform.position.x, 0, transform.position.z);
         base.Update();
     }
+
+
+
 }

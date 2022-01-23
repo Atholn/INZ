@@ -29,13 +29,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2591485293969951501}
-  m_LocalRotation: {x: -0.7069834, y: 0, z: 0, w: 0.7072302}
+  m_LocalRotation: {x: 0, y: 0.7072302, z: 0.7069834, w: 0}
   m_LocalPosition: {x: -0, y: 0, z: -82.89412}
   m_LocalScale: {x: 300, y: 300, z: 300}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: -89.98, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -89.98, y: 180, z: 0}
 --- !u!33 &2007851661433131824
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -103,14 +103,18 @@ MonoBehaviour:
   HpMax: 500
   Name: ss
   Defense: 0
-  Attack: 0
+  AttackPower: 0
   Profile: {fileID: 2800000, guid: a9559f93e2189d74dbb1687f8c8a0e21, type: 3}
   Priority: 0
   CreateTime: 50
+  GoldCost: 0
+  WoodCost: 0
   Size: 4
   PlaceWood: 0
   PlaceGold: 0
   SizeBuilding: 4
+  CanCreateUnit: 0
+  UnitToCreatePoints: 0
 --- !u!114 &-8502003653892170541
 MonoBehaviour:
   m_ObjectHideFlags: 0
