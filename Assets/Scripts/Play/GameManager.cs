@@ -46,6 +46,8 @@ public class GameManager : MonoBehaviour
 
     public GameObject Pointer;
 
+    internal int MaxUnitsPoint = 100;
+
     void Start()
     {
         _gameUI = FindObjectOfType<GameUI>();
@@ -112,6 +114,12 @@ public class GameManager : MonoBehaviour
         Pointer.GetComponentInChildren<SkinnedMeshRenderer>().material = _playersMaterials[0];
 
         CheckWinLose();
+
+        ///
+        _gameUI.UpdateRawMaterials(0, 0);
+        _gameUI.UpdateRawMaterials(1, 0);
+        _gameUI.UpdateRawMaterials(2, 0, MaxUnitsPoint);
+
     }
 
     private void InitializePlayers()

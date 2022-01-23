@@ -15,6 +15,8 @@ public class GameUI : MonoBehaviour
     public GameObject ManyCharactersPanel;
     public GameObject CreateProgressPanel;
 
+    public GameObject RawMaterialsPanel;
+
     public GameObject ActionPanel;
     private GameObject _tmpSpecialPanel;
     public GameObject WorkerSpecialPanel;
@@ -23,6 +25,8 @@ public class GameUI : MonoBehaviour
 
     public List<GameObject> WorkerActions;
     private List<GameObject> _tmpActions = new List<GameObject>();
+
+    private Text[] RawMaterials = new Text[3];
 
     private RawImage[] _characterImages;
     private Text[] _characterInfos;
@@ -40,6 +44,8 @@ public class GameUI : MonoBehaviour
         WorkerSpecialPanel.SetActive(false);
         TownHallSpecialPanel.SetActive(false);
         BarracksSpecialPanel.SetActive(false);
+
+        RawMaterials = RawMaterialsPanel.GetComponentsInChildren<Text>();
     }
 
     #region TopPanel
@@ -74,6 +80,11 @@ public class GameUI : MonoBehaviour
         MenuPanel.SetActive(false);
         TopPanel.SetActive(true);
         BottomPanel.SetActive(true);
+    }
+
+    internal void UpdateRawMaterials(int whichMaterial, int newValue, int maxPointsUnit = 0)
+    {
+        RawMaterials[whichMaterial].text = maxPointsUnit == 0 ? $"{newValue}" : $"{newValue}/{maxPointsUnit}";
     }
     #endregion
 
