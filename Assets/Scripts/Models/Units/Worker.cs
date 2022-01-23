@@ -6,6 +6,9 @@ using UnityEngine.AI;
 
 public class Worker : HumanUnit
 {
+    GameObject GoldBag;
+    GameObject Woods;
+
     protected override void Start()
     {
         base.Start();
@@ -18,11 +21,28 @@ public class Worker : HumanUnit
         base.Start();
         nav = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
+
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            if (transform.GetChild(i).name == "GoldBag")
+            {
+
+                GoldBag = transform.GetChild(i).gameObject;
+            }
+            if (transform.GetChild(i).name == "Woods")
+            {
+
+                Woods = transform.GetChild(i).gameObject;
+            }
+        }
+
+        GoldBag.SetActive(false);
+        Woods.SetActive(false);
     }
 
     protected override void Update()
     {
-        if(nav == null)
+        if (nav == null)
         {
             base.Start();
             nav = GetComponent<NavMeshAgent>();
@@ -130,7 +150,8 @@ public class Worker : HumanUnit
                     stoppingDistance = 1,
                     buildingDistance = 0.5f,
                     choppingDistance = 1,
-                    stopChoppingDistance = 0.5f;
+                    stopChoppingDistance = 0.5f,
+                    stopDiggingDistance = 1f;
 
     internal Tree choppingTree;
     protected Transform target;
@@ -141,6 +162,9 @@ public class Worker : HumanUnit
     int woodMax = 100;
     bool goToChopping = false;
     bool goToDigging = false;
+
+    float diggingTime = 3f;
+    Transform goldMineTarget;
     private float timmer;
 
     protected virtual void Animate()
@@ -310,10 +334,10 @@ public class Worker : HumanUnit
 
         //nav.SetDestination(new Vector3(target.position.x, 0, target.position.z));
         //float distance = Vector2.Distance(new Vector2(nav.destination.x, nav.destination.z) , new Vector2(transform.position.x, transform.position.z));
-        if(!goToChopping)
-        nav.SetDestination(new Vector3(target.position.x, target.position.y, target.position.z - 4f));
+        if (!goToChopping)
+            nav.SetDestination(new Vector3(target.position.x, target.position.y, target.position.z - 4f));
         else
-        nav.SetDestination(new Vector3(target.position.x, target.position.y, target.position.z));
+            nav.SetDestination(new Vector3(target.position.x, target.position.y, target.position.z));
         float distance = Vector3.Magnitude(nav.destination - transform.position);
 
         if (goToChopping)
@@ -360,7 +384,7 @@ public class Worker : HumanUnit
         else
         {
 
-            Debug.LogError(target.position + " " + nav.destination + " " + transform.position + " " + distance);
+           // Debug.LogError(target.position + " " + nav.destination + " " + transform.position + " " + distance);
 
             animator.SetBool(ANIMATOR_CHOPPING, false);
             if (distance > stopChoppingDistance)
@@ -393,7 +417,93 @@ public class Worker : HumanUnit
 
     protected virtual void Digging()
     {
-        
+        if (animator.GetInteger(ANIMATOR_GOLD) == 0)
+        {
+            goToDigging = true;
+        }
+        else if (animator.GetInteger(ANIMATOR_GOLD) > 0)
+        {
+            goToDigging = false;
+        }
+
+        if (goToDigging && target == null)
+        {
+            nav.velocity = Vector3.zero;
+            running = false;
+            target = null;
+            task = Task.idle;
+        }
+
+        if (!goToDigging)
+            nav.SetDestination(new Vector3(target.position.x, target.position.y, target.position.z - 4f));
+        else
+            nav.SetDestination(new Vector3(target.position.x, target.position.y, target.position.z - 4f));
+        float distance = Vector3.Magnitude(nav.destination - transform.position);
+
+        if (goToDigging)
+        {
+            if (distance > choppingDistance)
+            {
+                animator.SetInteger(ANIMATOR_GOLD, 0);
+                running = true;
+                return;
+            }
+
+            nav.velocity = Vector3.zero;
+            timmer = 0;
+            animator.SetInteger(ANIMATOR_GOLD, 10);
+
+            foreach(Renderer renderer in gameObject.GetComponentsInChildren<Renderer>())
+            {
+                renderer.enabled = false;
+            }
+        }
+        else
+        {
+            if (timmer < diggingTime)
+            {
+                timmer += Time.deltaTime;
+                if(timmer > diggingTime)
+                {
+                    GoldBag.SetActive(true);
+                    foreach (Renderer renderer in gameObject.GetComponentsInChildren<Renderer>())
+                    {
+                        renderer.enabled = true;
+                    }
+                    goldMineTarget = target;
+                    target = SearchNearGoldPlace();
+                    animator.SetInteger(ANIMATOR_GOLD, 10);
+                    running = true;
+                }
+                return;
+            }
+
+
+            if (distance > stopDiggingDistance)
+            {
+
+
+                return;
+            }
+
+            if(goldMineTarget == null)
+            {
+                nav.velocity = Vector3.zero;
+                running = false;
+                target = null;
+                task = Task.idle;
+                return;
+            }
+
+            running = true;
+            animator.SetInteger(ANIMATOR_GOLD, 0);
+
+            target = goldMineTarget;
+            goToDigging = true;
+            GoldBag.SetActive(false);
+        }
+
+        //
     }
 
     private Transform SearchNearWoodPlace()
@@ -417,6 +527,38 @@ public class Worker : HumanUnit
                 BuildingUnit build = list[search][i].GetComponent<BuildingUnit>();
 
                 if (build != null && build.PlaceWood)
+                {
+                    buildings.Add(list[search][i]);
+                }
+            }
+        }
+
+        return buildings.OrderBy(x => Vector3.Distance(x.transform.position, transform.position))
+            .Select(x => x.transform)
+            .FirstOrDefault();
+    }
+
+    private Transform SearchNearGoldPlace()
+    {
+        List<List<GameObject>> list = GameObject.FindObjectOfType<GameManager>()._playersGameObjects;
+
+        int search = -1;
+        for (int i = 0; i < list.Count(); i++)
+        {
+            for (int j = 0; j < list[i].Count(); j++)
+            {
+                if (list[i][j].transform == transform) search = i;
+            }
+        }
+
+        List<GameObject> buildings = new List<GameObject>();
+        if (search != -1)
+        {
+            for (int i = 0; i < list[search].Count(); i++)
+            {
+                BuildingUnit build = list[search][i].GetComponent<BuildingUnit>();
+
+                if (build != null && build.PlaceGold)
                 {
                     buildings.Add(list[search][i]);
                 }
