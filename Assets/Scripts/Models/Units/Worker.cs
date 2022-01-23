@@ -159,10 +159,11 @@ public class Worker : HumanUnit
     bool deading = false;
     bool chopping = false;
     int woodInBack = 0;
-    int woodMax = 100;
-    bool goToChopping = false;
+    int goToChopping = -1; // 1 go to 0 chopping -1 go to wood place 
     bool goToDigging = false;
 
+
+    float choppingTime = 5f;
     float diggingTime = 3f;
     Transform goldMineTarget;
     private float timmer;
@@ -302,20 +303,20 @@ public class Worker : HumanUnit
 
     protected virtual void Chopping()
     {
-        if (animator.GetInteger(ANIMATOR_WOOD) < woodMax)
+        if (animator.GetInteger(ANIMATOR_WOOD) == 0 && !animator.GetBool(ANIMATOR_CHOPPING))
         {
-            goToChopping = true;
+            goToChopping = -1;
         }
-        else if (animator.GetInteger(ANIMATOR_WOOD) >= woodMax)
+        else if (animator.GetInteger(ANIMATOR_WOOD) == 0 && animator.GetBool(ANIMATOR_CHOPPING))
         {
-            goToChopping = false;
+            goToChopping = 0;
         }
-        else
+        else if (animator.GetInteger(ANIMATOR_WOOD) > 0)
         {
-            return;
+            goToChopping = 1;
         }
 
-        if (goToChopping && target == null)
+        if (goToChopping  == -1 && target == null)
         {
             target = SearchNearTreePlace();
 
@@ -332,85 +333,128 @@ public class Worker : HumanUnit
 
         }
 
-        //nav.SetDestination(new Vector3(target.position.x, 0, target.position.z));
-        //float distance = Vector2.Distance(new Vector2(nav.destination.x, nav.destination.z) , new Vector2(transform.position.x, transform.position.z));
-        if (!goToChopping)
-            nav.SetDestination(new Vector3(target.position.x, target.position.y, target.position.z - 4f));
-        else
-            nav.SetDestination(new Vector3(target.position.x, target.position.y, target.position.z));
+        if (goToChopping == -1)
+            nav.SetDestination(new Vector3(target.position.x, target.position.y, target.position.z ));
+        else if (goToChopping == 1)
+            nav.SetDestination(new Vector3(target.position.x, target.position.y, target.position.z - 6f));
         float distance = Vector3.Magnitude(nav.destination - transform.position);
 
-        if (goToChopping)
+        if (goToChopping == -1)
         {
             if (distance > choppingDistance)
             {
-
-                animator.SetBool(ANIMATOR_CHOPPING, false);
                 running = true;
                 return;
             }
 
-            if (distance <= choppingDistance && animator.GetInteger(ANIMATOR_WOOD) < woodMax)
+            timmer = 0;
+            animator.SetBool(ANIMATOR_CHOPPING, true);
+            animator.SetInteger(ANIMATOR_WOOD, 0);
+            running = false;
+            nav.velocity = Vector3.zero;
+            return;
+        }
+        if (goToChopping == 0)
+        {
+            if(timmer < choppingTime)
             {
-                if (target == null)
-                {
-                    target = SearchNearTreePlace();
-                    return;
-                }
-
-                nav.velocity = Vector3.zero;
-                running = false;
-                animator.SetBool(ANIMATOR_CHOPPING, true);
-                animator.SetInteger(ANIMATOR_WOOD, animator.GetInteger(ANIMATOR_WOOD) + 1);
-
-                target.transform.GetComponent<Tree>().ChoppingProcess(1);
-
-                if (animator.GetInteger(ANIMATOR_WOOD) >= woodMax)
-                {
-                    goToChopping = false;
-                    running = true;
-
-                    target = SearchNearWoodPlace();
-                    if (target == null)
-                    {
-                        task = Task.idle;
-                        running = false;
-                    }
-                    animator.SetBool(ANIMATOR_CHOPPING, false);
-                    return;
-                }
+                timmer += Time.deltaTime;
                 return;
             }
-        }
-        else
-        {
 
+            target.GetComponent<Tree>().ChoppingProcess();
             animator.SetBool(ANIMATOR_CHOPPING, false);
+            animator.SetInteger(ANIMATOR_WOOD, 10);
+            running = true;
+            target = SearchNearWoodPlace();
+            Woods.SetActive(true);
+            if (target == null)
+            {
+                task = Task.idle;
+                running = false;
+            }
+
+            return;
+        }
+
+
+        if (goToChopping == 1)
+        {
             if (distance > stopChoppingDistance)
             {
-                running = true;
                 return;
             }
 
-            if (distance <= stopChoppingDistance)
-            {
-                //nav.velocity = Vector3.zero;
+            animator.SetBool(ANIMATOR_CHOPPING, false);
+            animator.SetInteger(ANIMATOR_WOOD, 0);
+            running = true;
+            target = SearchNearTreePlace();
+            Woods.SetActive(false);
 
-                animator.SetInteger(ANIMATOR_WOOD, 0);
-                goToChopping = true;
-
-                target = SearchNearTreePlace();
-
-                if (target == null)
-                {
-                    task = Task.idle;
-                    running = false;
-                }
-
-                return;
-            }
-
+            return;
         }
+
+        //    if (distance <= choppingDistance && animator.GetInteger(ANIMATOR_WOOD) < woodMax)
+        //    {
+        //        if (target == null)
+        //        {
+        //            target = SearchNearTreePlace();
+        //            return;
+        //        }
+
+        //        nav.velocity = Vector3.zero;
+        //        running = false;
+        //        animator.SetBool(ANIMATOR_CHOPPING, true);
+        //        animator.SetInteger(ANIMATOR_WOOD, animator.GetInteger(ANIMATOR_WOOD) + 1);
+
+        //        target.transform.GetComponent<Tree>().ChoppingProcess(1);
+
+        //        if (animator.GetInteger(ANIMATOR_WOOD) >= woodMax)
+        //        {
+        //            goToChopping = false;
+        //            running = true;
+
+        //            target = SearchNearWoodPlace();
+        //            if (target == null)
+        //            {
+        //                task = Task.idle;
+        //                running = false;
+        //            }
+        //            animator.SetBool(ANIMATOR_CHOPPING, false);
+        //            return;
+        //        }
+        //        return;
+        //    }
+        //}
+        //else
+        //{
+
+        //    animator.SetBool(ANIMATOR_CHOPPING, false);
+        //    if (distance > stopChoppingDistance)
+        //    {
+        //        running = true;
+        //        return;
+        //    }
+
+        //    if (distance <= stopChoppingDistance)
+        //    {
+        //        //nav.velocity = Vector3.zero;
+
+        //        animator.SetInteger(ANIMATOR_WOOD, 0);
+        //        goToChopping = true;
+
+        //        target = SearchNearTreePlace();
+
+        //        if (target == null)
+        //        {
+        //            task = Task.idle;
+        //            running = false;
+        //        }
+
+        //        return;
+        //    }
+
+        //}
 
     }
 
@@ -498,10 +542,7 @@ public class Worker : HumanUnit
             }
 
             target = goldMineTarget;
-            
         }
-
-        //
     }
 
     private Transform SearchNearWoodPlace()
