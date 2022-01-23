@@ -102,14 +102,18 @@ MonoBehaviour:
   HpMax: 300
   Name: Tower
   Defense: 1
-  Attack: 10
+  AttackPower: 0
   Profile: {fileID: 2800000, guid: 981f555e1a572e645bc66a67083d3b68, type: 3}
   Priority: 0
   CreateTime: 20
+  GoldCost: 0
+  WoodCost: 1
   Size: 2
   PlaceWood: 0
   PlaceGold: 0
   SizeBuilding: 2
+  CanCreateUnit: 0
+  UnitToCreatePoints: 0
 --- !u!65 &1697795457767455444
 BoxCollider:
   m_ObjectHideFlags: 0

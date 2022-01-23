@@ -78,10 +78,7 @@ public class CameraControll : MonoBehaviour
             }
         }
 
-        if (Input.GetMouseButtonDown(0))
-        {
-            GiveCommand();
-        }
+
 
         if (Input.GetMouseButtonDown(1))
         {
@@ -91,6 +88,12 @@ public class CameraControll : MonoBehaviour
 
         if (_gameManager.building && Input.GetMouseButtonDown(0))
         {
+            if (_gameManager.actualGold < _gameManager.ItemControllers[_gameManager.CurrentButtonPressed].item.GetComponent<Unit>().GoldCost || _gameManager.actualWood < _gameManager.ItemControllers[_gameManager.CurrentButtonPressed].item.GetComponent<Unit>().WoodCost)
+            {
+                _gameManager.DestroyItemImages();
+                _gameManager.building = false;
+                return;
+            }
             GameObject building = (Instantiate(_gameManager.ItemControllers[_gameManager.CurrentButtonPressed].item.ItemPrefab,
                 new Vector3(_gameManager.v.x, -(_gameManager.ItemControllers[_gameManager.CurrentButtonPressed].item as ItemGame).HeightBuilding, _gameManager.v.z),
                 _gameManager.ItemControllers[_gameManager.CurrentButtonPressed].item.ItemPrefab.transform.rotation));
@@ -101,10 +104,19 @@ public class CameraControll : MonoBehaviour
 
             _gameManager._playersGameObjects[0][_gameManager._playersGameObjects[0].Count - 1].GetComponent<MeshRenderer>().materials[1].color = _gameManager._playersMaterials[0].color;
             _gameManager._playersGameObjects[0][_gameManager._playersGameObjects[0].Count - 1].GetComponent<Unit>().whichPlayer = 0;
+
+
+
             //todo zmiana do tego jak computer bedzie chcial budowac
 
 
             GiveCommands(building, "Command");
+
+        }
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            GiveCommand();
         }
 
         //if (Input.GetMouseButtonDown(2))
@@ -115,7 +127,7 @@ public class CameraControll : MonoBehaviour
         //    }
         //}
 
-        
+
     }
 
     void GiveCommand()
