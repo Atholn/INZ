@@ -19,7 +19,9 @@ public class CreateHumanUnitButton : MonoBehaviour
 
     public void Create()
     {
-        if(gameManager.actualUnitsPoint + Unit.GetComponent<HumanUnit>().UnitPoint <= gameManager.actualMaxUnitsPoint)
+        if(gameManager.actualUnitsPoint + Unit.GetComponent<HumanUnit>().UnitPoint <= gameManager.actualMaxUnitsPoint &&
+            gameManager.actualGold >= Unit.GetComponent<Unit>().GoldCost &&
+            gameManager.actualWood >= Unit.GetComponent<Unit>().WoodCost)
         {
             buildingParent = gameManager.actualClickBuild;
 

@@ -17,6 +17,9 @@ public class Unit : MonoBehaviour
     internal int whichPlayer;
     internal int Hp;
 
+    public int GoldCost;
+    public int WoodCost;
+
     protected virtual void  Start()
     {
         Hp = HpMax;
