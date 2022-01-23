@@ -328,6 +328,8 @@ MonoBehaviour:
   Profile: {fileID: 0}
   Priority: 1
   CreateTime: 2
+  GoldCost: 60
+  WoodCost: 60
   UnitPoint: 3
 --- !u!1 &888381768492796571
 GameObject:

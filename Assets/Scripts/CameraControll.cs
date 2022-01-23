@@ -78,8 +78,6 @@ public class CameraControll : MonoBehaviour
             }
         }
 
-
-
         if (Input.GetMouseButtonDown(1))
         {
             _selectUnits.Clear();
@@ -88,12 +86,14 @@ public class CameraControll : MonoBehaviour
 
         if (_gameManager.building && Input.GetMouseButtonDown(0))
         {
-            if (_gameManager.actualGold < _gameManager.ItemControllers[_gameManager.CurrentButtonPressed].item.GetComponent<Unit>().GoldCost || _gameManager.actualWood < _gameManager.ItemControllers[_gameManager.CurrentButtonPressed].item.GetComponent<Unit>().WoodCost)
+            if (_gameManager._players[0].actualGold < _gameManager.ItemControllers[_gameManager.CurrentButtonPressed].item.GetComponent<Unit>().GoldCost || _gameManager._players[0].actualWood < _gameManager.ItemControllers[_gameManager.CurrentButtonPressed].item.GetComponent<Unit>().WoodCost)
             {
                 _gameManager.DestroyItemImages();
                 _gameManager.building = false;
                 return;
             }
+            _gameManager.UpdateWood(0, -_gameManager.ItemControllers[_gameManager.CurrentButtonPressed].item.GetComponent<Unit>().WoodCost);
+            _gameManager.UpdateGold(0, -_gameManager.ItemControllers[_gameManager.CurrentButtonPressed].item.GetComponent<Unit>().GoldCost);
 
             GameObject building = (Instantiate(_gameManager.ItemControllers[_gameManager.CurrentButtonPressed].item.ItemPrefab,
                 new Vector3(_gameManager.v.x, -(_gameManager.ItemControllers[_gameManager.CurrentButtonPressed].item as ItemGame).HeightBuilding, _gameManager.v.z),
@@ -112,7 +112,7 @@ public class CameraControll : MonoBehaviour
 
 
             GiveCommands(building, "Command");
-
+            return;
         }
 
         if (Input.GetMouseButtonDown(0))

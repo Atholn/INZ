@@ -21,6 +21,7 @@ public class GameManager : MonoBehaviour
     private MapWorld _map;
     private List<GameStartPoint> _gameStartPoints;
     internal List<Material> _playersMaterials;
+    internal List<Player> _players;
 
     private GameObject[][][] _gameObjects;
     private GameObject _terrain;
@@ -47,10 +48,7 @@ public class GameManager : MonoBehaviour
     public GameObject Pointer;
 
     private readonly int _maxUnitsPoint = 100;
-    internal int actualUnitsPoint = 0;
-    internal int actualMaxUnitsPoint = 0;
-    internal int actualWood = 0;
-    internal int actualGold = 0;
+
 
     void Start()
     {
@@ -122,36 +120,57 @@ public class GameManager : MonoBehaviour
         ///
         _gameUI.UpdateRawMaterials(0, 0);
         _gameUI.UpdateRawMaterials(1, 0);
-        UpdateUnitPoints();
+        UpdateUnitPoints(0);
     }
 
-    internal void UpdateUnitPoints()
+    internal void UpdateUnitPoints(int whichPlayer)
     {
-        _gameUI.UpdateRawMaterials(2, UnitsPointsUpdate(), UnitsMaxPointsUpdate());
+        _players[whichPlayer].actualUnitsPoint = UnitsPointsUpdate(whichPlayer);
+        _players[whichPlayer].actualMaxUnitsPoint = UnitsMaxPointsUpdate(whichPlayer);
+
+        if (whichPlayer == 0)
+         _gameUI.UpdateRawMaterials(2, _players[whichPlayer].actualUnitsPoint, _players[whichPlayer].actualMaxUnitsPoint);
     }
 
-    public int UnitsPointsUpdate()
+    public int UnitsPointsUpdate(int whichPlayer)
     {
-        var points = _playersGameObjects[0].Where(g => g.GetComponent<HumanUnit>() != null).Select(g => g.GetComponent<HumanUnit>().UnitPoint).Sum();
-        return actualUnitsPoint = points;
+        var points = _playersGameObjects[whichPlayer].Where(g => g.GetComponent<HumanUnit>() != null).Select(g => g.GetComponent<HumanUnit>().UnitPoint).Sum();
+        return _players[whichPlayer].actualUnitsPoint = points;
     }
 
-    public int UnitsMaxPointsUpdate()
+    internal int UnitsMaxPointsUpdate(int whichPlayer)
     {
-        var points = _playersGameObjects[0].Where(g => g.GetComponent<BuildingUnit>() != null &&  g.GetComponent<BuildingUnit>().BuildingPercent > g.GetComponent<BuildingUnit>().CreateTime).Select(g => g.GetComponent<BuildingUnit>().UnitToCreatePoints).Sum();
-        return actualMaxUnitsPoint = points < _maxUnitsPoint ? points : _maxUnitsPoint;
+        var points = _playersGameObjects[whichPlayer].Where(g => g.GetComponent<BuildingUnit>() != null &&  g.GetComponent<BuildingUnit>().BuildingPercent > g.GetComponent<BuildingUnit>().CreateTime).Select(g => g.GetComponent<BuildingUnit>().UnitToCreatePoints).Sum();
+        return _players[whichPlayer].actualMaxUnitsPoint = points < _maxUnitsPoint ? points : _maxUnitsPoint;
     }
 
+    internal void UpdateWood(int whichPlayer, int woodCount)
+    {
+        _players[whichPlayer].actualWood += woodCount;
+        if (whichPlayer == 0)
+            _gameUI.UpdateRawMaterials(1, _players[0].actualWood);
+    }
+
+    internal void UpdateGold(int whichPlayer, int goldCount)
+    {
+        _players[whichPlayer].actualGold += goldCount;
+        if (whichPlayer == 0)
+            _gameUI.UpdateRawMaterials(0, _players[0].actualGold);
+    }
 
     private void InitializePlayers()
     {
         _playersGameObjects = new List<List<GameObject>>();
         _playersMaterials = new List<Material>();
+        _players = new List<Player>();
 
         for (int i = 0; i < _gameStartPoints.Count; i++)
         {
             _playersGameObjects.Add(new List<GameObject>());
             _playersMaterials.Add(_gameStartPoints[i].UnitMaterial);
+
+            if (i == 0) _players.Add(new Player { typeOfPlayer = Player.TypeOfPlayer.human });
+            else _players.Add(new Player { typeOfPlayer = Player.TypeOfPlayer.computer });
         }
 
         for (int i = 0; i < _gameStartPoints.Count; i++)
@@ -333,7 +352,7 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        _gameUI.UpdateRawMaterials(2, UnitsPointsUpdate(), UnitsMaxPointsUpdate());
+        _gameUI.UpdateRawMaterials(2, UnitsPointsUpdate(whichPlayer), UnitsMaxPointsUpdate(whichPlayer));
     }
     #endregion
 }

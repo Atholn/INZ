@@ -8,6 +8,7 @@ public class Worker : HumanUnit
 {
     GameObject GoldBag;
     GameObject Woods;
+    GameManager _gameManager;
 
     protected override void Start()
     {
@@ -38,6 +39,8 @@ public class Worker : HumanUnit
 
         GoldBag.SetActive(false);
         Woods.SetActive(false);
+
+        _gameManager = GameObject.FindObjectOfType<GameManager>();
     }
 
     protected override void Update()
@@ -234,21 +237,19 @@ public class Worker : HumanUnit
         BuildingUnit bU = target.GetComponent<BuildingUnit>();
         ItemGame it = target.GetComponent<ItemGame>();
 
-        if (distance > bU.SizeBuilding)
+        Debug.LogError(distance);
+        if (distance > bU.SizeBuilding/2)
         {
-
             animator.SetBool(ANIMATOR_BUILD, false);
             running = true;
             return;
         }
+        
 
-        if (distance <= bU.SizeBuilding)
-        {
-            nav.velocity = Vector3.zero;
-            running = false;
-        }
-
+        nav.velocity = Vector3.zero;
+        running = false;
         animator.SetBool(ANIMATOR_BUILD, true);
+
         if (bU.BuildingPercent < bU.CreateTime)
         {
             bU.BuildingPercent += Time.deltaTime;
@@ -260,7 +261,7 @@ public class Worker : HumanUnit
 
         BuildingUnit bu = target.GetComponent<BuildingUnit>();
         bu.PointerPosition = new Vector3(target.transform.position.x, 0.5f, target.transform.position.z - (bu.SizeBuilding / 2) - 1);
-        bu.UpdateUnitPoints();
+        bu.UpdateUnitPoints(whichPlayer);
 
         animator.SetBool(ANIMATOR_BUILD, false);
         task = Task.idle;
@@ -316,7 +317,7 @@ public class Worker : HumanUnit
             goToChopping = 1;
         }
 
-        if (goToChopping  == -1 && target == null)
+        if (goToChopping == -1 && target == null)
         {
             target = SearchNearTreePlace();
 
@@ -334,7 +335,7 @@ public class Worker : HumanUnit
         }
 
         if (goToChopping == -1)
-            nav.SetDestination(new Vector3(target.position.x, target.position.y, target.position.z ));
+            nav.SetDestination(new Vector3(target.position.x, target.position.y, target.position.z));
         else if (goToChopping == 1)
             nav.SetDestination(new Vector3(target.position.x, target.position.y, target.position.z - 6f));
         float distance = Vector3.Magnitude(nav.destination - transform.position);
@@ -356,7 +357,7 @@ public class Worker : HumanUnit
         }
         if (goToChopping == 0)
         {
-            if(timmer < choppingTime)
+            if (timmer < choppingTime)
             {
                 timmer += Time.deltaTime;
                 return;
@@ -368,6 +369,7 @@ public class Worker : HumanUnit
             running = true;
             target = SearchNearWoodPlace();
             Woods.SetActive(true);
+
             if (target == null)
             {
                 task = Task.idle;
@@ -384,7 +386,7 @@ public class Worker : HumanUnit
             {
                 return;
             }
-
+            _gameManager.UpdateWood(whichPlayer, 10);
             animator.SetBool(ANIMATOR_CHOPPING, false);
             animator.SetInteger(ANIMATOR_WOOD, 0);
             running = true;
@@ -531,6 +533,7 @@ public class Worker : HumanUnit
 
             animator.SetInteger(ANIMATOR_GOLD, 0);
             GoldBag.SetActive(false);
+            _gameManager.UpdateGold(whichPlayer, 10);
 
             if (goldMineTarget == null)
             {

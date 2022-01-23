@@ -80,8 +80,8 @@ public class BuildingUnit : Unit
 
 
     ////
-    public void UpdateUnitPoints()
+    public void UpdateUnitPoints(int whichPlayer)
     {
-        gameManager.UpdateUnitPoints();
+        gameManager.UpdateUnitPoints(whichPlayer);
     }
 }
