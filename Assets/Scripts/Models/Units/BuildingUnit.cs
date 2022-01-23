@@ -23,6 +23,8 @@ public class BuildingUnit : Unit
     private int whichPlayerUnit;
 
     private GameManager gameManager;
+
+    public int UnitToCreatePoints = 0;
     protected override void Start()
     {
         base.Start();
@@ -62,6 +64,7 @@ public class BuildingUnit : Unit
             //Debug.LogError(buildingParent.transform.position);
 
             gameManager.UnitCreate(whichPlayerUnit, acutalUnitCreate, transform.position + new Vector3( 0,0, -SizeBuilding/2));
+
             unitCreateProgress = 0f;
             acutalUnitCreate = null;
             createUnit = false;
@@ -72,5 +75,13 @@ public class BuildingUnit : Unit
     {
         texture = acutalUnitCreate.GetComponent<Unit>().Profile;
         val = unitCreateProgress / acutalUnitCreate.GetComponent<Unit>().CreateTime;
+    }
+
+
+
+    ////
+    public void UpdateUnitPoints()
+    {
+        gameManager.UpdateUnitPoints();
     }
 }

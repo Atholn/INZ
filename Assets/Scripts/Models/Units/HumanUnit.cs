@@ -10,6 +10,8 @@ public class HumanUnit : Unit
     internal bool IsDead = false;
     protected float timeDeath = 10f;
 
+    public int UnitPoint = 1;
+
     protected override void Start()
     {
         base.Start();
@@ -19,8 +21,5 @@ public class HumanUnit : Unit
     {
         //transform.position = new Vector3(transform.position.x, 0, transform.position.z);
         base.Update();
-
-
-
     }
 }

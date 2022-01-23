@@ -118,9 +118,26 @@ public class GameManager : MonoBehaviour
         ///
         _gameUI.UpdateRawMaterials(0, 0);
         _gameUI.UpdateRawMaterials(1, 0);
-        _gameUI.UpdateRawMaterials(2, 0, MaxUnitsPoint);
-
+        UpdateUnitPoints();
     }
+
+
+
+    internal void UpdateUnitPoints()
+    {
+        _gameUI.UpdateRawMaterials(2, UnitsPointsUpdate(), UnitsMaxPointsUpdate());
+    }
+
+    public int UnitsPointsUpdate()
+    {
+        return _playersGameObjects[0].Where(g => g.GetComponent<HumanUnit>() != null).Select(g => g.GetComponent<HumanUnit>().UnitPoint).Sum();
+    }
+
+    public int UnitsMaxPointsUpdate()
+    {
+        return _playersGameObjects[0].Where(g => g.GetComponent<BuildingUnit>() != null &&  g.GetComponent<BuildingUnit>().BuildingPercent > g.GetComponent<BuildingUnit>().CreateTime).Select(g => g.GetComponent<BuildingUnit>().UnitToCreatePoints).Sum();
+    }
+
 
     private void InitializePlayers()
     {
@@ -198,9 +215,9 @@ public class GameManager : MonoBehaviour
         int winner = -1;
         for (int i = 0; i < _playersGameObjects.Count; i++)
         {
-            if(_playersGameObjects[i].Count > 0)
+            if (_playersGameObjects[i].Count > 0)
             {
-                if(winner != -1)
+                if (winner != -1)
                 {
                     return;
                 }
@@ -257,7 +274,7 @@ public class GameManager : MonoBehaviour
         if (gameObject.GetComponent<BuildingUnit>() != null)
         {
             actualClickBuild = gameObject.GetComponent<BuildingUnit>();
-            if(gameObject.GetComponent<BuildingUnit>().CanCreateUnit)
+            if (gameObject.GetComponent<BuildingUnit>().CanCreateUnit)
             {
                 Pointer.SetActive(true);
                 Pointer.transform.position = gameObject.GetComponent<BuildingUnit>().PointerPosition;
@@ -290,21 +307,25 @@ public class GameManager : MonoBehaviour
         _playersGameObjects[whichPlayer].Add(Instantiate(unitToCreate, position, unitToCreate.transform.rotation));
         _playersGameObjects[whichPlayer][_playersGameObjects[whichPlayer].Count - 1].transform.GetChild(0).GetComponentInChildren<SkinnedMeshRenderer>().materials[1].color = _playersMaterials[whichPlayer].color;
         _playersGameObjects[whichPlayer][_playersGameObjects[whichPlayer].Count - 1].GetComponent<Unit>().whichPlayer = whichPlayer;
-        _playersGameObjects[whichPlayer][_playersGameObjects[whichPlayer].Count - 1].GetComponent<Unit>().whichPlayer = whichPlayer;
 
-        if(_playersGameObjects[whichPlayer][_playersGameObjects[whichPlayer].Count - 1].GetComponent<Worker>() != null)
+        if (_playersGameObjects[whichPlayer][_playersGameObjects[whichPlayer].Count - 1].GetComponent<HumanUnit>() != null)
         {
-            Worker w = _playersGameObjects[whichPlayer][_playersGameObjects[whichPlayer].Count - 1].GetComponent<Worker>();
-            w.GetComponents();
-            w.SendMessage("Command", Pointer.transform.position, SendMessageOptions.DontRequireReceiver);
+            if (_playersGameObjects[whichPlayer][_playersGameObjects[whichPlayer].Count - 1].GetComponent<Worker>() != null)
+            {
+                Worker w = _playersGameObjects[whichPlayer][_playersGameObjects[whichPlayer].Count - 1].GetComponent<Worker>();
+                w.GetComponents();
+                w.SendMessage("Command", Pointer.transform.position, SendMessageOptions.DontRequireReceiver);
+            }
+
+            if (_playersGameObjects[whichPlayer][_playersGameObjects[whichPlayer].Count - 1].GetComponent<Soldier>() != null)
+            {
+                Soldier s = _playersGameObjects[whichPlayer][_playersGameObjects[whichPlayer].Count - 1].GetComponent<Soldier>();
+                s.GetComponents();
+                _playersGameObjects[whichPlayer][_playersGameObjects[whichPlayer].Count - 1].GetComponent<Soldier>().SendMessage("Command", Pointer.transform.position, SendMessageOptions.DontRequireReceiver);
+            }
         }
 
-        if (_playersGameObjects[whichPlayer][_playersGameObjects[whichPlayer].Count - 1].GetComponent<Soldier>() != null)
-        {
-            Soldier s = _playersGameObjects[whichPlayer][_playersGameObjects[whichPlayer].Count - 1].GetComponent<Soldier>();
-            s.GetComponents();
-            _playersGameObjects[whichPlayer][_playersGameObjects[whichPlayer].Count - 1].GetComponent<Soldier>().SendMessage("Command", Pointer.transform.position, SendMessageOptions.DontRequireReceiver);
-        }
+        _gameUI.UpdateRawMaterials(2, UnitsPointsUpdate(), UnitsMaxPointsUpdate());
     }
     #endregion
 }

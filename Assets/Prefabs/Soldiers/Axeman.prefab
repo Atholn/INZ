@@ -485,6 +485,7 @@ MonoBehaviour:
   Profile: {fileID: 0}
   Priority: 0
   CreateTime: 2
+  UnitPoint: 3
 --- !u!1 &1898475520625527168
 GameObject:
   m_ObjectHideFlags: 0

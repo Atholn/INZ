@@ -219,7 +219,6 @@ public class Worker : HumanUnit
         if (bU.BuildingPercent < bU.CreateTime)
         {
             bU.BuildingPercent += Time.deltaTime;
-
             target.transform.position = new Vector3(target.transform.position.x, -it.HeightBuilding + (bU.BuildingPercent / bU.CreateTime) * (it.ItemHeightPosY + it.HeightBuilding), target.transform.position.z);
 
 
@@ -228,6 +227,7 @@ public class Worker : HumanUnit
 
         BuildingUnit bu = target.GetComponent<BuildingUnit>();
         bu.PointerPosition = new Vector3(target.transform.position.x, 0.5f, target.transform.position.z - (bu.SizeBuilding / 2) - 1);
+        bu.UpdateUnitPoints();
 
         animator.SetBool(ANIMATOR_BUILD, false);
         task = Task.idle;

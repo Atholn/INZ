@@ -113,6 +113,7 @@ MonoBehaviour:
   PlaceGold: 1
   SizeBuilding: 10
   CanCreateUnit: 1
+  UnitToCreatePoints: 10
 --- !u!114 &-5982607791801554216
 MonoBehaviour:
   m_ObjectHideFlags: 0
