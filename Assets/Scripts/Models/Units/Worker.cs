@@ -344,6 +344,7 @@ public class Worker : HumanUnit
         {
             if (distance > choppingDistance)
             {
+
                 animator.SetBool(ANIMATOR_CHOPPING, false);
                 running = true;
                 return;
@@ -383,8 +384,6 @@ public class Worker : HumanUnit
         }
         else
         {
-
-           // Debug.LogError(target.position + " " + nav.destination + " " + transform.position + " " + distance);
 
             animator.SetBool(ANIMATOR_CHOPPING, false);
             if (distance > stopChoppingDistance)
@@ -451,29 +450,31 @@ public class Worker : HumanUnit
 
             nav.velocity = Vector3.zero;
             timmer = 0;
-            animator.SetInteger(ANIMATOR_GOLD, 10);
 
-            foreach(Renderer renderer in gameObject.GetComponentsInChildren<Renderer>())
+            foreach (Renderer renderer in gameObject.GetComponentsInChildren<Renderer>())
             {
                 renderer.enabled = false;
             }
+            animator.SetInteger(ANIMATOR_GOLD, 10);
         }
         else
         {
             if (timmer < diggingTime)
             {
                 timmer += Time.deltaTime;
-                if(timmer > diggingTime)
+                if (timmer > diggingTime)
                 {
-                    GoldBag.SetActive(true);
                     foreach (Renderer renderer in gameObject.GetComponentsInChildren<Renderer>())
                     {
                         renderer.enabled = true;
                     }
                     goldMineTarget = target;
+                    target.GetComponent<GoldMine>().DiggingGoldmine();
                     target = SearchNearGoldPlace();
                     animator.SetInteger(ANIMATOR_GOLD, 10);
+
                     running = true;
+                    GoldBag.SetActive(true);
                 }
                 return;
             }
@@ -481,12 +482,13 @@ public class Worker : HumanUnit
 
             if (distance > stopDiggingDistance)
             {
-
-
                 return;
             }
 
-            if(goldMineTarget == null)
+            animator.SetInteger(ANIMATOR_GOLD, 0);
+            GoldBag.SetActive(false);
+
+            if (goldMineTarget == null)
             {
                 nav.velocity = Vector3.zero;
                 running = false;
@@ -495,12 +497,8 @@ public class Worker : HumanUnit
                 return;
             }
 
-            running = true;
-            animator.SetInteger(ANIMATOR_GOLD, 0);
-
             target = goldMineTarget;
-            goToDigging = true;
-            GoldBag.SetActive(false);
+            
         }
 
         //
