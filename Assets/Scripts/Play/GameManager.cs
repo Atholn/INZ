@@ -46,7 +46,11 @@ public class GameManager : MonoBehaviour
 
     public GameObject Pointer;
 
-    internal int MaxUnitsPoint = 100;
+    private readonly int _maxUnitsPoint = 100;
+    internal int actualUnitsPoint = 0;
+    internal int actualMaxUnitsPoint = 0;
+    internal int actualWood = 0;
+    internal int actualGold = 0;
 
     void Start()
     {
@@ -121,8 +125,6 @@ public class GameManager : MonoBehaviour
         UpdateUnitPoints();
     }
 
-
-
     internal void UpdateUnitPoints()
     {
         _gameUI.UpdateRawMaterials(2, UnitsPointsUpdate(), UnitsMaxPointsUpdate());
@@ -130,12 +132,14 @@ public class GameManager : MonoBehaviour
 
     public int UnitsPointsUpdate()
     {
-        return _playersGameObjects[0].Where(g => g.GetComponent<HumanUnit>() != null).Select(g => g.GetComponent<HumanUnit>().UnitPoint).Sum();
+        var points = _playersGameObjects[0].Where(g => g.GetComponent<HumanUnit>() != null).Select(g => g.GetComponent<HumanUnit>().UnitPoint).Sum();
+        return actualUnitsPoint = points;
     }
 
     public int UnitsMaxPointsUpdate()
     {
-        return _playersGameObjects[0].Where(g => g.GetComponent<BuildingUnit>() != null &&  g.GetComponent<BuildingUnit>().BuildingPercent > g.GetComponent<BuildingUnit>().CreateTime).Select(g => g.GetComponent<BuildingUnit>().UnitToCreatePoints).Sum();
+        var points = _playersGameObjects[0].Where(g => g.GetComponent<BuildingUnit>() != null &&  g.GetComponent<BuildingUnit>().BuildingPercent > g.GetComponent<BuildingUnit>().CreateTime).Select(g => g.GetComponent<BuildingUnit>().UnitToCreatePoints).Sum();
+        return actualMaxUnitsPoint = points < _maxUnitsPoint ? points : _maxUnitsPoint;
     }
 
 

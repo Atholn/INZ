@@ -19,13 +19,16 @@ public class CreateHumanUnitButton : MonoBehaviour
 
     public void Create()
     {
-        buildingParent = gameManager.actualClickBuild;
+        if(gameManager.actualUnitsPoint + Unit.GetComponent<HumanUnit>().UnitPoint <= gameManager.actualMaxUnitsPoint)
+        {
+            buildingParent = gameManager.actualClickBuild;
 
-        if(buildingParent.createUnit)
-        {        
-            return;
+            if (buildingParent.createUnit)
+            {
+                return;
+            }
+
+            buildingParent.CreateUnit(Unit, 0);
         }
-
-        buildingParent.CreateUnit(Unit, 0);
     }
 }
