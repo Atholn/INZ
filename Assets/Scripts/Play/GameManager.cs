@@ -170,7 +170,7 @@ public class GameManager : MonoBehaviour
             _playersMaterials.Add(_gameStartPoints[i].UnitMaterial);
 
             if (i == 0) _players.Add(new Player { typeOfPlayer = Player.TypeOfPlayer.human });
-            else _players.Add(new Player { typeOfPlayer = Player.TypeOfPlayer.computer });
+            else _players.Add(new Player { typeOfPlayer = Player.TypeOfPlayer.computer, whichPlayer = i });
         }
 
         for (int i = 0; i < _gameStartPoints.Count; i++)
@@ -234,6 +234,17 @@ public class GameManager : MonoBehaviour
         if (onlyOneSelectGO != null)
         {
             _gameUI.ShowProgressCreateUnitPanel(onlyOneSelectGO);
+        }
+
+
+        foreach(Player player in _players)
+        {
+            if(player.typeOfPlayer == Player.TypeOfPlayer.human)
+            {
+                continue;
+            }
+
+            player.UpdateComputer(_playersGameObjects[player.whichPlayer]);
         }
     }
 
