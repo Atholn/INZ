@@ -49,6 +49,7 @@ public class GameManager : MonoBehaviour
 
     private readonly int _maxUnitsPoint = 100;
 
+    internal int[][][] maps;
 
     void Start()
     {
@@ -76,6 +77,7 @@ public class GameManager : MonoBehaviour
             }
         }
 
+        maps = MapToPlayStorage.Map.MapWorldCreate.Maps;
 
         //for (int j = 0; j < _gameObjects[0].Length; j++)
         //{

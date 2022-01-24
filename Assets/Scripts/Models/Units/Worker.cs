@@ -79,6 +79,8 @@ public class Worker : HumanUnit
 
     }
 
+
+
     void Command(Vector3 destination)
     {
         nav.SetDestination(destination);
@@ -87,23 +89,11 @@ public class Worker : HumanUnit
 
     void Command(Tree tree)
     {
-
-
         target = tree.transform;
         task = Task.chopping;
     }
 
-    void SearchTree()
-    {
-        target = SearchNearTreePlace();
-        task = Task.chopping;
-    }
 
-    void SearchGoldmine ()
-    {
-        target = SearchNearGoldminePlace();
-        task = Task.digging;
-    }
 
     void Command(GoldMine goldMine)
     {
@@ -584,4 +574,27 @@ public class Worker : HumanUnit
         return GameObject.FindGameObjectsWithTag("Goldmine").OrderBy(x => Vector3.Distance(x.transform.position, transform.position)).Select(x => x.transform).FirstOrDefault(); ;
     }
 
+    #region AI
+    #endregion
+
+    #region AICommands
+    void CommandStop()
+    {
+        target = null;
+        nav.velocity = Vector3.zero;
+        running = false;
+        task = Task.idle;
+    }
+
+    void SearchTree()
+    {
+        target = SearchNearTreePlace();
+        task = Task.chopping;
+    }
+    void SearchGoldmine()
+    {
+        target = SearchNearGoldminePlace();
+        task = Task.digging;
+    }
+    #endregion
 }
