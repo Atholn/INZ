@@ -8,21 +8,6 @@ using UnityEngine;
 
 public class FollowScriptComputer : MonoBehaviour
 {
-    void OnCollisionEnter(Collision collision)
-    {
-        ifcollision = false;
-        Debug.LogWarning("Trigger");
-    }
-    private void OnCollisionStay(Collision collision)
-    {
-        ifcollision = false;
-        Debug.LogWarning("Trigger");
-    }
-
-    private void OnControllerColliderHit(ControllerColliderHit hit)
-    {
-        ifcollision = false;
-    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -37,11 +22,7 @@ public class FollowScriptComputer : MonoBehaviour
     {
         ifcollision = false;
     }
-    private void OnCollisionExit(Collision collision)
-    {
-        ifcollision = false;
-        Debug.LogWarning("Trigger");
-    }
+
 
     
 
