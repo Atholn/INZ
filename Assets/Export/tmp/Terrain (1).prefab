@@ -100,6 +100,7 @@ MonoBehaviour:
   ItemImage: {fileID: 1643027924844237403, guid: c803417a66c2d984888fe49b0b83b525, type: 3}
   ItemHeightLevel: 0
   ItemHeightPosY: 0
+  ItemImageComputer: {fileID: 0}
   AllowsBuild: 1
 --- !u!114 &5123974533839950086
 MonoBehaviour:

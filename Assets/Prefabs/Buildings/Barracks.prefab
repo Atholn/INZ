@@ -106,8 +106,8 @@ MonoBehaviour:
   Profile: {fileID: 2800000, guid: f4e62da3b515f7a4399a2ed2c2ba3d57, type: 3}
   Priority: 0
   CreateTime: 10
-  GoldCost: 10
-  WoodCost: 10
+  GoldCost: 0
+  WoodCost: 0
   Size: 6
   PlaceWood: 0
   PlaceGold: 0
@@ -130,6 +130,7 @@ MonoBehaviour:
   ItemImage: {fileID: 4229408423562624710, guid: 53e71e4151cd0444ea551deb5ee729f8, type: 3}
   ItemHeightLevel: 1
   ItemHeightPosY: 0.4
+  ItemImageComputer: {fileID: 3232111750680707317, guid: 4824bb7305f7003478effb7326969197, type: 3}
   HeightBuilding: 5.2
 --- !u!65 &1484801961
 BoxCollider:

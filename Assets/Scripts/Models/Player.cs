@@ -12,6 +12,20 @@ public class Player : MonoBehaviour
         computer
     }
 
+    public enum ComputerTask
+    {
+        building,
+        attacking,
+    }
+
+    public enum ComputerTaskBuilding
+    {
+        checkBuilding,
+        getRawSource,
+        searchBuildPlace,
+        building
+    }
+
     internal TypeOfPlayer typeOfPlayer;
     internal int whichPlayer;
 
@@ -27,23 +41,6 @@ public class Player : MonoBehaviour
     bool ifHaveBlackSmith = false;
     bool ifHave100UnitsPoint = false;
 
-    bool isInProccess = false;
-
-    public enum ComputerTask
-    {
-        building,
-        attacking,
-    }
-
-    public enum ComputerTaskBuilding
-    {
-        checkBuilding,
-        getRawSource,
-        searchBuildPlace,
-        building
-    }
-
-
     ComputerTask computerTask = ComputerTask.building;
     ComputerTaskBuilding computerTaskBuilding = ComputerTaskBuilding.checkBuilding;
 
@@ -53,6 +50,12 @@ public class Player : MonoBehaviour
     //getRawSource
     private bool ifCommandWood = false;
     private bool ifCommandGold = false;
+
+    //searchBuildPlace
+    private bool ifStartPos = false;
+    private GameObject image;
+    //building
+
 
     internal void UpdateComputer(List<GameObject> units)
     {
@@ -159,15 +162,49 @@ public class Player : MonoBehaviour
         //    worker.SendMessage("CommandStop", null, SendMessageOptions.DontRequireReceiver);
         //}
 
-
         ifCommandWood = false;
         ifCommandGold = false;
         computerTaskBuilding = ComputerTaskBuilding.searchBuildPlace;
     }
 
+    int i = 0;
     private void SearchBuildPlace()
     {
+        if (!ifStartPos)
+        {
+            Vector3 startPos = gameManager._playersGameObjects[whichPlayer].Where(g => g.GetComponent<BuildingUnit>() != null).FirstOrDefault().transform.position;
+            startPos = new Vector3(startPos.x - startPos.x % 1, 1, startPos.z - startPos.z % 1);
+            image = Instantiate(buildingTarget.GetComponent<Item>().ItemImageComputer, startPos, buildingTarget.transform.rotation);
+            ifStartPos = true;
+        }
 
+        if(!image.GetComponent<FollowScriptComputer>().ifcollision)
+        {
+            image.transform.position += new Vector3(1f, 0, 0);
+            i++;
+            Debug.LogError(i);
+            image.GetComponent<FollowScriptComputer>().ifcollision = true;
+
+            return;
+        }
+
+
+        //Debug.LogError("tutaj!");
+
+        //image.GetComponent<FollowScriptComputer>().Check();
+        //if (image.GetComponent<FollowScriptComputer>().ifcollision)
+        //{
+        //    Debug.LogWarning("jest kolizja");
+        //}
+
+        //if (!image.GetComponent<FollowScriptComputer>().ifcollision)
+        //{
+        //   Debug.LogError("nie ma kolizji");
+        //}
+
+        //image.GetComponent<FollowScriptComputer>().ifcollision = false;
+        //ifStartPos = false;
+        //computerTaskBuilding = ComputerTaskBuilding.building;
     }
 
 

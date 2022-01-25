@@ -65,17 +65,5 @@ public class FollowScript : MonoBehaviour
         }
     }
 
-    //If your GameObject starts to collide with another GameObject with a Collider
-    void OnCollisionEnter(Collision collision)
-    {
-        //Output the Collider's GameObject's name
-        Debug.Log(collision.collider.name);
-
-        //foreach (ContactPoint contact in collision.contacts)
-        //{
-        //    Debug.DrawRay(contact.point, contact.normal, Color.white);
-        //}
-
-    }
 
 }
