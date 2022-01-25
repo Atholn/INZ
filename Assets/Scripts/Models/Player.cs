@@ -177,7 +177,7 @@ public class Player : MonoBehaviour
     }
 
     Directors directors = Directors.right;
-    int acutalSteps = 0;
+    int acutalSteps = 1;
     int steps = 2; // +2 
     int stepsMax = 8; // +8 
     float sizeStep;
@@ -191,17 +191,21 @@ public class Player : MonoBehaviour
             sizeStep = buildingTarget.GetComponent<ItemGame>().ItemPrefab.GetComponent<BuildingUnit>().SizeBuilding;
             startPos = new Vector3(startPos.x - startPos.x % 1, 1, startPos.z - startPos.z % 1 + sizeStep);
 
+            //sizeStep = sizeStep/10f;
+
             image = Instantiate(buildingTarget.GetComponent<ItemGame>().ItemImageComputer, startPos, buildingTarget.transform.rotation);
             ifStartPos = true;
         }
 
         if (!image.GetComponent<FollowScriptComputer>().ifcollision)
         {
+
             switch (directors)
             {
                 case Directors.right:
                     image.transform.position += new Vector3(sizeStep, 0, 0);
-                    if(acutalSteps++ == steps)
+                    Debug.Log(0 + " " + acutalSteps);
+                    if(acutalSteps >= steps)
                     {
                         acutalSteps = 0;
                         directors = Directors.down;
@@ -209,7 +213,8 @@ public class Player : MonoBehaviour
                     break;
                 case Directors.down:
                     image.transform.position += new Vector3(0, 0, -sizeStep);
-                    if (acutalSteps++ == steps)
+                    Debug.Log(1 + " " + acutalSteps);
+                    if (acutalSteps >= steps)
                     {
                         acutalSteps = 0;
                         directors = Directors.left;
@@ -217,7 +222,8 @@ public class Player : MonoBehaviour
                     break;
                 case Directors.left:
                     image.transform.position += new Vector3(-sizeStep, 0, 0);
-                    if (acutalSteps++ == steps)
+                    Debug.Log(2 + " " + acutalSteps);
+                    if (acutalSteps >= steps)
                     {
                         acutalSteps = 0;
                         directors = Directors.up;
@@ -225,16 +231,17 @@ public class Player : MonoBehaviour
                     break;
                 case Directors.up:
                     image.transform.position += new Vector3(0, 0, sizeStep);
-                    if (acutalSteps++ == steps +1)
+                    Debug.Log(3 + " " + acutalSteps);
+                    if (acutalSteps >= steps +1)
                     {
                         acutalSteps = 0;
                         directors = Directors.right;
-                        image.transform.position += new Vector3(0, 0, sizeStep);
+                        //image.transform.position += new Vector3(0, 0, sizeStep);
                         steps += 2;
                     }
                     break;
             }
-
+            acutalSteps += 1;
             image.GetComponent<FollowScriptComputer>().ifcollision = true;
             return;
         }

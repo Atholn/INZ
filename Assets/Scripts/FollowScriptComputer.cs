@@ -23,8 +23,21 @@ public class FollowScriptComputer : MonoBehaviour
         ifcollision = false;
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        ifcollision = false;
+    }
 
-    
+    private void OnCollisionStay(Collision collision)
+    {
+        ifcollision = false;
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        ifcollision = false;
+    }
+
 
     internal void Check()
     {

@@ -81,59 +81,7 @@ public class Worker : HumanUnit
 
 
 
-    void Command(Vector3 destination)
-    {
-        nav.SetDestination(destination);
-        task = Task.move;
-    }
 
-    void Command(Tree tree)
-    {
-        target = tree.transform;
-        task = Task.chopping;
-    }
-
-
-
-    void Command(GoldMine goldMine)
-    {
-        target = goldMine.transform;
-        task = Task.digging;
-    }
-
-    void Command(GameObject gameObject)
-    {
-        if (gameObject.GetComponent<BuildingUnit>() != null)
-        {
-            BuildingUnit buildingUnit = gameObject.GetComponent<BuildingUnit>();
-            target = gameObject.transform;
-
-            if (buildingUnit.BuildingPercent < buildingUnit.CreateTime)
-            {
-                task = Task.build;
-                return;
-            }
-
-            if (buildingUnit.Hp < HpMax)
-            {
-                task = Task.repair;
-                return;
-            }
-
-            task = Task.follow;
-        }
-    }
-
-    //void Command(BuildingUnit building)
-    //{
-    //    target = building.transform;
-    //    task = Task.build;
-    //}
-
-    //void Command(BuildingUnit building)
-    //{
-
-    //}
 
     public enum Task
     {
@@ -232,16 +180,71 @@ public class Worker : HumanUnit
         }
     }
 
+    private Vector3 SearchNearBuildingPoint(int size)
+    {
+        List<x> xs = new List<x>();
+        Vector3 vector3 = new Vector3(target.position.x + (size / 2), 0, target.position.z);
+        nav.SetDestination(vector3);
+        xs.Add(new x() { pos = vector3 });
 
+        vector3 = new Vector3(target.position.x + (size / 2), 0, target.position.z + (size / 2));
+        nav.SetDestination(vector3);
+        xs.Add(new x() { pos = vector3 });
 
-    protected virtual void Building()
+        vector3 = new Vector3(target.position.x, 0, target.position.z + (size / 2));
+        nav.SetDestination(vector3);
+        xs.Add(new x() { pos = vector3 });
+
+        vector3 = new Vector3(target.position.x - (size / 2), 0, target.position.z + (size / 2));
+        nav.SetDestination(vector3);
+        xs.Add(new x() { pos = vector3 });
+
+        vector3 = new Vector3(target.position.x - (size / 2), 0, target.position.z);
+        nav.SetDestination(vector3);
+        xs.Add(new x() { pos = vector3 });
+
+        vector3 = new Vector3(target.position.x - (size / 2), 0, target.position.z - (size / 2));
+        nav.SetDestination(vector3);
+        xs.Add(new x() { pos = vector3 });
+
+        vector3 = new Vector3(target.position.x, 0, target.position.z - (size / 2));
+        nav.SetDestination(vector3);
+        xs.Add(new x() { pos = vector3 });
+
+        vector3 = new Vector3(target.position.x + (size / 2), 0, target.position.z - (size / 2));
+        nav.SetDestination(vector3);
+        xs.Add(new x() { pos = vector3 });
+        
+        foreach(x tmpX in xs)
+        {
+            tmpX.distance = Vector3.Magnitude(tmpX.pos - transform.position);
+        }
+
+        return xs.OrderBy(x => x.distance).Select(x => x.pos).FirstOrDefault();
+    }
+
+    private class x
+    {
+        public Vector3 pos;
+        public float distance;
+    }
+
+    bool searchtarget = false;
+    Vector3 nearPos;
+
+    private void Building()
     {
         BuildingUnit bU = target.GetComponent<BuildingUnit>();
         ItemGame it = target.GetComponent<ItemGame>();
 
-        nav.SetDestination( new Vector3(target.position.x, 0, target.position.z - bU.Size / 2));
-        float distance = Vector3.Magnitude(nav.destination - transform.position);
+        if(!searchtarget)
+        {
+            nearPos = SearchNearBuildingPoint(bU.Size);
+            searchtarget = true;
+        }
 
+        nav.SetDestination(nearPos);
+        float distance = Vector3.Magnitude(nav.destination - transform.position);
 
         Debug.LogError(distance);
         if (distance > bU.SizeBuilding / 2)
@@ -251,7 +254,6 @@ public class Worker : HumanUnit
             return;
         }
 
-
         nav.velocity = Vector3.zero;
         running = false;
         animator.SetBool(ANIMATOR_BUILD, true);
@@ -260,8 +262,6 @@ public class Worker : HumanUnit
         {
             bU.BuildingPercent += Time.deltaTime;
             target.transform.position = new Vector3(target.transform.position.x, -it.HeightBuilding + (bU.BuildingPercent / bU.CreateTime) * (it.ItemHeightPosY + it.HeightBuilding), target.transform.position.z);
-
-
             return;
         }
 
@@ -500,6 +500,7 @@ public class Worker : HumanUnit
         }
     }
 
+    #region Search
     private Transform SearchNearWoodPlace()
     {
         List<List<GameObject>> list = GameObject.FindObjectOfType<GameManager>()._playersGameObjects;
@@ -573,6 +574,52 @@ public class Worker : HumanUnit
     {
         return GameObject.FindGameObjectsWithTag("Goldmine").OrderBy(x => Vector3.Distance(x.transform.position, transform.position)).Select(x => x.transform).FirstOrDefault(); ;
     }
+    #endregion
+
+    #region Commands
+    void Command(Vector3 destination)
+    {
+        nav.SetDestination(destination);
+        task = Task.move;
+    }
+
+    void Command(Tree tree)
+    {
+        target = tree.transform;
+        task = Task.chopping;
+    }
+
+    void Command(GoldMine goldMine)
+    {
+        target = goldMine.transform;
+        task = Task.digging;
+    }
+
+    void Command(GameObject gameObject)
+    {
+        if (gameObject.GetComponent<BuildingUnit>() != null)
+        {
+            BuildingUnit buildingUnit = gameObject.GetComponent<BuildingUnit>();
+            target = gameObject.transform;
+
+            if (buildingUnit.BuildingPercent < buildingUnit.CreateTime)
+            {
+                task = Task.build;
+                searchtarget = false;
+                return;
+            }
+
+            if (buildingUnit.Hp < HpMax)
+            {
+                task = Task.repair;
+                return;
+            }
+
+            task = Task.follow;
+        }
+    }
+
+    #endregion
 
     #region AI
     #endregion
