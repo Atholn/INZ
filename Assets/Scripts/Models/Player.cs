@@ -54,6 +54,7 @@ public class Player : MonoBehaviour
     //searchBuildPlace
     private bool ifStartPos = false;
     private GameObject image;
+
     //building
 
 
@@ -180,12 +181,12 @@ public class Player : MonoBehaviour
     int steps = 2; // +2 
     int stepsMax = 8; // +8 
     float sizeStep;
+
     private void SearchBuildPlace()
     {
         if (!ifStartPos)
         {
             GameObject startBuilding = gameManager._playersGameObjects[whichPlayer].Where(g => g.GetComponent<BuildingUnit>() != null).FirstOrDefault();
-
             Vector3 startPos = startBuilding.transform.position;
             sizeStep = buildingTarget.GetComponent<ItemGame>().ItemPrefab.GetComponent<BuildingUnit>().SizeBuilding;
             startPos = new Vector3(startPos.x - startPos.x % 1, 1, startPos.z - startPos.z % 1 + sizeStep);
@@ -234,16 +235,32 @@ public class Player : MonoBehaviour
                     break;
             }
 
-
             image.GetComponent<FollowScriptComputer>().ifcollision = true;
-
             return;
         }
 
 
+        gameManager.UpdateWood(whichPlayer, -gameManager.ItemControllers[gameManager.CurrentButtonPressed].item.GetComponent<Unit>().WoodCost);
+        gameManager.UpdateGold(whichPlayer, -gameManager.ItemControllers[gameManager.CurrentButtonPressed].item.GetComponent<Unit>().GoldCost);
+
+        buildingTarget = (Instantiate(buildingTarget,
+            new Vector3(image.transform.position.x, -(gameManager.ItemControllers[gameManager.CurrentButtonPressed].item as ItemGame).HeightBuilding, image.transform.position.z),
+            gameManager.ItemControllers[gameManager.CurrentButtonPressed].item.ItemPrefab.transform.rotation));
+
+        gameManager._playersGameObjects[whichPlayer].Add(buildingTarget);
+        gameManager.DestroyItemImages();
+        gameManager.building = false;
+
+        gameManager._playersGameObjects[whichPlayer][gameManager._playersGameObjects[whichPlayer].Count - 1].GetComponent<MeshRenderer>().materials[1].color = gameManager._playersMaterials[whichPlayer].color;
+        gameManager._playersGameObjects[whichPlayer][gameManager._playersGameObjects[whichPlayer].Count - 1].GetComponent<Unit>().whichPlayer = whichPlayer;
 
 
 
+        //todo zmiana do tego jak computer bedzie chcial budowac
+
+        gameManager._playersGameObjects[whichPlayer].Where(g => g.GetComponent<Worker>() != null).FirstOrDefault().GetComponent<Worker>().SendMessage("Command", buildingTarget, SendMessageOptions.DontRequireReceiver); ;
+
+        directors = Directors.right;
         ifStartPos = false;
         computerTaskBuilding = ComputerTaskBuilding.building;
     }
