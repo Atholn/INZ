@@ -2,10 +2,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CreateHumanUnitButton : MonoBehaviour
 {
-    public GameObject Building;
     public GameObject Unit;
 
     private BuildingUnit buildingParent;
@@ -14,6 +14,8 @@ public class CreateHumanUnitButton : MonoBehaviour
     private void Start()
     {
         _gameManager = GameObject.FindObjectOfType<GameManager>();
+
+        GetComponent<RawImage>().texture = Unit.GetComponent<Unit>().Profile;
     }
 
     public void Create()
