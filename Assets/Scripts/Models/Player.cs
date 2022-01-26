@@ -41,6 +41,7 @@ public class Player : MonoBehaviour
 
     //checkBuilding
     GameObject buildingTarget;
+    int whichBuilding;
 
     //getRawSource
     private bool ifCommandWood = false;
@@ -50,8 +51,20 @@ public class Player : MonoBehaviour
     private bool ifStartPos = false;
     private GameObject image;
 
-    //building
+    private enum Directors
+    {
+        right = 0,
+        down = 1,
+        left = 2,
+        up = 3
+    }
 
+    Directors directors = Directors.right;
+    float acutalSteps = 1f;
+    int steps = 2;
+    float sizeStep;
+
+    //building
 
     internal void UpdateComputer(List<GameObject> units)
     {
@@ -62,10 +75,6 @@ public class Player : MonoBehaviour
             case ComputerTask.building: Building(); break;
             case ComputerTask.attacking: Attacking(); break;
         }
-
-        //var x = CheckAllBuildings();
-        //if (x == -1) AttackStage();
-        //else BuildingStage(x);
     }
 
     #region Building
@@ -88,7 +97,6 @@ public class Player : MonoBehaviour
         }
     }
 
-    int whichBuilding;
     private void CheckBuilding()
     {
         whichBuilding = CheckAllBuildings();
@@ -102,7 +110,6 @@ public class Player : MonoBehaviour
         computerTaskBuilding = ComputerTaskBuilding.getRawSource;
     }
 
-
     private int CheckAllBuildings()
     {
         List<BuildingUnit> listOfBuildng = gameManager._playersGameObjects[whichPlayer].Where(g => g.GetComponent<BuildingUnit>() != null).Select(b => b.GetComponent<BuildingUnit>()).ToList();
@@ -113,7 +120,7 @@ public class Player : MonoBehaviour
             {
                 if (listOfBuildng.Where(b => b.Name == gameManager.BuildingsPrefabs[2].GetComponent<BuildingUnit>().name).ToList().Count != 0)
                 {
-                    if (listOfBuildng.Where(b => b.Name == gameManager.BuildingsPrefabs[3].GetComponent<BuildingUnit>().name).ToList().Count != 0)
+                    if (listOfBuildng.Where(b => b.Name == gameManager.BuildingsPrefabs[3].GetComponent<BuildingUnit>().name).ToList().Count > 5)
                     {
                         return -1;
                     }
@@ -168,19 +175,6 @@ public class Player : MonoBehaviour
         computerTaskBuilding = ComputerTaskBuilding.searchBuildPlace;
     }
 
-    private enum Directors
-    {
-        right = 0,
-        down = 1,
-        left = 2,
-        up = 3
-    }
-
-    Directors directors = Directors.right;
-    float acutalSteps = 1f;
-    int steps = 2;
-    float sizeStep;
-
     private void SearchBuildPlace()
     {
         if (!ifStartPos)
@@ -193,7 +187,7 @@ public class Player : MonoBehaviour
             sizeStep = sizeStep/10f;
 
             image = Instantiate(buildingTarget.GetComponent<ItemGame>().ItemImageComputer, startPos, buildingTarget.transform.rotation);
-            //image.GetComponent<Renderer>().enabled = false;
+            image.GetComponent<Renderer>().enabled = false;
             ifStartPos = true;
         }
 
@@ -271,9 +265,7 @@ public class Player : MonoBehaviour
         if (bU.BuildingPercent < bU.CreateTime)
         {
             return;
-
         }
-        Debug.LogError("new building!");
 
         computerTaskBuilding = ComputerTaskBuilding.checkBuilding;
     }
@@ -281,52 +273,9 @@ public class Player : MonoBehaviour
     #endregion
 
     #region Attacking
-    #endregion
-
     private void Attacking()
     {
         Debug.LogError("Attack");
-    }
-
-
-    #region BuildingStage
-    private void BuildingStage(int whichBuilding)
-    {
-
-
-        //building.GetComponent<BoxCollider>().c
-        //listOfWorkers[0].SendMessage()
-        //Debug.LogError("juz");
-
-    }
-
-
-
-    private Vector3 SearchNearPlaceToBuild(Vector3 workerPos, GameObject build)
-    {
-        var x = Instantiate(build, workerPos, build.transform.rotation);
-
-        FollowScript fs = x.GetComponent<FollowScript>();
-
-        //while(fs.GetComponent<BoxCollider>().)
-
-
-        return new Vector3(0, 0, 0);
-    }
-
-    private void BuildBulding()
-    {
-
-
-
-    }
-
-    #endregion
-
-    #region AttackStage
-    private void AttackStage()
-    {
-
     }
     #endregion
 }
