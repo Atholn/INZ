@@ -105,7 +105,7 @@ public class Player : MonoBehaviour
             computerTask = ComputerTask.attacking;
             return;
         }
-        Debug.LogError(whichBuilding);
+
         buildingTarget = gameManager.BuildingsPrefabs[whichBuilding];
         computerTaskBuilding = ComputerTaskBuilding.getRawSource;
     }
@@ -269,7 +269,6 @@ public class Player : MonoBehaviour
 
         computerTaskBuilding = ComputerTaskBuilding.checkBuilding;
     }
-
     #endregion
 
     #region Attacking

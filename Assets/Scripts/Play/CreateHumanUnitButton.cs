@@ -16,7 +16,6 @@ public class CreateHumanUnitButton : MonoBehaviour
         _gameManager = GameObject.FindObjectOfType<GameManager>();
     }
 
-
     public void Create()
     {
         if(_gameManager._players[0].actualUnitsPoint + Unit.GetComponent<HumanUnit>().UnitPoint <= _gameManager._players[0].actualMaxUnitsPoint &&
