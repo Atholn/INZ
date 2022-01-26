@@ -101,7 +101,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HpMax: 500
-  Name: ss
+  Name: Blacksmiths
   Defense: 0
   AttackPower: 0
   Profile: {fileID: 2800000, guid: a9559f93e2189d74dbb1687f8c8a0e21, type: 3}
@@ -131,6 +131,7 @@ MonoBehaviour:
   ItemImage: {fileID: 6959904957535371669, guid: 6847133db4bf9654f81ecc79f60aabc9, type: 3}
   ItemHeightLevel: 1
   ItemHeightPosY: 0.3
+  ItemImageComputer: {fileID: 0}
   HeightBuilding: 3.5
 --- !u!65 &802356331
 BoxCollider:

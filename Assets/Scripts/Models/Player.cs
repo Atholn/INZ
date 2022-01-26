@@ -36,11 +36,6 @@ public class Player : MonoBehaviour
 
     GameManager gameManager;
 
-    bool ifHaveTownHall = true;
-    bool ifHaveBarracks = false;
-    bool ifHaveBlackSmith = false;
-    bool ifHave100UnitsPoint = false;
-
     ComputerTask computerTask = ComputerTask.building;
     ComputerTaskBuilding computerTaskBuilding = ComputerTaskBuilding.checkBuilding;
 
@@ -105,15 +100,18 @@ public class Player : MonoBehaviour
         computerTaskBuilding = ComputerTaskBuilding.getRawSource;
     }
 
+
     private int CheckAllBuildings()
     {
-        if (ifHaveTownHall)
+        List<BuildingUnit> listOfBuildng = gameManager._playersGameObjects[whichPlayer].Where(g => g.GetComponent<BuildingUnit>() != null).Select(b => b.GetComponent<BuildingUnit>()).ToList();
+
+        if (listOfBuildng.Where(b => b.Name == gameManager.BuildingsPrefabs[0].GetComponent<BuildingUnit>().name).ToList().Count != 0)
         {
-            if (ifHaveBarracks)
+            if (listOfBuildng.Where(b => b.Name == gameManager.BuildingsPrefabs[1].GetComponent<BuildingUnit>().name).ToList().Count != 0)
             {
-                if (ifHaveBlackSmith)
+                if (listOfBuildng.Where(b => b.Name == gameManager.BuildingsPrefabs[2].GetComponent<BuildingUnit>().name).ToList().Count != 0)
                 {
-                    if (ifHave100UnitsPoint)
+                    if (listOfBuildng.Where(b => b.Name == gameManager.BuildingsPrefabs[3].GetComponent<BuildingUnit>().name).ToList().Count != 0)
                     {
                         return -1;
                     }
@@ -194,12 +192,12 @@ public class Player : MonoBehaviour
             sizeStep = sizeStep/10f;
 
             image = Instantiate(buildingTarget.GetComponent<ItemGame>().ItemImageComputer, startPos, buildingTarget.transform.rotation);
+            image.GetComponent<Renderer>().enabled = false;
             ifStartPos = true;
         }
 
         if (!image.GetComponent<FollowScriptComputer>().ifcollision)
         {
-
             switch (directors)
             {
                 case Directors.right:
@@ -207,7 +205,7 @@ public class Player : MonoBehaviour
                     Debug.Log(0 + " " + acutalSteps);
                     if(acutalSteps >= steps)
                     {
-                        acutalSteps = 0;
+                        acutalSteps = 0f;
                         directors = Directors.down;
                     }
                     break;
@@ -216,7 +214,7 @@ public class Player : MonoBehaviour
                     Debug.Log(1 + " " + acutalSteps);
                     if (acutalSteps >= steps)
                     {
-                        acutalSteps = 0;
+                        acutalSteps = 0f;
                         directors = Directors.left;
                     }
                     break;
@@ -225,7 +223,7 @@ public class Player : MonoBehaviour
                     Debug.Log(2 + " " + acutalSteps);
                     if (acutalSteps >= steps)
                     {
-                        acutalSteps = 0;
+                        acutalSteps = 0f;
                         directors = Directors.up;
                     }
                     break;
@@ -234,7 +232,7 @@ public class Player : MonoBehaviour
                     Debug.Log(3 + " " + acutalSteps);
                     if (acutalSteps >= steps +1)
                     {
-                        acutalSteps = 0;
+                        acutalSteps = 0f;
                         directors = Directors.right;
                         steps += 2;
                     }
