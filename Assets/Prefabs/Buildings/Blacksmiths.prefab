@@ -106,7 +106,7 @@ MonoBehaviour:
   AttackPower: 0
   Profile: {fileID: 2800000, guid: a9559f93e2189d74dbb1687f8c8a0e21, type: 3}
   Priority: 0
-  CreateTime: 50
+  CreateTime: 5
   GoldCost: 0
   WoodCost: 0
   Size: 4
@@ -131,7 +131,7 @@ MonoBehaviour:
   ItemImage: {fileID: 6959904957535371669, guid: 6847133db4bf9654f81ecc79f60aabc9, type: 3}
   ItemHeightLevel: 1
   ItemHeightPosY: 0.3
-  ItemImageComputer: {fileID: 0}
+  ItemImageComputer: {fileID: 7807356495026858179, guid: 955f6e435fd353642892af315255b5ac, type: 3}
   HeightBuilding: 3.5
 --- !u!65 &802356331
 BoxCollider:

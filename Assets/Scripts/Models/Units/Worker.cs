@@ -246,7 +246,7 @@ public class Worker : HumanUnit
         nav.SetDestination(nearPos);
         float distance = Vector3.Magnitude(nav.destination - transform.position);
 
-        Debug.LogError(distance);
+        //Debug.LogError(distance);
         if (distance > bU.SizeBuilding / 2)
         {
             animator.SetBool(ANIMATOR_BUILD, false);

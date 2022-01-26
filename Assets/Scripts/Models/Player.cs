@@ -23,7 +23,7 @@ public class Player : MonoBehaviour
         checkBuilding,
         getRawSource,
         searchBuildPlace,
-        building
+        buildingBuilding
     }
 
     internal TypeOfPlayer typeOfPlayer;
@@ -82,20 +82,22 @@ public class Player : MonoBehaviour
             case ComputerTaskBuilding.searchBuildPlace:
                 SearchBuildPlace();
                 break;
-            case ComputerTaskBuilding.building:
+            case ComputerTaskBuilding.buildingBuilding:
+                BuildingBuilding();
                 break;
         }
     }
 
+    int whichBuilding;
     private void CheckBuilding()
     {
-        var whichBuilding = CheckAllBuildings();
+        whichBuilding = CheckAllBuildings();
         if (whichBuilding == -1)
         {
             computerTask = ComputerTask.attacking;
             return;
         }
-
+        Debug.LogError(whichBuilding);
         buildingTarget = gameManager.BuildingsPrefabs[whichBuilding];
         computerTaskBuilding = ComputerTaskBuilding.getRawSource;
     }
@@ -175,9 +177,8 @@ public class Player : MonoBehaviour
     }
 
     Directors directors = Directors.right;
-    float acutalSteps = 1;
-    int steps = 2; // +2 
-    int stepsMax = 8; // +8 
+    float acutalSteps = 1f;
+    int steps = 2;
     float sizeStep;
 
     private void SearchBuildPlace()
@@ -192,7 +193,7 @@ public class Player : MonoBehaviour
             sizeStep = sizeStep/10f;
 
             image = Instantiate(buildingTarget.GetComponent<ItemGame>().ItemImageComputer, startPos, buildingTarget.transform.rotation);
-            image.GetComponent<Renderer>().enabled = false;
+            //image.GetComponent<Renderer>().enabled = false;
             ifStartPos = true;
         }
 
@@ -202,7 +203,7 @@ public class Player : MonoBehaviour
             {
                 case Directors.right:
                     image.transform.position += new Vector3(sizeStep, 0, 0);
-                    Debug.Log(0 + " " + acutalSteps);
+                    //Debug.Log(0 + " " + acutalSteps);
                     if(acutalSteps >= steps)
                     {
                         acutalSteps = 0f;
@@ -211,7 +212,7 @@ public class Player : MonoBehaviour
                     break;
                 case Directors.down:
                     image.transform.position += new Vector3(0, 0, -sizeStep);
-                    Debug.Log(1 + " " + acutalSteps);
+                    //Debug.Log(1 + " " + acutalSteps);
                     if (acutalSteps >= steps)
                     {
                         acutalSteps = 0f;
@@ -220,7 +221,7 @@ public class Player : MonoBehaviour
                     break;
                 case Directors.left:
                     image.transform.position += new Vector3(-sizeStep, 0, 0);
-                    Debug.Log(2 + " " + acutalSteps);
+                    //Debug.Log(2 + " " + acutalSteps);
                     if (acutalSteps >= steps)
                     {
                         acutalSteps = 0f;
@@ -229,7 +230,7 @@ public class Player : MonoBehaviour
                     break;
                 case Directors.up:
                     image.transform.position += new Vector3(0, 0, sizeStep);
-                    Debug.Log(3 + " " + acutalSteps);
+                    //Debug.Log(3 + " " + acutalSteps);
                     if (acutalSteps >= steps +1)
                     {
                         acutalSteps = 0f;
@@ -239,12 +240,13 @@ public class Player : MonoBehaviour
                     break;
             }
             acutalSteps += 0.1f;
+            //acutalSteps += 1;
             image.GetComponent<FollowScriptComputer>().ifcollision = true;
             return;
         }
 
-        gameManager.UpdateWood(whichPlayer, -gameManager.ItemControllers[gameManager.CurrentButtonPressed].item.GetComponent<Unit>().WoodCost);
-        gameManager.UpdateGold(whichPlayer, -gameManager.ItemControllers[gameManager.CurrentButtonPressed].item.GetComponent<Unit>().GoldCost);
+        gameManager.UpdateWood(whichPlayer, -gameManager.BuildingsPrefabs[whichBuilding].GetComponent<Unit>().WoodCost);
+        gameManager.UpdateGold(whichPlayer, -gameManager.BuildingsPrefabs[whichBuilding].GetComponent<Unit>().GoldCost);
 
         buildingTarget = (Instantiate(buildingTarget,
             new Vector3(image.transform.position.x, -(gameManager.ItemControllers[gameManager.CurrentButtonPressed].item as ItemGame).HeightBuilding, image.transform.position.z),
@@ -257,11 +259,24 @@ public class Player : MonoBehaviour
 
         Destroy(image);
         directors = Directors.right;
+        acutalSteps = 1f;
+        steps = 2;
         ifStartPos = false;
-        computerTaskBuilding = ComputerTaskBuilding.building;
+        computerTaskBuilding = ComputerTaskBuilding.buildingBuilding;
     }
 
+    private void BuildingBuilding()
+    {
+        BuildingUnit bU = buildingTarget.GetComponent<BuildingUnit>();
+        if (bU.BuildingPercent < bU.CreateTime)
+        {
+            return;
 
+        }
+        Debug.LogError("new building!");
+
+        computerTaskBuilding = ComputerTaskBuilding.checkBuilding;
+    }
 
     #endregion
 
@@ -270,7 +285,7 @@ public class Player : MonoBehaviour
 
     private void Attacking()
     {
-
+        Debug.LogError("Attack");
     }
 
 

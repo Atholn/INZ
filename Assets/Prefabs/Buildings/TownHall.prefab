@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: -5982607791801554216}
   - component: {fileID: 7541676029855672078}
   - component: {fileID: 5682844408619401926}
-  - component: {fileID: -1478853938444274810}
+  - component: {fileID: 4750196036698671786}
   m_Layer: 3
   m_Name: TownHall
   m_TagString: Untagged
@@ -164,7 +164,7 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0, z: 0.016}
   m_TimeToStationary: 0.5
---- !u!54 &-1478853938444274810
+--- !u!54 &4750196036698671786
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
