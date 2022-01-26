@@ -322,10 +322,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HpMax: 100
-  Name: 
+  Name: Bowman
   Defense: 5
   AttackPower: 15
-  Profile: {fileID: 0}
+  Profile: {fileID: 2800000, guid: 61e4e7a14484a354d8f3c0d91f392701, type: 3}
   Priority: 1
   CreateTime: 2
   GoldCost: 60

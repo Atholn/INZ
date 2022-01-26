@@ -479,12 +479,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HpMax: 100
-  Name: 
+  Name: Axeman
   Defense: 7
   AttackPower: 20
-  Profile: {fileID: 0}
+  Profile: {fileID: 2800000, guid: fa1e7dfb2146278418662456fc31f8d4, type: 3}
   Priority: 0
   CreateTime: 2
+  GoldCost: 0
+  WoodCost: 0
   UnitPoint: 3
 --- !u!1 &1898475520625527168
 GameObject:
