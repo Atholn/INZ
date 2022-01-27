@@ -9,7 +9,7 @@ public class CreateHumanUnitButton : MonoBehaviour
     public GameObject Unit;
 
     private BuildingUnit buildingParent;
-    GameManager _gameManager;
+    private GameManager _gameManager;
 
     private void Start()
     {
@@ -24,7 +24,6 @@ public class CreateHumanUnitButton : MonoBehaviour
             _gameManager._players[0].actualGold >= Unit.GetComponent<Unit>().GoldCost &&
             _gameManager._players[0].actualWood >= Unit.GetComponent<Unit>().WoodCost)
         {
-
             _gameManager.UpdateWood(0, -Unit.GetComponent<Unit>().WoodCost);
             _gameManager.UpdateGold(0, -Unit.GetComponent<Unit>().GoldCost);
 

@@ -6,24 +6,33 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public enum TypeOfPlayer
+    internal enum TypeOfPlayer
     {
         human,
         computer
     }
 
-    public enum ComputerTask
+    private enum ComputerTask
     {
         building,
         attacking,
     }
 
-    public enum ComputerTaskBuilding
+    private enum ComputerTaskBuilding
     {
         checkBuilding,
-        getRawSource,
+        getRawSourceBuilding,
         searchBuildPlace,
         buildingBuilding
+    }
+
+    private enum ComputerTaskAttacking
+    {
+        soldierSelection,
+        getRawSourceSoldier,
+        creatingSoldiers,
+        attackingEnemies,
+        returnSoldiers,
     }
 
     internal TypeOfPlayer typeOfPlayer;
@@ -38,7 +47,9 @@ public class Player : MonoBehaviour
 
     ComputerTask computerTask = ComputerTask.building;
     ComputerTaskBuilding computerTaskBuilding = ComputerTaskBuilding.checkBuilding;
+    ComputerTaskAttacking computerTaskAttacking = ComputerTaskAttacking.soldierSelection;
 
+    #region Building Variables
     //checkBuilding
     GameObject buildingTarget;
     int whichBuilding;
@@ -66,6 +77,21 @@ public class Player : MonoBehaviour
 
     //building
 
+    #endregion
+
+    #region Attacking Variables
+    //soldierSelection
+    GameObject soldierTarget;
+    int whichSoldier;
+
+    //creatingSoldiers
+    private readonly int _computerUnitsCount = 10;
+    //attackingEnemies
+
+    //returnSoldiers
+
+    #endregion
+
     internal void UpdateComputer(List<GameObject> units)
     {
         gameManager = GameObject.FindObjectOfType<GameManager>();
@@ -85,8 +111,8 @@ public class Player : MonoBehaviour
             case ComputerTaskBuilding.checkBuilding:
                 CheckBuilding();
                 break;
-            case ComputerTaskBuilding.getRawSource:
-                GetRawSource();
+            case ComputerTaskBuilding.getRawSourceBuilding:
+                GetRawSourceBuilding();
                 break;
             case ComputerTaskBuilding.searchBuildPlace:
                 SearchBuildPlace();
@@ -107,7 +133,7 @@ public class Player : MonoBehaviour
         }
 
         buildingTarget = gameManager.BuildingsPrefabs[whichBuilding];
-        computerTaskBuilding = ComputerTaskBuilding.getRawSource;
+        computerTaskBuilding = ComputerTaskBuilding.getRawSourceBuilding;
     }
 
     private int CheckAllBuildings()
@@ -133,7 +159,7 @@ public class Player : MonoBehaviour
         return 0;
     }
 
-    private void GetRawSource()
+    private void GetRawSourceBuilding()
     {
         List<GameObject> listOfWorkers = gameManager._playersGameObjects[whichPlayer].Where(g => g.GetComponent<Worker>() != null).ToList();
         if (actualWood < buildingTarget.GetComponent<BuildingUnit>().WoodCost)
@@ -150,7 +176,6 @@ public class Player : MonoBehaviour
             return;
         }
 
-
         if (actualGold < buildingTarget.GetComponent<BuildingUnit>().GoldCost)
         {
             if (!ifCommandGold)
@@ -164,11 +189,6 @@ public class Player : MonoBehaviour
 
             return;
         }
-
-        //foreach (GameObject worker in listOfWorkers)
-        //{
-        //    worker.SendMessage("CommandStop", null, SendMessageOptions.DontRequireReceiver);
-        //}
 
         ifCommandWood = false;
         ifCommandGold = false;
@@ -184,7 +204,7 @@ public class Player : MonoBehaviour
             sizeStep = buildingTarget.GetComponent<ItemGame>().ItemPrefab.GetComponent<BuildingUnit>().SizeBuilding;
             startPos = new Vector3(startPos.x - startPos.x % 1, 1, startPos.z - startPos.z % 1 + sizeStep);
 
-            sizeStep = sizeStep/10f;
+            sizeStep = sizeStep / 10f;
 
             image = Instantiate(buildingTarget.GetComponent<ItemGame>().ItemImageComputer, startPos, buildingTarget.transform.rotation);
             image.GetComponent<Renderer>().enabled = false;
@@ -197,8 +217,7 @@ public class Player : MonoBehaviour
             {
                 case Directors.right:
                     image.transform.position += new Vector3(sizeStep, 0, 0);
-                    //Debug.Log(0 + " " + acutalSteps);
-                    if(acutalSteps >= steps)
+                    if (acutalSteps >= steps)
                     {
                         acutalSteps = 0f;
                         directors = Directors.down;
@@ -206,7 +225,6 @@ public class Player : MonoBehaviour
                     break;
                 case Directors.down:
                     image.transform.position += new Vector3(0, 0, -sizeStep);
-                    //Debug.Log(1 + " " + acutalSteps);
                     if (acutalSteps >= steps)
                     {
                         acutalSteps = 0f;
@@ -215,7 +233,6 @@ public class Player : MonoBehaviour
                     break;
                 case Directors.left:
                     image.transform.position += new Vector3(-sizeStep, 0, 0);
-                    //Debug.Log(2 + " " + acutalSteps);
                     if (acutalSteps >= steps)
                     {
                         acutalSteps = 0f;
@@ -224,8 +241,7 @@ public class Player : MonoBehaviour
                     break;
                 case Directors.up:
                     image.transform.position += new Vector3(0, 0, sizeStep);
-                    //Debug.Log(3 + " " + acutalSteps);
-                    if (acutalSteps >= steps +1)
+                    if (acutalSteps >= steps + 1)
                     {
                         acutalSteps = 0f;
                         directors = Directors.right;
@@ -234,7 +250,7 @@ public class Player : MonoBehaviour
                     break;
             }
             acutalSteps += 0.1f;
-            //acutalSteps += 1;
+
             image.GetComponent<FollowScriptComputer>().ifcollision = true;
             return;
         }
@@ -274,7 +290,99 @@ public class Player : MonoBehaviour
     #region Attacking
     private void Attacking()
     {
-        Debug.LogError("Attack");
+        //switch (computerTaskAttacking)
+        //{
+        //    case ComputerTaskAttacking.soldierSelection:
+        //        SoldierSelection();
+        //        break;
+        //    case ComputerTaskAttacking.getRawSourceSoldier:
+        //        GetRawSourceSoldier();
+        //        break;
+        //    case ComputerTaskAttacking.creatingSoldiers:
+        //        CreatingSoldiers();
+        //        break;
+        //    case ComputerTaskAttacking.attackingEnemies:
+        //        AttackingEnemies();
+        //        break;
+        //    case ComputerTaskAttacking.returnSoldiers:
+        //        ReturnSoldiers();
+        //        break;
+        //}
     }
+
+    private void SoldierSelection()
+    {
+        if (gameManager._playersGameObjects[whichPlayer].Where(s => s.GetComponent<Soldier>() != null).ToList().Count() > _computerUnitsCount)
+        {
+            computerTaskAttacking = ComputerTaskAttacking.attackingEnemies;
+            return;
+        }
+
+        whichSoldier = RandomizeNewSoldier();
+        soldierTarget = gameManager.UnitsPrefabs[whichSoldier];
+
+        computerTaskAttacking = ComputerTaskAttacking.getRawSourceSoldier;
+    }
+
+    private int RandomizeNewSoldier()
+    {
+        System.Random rnd = new System.Random();
+        return rnd.Next(1, 4);
+    }
+
+    private void GetRawSourceSoldier()
+    {
+        List<GameObject> listOfWorkers = gameManager._playersGameObjects[whichPlayer].Where(g => g.GetComponent<Worker>() != null).ToList();
+        if (actualWood < soldierTarget.GetComponent<Soldier>().WoodCost)
+        {
+            if (!ifCommandWood)
+            {
+                foreach (GameObject worker in listOfWorkers)
+                {
+                    worker.SendMessage("SearchTree", null, SendMessageOptions.DontRequireReceiver);
+                }
+                ifCommandWood = true;
+            }
+
+            return;
+        }
+
+        if (actualGold < soldierTarget.GetComponent<Soldier>().GoldCost)
+        {
+            if (!ifCommandGold)
+            {
+                foreach (GameObject worker in listOfWorkers)
+                {
+                    worker.SendMessage("SearchGoldmine", null, SendMessageOptions.DontRequireReceiver);
+                }
+                ifCommandGold = true;
+            }
+
+            return;
+        }
+
+        ifCommandWood = false;
+        ifCommandGold = false;
+        computerTaskAttacking = ComputerTaskAttacking.creatingSoldiers;
+    }
+
+    private void CreatingSoldiers()
+    {
+        gameManager._playersGameObjects[whichPlayer].Where(b => b.GetComponent<BuildingUnit>() != null).Select(b => b.GetComponent<BuildingUnit>()).FirstOrDefault().CreateUnit(soldierTarget, 0);
+
+
+        computerTaskAttacking = ComputerTaskAttacking.attackingEnemies;
+    }
+
+    private void AttackingEnemies()
+    {
+        computerTaskAttacking = ComputerTaskAttacking.returnSoldiers;
+    }
+
+    private void ReturnSoldiers()
+    {
+        computerTaskAttacking = ComputerTaskAttacking.creatingSoldiers;
+    }
+
     #endregion
 }
