@@ -35,4 +35,9 @@ public class HumanUnit : Unit
             IsDead = true;
         }
     }
+
+    protected float CalculateLenghtStraightLine(Vector3 firstVector, Vector3 secondVector)
+    {
+        return Vector3.Magnitude(new Vector3(firstVector.x, 0, firstVector.z) - new Vector3(secondVector.x, 0, secondVector.z));
+    }
 }

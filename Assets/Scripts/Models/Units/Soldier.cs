@@ -42,34 +42,64 @@ public class Soldier : HumanUnit
         switch (task)
         {
             case SoldierTask.idle: Idling(); break;
-            case SoldierTask.run: Moving(); break;
+            case SoldierTask.run: Running(); break;
             case SoldierTask.follow: Following(); break;
-            case SoldierTask.attack: Attack(); break;
+            case SoldierTask.attack: Attacking(); break;
             case SoldierTask.dead: Death(); break;
         }
 
         Animate();
     }
 
-    private void Death()
+    private void Idling()
     {
-        if (timmer > timeDeath)
+        nav.velocity = Vector3.zero;
+        run = false;
+        attack = false;
+
+
+        //if()
+        // todo near enemies if check 
+    }
+
+    private void Running()
+    {
+        distance = CalculateLenghtStraightLine(nav.destination, transform.position);
+        //Vector3.Magnitude(nav.destination - transform.position);
+
+        if (distance > _stoppingDistance)
         {
-            Destroy(gameObject);
+            run = true;
+            attack = false;
             return;
         }
 
-        timmer += Time.deltaTime;
+        run = false;
+        attack = false;
+        nav.velocity = Vector3.zero;
+        task = SoldierTask.idle;
     }
 
-    private void Animate()
+    private void Following()
     {
-        animator.SetBool(ANIMATOR_RUN, run);
-        animator.SetBool(ANIMATOR_DEAD, dead);
-        animator.SetBool(ANIMATOR_ATTACK, attack);
+        nav.SetDestination(target.position);
+        distance = Vector3.Magnitude(nav.destination - transform.position);
+
+        if (distance > _stoppingDistance)
+        {
+            run = true;
+            attack = false;
+        }
+
+        if (distance <= _stoppingDistance)
+        {
+            nav.velocity = Vector3.zero;
+            run = false;
+            attack = false;
+        }
     }
 
-    private void Attack()
+    private void Attacking()
     {
         if (target == null)
         {
@@ -162,55 +192,25 @@ public class Soldier : HumanUnit
         //    //rb.MovePosition
     }
 
-    private void Following()
+    private void Death()
     {
-        nav.SetDestination(target.position);
-        distance = Vector3.Magnitude(nav.destination - transform.position);
-
-        if (distance > _stoppingDistance)
+        if (timmer > timeDeath)
         {
-            run = true;
-            attack = false;
-        }
-
-        if (distance <= _stoppingDistance)
-        {
-            nav.velocity = Vector3.zero;
-            run = false;
-            attack = false;
-        }
-    }
-
-    protected float CalculateLenghtStraightLine(Vector3 firstVector, Vector3 secondVector)
-    {
-        return Vector3.Magnitude(new Vector3(firstVector.x, 0, firstVector.z) - new Vector3(secondVector.x, 0, secondVector.z));
-    }
-
-    private void Moving()
-    {
-        distance = CalculateLenghtStraightLine(nav.destination, transform.position);
-            //Vector3.Magnitude(nav.destination - transform.position);
-
-        if (distance > _stoppingDistance)
-        {
-            run = true;
-            attack = false;
+            Destroy(gameObject);
             return;
         }
 
-        run = false;
-        attack = false;
-        nav.velocity = Vector3.zero;
-        task = SoldierTask.idle;
+        timmer += Time.deltaTime;
     }
 
-    private void Idling()
+    private void Animate()
     {
-        nav.velocity = Vector3.zero;
-        run = false;
-        attack = false;
+        animator.SetBool(ANIMATOR_RUN, run);
+        animator.SetBool(ANIMATOR_DEAD, dead);
+        animator.SetBool(ANIMATOR_ATTACK, attack);
     }
 
+    #region Commands
     void Command(Vector3 destination)
     {
         nav.SetDestination(destination);
@@ -228,4 +228,5 @@ public class Soldier : HumanUnit
         target = gameObject.transform;
         task = SoldierTask.attack;
     }
+    #endregion
 }
