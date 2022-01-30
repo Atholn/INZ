@@ -9,7 +9,7 @@ public class Soldier : HumanUnit
 
     private SoldierTask task = SoldierTask.idle;
 
-    private const string ANIMATOR_DEAD = "Dead", 
+    private const string ANIMATOR_DEAD = "Dead",
                          ANIMATOR_RUN = "Run",
                          ANIMATOR_ATTACK = "Attack";
 
@@ -60,7 +60,7 @@ public class Soldier : HumanUnit
 
     private void Running()
     {
-        distance = CalculateLenghtStraightLine(nav.destination, transform.position);
+        UpdateDistance();
 
         if (distance > _stoppingDistance)
         {
@@ -68,28 +68,22 @@ public class Soldier : HumanUnit
         }
 
         run = false;
-
         nav.velocity = Vector3.zero;
         task = SoldierTask.idle;
     }
 
     private void Following()
     {
-        nav.SetDestination(target.position);
-        distance = Vector3.Magnitude(nav.destination - transform.position);
+        UpdateDistance();
 
         if (distance > _stoppingDistance)
         {
             run = true;
-            attack = false;
+            return;
         }
 
-        if (distance <= _stoppingDistance)
-        {
-            nav.velocity = Vector3.zero;
-            run = false;
-            attack = false;
-        }
+        run = false;
+        nav.velocity = Vector3.zero;
     }
 
     private void Attacking()
@@ -99,8 +93,6 @@ public class Soldier : HumanUnit
             nav.velocity = Vector3.zero;
             target = null;
             task = SoldierTask.idle;
-            /// to do zeby reagowal na inne jednostki
-            /// near enemies
             return;
         }
 

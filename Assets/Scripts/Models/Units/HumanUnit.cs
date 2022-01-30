@@ -4,7 +4,7 @@ using UnityEngine.AI;
 public class HumanUnit : Unit
 {
     public int UnitPoint = 1;
-    
+
     protected bool IsDead = false;
     protected float timeDeath = 10f;
     protected float timmer = 0;
@@ -36,7 +36,16 @@ public class HumanUnit : Unit
         }
     }
 
-    protected float CalculateLenghtStraightLine(Vector3 firstVector, Vector3 secondVector)
+    protected void UpdateDistance()
+    {
+        if (target != null)
+        {
+            nav.SetDestination(target.position);
+        }
+        distance = CalculateLenghtStraightLine(nav.destination, transform.position);
+    }
+
+    private float CalculateLenghtStraightLine(Vector3 firstVector, Vector3 secondVector)
     {
         return Vector3.Magnitude(new Vector3(firstVector.x, 0, firstVector.z) - new Vector3(secondVector.x, 0, secondVector.z));
     }
