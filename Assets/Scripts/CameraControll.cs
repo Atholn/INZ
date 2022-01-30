@@ -168,8 +168,8 @@ public class CameraControll : MonoBehaviour
 
                     if (gameObject.GetComponent<BuildingUnit>() != null)
                     {
-                        gameObject.GetComponent<BuildingUnit>().PointerPosition = rayHit.point;
-                        _gameManager.Pointer.transform.position = rayHit.point;
+                        gameObject.GetComponent<BuildingUnit>().PointerPosition = new Vector3(rayHit.point.x, 0.45f, rayHit.point.z);
+                        _gameManager.Pointer.transform.position = new Vector3(rayHit.point.x, 0.45f, rayHit.point.z);
                         continue;
                     }
 
