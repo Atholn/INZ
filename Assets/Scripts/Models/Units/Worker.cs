@@ -40,14 +40,7 @@ public class Worker : HumanUnit
 
     protected override void Update()
     {
-        if (nav == null)
-        {
-            base.Start();
-            nav = GetComponent<NavMeshAgent>();
-            animator = GetComponent<Animator>();
-        }
         base.Update();
-        //transform.position = new Vector3(transform.position.x, 0.5f, transform.position.z);
 
         if (IsDead)
         {
@@ -71,12 +64,7 @@ public class Worker : HumanUnit
         }
 
         Animate();
-
     }
-
-
-
-
 
     public enum Task
     {
