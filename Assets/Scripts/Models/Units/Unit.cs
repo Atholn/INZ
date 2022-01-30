@@ -15,11 +15,11 @@ public class Unit : MonoBehaviour
     public int Priority;
     public float CreateTime;
 
-    internal int whichPlayer;
-    internal int Hp;
-
     public int GoldCost;
     public int WoodCost;
+
+    internal int whichPlayer;
+    internal int Hp;
 
     protected virtual void  Start()
     {

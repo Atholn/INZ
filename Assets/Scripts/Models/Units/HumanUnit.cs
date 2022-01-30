@@ -1,16 +1,23 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 
 public class HumanUnit : Unit
 {
-    internal bool IsDead = false;
-    protected float timeDeath = 10f;
-
     public int UnitPoint = 1;
+    
+    protected bool IsDead = false;
+    protected float timeDeath = 10f;
+    protected float timmer = 0;
+    protected float distance;
+    protected Transform target;
+    protected NavMeshAgent nav;
+    protected Animator animator;
+
+    protected virtual void Awake()
+    {
+        nav = GetComponent<NavMeshAgent>();
+        animator = GetComponent<Animator>();
+    }
 
     protected override void Start()
     {
@@ -19,10 +26,11 @@ public class HumanUnit : Unit
 
     protected override void Update()
     {
-        //transform.position = new Vector3(transform.position.x, 0, transform.position.z);
         base.Update();
+
+        if (Hp <= 0)
+        {
+            IsDead = true;
+        }
     }
-
-
-
 }

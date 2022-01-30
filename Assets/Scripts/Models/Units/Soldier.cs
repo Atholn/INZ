@@ -6,58 +6,37 @@ using UnityEngine.AI;
 
 public class Soldier : HumanUnit
 {
-    public enum Task
+    private enum SoldierTask
     {
         idle, run, follow, attack, dead
     }
 
-    Task task = Task.idle;
-    bool run = false;
-    bool attack = false;
-    bool deading = false;
+    private SoldierTask task = SoldierTask.idle;
 
-    const string ANIMATOR_RUNNING = "Run",
-                    ANIMATOR_DEAD = "Dead",
-                    ANIMATOR_ATTACK = "Attack";
+    private const string ANIMATOR_RUNNING = "Run",
+                         ANIMATOR_DEAD = "Dead",
+                         ANIMATOR_ATTACK = "Attack";
 
-    protected Transform target;
-    protected NavMeshAgent nav;
-    protected Animator animator;
+    private bool run = false;
+    private bool attack = false;
+    private bool deading = false;
 
-    protected float attackDistance = 1,
-                    attackCooldown = 1,
-                    attackDamage = 0,
-                    stoppingDistance = 2,
-                    buildingDistance = 0.5f,
-                    choppingDistance = 1,
-                    stopChoppingDistance = 1f,
-                    attacklenght = 2f;
-
-    private float timmer = 0;
+    private const float _stoppingDistance = 1.5f,
+                        _attackLenghtTime = 2f;
 
     protected override void Start()
     {
         base.Start();
-        nav = GetComponent<NavMeshAgent>();
-        animator = GetComponent<Animator>();
-    }
-
-    internal void GetComponents()
-    {
-        base.Start();
-        nav = GetComponent<NavMeshAgent>();
-        animator = GetComponent<Animator>();
     }
 
     protected override void Update()
     {
-
         base.Update();
         transform.position = new Vector3(transform.position.x, 1.5f, transform.position.z);
 
         if (IsDead)
         {
-            task = Task.dead;
+            task = SoldierTask.dead;
             nav.velocity = Vector3.zero;
             timmer = 0;
             IsDead = false;
@@ -66,11 +45,11 @@ public class Soldier : HumanUnit
 
         switch (task)
         {
-            case Task.idle: Idling(); break;
-            case Task.run: Moving(); break;
-            case Task.follow: Following(); break;
-            case Task.attack: Attack(); break;
-            case Task.dead: Death(); break;
+            case SoldierTask.idle: Idling(); break;
+            case SoldierTask.run: Moving(); break;
+            case SoldierTask.follow: Following(); break;
+            case SoldierTask.attack: Attack(); break;
+            case SoldierTask.dead: Death(); break;
         }
 
         Animate();
@@ -100,7 +79,7 @@ public class Soldier : HumanUnit
         {
             nav.velocity = Vector3.zero;
             target = null;
-            task = Task.idle;
+            task = SoldierTask.idle;
             /// to do zeby reagowal na inne jednostki
             /// near enemies
             return;
@@ -115,7 +94,7 @@ public class Soldier : HumanUnit
             nav.SetDestination(target.position);
         }
 
-        float distance = Vector3.Magnitude(nav.destination - transform.position);
+        distance = Vector3.Magnitude(nav.destination - transform.position);
 
         if (distance > AttackDistance)
         {
@@ -129,7 +108,7 @@ public class Soldier : HumanUnit
         {
             nav.velocity = Vector3.zero;
             target = null;
-            task = Task.idle;
+            task = SoldierTask.idle;
             /// to do zeby reagowal na inne jednostki
             /// near enemies
             return;
@@ -139,7 +118,7 @@ public class Soldier : HumanUnit
         attack = true;
 
         timmer += Time.deltaTime;
-        if (timmer > attacklenght)
+        if (timmer > _attackLenghtTime)
         {
             timmer = 0;
             target.gameObject.GetComponent<Unit>().Hp -= base.AttackPower;
@@ -152,12 +131,12 @@ public class Soldier : HumanUnit
             if (target.gameObject.GetComponent<Unit>().Hp <= 0)
             {
 
-                if (target.gameObject.GetComponent<HumanUnit>() != null)
-                    target.gameObject.GetComponent<HumanUnit>().IsDead = true;
+                //if (target.gameObject.GetComponent<HumanUnit>() != null)
+                //    target.gameObject.GetComponent<HumanUnit>().IsDead = true;
 
                 nav.velocity = Vector3.zero;
                 target = null;
-                task = Task.idle;
+                task = SoldierTask.idle;
                 /// to do zeby reagowal na inne jednostki
                 /// near enemies
 
@@ -168,37 +147,37 @@ public class Soldier : HumanUnit
 
     private void BowShoting()
     {
-        BowShot bowShot = GetComponent<BowShot>();
-        //GameObject arrow = (Instantiate(bowShot.Arrow, new Vector3 (0,0,0) , bowShot.Arrow.transform.rotation));
-        GameObject Arrow = bowShot.Arrow;
-        ////arrow.transform.SetParent(transform);
-        //arrow.transform.localPosition = new Vector3(transform.position.x, 3, transform.position.z);
-        //arrow.GetComponent<Arrow>().SetLandingPlace(target.transform.position);
+        //    BowShot bowShot = GetComponent<BowShot>();
+        //    //GameObject arrow = (Instantiate(bowShot.Arrow, new Vector3 (0,0,0) , bowShot.Arrow.transform.rotation));
+        //    GameObject Arrow = bowShot.Arrow;
+        //    ////arrow.transform.SetParent(transform);
+        //    //arrow.transform.localPosition = new Vector3(transform.position.x, 3, transform.position.z);
+        //    //arrow.GetComponent<Arrow>().SetLandingPlace(target.transform.position);
 
 
-        GameObject newArrow = Instantiate(Arrow, transform.position + new Vector3(0,2,0), Arrow.transform.rotation);
-        //newArrow.transform.rotation = Arrow.transform.rotation;
-        //newArrow.transform.position = transform.position;
-        Rigidbody rb = newArrow.GetComponent<Rigidbody>();
+        //    GameObject newArrow = Instantiate(Arrow, transform.position + new Vector3(0,2,0), Arrow.transform.rotation);
+        //    //newArrow.transform.rotation = Arrow.transform.rotation;
+        //    //newArrow.transform.position = transform.position;
+        //    Rigidbody rb = newArrow.GetComponent<Rigidbody>();
 
-        //newArrow.GetComponent<Arrow>().SetLandingPlace(target.transform.position);
-        newArrow.GetComponent<Arrow>().target = target.position;
-        //rb.velocity = transform.forward * 30;
-        //rb.MovePosition
+        //    //newArrow.GetComponent<Arrow>().SetLandingPlace(target.transform.position);
+        //    newArrow.GetComponent<Arrow>().target = target.position;
+        //    //rb.velocity = transform.forward * 30;
+        //    //rb.MovePosition
     }
 
     private void Following()
     {
         nav.SetDestination(target.position);
-        float distance = Vector3.Magnitude(nav.destination - transform.position);
+        distance = Vector3.Magnitude(nav.destination - transform.position);
 
-        if (distance > stoppingDistance)
+        if (distance > _stoppingDistance)
         {
             run = true;
             attack = false;
         }
 
-        if (distance <= stoppingDistance)
+        if (distance <= _stoppingDistance)
         {
             nav.velocity = Vector3.zero;
             run = false;
@@ -208,21 +187,19 @@ public class Soldier : HumanUnit
 
     private void Moving()
     {
-        float distance = Vector3.Magnitude(nav.destination - transform.position);
+        distance = Vector3.Magnitude(nav.destination - transform.position);
 
-        if (distance > stoppingDistance)
+        if (distance > _stoppingDistance)
         {
             run = true;
             attack = false;
+            return;
         }
 
-        if (distance <= stoppingDistance)
-        {
-            run = false;
-            attack = false;
-            nav.velocity = Vector3.zero;
-            task = Task.idle;
-        }
+        run = false;
+        attack = false;
+        nav.velocity = Vector3.zero;
+        task = SoldierTask.idle;
     }
 
     private void Idling()
@@ -235,18 +212,18 @@ public class Soldier : HumanUnit
     void Command(Vector3 destination)
     {
         nav.SetDestination(destination);
-        task = Task.run;
+        task = SoldierTask.run;
     }
 
     void CommandPlayer(GameObject gameObject)
     {
         target = gameObject.transform;
-        task = Task.follow;
+        task = SoldierTask.follow;
     }
 
     void CommandEnemy(GameObject gameObject)
     {
         target = gameObject.transform;
-        task = Task.attack;
+        task = SoldierTask.attack;
     }
 }

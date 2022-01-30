@@ -13,21 +13,16 @@ public class Worker : HumanUnit
     protected override void Start()
     {
         base.Start();
-        nav = GetComponent<NavMeshAgent>();
-        animator = GetComponent<Animator>();
     }
 
-    internal void GetComponents()
+    protected override void Awake()
     {
-        base.Start();
-        nav = GetComponent<NavMeshAgent>();
-        animator = GetComponent<Animator>();
+        base.Awake();
 
         for (int i = 0; i < transform.childCount; i++)
         {
             if (transform.GetChild(i).name == "GoldBag")
             {
-
                 GoldBag = transform.GetChild(i).gameObject;
             }
             if (transform.GetChild(i).name == "Woods")
@@ -97,8 +92,7 @@ public class Worker : HumanUnit
     ANIMATOR_CHOPPING = "Chopping";
 
     protected Task task = Task.idle;
-    protected NavMeshAgent nav;
-    protected Animator animator;
+
     protected float attackDistance = 1,
                     attackCooldown = 1,
                     attackDamage = 0,
@@ -109,7 +103,6 @@ public class Worker : HumanUnit
                     stopDiggingDistance = 1f;
 
     internal Tree choppingTree;
-    protected Transform target;
     bool running = false;
     bool deading = false;
     bool chopping = false;
@@ -121,7 +114,7 @@ public class Worker : HumanUnit
     float choppingTime = 5f;
     float diggingTime = 3f;
     Transform goldMineTarget;
-    private float timmer;
+
 
     protected virtual void Animate()
     {
@@ -266,7 +259,7 @@ public class Worker : HumanUnit
         }
 
         BuildingUnit bu = target.GetComponent<BuildingUnit>();
-        bu.PointerPosition = new Vector3(target.transform.position.x, 0.5f, target.transform.position.z - (bu.SizeBuilding / 2) - 1);
+        bu.PointerPosition = new Vector3(target.transform.position.x, 0.45f, target.transform.position.z - (bu.SizeBuilding / 2) - 1);
         bu.UpdateUnitPoints(whichPlayer);
 
         animator.SetBool(ANIMATOR_BUILD, false);

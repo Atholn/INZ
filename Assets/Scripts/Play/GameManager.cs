@@ -49,7 +49,7 @@ public class GameManager : MonoBehaviour
 
     private readonly int _maxUnitsPoint = 100;
 
-    internal int[][][] maps;
+    //internal int[][][] maps;
 
     void Start()
     {
@@ -77,7 +77,7 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        maps = MapToPlayStorage.Map.MapWorldCreate.Maps;
+        //maps = MapToPlayStorage.Map.MapWorldCreate.Maps;
 
         //for (int j = 0; j < _gameObjects[0].Length; j++)
         //{
@@ -190,7 +190,7 @@ public class GameManager : MonoBehaviour
                 _playersGameObjects[i][j + 1].GetComponent<Unit>().whichPlayer = i;
 
                 Worker w = _playersGameObjects[i][j+1].GetComponent<Worker>();
-                w.GetComponents();
+                //w.GetComponents();
             }
         }
     }
@@ -319,7 +319,6 @@ public class GameManager : MonoBehaviour
             {
                 Pointer.SetActive(true);
                 Pointer.transform.position = gameObject.GetComponent<BuildingUnit>().PointerPosition;
-
             }
         }
         onlyOneSelectGO = gameObject;
@@ -354,14 +353,14 @@ public class GameManager : MonoBehaviour
             if (_playersGameObjects[whichPlayer][_playersGameObjects[whichPlayer].Count - 1].GetComponent<Worker>() != null)
             {
                 Worker w = _playersGameObjects[whichPlayer][_playersGameObjects[whichPlayer].Count - 1].GetComponent<Worker>();
-                w.GetComponents();
+                //w.GetComponents();
                 w.SendMessage("Command", Pointer.transform.position, SendMessageOptions.DontRequireReceiver);
             }
 
             if (_playersGameObjects[whichPlayer][_playersGameObjects[whichPlayer].Count - 1].GetComponent<Soldier>() != null)
             {
                 Soldier s = _playersGameObjects[whichPlayer][_playersGameObjects[whichPlayer].Count - 1].GetComponent<Soldier>();
-                s.GetComponents();
+                //s.GetComponents();
                 _playersGameObjects[whichPlayer][_playersGameObjects[whichPlayer].Count - 1].GetComponent<Soldier>().SendMessage("Command", Pointer.transform.position, SendMessageOptions.DontRequireReceiver);
             }
         }

@@ -213,7 +213,7 @@ public class Player : MonoBehaviour
 
         if(image == null)
         {
-            Debug.Log("dupa");
+            //Debug.Log("test error");
 
             return;
         }

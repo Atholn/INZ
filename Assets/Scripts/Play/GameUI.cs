@@ -269,14 +269,12 @@ public class GameUI : MonoBehaviour
         ActionPanel.gameObject.SetActive(true);
         panel.SetActive(false);
     }
-
     #endregion
 
     #endregion
 
 
     #region WinLose
-
     public void ShowWinner(int winner, Color winnerColor)
     {
         TopPanel.SetActive(false);
@@ -287,6 +285,5 @@ public class GameUI : MonoBehaviour
         WinLosePanel.GetComponent<Image>().color = new Color(winnerColor.r, winnerColor.g, winnerColor.b, 150/255f);
         WinLosePanel.GetComponentInChildren<Text>().text = winner == 0 ? "You win!" : $"You lose!\nPlayer {winner} win!";
     }
-
     #endregion
 }
