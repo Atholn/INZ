@@ -175,6 +175,7 @@ MonoBehaviour:
   Profile: {fileID: 2800000, guid: 06245071a146e3a42ab8c8ac58d9cef2, type: 3}
   Priority: 1
   CreateTime: 10
+  HeightPosY: 1.6
   GoldCost: 150
   WoodCost: 25
   UnitPoint: 3

@@ -1,8 +1,4 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
 
 public class Soldier : HumanUnit
 {
@@ -13,16 +9,17 @@ public class Soldier : HumanUnit
 
     private SoldierTask task = SoldierTask.idle;
 
-    private const string ANIMATOR_RUNNING = "Run",
-                         ANIMATOR_DEAD = "Dead",
+    private const string ANIMATOR_DEAD = "Dead", 
+                         ANIMATOR_RUN = "Run",
                          ANIMATOR_ATTACK = "Attack";
 
+    private bool dead = false;
     private bool run = false;
     private bool attack = false;
-    private bool deading = false;
 
-    private const float _stoppingDistance = 1.5f,
-                        _attackLenghtTime = 2f;
+    private const float _stoppingDistance = 1.0f,
+                        _seeEnemyDistance = 5.0f,
+                        _attackLenghtTime = 2.0f;
 
     protected override void Start()
     {
@@ -32,15 +29,14 @@ public class Soldier : HumanUnit
     protected override void Update()
     {
         base.Update();
-        transform.position = new Vector3(transform.position.x, 1.5f, transform.position.z);
 
         if (IsDead)
         {
             task = SoldierTask.dead;
             nav.velocity = Vector3.zero;
             timmer = 0;
+            dead = true;
             IsDead = false;
-            deading = true;
         }
 
         switch (task)
@@ -68,8 +64,8 @@ public class Soldier : HumanUnit
 
     private void Animate()
     {
-        animator.SetBool(ANIMATOR_RUNNING, run);
-        animator.SetBool(ANIMATOR_DEAD, IsDead);
+        animator.SetBool(ANIMATOR_RUN, run);
+        animator.SetBool(ANIMATOR_DEAD, dead);
         animator.SetBool(ANIMATOR_ATTACK, attack);
     }
 
@@ -185,9 +181,15 @@ public class Soldier : HumanUnit
         }
     }
 
+    protected float CalculateLenghtStraightLine(Vector3 firstVector, Vector3 secondVector)
+    {
+        return Vector3.Magnitude(new Vector3(firstVector.x, 0, firstVector.z) - new Vector3(secondVector.x, 0, secondVector.z));
+    }
+
     private void Moving()
     {
-        distance = Vector3.Magnitude(nav.destination - transform.position);
+        distance = CalculateLenghtStraightLine(nav.destination, transform.position);
+            //Vector3.Magnitude(nav.destination - transform.position);
 
         if (distance > _stoppingDistance)
         {

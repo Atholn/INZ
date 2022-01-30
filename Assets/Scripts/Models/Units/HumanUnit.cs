@@ -28,6 +28,8 @@ public class HumanUnit : Unit
     {
         base.Update();
 
+        transform.position = new Vector3(transform.position.x, HeightPosY, transform.position.z);
+
         if (Hp <= 0)
         {
             IsDead = true;

@@ -14,7 +14,7 @@ public class Unit : MonoBehaviour
     public Texture2D Profile;
     public int Priority;
     public float CreateTime;
-
+    public float HeightPosY;
     public int GoldCost;
     public int WoodCost;
 
