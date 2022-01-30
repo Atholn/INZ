@@ -143,23 +143,48 @@ public class Soldier : HumanUnit
         {
             timmer = 0;
             target.gameObject.GetComponent<Unit>().Hp -= base.AttackPower;
+
+            if (GetComponentInParent<BowShot>() != null)
+            {
+                BowShoting();
+            }
+
             if (target.gameObject.GetComponent<Unit>().Hp <= 0)
             {
 
                 if (target.gameObject.GetComponent<HumanUnit>() != null)
                     target.gameObject.GetComponent<HumanUnit>().IsDead = true;
 
-
-
                 nav.velocity = Vector3.zero;
                 target = null;
                 task = Task.idle;
                 /// to do zeby reagowal na inne jednostki
                 /// near enemies
+
                 return;
             }
         }
+    }
 
+    private void BowShoting()
+    {
+        BowShot bowShot = GetComponent<BowShot>();
+        //GameObject arrow = (Instantiate(bowShot.Arrow, new Vector3 (0,0,0) , bowShot.Arrow.transform.rotation));
+        GameObject Arrow = bowShot.Arrow;
+        ////arrow.transform.SetParent(transform);
+        //arrow.transform.localPosition = new Vector3(transform.position.x, 3, transform.position.z);
+        //arrow.GetComponent<Arrow>().SetLandingPlace(target.transform.position);
+
+
+        GameObject newArrow = Instantiate(Arrow, transform.position + new Vector3(0,2,0), Arrow.transform.rotation);
+        //newArrow.transform.rotation = Arrow.transform.rotation;
+        //newArrow.transform.position = transform.position;
+        Rigidbody rb = newArrow.GetComponent<Rigidbody>();
+
+        //newArrow.GetComponent<Arrow>().SetLandingPlace(target.transform.position);
+        newArrow.GetComponent<Arrow>().target = target.position;
+        //rb.velocity = transform.forward * 30;
+        //rb.MovePosition
     }
 
     private void Following()

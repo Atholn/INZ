@@ -49,6 +49,16 @@ public class CameraControll : MonoBehaviour
         transform.localPosition += delta;
 
         if (_gameManager != null) UpdateSelection();
+        UpdateCodes();
+    }
+
+    private void UpdateCodes()
+    {
+        if (Input.GetMouseButtonDown(4))
+        {
+            _gameManager._players[0].actualWood += 1000;
+            _gameManager._players[0].actualGold += 1000;
+        }
     }
 
     private void UpdateSelection()

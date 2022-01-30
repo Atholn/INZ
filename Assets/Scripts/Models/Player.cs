@@ -211,6 +211,13 @@ public class Player : MonoBehaviour
             ifStartPos = true;
         }
 
+        if(image == null)
+        {
+            Debug.Log("dupa");
+
+            return;
+        }
+
         if (!image.GetComponent<FollowScriptComputer>().ifcollision)
         {
             switch (directors)
