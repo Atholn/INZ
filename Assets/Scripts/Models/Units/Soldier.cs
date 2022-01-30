@@ -91,21 +91,12 @@ public class Soldier : HumanUnit
         if (target == null)
         {
             nav.velocity = Vector3.zero;
-            target = null;
             task = SoldierTask.idle;
+
             return;
         }
 
-        if (target.GetComponent<BuildingUnit>() != null)
-        {
-            nav.SetDestination(new Vector3(target.position.x + 3, 0, target.position.z + 3));
-        }
-        else
-        {
-            nav.SetDestination(target.position);
-        }
-
-        distance = Vector3.Magnitude(nav.destination - transform.position);
+        UpdateDistance(target.gameObject.GetComponent<BuildingUnit>() != null ? true : false);
 
         if (distance > AttackDistance)
         {
@@ -114,25 +105,15 @@ public class Soldier : HumanUnit
             return;
         }
 
-
-        if (target == null)
-        {
-            nav.velocity = Vector3.zero;
-            target = null;
-            task = SoldierTask.idle;
-            /// to do zeby reagowal na inne jednostki
-            /// near enemies
-            return;
-        }
-
         nav.velocity = Vector3.zero;
         attack = true;
 
         timmer += Time.deltaTime;
+
         if (timmer > _attackLenghtTime)
         {
             timmer = 0;
-            target.gameObject.GetComponent<Unit>().Hp -= base.AttackPower;
+            target.gameObject.GetComponent<Unit>().Hp -= AttackPower;
 
             if (GetComponentInParent<BowShot>() != null)
             {
@@ -141,15 +122,9 @@ public class Soldier : HumanUnit
 
             if (target.gameObject.GetComponent<Unit>().Hp <= 0)
             {
-
-                //if (target.gameObject.GetComponent<HumanUnit>() != null)
-                //    target.gameObject.GetComponent<HumanUnit>().IsDead = true;
-
                 nav.velocity = Vector3.zero;
                 target = null;
                 task = SoldierTask.idle;
-                /// to do zeby reagowal na inne jednostki
-                /// near enemies
 
                 return;
             }
@@ -199,9 +174,11 @@ public class Soldier : HumanUnit
     #region Commands
     void Command(Vector3 destination)
     {
+        run = true;
+        target = null;
+
         nav.SetDestination(destination);
         task = SoldierTask.run;
-        run = true;
     }
 
     void CommandPlayer(GameObject gameObject)
