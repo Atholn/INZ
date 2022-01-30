@@ -18,7 +18,6 @@ public class Soldier : HumanUnit
     private bool attack = false;
 
     private const float _stoppingDistance = 1.0f,
-                        _seeEnemyDistance = 5.0f,
                         _attackLenghtTime = 2.0f;
 
     protected override void Start()
@@ -56,10 +55,6 @@ public class Soldier : HumanUnit
         nav.velocity = Vector3.zero;
         run = false;
         attack = false;
-
-
-        //if()
-        // todo near enemies if check 
     }
 
     private void Running()
