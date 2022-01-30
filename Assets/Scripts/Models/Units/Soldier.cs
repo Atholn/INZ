@@ -50,6 +50,7 @@ public class Soldier : HumanUnit
         Animate();
     }
 
+    #region Tasks
     private void Idling()
     {
         nav.velocity = Vector3.zero;
@@ -60,17 +61,14 @@ public class Soldier : HumanUnit
     private void Running()
     {
         distance = CalculateLenghtStraightLine(nav.destination, transform.position);
-        //Vector3.Magnitude(nav.destination - transform.position);
 
         if (distance > _stoppingDistance)
         {
-            run = true;
-            attack = false;
             return;
         }
 
         run = false;
-        attack = false;
+
         nav.velocity = Vector3.zero;
         task = SoldierTask.idle;
     }
@@ -204,24 +202,28 @@ public class Soldier : HumanUnit
         animator.SetBool(ANIMATOR_DEAD, dead);
         animator.SetBool(ANIMATOR_ATTACK, attack);
     }
+    #endregion
 
     #region Commands
     void Command(Vector3 destination)
     {
         nav.SetDestination(destination);
         task = SoldierTask.run;
+        run = true;
     }
 
     void CommandPlayer(GameObject gameObject)
     {
         target = gameObject.transform;
         task = SoldierTask.follow;
+        run = true;
     }
 
     void CommandEnemy(GameObject gameObject)
     {
         target = gameObject.transform;
         task = SoldierTask.attack;
+        run = true;
     }
     #endregion
 }
