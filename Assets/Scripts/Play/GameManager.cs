@@ -210,15 +210,6 @@ public class GameManager : MonoBehaviour
             building = false;
         }
 
-        //if(building && Input.GetMouseButtonDown(0))
-        //{
-        //    Instantiate(ItemControllers[CurrentButtonPressed].item.ItemPrefab,
-        //        new Vector3(v.x, ItemControllers[CurrentButtonPressed].item.ItemHeightPosY, v.z),
-        //        ItemControllers[CurrentButtonPressed].item.ItemPrefab.transform.rotation);
-
-        //    DestroyItemImages();
-        //    building = false;
-        //}
         if (Input.GetMouseButtonDown(2))
         {
             foreach (List<GameObject> gos in _playersGameObjects)
@@ -232,12 +223,10 @@ public class GameManager : MonoBehaviour
             }
         }
 
-
         if (onlyOneSelectGO != null)
         {
             _gameUI.ShowProgressCreateUnitPanel(onlyOneSelectGO);
         }
-
 
         foreach(Player player in _players)
         {

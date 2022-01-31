@@ -32,6 +32,9 @@ public class GameUI : MonoBehaviour
     private Text[] _characterInfos;
     private List<RawImage> _images = new List<RawImage>();
 
+    private Button[] buttonsCancelCreate;
+    //private RawImage[] rawImages;
+
     private void Start()
     {
         foreach (GameObject button in WorkerActions)
@@ -46,6 +49,15 @@ public class GameUI : MonoBehaviour
         BarracksSpecialPanel.SetActive(false);
 
         RawMaterials = RawMaterialsPanel.GetComponentsInChildren<Text>();
+
+        //rawImages = CreateProgressPanel.GetComponentsInChildren<RawImage>(true);
+        buttonsCancelCreate = CreateProgressPanel.GetComponentsInChildren<Button>(true);
+        for(int i=0;i< buttonsCancelCreate.Length;i++)
+        {
+            buttonsCancelCreate[i].GetComponent<CancelCreateUnit>().ButtonID = i;
+        }
+
+        
     }
 
     #region TopPanel
@@ -172,7 +184,7 @@ public class GameUI : MonoBehaviour
             }
         }
 
-        ShowProgressCreateUnitPanel(gameObject);
+        //ShowProgressCreateUnitPanel(gameObject);
     }
 
     internal void ShowProgressCreateUnitPanel(GameObject gameObject)
@@ -183,28 +195,25 @@ public class GameUI : MonoBehaviour
         {
             CreateProgressPanel.SetActive(true);
 
-            RawImage[] rawImages = CreateProgressPanel.GetComponentsInChildren<RawImage>(true);
             int queuesLength = buildingUnit.GetActualQueueLength();
-
-            Texture2D[] textures = new Texture2D[queuesLength  > rawImages.Length ? rawImages.Length : queuesLength];
+            Texture2D[] textures = new Texture2D[queuesLength  > buttonsCancelCreate.Length ? buttonsCancelCreate.Length : queuesLength];
             float value = 0f;
             buildingUnit.UpdateProgressInfo(ref textures, ref value);
 
-            for(int i=0; i< rawImages.Length;i++)
+            for(int i=0; i< buttonsCancelCreate.Length;i++)
             {
                 if( i < textures.Length)
                 {
-                    rawImages[i].texture = textures[i];
-                    rawImages[i].color = new Color(255, 255, 255, 255);
-                    rawImages[i].gameObject.SetActive(true);
+                    RawImage rawImage = buttonsCancelCreate[i].GetComponent<RawImage>();
+                    rawImage.texture = textures[i];
+                    rawImage.color = new Color(255, 255, 255, 255);
+                    buttonsCancelCreate[i].gameObject.SetActive(true);
                 }
                 else
                 {
-                    rawImages[i].gameObject.SetActive(false);
+                    buttonsCancelCreate[i].gameObject.SetActive(false);
                 }
             }
-
-            //CreateProgressPanel.GetComponentInChildren<RawImage>().texture = textures;
             CreateProgressPanel.GetComponentInChildren<Slider>().value = value;
         }
         else

@@ -46,10 +46,25 @@ public class BuildingUnit : Unit
     internal void CreateUnit(GameObject unitToCreate, int whichPlayer)
     {
         createUnit = true;
-        //unitCreateProgress = 0f;
         whichPlayerUnit = whichPlayer;
         queueCreateUnit.Add(unitToCreate);
         queueCreateUnitProgress.Add(0f);
+    }
+
+    internal GameObject HowUnitInID(int i)
+    {
+        return queueCreateUnit[i];
+    }
+
+    internal void CancelCreateUnit(int i)
+    {
+        queueCreateUnit.Remove(queueCreateUnit[i]);
+        queueCreateUnitProgress.Remove(queueCreateUnitProgress[i]);
+
+        if (queueCreateUnit.Count == 0 && queueCreateUnitProgress.Count == 0)
+        {
+            createUnit = false;
+        }
     }
 
     private void UpdateCreate()
@@ -59,22 +74,22 @@ public class BuildingUnit : Unit
             return;
         }
 
+        if(gameManager._players[0].actualUnitsPoint + queueCreateUnit[0].GetComponent<HumanUnit>().UnitPoint > gameManager._players[0].actualMaxUnitsPoint)
+        {
+            return;
+        }
+
         queueCreateUnitProgress[0] += Time.deltaTime;
 
         if (queueCreateUnitProgress[0] > queueCreateUnit[0].GetComponent<Unit>().CreateTime)
         {
-            //Debug.LogError("Create!");
-            //Debug.LogError(buildingParent.transform.position);
-
             gameManager.UnitCreate(whichPlayerUnit, queueCreateUnit[0], transform.position + new Vector3(0, 0, -SizeBuilding / 2));
             queueCreateUnit.Remove(queueCreateUnit[0]);
             queueCreateUnitProgress.Remove(queueCreateUnitProgress[0]);
-            //unitCreateProgress = 0f;
-            //queueCreateUnit = null;
+
             if (queueCreateUnit.Count == 0 && queueCreateUnitProgress.Count == 0)
             {
                 createUnit = false;
-
             }
         }
     }
@@ -84,6 +99,7 @@ public class BuildingUnit : Unit
         for (int i = 0; i < textures.Length; i++)
         {
             textures[i] = queueCreateUnit[i].GetComponent<Unit>().Profile;
+            
         }
         val = queueCreateUnitProgress[0] / queueCreateUnit[0].GetComponent<Unit>().CreateTime;
     }
