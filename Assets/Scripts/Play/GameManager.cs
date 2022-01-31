@@ -77,18 +77,6 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        //maps = MapToPlayStorage.Map.MapWorldCreate.Maps;
-
-        //for (int j = 0; j < _gameObjects[0].Length; j++)
-        //{
-        //    for (int k = 0; k < _gameObjects[0][j].Length; k++)
-        //    {
-        //        if (_gameObjects[0][j][k] != null)
-        //        {
-        //            navMeshBaker.navMeshSurfaces.Add(_gameObjects[0][j][k].GetComponent<NavMeshSurface>());
-        //        }
-        //    }
-        //}
         InitializePlayers();
         navMeshBaker.navMeshSurfaces.Add(_terrain.GetComponent<NavMeshSurface>());
         navMeshBaker.Bake();

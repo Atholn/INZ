@@ -502,12 +502,19 @@ public class Worker : HumanUnit
 
     private Transform SearchNearTreePlace()
     {
-        return GameObject.FindGameObjectsWithTag("Tree").OrderBy(x => Vector3.Distance(x.transform.position, transform.position)).Select(x => x.transform).FirstOrDefault(); ;
+        return GameObject
+            .FindGameObjectsWithTag("Tree")
+            .OrderBy(x => Vector3.Distance(x.transform.position, transform.position))
+            .Select(x => x.transform)
+            .FirstOrDefault(); ;
     }
 
     private Transform SearchNearGoldminePlace()
     {
-        return GameObject.FindGameObjectsWithTag("Goldmine").OrderBy(x => Vector3.Distance(x.transform.position, transform.position)).Select(x => x.transform).FirstOrDefault(); ;
+        return GameObject.FindGameObjectsWithTag("Goldmine")
+            .OrderBy(x => Vector3.Distance(x.transform.position, transform.position))
+            .Select(x => x.transform)
+            .FirstOrDefault();
     }
     #endregion
 
@@ -554,9 +561,6 @@ public class Worker : HumanUnit
         }
     }
 
-    #endregion
-
-    #region AI
     #endregion
 
     #region AICommands
