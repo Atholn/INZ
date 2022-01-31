@@ -6,6 +6,44 @@ using UnityEngine.AI;
 
 public class Worker : HumanUnit
 {
+    private enum Task
+    {
+        idle, move, follow, build, repair, dig, chop, dead
+    }
+
+    private Task task = Task.idle;
+
+    private const string ANIMATOR_DEAD = "Dead",
+                 ANIMATOR_RUN = "Run",
+                 ANIMATOR_BUILD = "Build",
+                 ANIMATOR_CHOP = "Chop",
+                 ANIMATOR_GOLD = "Gold",
+                 ANIMATOR_WOOD = "Wood";
+
+    private bool dead = false;
+    private bool run = false;
+    private bool build = false;
+    private bool chop = false;
+    private int wood = 0;
+    private int gold = 0;
+
+    private const float stoppingDistance = 1,
+                        buildingDistance = 0.5f,
+                        choppingDistance = 1,
+                        stopChoppingDistance = 0.5f,
+                        stopDiggingDistance = 1f;
+
+    internal Tree choppingTree;
+    int goToChopping = -1; // 1 go to 0 chopping -1 go to wood place 
+    bool goToDigging = false;
+
+    float choppingTime = 5f;
+    float diggingTime = 3f;
+    Transform goldMineTarget;
+
+    bool searchtarget = false;
+    Vector3 nearPos;
+
     GameObject GoldBag;
     GameObject Woods;
     GameObject Axe;
@@ -13,40 +51,6 @@ public class Worker : HumanUnit
     GameObject Pick;
     GameManager _gameManager;
 
-    private enum Task
-    {
-        idle, move, follow, build, repair, chopping, digging, dead
-    }
-
-    private Task task = Task.idle;
-
-    const string ANIMATOR_RUNNING = "Run",
-                 ANIMATOR_DEAD = "Dead",
-                 ANIMATOR_WOOD = "Wood",
-                 ANIMATOR_GOLD = "Gold",
-                 ANIMATOR_BUILD = "Building",
-                 ANIMATOR_CHOPPING = "Chopping";
-
-    protected float attackDistance = 1,
-                    attackCooldown = 1,
-                    attackDamage = 0,
-                    stoppingDistance = 1,
-                    buildingDistance = 0.5f,
-                    choppingDistance = 1,
-                    stopChoppingDistance = 0.5f,
-                    stopDiggingDistance = 1f;
-
-    internal Tree choppingTree;
-    bool running = false;
-    bool deading = false;
-    bool chopping = false;
-    int woodInBack = 0;
-    int goToChopping = -1; // 1 go to 0 chopping -1 go to wood place 
-    bool goToDigging = false;
-
-    float choppingTime = 5f;
-    float diggingTime = 3f;
-    Transform goldMineTarget;
 
     protected override void Awake()
     {
@@ -86,68 +90,48 @@ public class Worker : HumanUnit
             nav.velocity = Vector3.zero;
             timmer = 0;
             IsDead = false;
-            deading = true;
+            dead = true;
         }
 
         switch (task)
         {
             case Task.idle: Idling(); break;
-            case Task.move: Moving(); break;
+            case Task.move: Running(); break;
             case Task.follow: Following(); break;
             case Task.build: Building(); break;
             case Task.repair: Repairing(); break;
-            case Task.chopping: Chopping(); break;
-            case Task.digging: Digging(); break;
+            case Task.dig: Digging(); break;
+            case Task.chop: Chopping(); break;
             case Task.dead: Death(); break;
         }
 
         Animate();
     }
 
-
-
-
-    protected virtual void Animate()
-    {
-        if (animator == null) return;
-        animator.SetBool(ANIMATOR_RUNNING, running);
-        animator.SetBool(ANIMATOR_DEAD, deading);
-    }
-
-    protected virtual void Idling()
+    #region Tasks
+    private void Idling()
     {
         nav.velocity = Vector3.zero;
     }
 
-    protected virtual void Moving()
+    private void Running()
     {
         animator.SetBool(ANIMATOR_BUILD, false);
         float distance = Vector3.Magnitude(nav.destination - transform.position);
 
         if (distance > stoppingDistance)
         {
-            running = true;
+            run = true;
         }
 
         if (distance <= stoppingDistance)
         {
-            running = false;
+            run = false;
             task = Task.idle;
         }
     }
 
-    private void Death()
-    {
-        if (timmer > timeDeath)
-        {
-            Destroy(gameObject);
-            return;
-        }
-
-        timmer += Time.deltaTime;
-    }
-
-    protected virtual void Following()
+    private void Following()
     {
         nav.SetDestination(target.position);
         float distance = Vector3.Magnitude(nav.destination - transform.position);
@@ -155,17 +139,12 @@ public class Worker : HumanUnit
         if (distance <= stoppingDistance)
         {
             nav.velocity = Vector3.zero;
-            running = false;
+            run = false;
             task = Task.idle;
             target = null;
         }
     }
-
-
-
-    bool searchtarget = false;
-    Vector3 nearPos;
-
+    
     private void Building()
     {
         BuildingUnit bU = target.GetComponent<BuildingUnit>();
@@ -184,12 +163,12 @@ public class Worker : HumanUnit
         if (distance > bU.SizeBuilding / 2)
         {
             animator.SetBool(ANIMATOR_BUILD, false);
-            running = true;
+            run = true;
             return;
         }
 
         nav.velocity = Vector3.zero;
-        running = false;
+        run = false;
         animator.SetBool(ANIMATOR_BUILD, true);
 
         if (bU.BuildingPercent < bU.CreateTime)
@@ -207,7 +186,7 @@ public class Worker : HumanUnit
         task = Task.idle;
     }
 
-    protected virtual void Repairing()
+    private void Repairing()
     {
         BuildingUnit bU = target.GetComponent<BuildingUnit>();
 
@@ -218,14 +197,14 @@ public class Worker : HumanUnit
         {
 
             animator.SetBool(ANIMATOR_BUILD, false);
-            running = true;
+            run = true;
             return;
         }
 
         if (distance <= bU.SizeBuilding/2)
         {
             nav.velocity = Vector3.zero;
-            running = false;
+            run = false;
         }
 
         animator.SetBool(ANIMATOR_BUILD, true);
@@ -240,103 +219,8 @@ public class Worker : HumanUnit
         animator.SetBool(ANIMATOR_BUILD, false);
         task = Task.idle;
     }
-
-    protected virtual void Chopping()
-    {
-        if (animator.GetInteger(ANIMATOR_WOOD) == 0 && !animator.GetBool(ANIMATOR_CHOPPING))
-        {
-            goToChopping = -1;
-        }
-        else if (animator.GetInteger(ANIMATOR_WOOD) == 0 && animator.GetBool(ANIMATOR_CHOPPING))
-        {
-            goToChopping = 0;
-        }
-        else if (animator.GetInteger(ANIMATOR_WOOD) > 0)
-        {
-            goToChopping = 1;
-        }
-
-        if (goToChopping == -1 && target == null)
-        {
-            target = SearchNearTreePlace();
-
-            if (target == null)
-            {
-                target = SearchNearWoodPlace();
-
-                if (target == null)
-                {
-                    task = Task.idle;
-                    running = false;
-                }
-            }
-
-        }
-
-        if (goToChopping == -1)
-            nav.SetDestination(target.position);
-        else if (goToChopping == 1)
-            nav.SetDestination(target.position + new Vector3(0,0, -target.GetComponent<BuildingUnit>().SizeBuilding/2));
-        float distance = Vector3.Magnitude(nav.destination - transform.position);
-
-        if (goToChopping == -1)
-        {
-            if (distance > choppingDistance)
-            {
-                running = true;
-                return;
-            }
-
-            timmer = 0;
-            animator.SetBool(ANIMATOR_CHOPPING, true);
-            animator.SetInteger(ANIMATOR_WOOD, 0);
-            running = false;
-            nav.velocity = Vector3.zero;
-            return;
-        }
-        if (goToChopping == 0)
-        {
-            if (timmer < choppingTime)
-            {
-                timmer += Time.deltaTime;
-                return;
-            }
-
-            target.GetComponent<Tree>().ChoppingProcess();
-            animator.SetBool(ANIMATOR_CHOPPING, false);
-            animator.SetInteger(ANIMATOR_WOOD, 10);
-            running = true;
-            target = SearchNearWoodPlace();
-            Woods.SetActive(true);
-
-            if (target == null)
-            {
-                task = Task.idle;
-                running = false;
-            }
-
-            return;
-        }
-
-
-        if (goToChopping == 1)
-        {
-            if (distance > stopChoppingDistance)
-            {
-                return;
-            }
-            _gameManager.UpdateWood(whichPlayer, 10);
-            animator.SetBool(ANIMATOR_CHOPPING, false);
-            animator.SetInteger(ANIMATOR_WOOD, 0);
-            running = true;
-            target = SearchNearTreePlace();
-            Woods.SetActive(false);
-
-            return;
-        }
-    }
-
-    protected virtual void Digging()
+    
+    private void Digging()
     {
         if (animator.GetInteger(ANIMATOR_GOLD) == 0)
         {
@@ -350,7 +234,7 @@ public class Worker : HumanUnit
         if (goToDigging && target == null)
         {
             nav.velocity = Vector3.zero;
-            running = false;
+            run = false;
             target = null;
             task = Task.idle;
         }
@@ -376,7 +260,7 @@ public class Worker : HumanUnit
             if (distance > choppingDistance)
             {
                 animator.SetInteger(ANIMATOR_GOLD, 0);
-                running = true;
+                run = true;
                 return;
             }
 
@@ -405,7 +289,7 @@ public class Worker : HumanUnit
                     target.GetComponent<GoldMine>().DiggingGoldmine();
                     target = SearchNearGoldPlace();
 
-                    running = true;
+                    run = true;
                     GoldBag.SetActive(true);
                 }
                 return;
@@ -424,7 +308,7 @@ public class Worker : HumanUnit
             if (goldMineTarget == null)
             {
                 nav.velocity = Vector3.zero;
-                running = false;
+                run = false;
                 target = null;
                 task = Task.idle;
                 return;
@@ -433,6 +317,123 @@ public class Worker : HumanUnit
             target = goldMineTarget;
         }
     }
+
+    private void Chopping()
+    {
+        if (animator.GetInteger(ANIMATOR_WOOD) == 0 && !animator.GetBool(ANIMATOR_CHOP))
+        {
+            goToChopping = -1;
+        }
+        else if (animator.GetInteger(ANIMATOR_WOOD) == 0 && animator.GetBool(ANIMATOR_CHOP))
+        {
+            goToChopping = 0;
+        }
+        else if (animator.GetInteger(ANIMATOR_WOOD) > 0)
+        {
+            goToChopping = 1;
+        }
+
+        if (goToChopping == -1 && target == null)
+        {
+            target = SearchNearTreePlace();
+
+            if (target == null)
+            {
+                target = SearchNearWoodPlace();
+
+                if (target == null)
+                {
+                    task = Task.idle;
+                    run = false;
+                }
+            }
+
+        }
+
+        if (goToChopping == -1)
+            nav.SetDestination(target.position);
+        else if (goToChopping == 1)
+            nav.SetDestination(target.position + new Vector3(0,0, -target.GetComponent<BuildingUnit>().SizeBuilding/2));
+        float distance = Vector3.Magnitude(nav.destination - transform.position);
+
+        if (goToChopping == -1)
+        {
+            if (distance > choppingDistance)
+            {
+                run = true;
+                return;
+            }
+
+            timmer = 0;
+            animator.SetBool(ANIMATOR_CHOP, true);
+            animator.SetInteger(ANIMATOR_WOOD, 0);
+            run = false;
+            nav.velocity = Vector3.zero;
+            return;
+        }
+        if (goToChopping == 0)
+        {
+            if (timmer < choppingTime)
+            {
+                timmer += Time.deltaTime;
+                return;
+            }
+
+            target.GetComponent<Tree>().ChoppingProcess();
+            animator.SetBool(ANIMATOR_CHOP, false);
+            animator.SetInteger(ANIMATOR_WOOD, 10);
+            run = true;
+            target = SearchNearWoodPlace();
+            Woods.SetActive(true);
+
+            if (target == null)
+            {
+                task = Task.idle;
+                run = false;
+            }
+
+            return;
+        }
+
+
+        if (goToChopping == 1)
+        {
+            if (distance > stopChoppingDistance)
+            {
+                return;
+            }
+            _gameManager.UpdateWood(whichPlayer, 10);
+            animator.SetBool(ANIMATOR_CHOP, false);
+            animator.SetInteger(ANIMATOR_WOOD, 0);
+            run = true;
+            target = SearchNearTreePlace();
+            Woods.SetActive(false);
+
+            return;
+        }
+    }
+
+    private void Death()
+    {
+        if (timmer > timeDeath)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        timmer += Time.deltaTime;
+    }
+
+    private void Animate()
+    {
+        animator.SetBool(ANIMATOR_DEAD, dead);
+        animator.SetBool(ANIMATOR_RUN, run);
+        animator.SetBool(ANIMATOR_BUILD, build);
+        animator.SetBool(ANIMATOR_CHOP, chop);
+        animator.SetInteger(ANIMATOR_GOLD, gold);
+        animator.SetInteger(ANIMATOR_WOOD, wood);
+    }
+    #endregion
 
     #region Search
     private Transform SearchNearWoodPlace()
@@ -520,13 +521,13 @@ public class Worker : HumanUnit
     void Command(Tree tree)
     {
         target = tree.transform;
-        task = Task.chopping;
+        task = Task.chop;
     }
 
     void Command(GoldMine goldMine)
     {
         target = goldMine.transform;
-        task = Task.digging;
+        task = Task.dig;
     }
 
     void Command(GameObject gameObject)
@@ -563,19 +564,19 @@ public class Worker : HumanUnit
     {
         target = null;
         nav.velocity = Vector3.zero;
-        running = false;
+        run = false;
         task = Task.idle;
     }
 
     void SearchTree()
     {
         target = SearchNearTreePlace();
-        task = Task.chopping;
+        task = Task.chop;
     }
     void SearchGoldmine()
     {
         target = SearchNearGoldminePlace();
-        task = Task.digging;
+        task = Task.dig;
     }
     #endregion
 }
