@@ -8,12 +8,45 @@ public class Worker : HumanUnit
 {
     GameObject GoldBag;
     GameObject Woods;
+    GameObject Axe;
+    GameObject Hammer;
+    GameObject Pick;
     GameManager _gameManager;
 
-    protected override void Start()
+    private enum Task
     {
-        base.Start();
+        idle, move, follow, build, repair, chopping, digging, dead
     }
+
+    private Task task = Task.idle;
+
+    const string ANIMATOR_RUNNING = "Run",
+                 ANIMATOR_DEAD = "Dead",
+                 ANIMATOR_WOOD = "Wood",
+                 ANIMATOR_GOLD = "Gold",
+                 ANIMATOR_BUILD = "Building",
+                 ANIMATOR_CHOPPING = "Chopping";
+
+    protected float attackDistance = 1,
+                    attackCooldown = 1,
+                    attackDamage = 0,
+                    stoppingDistance = 1,
+                    buildingDistance = 0.5f,
+                    choppingDistance = 1,
+                    stopChoppingDistance = 0.5f,
+                    stopDiggingDistance = 1f;
+
+    internal Tree choppingTree;
+    bool running = false;
+    bool deading = false;
+    bool chopping = false;
+    int woodInBack = 0;
+    int goToChopping = -1; // 1 go to 0 chopping -1 go to wood place 
+    bool goToDigging = false;
+
+    float choppingTime = 5f;
+    float diggingTime = 3f;
+    Transform goldMineTarget;
 
     protected override void Awake()
     {
@@ -36,6 +69,11 @@ public class Worker : HumanUnit
         Woods.SetActive(false);
 
         _gameManager = GameObject.FindObjectOfType<GameManager>();
+    }
+
+    protected override void Start()
+    {
+        base.Start();
     }
 
     protected override void Update()
@@ -66,49 +104,11 @@ public class Worker : HumanUnit
         Animate();
     }
 
-    public enum Task
-    {
-        idle, move, follow, build, repair, chopping, digging, dead
-    }
 
-    const string ANIMATOR_RUNNING = "Run",
-    ANIMATOR_DEAD = "Dead",
-    ANIMATOR_ATTACK = "Attack",
-    ANIMATOR_WOOD = "Wood",
-    ANIMATOR_GOLD = "Gold",
-    ANIMATOR_BUILD = "Building",
-    ANIMATOR_CHOPPING = "Chopping";
-
-    protected Task task = Task.idle;
-
-    protected float attackDistance = 1,
-                    attackCooldown = 1,
-                    attackDamage = 0,
-                    stoppingDistance = 1,
-                    buildingDistance = 0.5f,
-                    choppingDistance = 1,
-                    stopChoppingDistance = 0.5f,
-                    stopDiggingDistance = 1f;
-
-    internal Tree choppingTree;
-    bool running = false;
-    bool deading = false;
-    bool chopping = false;
-    int woodInBack = 0;
-    int goToChopping = -1; // 1 go to 0 chopping -1 go to wood place 
-    bool goToDigging = false;
-
-
-    float choppingTime = 5f;
-    float diggingTime = 3f;
-    Transform goldMineTarget;
 
 
     protected virtual void Animate()
     {
-        //var speedVector = nav.velocity;
-        //speedVector.y = 0;
-        //float speed = speedVector.magnitude;
         if (animator == null) return;
         animator.SetBool(ANIMATOR_RUNNING, running);
         animator.SetBool(ANIMATOR_DEAD, deading);

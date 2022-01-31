@@ -15,8 +15,10 @@ public class HumanUnit : Unit
     protected NavMeshAgent nav;
     protected Animator animator;
 
-    protected virtual void Awake()
+    protected override void Awake()
     {
+        base.Update();
+
         nav = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
     }

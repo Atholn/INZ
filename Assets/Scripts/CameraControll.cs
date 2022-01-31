@@ -261,8 +261,6 @@ public class CameraControll : MonoBehaviour
 
                 if (rayHit.collider.gameObject.GetComponent<BuildingUnit>() != null)
                 {
-                    BuildingUnit buildingUnittt = rayHit.collider.gameObject.GetComponent<BuildingUnit>();
-
                     _selectUnits[0].GetComponent<NavMeshAgent>().velocity = Vector3.zero;
 
                     commandData = rayHit.collider.gameObject;

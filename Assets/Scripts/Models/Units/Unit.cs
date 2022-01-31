@@ -21,6 +21,11 @@ public class Unit : MonoBehaviour
     internal int whichPlayer;
     internal int Hp;
 
+    protected virtual void Awake()
+    {   
+
+    }
+
     protected virtual void  Start()
     {
         Hp = HpMax;

@@ -13,7 +13,6 @@ public class GoldMine : MonoBehaviour
         {
             GameObject.FindObjectOfType<GameManager>().Nature.Remove(gameObject);
             Destroy(gameObject);
-
         }
     }
 }
