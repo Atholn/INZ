@@ -29,10 +29,10 @@ public class CreateHumanUnitButton : MonoBehaviour
 
             buildingParent = _gameManager.actualClickBuild;
 
-            if (buildingParent.createUnit)
-            {
-                return;
-            }
+            //if (buildingParent.createUnit)
+            //{
+            //    return;
+            //}
 
             buildingParent.CreateUnit(Unit, 0);
         }

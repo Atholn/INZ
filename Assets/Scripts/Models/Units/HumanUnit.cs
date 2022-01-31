@@ -62,48 +62,50 @@ public class HumanUnit : Unit
 
     protected Vector3 SearchNearBuildingPoint(int size)
     {
-        List<x> xs = new List<x>();
-        Vector3 vector3 = new Vector3(target.position.x + (size / 2), 0, target.position.z);
+        List<VectorDistance> VectorsDistances = new List<VectorDistance>();
+        Vector3 vector3;
+
+        vector3 = new Vector3(target.position.x + (size / 2), 0, target.position.z);
         nav.SetDestination(vector3);
-        xs.Add(new x() { pos = vector3 });
+        VectorsDistances.Add(new VectorDistance() { pos = vector3 });
 
         vector3 = new Vector3(target.position.x + (size / 2), 0, target.position.z + (size / 2));
         nav.SetDestination(vector3);
-        xs.Add(new x() { pos = vector3 });
+        VectorsDistances.Add(new VectorDistance() { pos = vector3 });
 
         vector3 = new Vector3(target.position.x, 0, target.position.z + (size / 2));
         nav.SetDestination(vector3);
-        xs.Add(new x() { pos = vector3 });
+        VectorsDistances.Add(new VectorDistance() { pos = vector3 });
 
         vector3 = new Vector3(target.position.x - (size / 2), 0, target.position.z + (size / 2));
         nav.SetDestination(vector3);
-        xs.Add(new x() { pos = vector3 });
+        VectorsDistances.Add(new VectorDistance() { pos = vector3 });
 
         vector3 = new Vector3(target.position.x - (size / 2), 0, target.position.z);
         nav.SetDestination(vector3);
-        xs.Add(new x() { pos = vector3 });
+        VectorsDistances.Add(new VectorDistance() { pos = vector3 });
 
         vector3 = new Vector3(target.position.x - (size / 2), 0, target.position.z - (size / 2));
         nav.SetDestination(vector3);
-        xs.Add(new x() { pos = vector3 });
+        VectorsDistances.Add(new VectorDistance() { pos = vector3 });
 
         vector3 = new Vector3(target.position.x, 0, target.position.z - (size / 2));
         nav.SetDestination(vector3);
-        xs.Add(new x() { pos = vector3 });
+        VectorsDistances.Add(new VectorDistance() { pos = vector3 });
 
         vector3 = new Vector3(target.position.x + (size / 2), 0, target.position.z - (size / 2));
         nav.SetDestination(vector3);
-        xs.Add(new x() { pos = vector3 });
+        VectorsDistances.Add(new VectorDistance() { pos = vector3 });
 
-        foreach (x tmpX in xs)
+        foreach (VectorDistance vectorDistance in VectorsDistances)
         {
-            tmpX.distance = Vector3.Magnitude(tmpX.pos - transform.position);
+            vectorDistance.distance = Vector3.Magnitude(vectorDistance.pos - transform.position);
         }
 
-        return xs.OrderBy(x => x.distance).Select(x => x.pos).FirstOrDefault();
+        return VectorsDistances.OrderBy(x => x.distance).Select(x => x.pos).FirstOrDefault();
     }
 
-    private class x
+    private class VectorDistance
     {
         public Vector3 pos;
         public float distance;

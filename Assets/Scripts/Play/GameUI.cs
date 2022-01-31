@@ -183,11 +183,28 @@ public class GameUI : MonoBehaviour
         {
             CreateProgressPanel.SetActive(true);
 
-            Texture2D texture = null;
-            float value = 0f;
-            buildingUnit.UpdateProgressInfo(ref texture, ref value);
+            RawImage[] rawImages = CreateProgressPanel.GetComponentsInChildren<RawImage>(true);
+            int queuesLength = buildingUnit.GetActualQueueLength();
 
-            CreateProgressPanel.GetComponentInChildren<RawImage>().texture = texture;
+            Texture2D[] textures = new Texture2D[queuesLength  > rawImages.Length ? rawImages.Length : queuesLength];
+            float value = 0f;
+            buildingUnit.UpdateProgressInfo(ref textures, ref value);
+
+            for(int i=0; i< rawImages.Length;i++)
+            {
+                if( i < textures.Length)
+                {
+                    rawImages[i].texture = textures[i];
+                    rawImages[i].color = new Color(255, 255, 255, 255);
+                    rawImages[i].gameObject.SetActive(true);
+                }
+                else
+                {
+                    rawImages[i].gameObject.SetActive(false);
+                }
+            }
+
+            //CreateProgressPanel.GetComponentInChildren<RawImage>().texture = textures;
             CreateProgressPanel.GetComponentInChildren<Slider>().value = value;
         }
         else

@@ -18,7 +18,9 @@ public class BuildingUnit : Unit
     /// unit
     /// </summary>
     internal bool createUnit = false;
-    internal GameObject acutalUnitCreate;
+    //internal GameObject acutalUnitCreate;
+    private List<GameObject> queueCreateUnit = new List<GameObject>();
+    private List<float> queueCreateUnitProgress = new List<float>();
     internal float unitCreateProgress;
     private int whichPlayerUnit;
 
@@ -44,9 +46,10 @@ public class BuildingUnit : Unit
     internal void CreateUnit(GameObject unitToCreate, int whichPlayer)
     {
         createUnit = true;
-        unitCreateProgress = 0f;
+        //unitCreateProgress = 0f;
         whichPlayerUnit = whichPlayer;
-        acutalUnitCreate = unitToCreate;
+        queueCreateUnit.Add(unitToCreate);
+        queueCreateUnitProgress.Add(0f);
     }
 
     private void UpdateCreate()
@@ -56,25 +59,38 @@ public class BuildingUnit : Unit
             return;
         }
 
-        unitCreateProgress += Time.deltaTime;
+        queueCreateUnitProgress[0] += Time.deltaTime;
 
-        if (unitCreateProgress > acutalUnitCreate.GetComponent<Unit>().CreateTime)
+        if (queueCreateUnitProgress[0] > queueCreateUnit[0].GetComponent<Unit>().CreateTime)
         {
             //Debug.LogError("Create!");
             //Debug.LogError(buildingParent.transform.position);
 
-            gameManager.UnitCreate(whichPlayerUnit, acutalUnitCreate, transform.position + new Vector3( 0,0, -SizeBuilding/2));
+            gameManager.UnitCreate(whichPlayerUnit, queueCreateUnit[0], transform.position + new Vector3(0, 0, -SizeBuilding / 2));
+            queueCreateUnit.Remove(queueCreateUnit[0]);
+            queueCreateUnitProgress.Remove(queueCreateUnitProgress[0]);
+            //unitCreateProgress = 0f;
+            //queueCreateUnit = null;
+            if (queueCreateUnit.Count == 0 && queueCreateUnitProgress.Count == 0)
+            {
+                createUnit = false;
 
-            unitCreateProgress = 0f;
-            acutalUnitCreate = null;
-            createUnit = false;
+            }
         }
     }
 
-    internal void UpdateProgressInfo(ref Texture2D texture, ref float val)
+    internal void UpdateProgressInfo(ref Texture2D[] textures, ref float val)
     {
-        texture = acutalUnitCreate.GetComponent<Unit>().Profile;
-        val = unitCreateProgress / acutalUnitCreate.GetComponent<Unit>().CreateTime;
+        for (int i = 0; i < textures.Length; i++)
+        {
+            textures[i] = queueCreateUnit[i].GetComponent<Unit>().Profile;
+        }
+        val = queueCreateUnitProgress[0] / queueCreateUnit[0].GetComponent<Unit>().CreateTime;
+    }
+
+    internal int GetActualQueueLength()
+    {
+        return queueCreateUnit.Count;
     }
 
 
