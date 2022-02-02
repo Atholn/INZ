@@ -50,7 +50,7 @@ public class HumanUnit : Unit
             }
             else
             {
-                nav.SetDestination(target.position);
+                nav.SetDestination(new Vector3(target.position.x, 0, target.position.z));
             }
         }
 

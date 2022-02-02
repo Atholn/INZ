@@ -54,6 +54,7 @@ public class Soldier : HumanUnit
     private void Idling()
     {
         nav.velocity = Vector3.zero;
+
         run = false;
         attack = false;
     }
@@ -175,6 +176,7 @@ public class Soldier : HumanUnit
     void Command(Vector3 destination)
     {
         run = true;
+        attack = false;
         target = null;
 
         nav.SetDestination(destination);
@@ -183,16 +185,18 @@ public class Soldier : HumanUnit
 
     void CommandPlayer(GameObject gameObject)
     {
+        run = true;
+
         target = gameObject.transform;
         task = SoldierTask.follow;
-        run = true;
     }
 
     void CommandEnemy(GameObject gameObject)
     {
+        run = true;
+
         target = gameObject.transform;
         task = SoldierTask.attack;
-        run = true;
     }
     #endregion
 }

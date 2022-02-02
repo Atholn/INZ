@@ -6,12 +6,12 @@ using UnityEngine.AI;
 
 public class Worker : HumanUnit
 {
-    private enum Task
+    private enum WorkerTask
     {
-        idle, move, follow, build, repair, dig, chop, dead
+        idle, run, follow, build, repair, dig, chop, dead
     }
 
-    private Task task = Task.idle;
+    private WorkerTask task = WorkerTask.idle;
 
     private const string ANIMATOR_DEAD = "Dead",
                  ANIMATOR_RUN = "Run",
@@ -27,22 +27,22 @@ public class Worker : HumanUnit
     private int wood = 0;
     private int gold = 0;
 
-    private const float stoppingDistance = 1,
+    private const float _stoppingDistance = 1,
                         buildingDistance = 0.5f,
                         choppingDistance = 1,
                         stopChoppingDistance = 0.5f,
                         stopDiggingDistance = 1f;
 
-    internal Tree choppingTree;
     int goToChopping = -1; // 1 go to 0 chopping -1 go to wood place 
     bool goToDigging = false;
 
     float choppingTime = 5f;
     float diggingTime = 3f;
     Transform goldMineTarget;
+    Vector3 nearPos;
+
 
     bool searchtarget = false;
-    Vector3 nearPos;
 
     GameObject GoldBag;
     GameObject Woods;
@@ -86,7 +86,7 @@ public class Worker : HumanUnit
 
         if (IsDead)
         {
-            task = Task.dead;
+            task = WorkerTask.dead;
             nav.velocity = Vector3.zero;
             timmer = 0;
             IsDead = false;
@@ -95,14 +95,14 @@ public class Worker : HumanUnit
 
         switch (task)
         {
-            case Task.idle: Idling(); break;
-            case Task.move: Running(); break;
-            case Task.follow: Following(); break;
-            case Task.build: Building(); break;
-            case Task.repair: Repairing(); break;
-            case Task.dig: Digging(); break;
-            case Task.chop: Chopping(); break;
-            case Task.dead: Death(); break;
+            case WorkerTask.idle: Idling(); break;
+            case WorkerTask.run: Running(); break;
+            case WorkerTask.follow: Following(); break;
+            case WorkerTask.build: Building(); break;
+            case WorkerTask.repair: Repairing(); break;
+            case WorkerTask.dig: Digging(); break;
+            case WorkerTask.chop: Chopping(); break;
+            case WorkerTask.dead: Death(); break;
         }
 
         Animate();
@@ -112,45 +112,46 @@ public class Worker : HumanUnit
     private void Idling()
     {
         nav.velocity = Vector3.zero;
+
+        run = false;
+        build = false;
+        chop = false;
     }
 
     private void Running()
     {
-        animator.SetBool(ANIMATOR_BUILD, false);
-        float distance = Vector3.Magnitude(nav.destination - transform.position);
+        UpdateDistance();
 
-        if (distance > stoppingDistance)
+        if (distance > _stoppingDistance)
         {
-            run = true;
+            return;
         }
 
-        if (distance <= stoppingDistance)
-        {
-            run = false;
-            task = Task.idle;
-        }
+        run = false;
+        nav.velocity = Vector3.zero;
+        task = WorkerTask.idle;
     }
 
     private void Following()
     {
-        nav.SetDestination(target.position);
-        float distance = Vector3.Magnitude(nav.destination - transform.position);
+        UpdateDistance();
 
-        if (distance <= stoppingDistance)
+        if (distance > _stoppingDistance)
         {
-            nav.velocity = Vector3.zero;
-            run = false;
-            task = Task.idle;
-            target = null;
+            run = true;
+            return;
         }
+
+        run = false;
+        nav.velocity = Vector3.zero;
     }
-    
+
     private void Building()
     {
         BuildingUnit bU = target.GetComponent<BuildingUnit>();
         ItemGame it = target.GetComponent<ItemGame>();
 
-        if(!searchtarget)
+        if (!searchtarget)
         {
             nearPos = SearchNearBuildingPoint(bU.Size);
             searchtarget = true;
@@ -159,7 +160,6 @@ public class Worker : HumanUnit
         nav.SetDestination(nearPos);
         float distance = Vector3.Magnitude(nav.destination - transform.position);
 
-        //Debug.LogError(distance);
         if (distance > bU.SizeBuilding / 2)
         {
             animator.SetBool(ANIMATOR_BUILD, false);
@@ -183,7 +183,7 @@ public class Worker : HumanUnit
         bu.UpdateUnitPoints(whichPlayer);
 
         animator.SetBool(ANIMATOR_BUILD, false);
-        task = Task.idle;
+        task = WorkerTask.idle;
     }
 
     private void Repairing()
@@ -193,7 +193,7 @@ public class Worker : HumanUnit
         nav.SetDestination(new Vector3(target.position.x, 0, target.position.z - bU.Size / 2));
         float distance = Vector3.Magnitude(nav.destination - transform.position);
 
-        if (distance > bU.SizeBuilding/2)
+        if (distance > bU.SizeBuilding / 2)
         {
 
             animator.SetBool(ANIMATOR_BUILD, false);
@@ -201,7 +201,7 @@ public class Worker : HumanUnit
             return;
         }
 
-        if (distance <= bU.SizeBuilding/2)
+        if (distance <= bU.SizeBuilding / 2)
         {
             nav.velocity = Vector3.zero;
             run = false;
@@ -217,9 +217,9 @@ public class Worker : HumanUnit
         }
 
         animator.SetBool(ANIMATOR_BUILD, false);
-        task = Task.idle;
+        task = WorkerTask.idle;
     }
-    
+
     private void Digging()
     {
         if (animator.GetInteger(ANIMATOR_GOLD) == 0)
@@ -236,14 +236,14 @@ public class Worker : HumanUnit
             nav.velocity = Vector3.zero;
             run = false;
             target = null;
-            task = Task.idle;
+            task = WorkerTask.idle;
         }
 
         if (goToDigging)
             nav.SetDestination(new Vector3(target.position.x, target.position.y, target.position.z - 4f));
         else
         {
-            if(target.GetComponent<BuildingUnit>()!=null)
+            if (target.GetComponent<BuildingUnit>() != null)
             {
                 nav.SetDestination(target.position + new Vector3(0, 0, -target.GetComponent<BuildingUnit>().SizeBuilding / 2));
             }
@@ -252,7 +252,7 @@ public class Worker : HumanUnit
                 nav.SetDestination(new Vector3(target.position.x, target.position.y, target.position.z - 4f));
             }
         }
-            
+
         float distance = Vector3.Magnitude(nav.destination - transform.position);
 
         if (goToDigging)
@@ -271,7 +271,7 @@ public class Worker : HumanUnit
             {
                 renderer.enabled = false;
             }
-            
+
             animator.SetInteger(ANIMATOR_GOLD, 10);
         }
         else
@@ -295,7 +295,6 @@ public class Worker : HumanUnit
                 return;
             }
 
-
             if (distance > stopDiggingDistance)
             {
                 return;
@@ -310,7 +309,7 @@ public class Worker : HumanUnit
                 nav.velocity = Vector3.zero;
                 run = false;
                 target = null;
-                task = Task.idle;
+                task = WorkerTask.idle;
                 return;
             }
 
@@ -343,17 +342,16 @@ public class Worker : HumanUnit
 
                 if (target == null)
                 {
-                    task = Task.idle;
+                    task = WorkerTask.idle;
                     run = false;
                 }
             }
-
         }
 
         if (goToChopping == -1)
             nav.SetDestination(target.position);
         else if (goToChopping == 1)
-            nav.SetDestination(target.position + new Vector3(0,0, -target.GetComponent<BuildingUnit>().SizeBuilding/2));
+            nav.SetDestination(target.position + new Vector3(0, 0, -target.GetComponent<BuildingUnit>().SizeBuilding / 2));
         float distance = Vector3.Magnitude(nav.destination - transform.position);
 
         if (goToChopping == -1)
@@ -388,13 +386,12 @@ public class Worker : HumanUnit
 
             if (target == null)
             {
-                task = Task.idle;
+                task = WorkerTask.idle;
                 run = false;
             }
 
             return;
         }
-
 
         if (goToChopping == 1)
         {
@@ -521,20 +518,32 @@ public class Worker : HumanUnit
     #region Commands
     void Command(Vector3 destination)
     {
+        run = true;
+        build = false;
+        chop = false;
+
         nav.SetDestination(destination);
-        task = Task.move;
+        task = WorkerTask.run;
     }
 
     void Command(Tree tree)
     {
+        run = true;
+        build = false;
+        chop = false;
+
         target = tree.transform;
-        task = Task.chop;
+        task = WorkerTask.chop;
     }
 
     void Command(GoldMine goldMine)
     {
+        run = true;
+        build = false;
+        chop = false;
+
         target = goldMine.transform;
-        task = Task.dig;
+        task = WorkerTask.dig;
     }
 
     void Command(GameObject gameObject)
@@ -546,41 +555,41 @@ public class Worker : HumanUnit
 
             if (buildingUnit.BuildingPercent < buildingUnit.CreateTime)
             {
-                task = Task.build;
+                task = WorkerTask.build;
                 searchtarget = false;
                 return;
             }
 
             if (buildingUnit.Hp < HpMax)
             {
-                task = Task.repair;
+                task = WorkerTask.repair;
                 return;
             }
 
-            task = Task.follow;
+            task = WorkerTask.follow;
         }
     }
-
     #endregion
 
     #region AICommands
     void CommandStop()
     {
-        target = null;
-        nav.velocity = Vector3.zero;
         run = false;
-        task = Task.idle;
+        target = null;
+
+        nav.velocity = Vector3.zero;
+        task = WorkerTask.idle;
     }
 
     void SearchTree()
     {
         target = SearchNearTreePlace();
-        task = Task.chop;
+        task = WorkerTask.chop;
     }
     void SearchGoldmine()
     {
         target = SearchNearGoldminePlace();
-        task = Task.dig;
+        task = WorkerTask.dig;
     }
     #endregion
 }
