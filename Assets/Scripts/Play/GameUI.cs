@@ -54,7 +54,7 @@ public class GameUI : MonoBehaviour
         buttonsCancelCreate = CreateProgressPanel.GetComponentsInChildren<Button>(true);
         for(int i=0;i< buttonsCancelCreate.Length;i++)
         {
-            buttonsCancelCreate[i].GetComponent<CancelCreateUnit>().ButtonID = i;
+            //buttonsCancelCreate[i].GetComponent<CancelCreateUnit>().ButtonID = i;///
         }
 
         

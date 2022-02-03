@@ -103,12 +103,14 @@ MonoBehaviour:
   Name: Barracks
   Defense: 0
   AttackPower: 0
+  AttackDistance: 0
   Profile: {fileID: 2800000, guid: f4e62da3b515f7a4399a2ed2c2ba3d57, type: 3}
   Priority: 0
   CreateTime: 5
+  HeightPosY: 0
   GoldCost: 0
   WoodCost: 0
-  Size: 6
+  Size: 8
   PlaceWood: 0
   PlaceGold: 0
   SizeBuilding: 6

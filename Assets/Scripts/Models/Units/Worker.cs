@@ -42,7 +42,7 @@ public class Worker : HumanUnit
     Vector3 nearPos;
 
 
-    bool searchtarget = false;
+
 
     GameObject GoldBag;
     GameObject Woods;
@@ -84,12 +84,12 @@ public class Worker : HumanUnit
     {
         base.Update();
 
-        if (IsDead)
+        if (isDead)
         {
             task = WorkerTask.dead;
             nav.velocity = Vector3.zero;
             timmer = 0;
-            IsDead = false;
+            isDead = false;
             dead = true;
         }
 
@@ -151,25 +151,16 @@ public class Worker : HumanUnit
         BuildingUnit bU = target.GetComponent<BuildingUnit>();
         ItemGame it = target.GetComponent<ItemGame>();
 
-        if (!searchtarget)
-        {
-            nearPos = SearchNearBuildingPoint(bU.Size);
-            searchtarget = true;
-        }
+        UpdateDistance(true);
 
-        nav.SetDestination(nearPos);
-        float distance = Vector3.Magnitude(nav.destination - transform.position);
-
-        if (distance > bU.SizeBuilding / 2)
+        if (distance > _stoppingDistance)
         {
-            animator.SetBool(ANIMATOR_BUILD, false);
-            run = true;
             return;
         }
 
         nav.velocity = Vector3.zero;
         run = false;
-        animator.SetBool(ANIMATOR_BUILD, true);
+        build = true;
 
         if (bU.BuildingPercent < bU.CreateTime)
         {
@@ -178,11 +169,12 @@ public class Worker : HumanUnit
             return;
         }
 
-        BuildingUnit bu = target.GetComponent<BuildingUnit>();
-        bu.PointerPosition = new Vector3(target.transform.position.x, 0.45f, target.transform.position.z - (bu.SizeBuilding / 2) - 1);
-        bu.UpdateUnitPoints(whichPlayer);
+        bU.PointerPosition = new Vector3(target.transform.position.x, 0.45f, target.transform.position.z - (bU.Size / 2) - 1);
+        bU.UpdateUnitPoints(whichPlayer);
 
-        animator.SetBool(ANIMATOR_BUILD, false);
+        ifSearchNearBuildingPoint = false;
+        build = false;
+        target = null;
         task = WorkerTask.idle;
     }
 
@@ -553,10 +545,12 @@ public class Worker : HumanUnit
             BuildingUnit buildingUnit = gameObject.GetComponent<BuildingUnit>();
             target = gameObject.transform;
 
+            run = true;
+
             if (buildingUnit.BuildingPercent < buildingUnit.CreateTime)
             {
                 task = WorkerTask.build;
-                searchtarget = false;
+                ifSearchNearBuildingPoint = false;
                 return;
             }
 

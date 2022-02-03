@@ -29,13 +29,13 @@ public class Soldier : HumanUnit
     {
         base.Update();
 
-        if (IsDead)
+        if (isDead)
         {
             task = SoldierTask.dead;
             nav.velocity = Vector3.zero;
             timmer = 0;
             dead = true;
-            IsDead = false;
+            isDead = false;
         }
 
         switch (task)

@@ -7,7 +7,7 @@ public class HumanUnit : Unit
 {
     public int UnitPoint = 1;
 
-    protected bool IsDead = false;
+    protected bool isDead = false;
     protected float timeDeath = 10f;
     protected float timmer = 0;
     protected float distance;
@@ -15,9 +15,11 @@ public class HumanUnit : Unit
     protected NavMeshAgent nav;
     protected Animator animator;
 
+    protected bool ifSearchNearBuildingPoint = false;
+
     protected override void Awake()
     {
-        base.Update();
+        base.Awake();
 
         nav = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
@@ -36,17 +38,26 @@ public class HumanUnit : Unit
 
         if (Hp <= 0)
         {
-            IsDead = true;
+            isDead = true;
         }
     }
-
+    Vector3 nearPoint;
     protected void UpdateDistance(bool buildingTarget = false)
     {
+
+
         if (target != null)
         {
             if (buildingTarget && target.GetComponent<BuildingUnit>() != null)
             {
-                nav.SetDestination(new Vector3(target.position.x + 3, 0, target.position.z + 3));
+                if (!ifSearchNearBuildingPoint)
+                {
+                    nearPoint = SearchNearBuildingPoint(target.GetComponent<BuildingUnit>().Size);              
+                    ifSearchNearBuildingPoint = true;
+                }
+
+
+                nav.SetDestination(nearPoint);
             }
             else
             {
@@ -101,7 +112,7 @@ public class HumanUnit : Unit
 
         foreach (VectorDistance vectorDistance in VectorsDistances)
         {
-            vectorDistance.distance = Vector3.Magnitude(vectorDistance.pos - transform.position);
+            vectorDistance.distance = Vector3.Magnitude(vectorDistance.pos - new Vector3(transform.position.x, 0, transform.position.z));
         }
 
         return VectorsDistances.OrderBy(x => x.distance).Select(x => x.pos).FirstOrDefault();
