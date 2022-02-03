@@ -148,9 +148,6 @@ public class Worker : HumanUnit
 
     private void Building()
     {
-        BuildingUnit bU = target.GetComponent<BuildingUnit>();
-        ItemGame it = target.GetComponent<ItemGame>();
-
         UpdateDistance(true);
 
         if (distance > _stoppingDistance)
@@ -161,6 +158,9 @@ public class Worker : HumanUnit
         nav.velocity = Vector3.zero;
         run = false;
         build = true;
+
+        BuildingUnit bU = target.GetComponent<BuildingUnit>();
+        ItemGame it = target.GetComponent<ItemGame>();
 
         if (bU.BuildingPercent < bU.CreateTime)
         {
@@ -180,35 +180,28 @@ public class Worker : HumanUnit
 
     private void Repairing()
     {
-        BuildingUnit bU = target.GetComponent<BuildingUnit>();
+        UpdateDistance(true);
 
-        nav.SetDestination(new Vector3(target.position.x, 0, target.position.z - bU.Size / 2));
-        float distance = Vector3.Magnitude(nav.destination - transform.position);
-
-        if (distance > bU.SizeBuilding / 2)
+        if (distance > _stoppingDistance)
         {
-
-            animator.SetBool(ANIMATOR_BUILD, false);
-            run = true;
             return;
         }
 
-        if (distance <= bU.SizeBuilding / 2)
-        {
-            nav.velocity = Vector3.zero;
-            run = false;
-        }
+        nav.velocity = Vector3.zero;
+        run = false;
+        build = true;
 
-        animator.SetBool(ANIMATOR_BUILD, true);
+        BuildingUnit bU = target.GetComponent<BuildingUnit>();
+
         if (bU.Hp < bU.HpMax)
         {
             bU.Hp += 1;
-
-            // todo mniej ogni
             return;
         }
 
-        animator.SetBool(ANIMATOR_BUILD, false);
+        ifSearchNearBuildingPoint = false;
+        build = false;
+        target = null;
         task = WorkerTask.idle;
     }
 
