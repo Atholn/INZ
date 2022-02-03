@@ -195,6 +195,8 @@ public class Player : MonoBehaviour
         computerTaskBuilding = ComputerTaskBuilding.searchBuildPlace;
     }
 
+    int ii = 0;
+
     private void SearchBuildPlace()
     {
         if (!ifStartPos)
@@ -207,11 +209,11 @@ public class Player : MonoBehaviour
             sizeStep = sizeStep / 10f;
 
             image = Instantiate(buildingTarget.GetComponent<ItemGame>().ItemImageComputer, startPos, buildingTarget.transform.rotation);
-            image.GetComponent<Renderer>().enabled = false;
+            //image.GetComponent<Renderer>().enabled = false;
             ifStartPos = true;
         }
 
-        if(image == null)
+        if (image == null)
         {
             //Debug.Log("test error");
 
@@ -262,6 +264,15 @@ public class Player : MonoBehaviour
             return;
         }
 
+        if (ii < 9)
+        {
+            image.transform.position += new Vector3(-1 + ii % 3, 0, -1 + ii / 3);
+            ii++;
+            return;
+        }
+
+        image.transform.position -= new Vector3(1, 0, 1);
+
         gameManager.UpdateWood(whichPlayer, -gameManager.BuildingsPrefabs[whichBuilding].GetComponent<Unit>().WoodCost);
         gameManager.UpdateGold(whichPlayer, -gameManager.BuildingsPrefabs[whichBuilding].GetComponent<Unit>().GoldCost);
 
@@ -278,6 +289,7 @@ public class Player : MonoBehaviour
         directors = Directors.right;
         acutalSteps = 1f;
         steps = 2;
+        ii = 0;
         ifStartPos = false;
         computerTaskBuilding = ComputerTaskBuilding.buildingBuilding;
     }
@@ -297,26 +309,27 @@ public class Player : MonoBehaviour
     #region Attacking
     private void Attacking()
     {
-        //switch (computerTaskAttacking)
-        //{
-        //    case ComputerTaskAttacking.soldierSelection:
-        //        SoldierSelection();
-        //        break;
-        //    case ComputerTaskAttacking.getRawSourceSoldier:
-        //        GetRawSourceSoldier();
-        //        break;
-        //    case ComputerTaskAttacking.creatingSoldiers:
-        //        CreatingSoldiers();
-        //        break;
-        //    case ComputerTaskAttacking.attackingEnemies:
-        //        AttackingEnemies();
-        //        break;
-        //    case ComputerTaskAttacking.returnSoldiers:
-        //        ReturnSoldiers();
-        //        break;
-        //}
+        switch (computerTaskAttacking)
+        {
+            case ComputerTaskAttacking.soldierSelection:
+                SoldierSelection();
+                break;
+            case ComputerTaskAttacking.getRawSourceSoldier:
+                GetRawSourceSoldier();
+                break;
+            case ComputerTaskAttacking.creatingSoldiers:
+                CreatingSoldiers();
+                break;
+            case ComputerTaskAttacking.attackingEnemies:
+                AttackingEnemies();
+                break;
+            case ComputerTaskAttacking.returnSoldiers:
+                ReturnSoldiers();
+                break;
+        }
     }
 
+    int creatingSoldiers = 0;
     private void SoldierSelection()
     {
         if (gameManager._playersGameObjects[whichPlayer].Where(s => s.GetComponent<Soldier>() != null).ToList().Count() > _computerUnitsCount)
@@ -325,8 +338,16 @@ public class Player : MonoBehaviour
             return;
         }
 
+
+        if (creatingSoldiers > _computerUnitsCount)
+        {
+            computerTaskAttacking = ComputerTaskAttacking.attackingEnemies;
+            return;
+        }
+
         whichSoldier = RandomizeNewSoldier();
         soldierTarget = gameManager.UnitsPrefabs[whichSoldier];
+        creatingSoldiers++;
 
         computerTaskAttacking = ComputerTaskAttacking.getRawSourceSoldier;
     }
@@ -375,10 +396,14 @@ public class Player : MonoBehaviour
 
     private void CreatingSoldiers()
     {
-        gameManager._playersGameObjects[whichPlayer].Where(b => b.GetComponent<BuildingUnit>() != null).Select(b => b.GetComponent<BuildingUnit>()).FirstOrDefault().CreateUnit(soldierTarget, 0);
+        gameManager._playersGameObjects[whichPlayer]
+            .Where(b => b.GetComponent<BuildingUnit>() != null && b.GetComponent<BuildingUnit>().name == "Barracks")
+            .Select(b => b.GetComponent<BuildingUnit>())
+            .FirstOrDefault()
+            .CreateUnit(soldierTarget, whichPlayer);
 
 
-        computerTaskAttacking = ComputerTaskAttacking.attackingEnemies;
+        //computerTaskAttacking = ComputerTaskAttacking.attackingEnemies;
     }
 
     private void AttackingEnemies()

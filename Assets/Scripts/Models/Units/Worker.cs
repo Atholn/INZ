@@ -225,7 +225,9 @@ public class Worker : HumanUnit
         }
 
         if (goToDigging)
+        {
             nav.SetDestination(new Vector3(target.position.x, target.position.y, target.position.z - 4f));
+        }
         else
         {
             if (target.GetComponent<BuildingUnit>() != null)

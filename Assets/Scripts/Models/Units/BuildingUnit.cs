@@ -45,6 +45,7 @@ public class BuildingUnit : Unit
 
     internal void CreateUnit(GameObject unitToCreate, int whichPlayer)
     {
+
         createUnit = true;
         whichPlayerUnit = whichPlayer;
         queueCreateUnit.Add(unitToCreate);
