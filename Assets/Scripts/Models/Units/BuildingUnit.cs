@@ -40,10 +40,10 @@ public class BuildingUnit : Unit
         float h = gameObject.GetComponent<ItemGame>().HeightBuilding;
 
         fire = Instantiate(gameManager.Fire, new Vector3(transform.position.x, h, transform.position.z), gameManager.Fire.transform.rotation);
-        dust = Instantiate(gameManager.Dust, new Vector3(transform.position.x, h, transform.position.z), gameManager.Dust.transform.rotation);
+        dust = Instantiate(gameManager.Dust, new Vector3(transform.position.x, HeightPosY, transform.position.z), gameManager.Dust.transform.rotation);
 
         fire.transform.localScale = new Vector3(Size, Size, Size);
-        dust.transform.localScale = new Vector3(Size, Size, Size);
+        dust.transform.localScale = new Vector3(Size, Size, Size/2);
 
         fire.SetActive(false);
         dust.SetActive(false);
@@ -82,9 +82,18 @@ public class BuildingUnit : Unit
         }
     }
 
+    internal void DustOn()
+    {
+        dust.SetActive(true);
+    }
+
+    internal void DustOff()
+    {
+        dust.SetActive(false);
+    }
+
     internal void CreateUnit(GameObject unitToCreate, int whichPlayer)
     {
-
         createUnit = true;
         whichPlayerUnit = whichPlayer;
         queueCreateUnit.Add(unitToCreate);

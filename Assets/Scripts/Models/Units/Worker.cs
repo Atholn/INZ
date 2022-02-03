@@ -160,11 +160,13 @@ public class Worker : HumanUnit
         if (bU.BuildingPercent < bU.CreateTime)
         {
             bU.BuildingPercent += Time.deltaTime;
+            bU.DustOn();
             target.transform.position = new Vector3(target.transform.position.x, -it.HeightBuilding + (bU.BuildingPercent / bU.CreateTime) * (it.ItemHeightPosY + it.HeightBuilding), target.transform.position.z);
             
             return;
         }
 
+        bU.DustOff();
         bU.PointerPosition = new Vector3(target.transform.position.x, 0.45f, target.transform.position.z - (bU.Size / 2) - 1);
         bU.UpdateUnitPoints(whichPlayer);
 
@@ -192,6 +194,7 @@ public class Worker : HumanUnit
         if (bU.Hp < bU.HpMax)
         {
             bU.Hp += 1;
+            target.gameObject.GetComponent<BuildingUnit>().UpdateFire();
             return;
         }
 
