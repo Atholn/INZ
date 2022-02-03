@@ -51,6 +51,8 @@ public class GameManager : MonoBehaviour
 
     //internal int[][][] maps;
 
+    public GameObject Fire;
+    public GameObject Dust;
     void Start()
     {
         _gameUI = FindObjectOfType<GameUI>();

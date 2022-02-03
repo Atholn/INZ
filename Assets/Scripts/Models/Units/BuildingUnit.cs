@@ -27,19 +27,58 @@ public class BuildingUnit : Unit
     private GameManager gameManager;
 
     public int UnitToCreatePoints = 0;
+
+    private GameObject fire;
+    private GameObject dust;
+    private int maxParticles;
+
     protected override void Start()
     {
         base.Start();
         gameManager = GameObject.FindObjectOfType<GameManager>();
+
+        float h = gameObject.GetComponent<ItemGame>().HeightBuilding;
+
+        fire = Instantiate(gameManager.Fire, new Vector3(transform.position.x, h, transform.position.z), gameManager.Fire.transform.rotation);
+        dust = Instantiate(gameManager.Dust, new Vector3(transform.position.x, h, transform.position.z), gameManager.Dust.transform.rotation);
+
+        fire.transform.localScale = new Vector3(Size, Size, Size);
+        dust.transform.localScale = new Vector3(Size, Size, Size);
+
+        fire.SetActive(false);
+        dust.SetActive(false);
+
+        maxParticles = gameManager.Fire.GetComponent<ParticleSystem>().main.maxParticles;
     }
     protected override void Update()
     {
+        base.Update();
+
         UpdateCreate();
 
-        base.Update();
         if (Hp <= 0)
         {
+            Destroy(fire);
+            Destroy(dust);
             Destroy(gameObject);
+            return;
+        }
+    }
+
+    internal void UpdateFire()
+    {
+        if (Hp == HpMax)
+        {
+            fire.SetActive(false);
+            return;
+        }
+
+        if (Hp < HpMax)
+        {
+            fire.SetActive(true);
+            float x = 1f - ((float)Hp / (float)HpMax);
+            fire.GetComponent<ParticleSystem>().maxParticles = (int)(x * (float)maxParticles);
+            return;
         }
     }
 
@@ -75,7 +114,7 @@ public class BuildingUnit : Unit
             return;
         }
 
-        if(gameManager._players[0].actualUnitsPoint + queueCreateUnit[0].GetComponent<HumanUnit>().UnitPoint > gameManager._players[0].actualMaxUnitsPoint)
+        if (gameManager._players[0].actualUnitsPoint + queueCreateUnit[0].GetComponent<HumanUnit>().UnitPoint > gameManager._players[0].actualMaxUnitsPoint)
         {
             return;
         }
@@ -100,7 +139,7 @@ public class BuildingUnit : Unit
         for (int i = 0; i < textures.Length; i++)
         {
             textures[i] = queueCreateUnit[i].GetComponent<Unit>().Profile;
-            
+
         }
         val = queueCreateUnitProgress[0] / queueCreateUnit[0].GetComponent<Unit>().CreateTime;
     }

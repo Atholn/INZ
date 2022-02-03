@@ -220,7 +220,7 @@ public class Player : MonoBehaviour
             sizeStep = sizeStep / 10f;
 
             image = Instantiate(buildingTarget.GetComponent<ItemGame>().ItemImageComputer, startPos, buildingTarget.transform.rotation);
-            //image.GetComponent<Renderer>().enabled = false;
+            image.GetComponent<Renderer>().enabled = false;
             ifStartPos = true;
         }
 

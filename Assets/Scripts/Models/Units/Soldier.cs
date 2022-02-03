@@ -116,6 +116,11 @@ public class Soldier : HumanUnit
             timmer = 0;
             target.gameObject.GetComponent<Unit>().Hp -= AttackPower;
 
+            if(target.gameObject.GetComponent<BuildingUnit>() != null)
+            {
+                target.gameObject.GetComponent<BuildingUnit>().UpdateFire();
+            }
+
             if (GetComponentInParent<BowShot>() != null)
             {
                 BowShoting();

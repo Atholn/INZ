@@ -39,10 +39,6 @@ public class Worker : HumanUnit
     float choppingTime = 5f;
     float diggingTime = 3f;
     Transform goldMineTarget;
-    Vector3 nearPos;
-
-
-
 
     GameObject GoldBag;
     GameObject Woods;
@@ -50,7 +46,6 @@ public class Worker : HumanUnit
     GameObject Hammer;
     GameObject Pick;
     GameManager _gameManager;
-
 
     protected override void Awake()
     {
@@ -166,6 +161,7 @@ public class Worker : HumanUnit
         {
             bU.BuildingPercent += Time.deltaTime;
             target.transform.position = new Vector3(target.transform.position.x, -it.HeightBuilding + (bU.BuildingPercent / bU.CreateTime) * (it.ItemHeightPosY + it.HeightBuilding), target.transform.position.z);
+            
             return;
         }
 
@@ -225,24 +221,6 @@ public class Worker : HumanUnit
         }
 
         UpdateDistance(true, true);
-
-        //if (goToDigging)
-        //{
-        //    nav.SetDestination(new Vector3(target.position.x, target.position.y, target.position.z - 4f));
-        //}
-        //else
-        //{
-        //    if (target.GetComponent<BuildingUnit>() != null)
-        //    {
-        //        nav.SetDestination(target.position + new Vector3(0, 0, -target.GetComponent<BuildingUnit>().SizeBuilding / 2));
-        //    }
-        //    else
-        //    {
-        //        nav.SetDestination(new Vector3(target.position.x, target.position.y, target.position.z - 4f));
-        //    }
-        //}
-
-        //float distance = Vector3.Magnitude(nav.destination - transform.position);
 
         if (goToDigging)
         {
