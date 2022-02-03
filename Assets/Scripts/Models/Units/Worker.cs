@@ -224,29 +224,31 @@ public class Worker : HumanUnit
             task = WorkerTask.idle;
         }
 
-        if (goToDigging)
-        {
-            nav.SetDestination(new Vector3(target.position.x, target.position.y, target.position.z - 4f));
-        }
-        else
-        {
-            if (target.GetComponent<BuildingUnit>() != null)
-            {
-                nav.SetDestination(target.position + new Vector3(0, 0, -target.GetComponent<BuildingUnit>().SizeBuilding / 2));
-            }
-            else
-            {
-                nav.SetDestination(new Vector3(target.position.x, target.position.y, target.position.z - 4f));
-            }
-        }
+        UpdateDistance(true, true);
 
-        float distance = Vector3.Magnitude(nav.destination - transform.position);
+        //if (goToDigging)
+        //{
+        //    nav.SetDestination(new Vector3(target.position.x, target.position.y, target.position.z - 4f));
+        //}
+        //else
+        //{
+        //    if (target.GetComponent<BuildingUnit>() != null)
+        //    {
+        //        nav.SetDestination(target.position + new Vector3(0, 0, -target.GetComponent<BuildingUnit>().SizeBuilding / 2));
+        //    }
+        //    else
+        //    {
+        //        nav.SetDestination(new Vector3(target.position.x, target.position.y, target.position.z - 4f));
+        //    }
+        //}
+
+        //float distance = Vector3.Magnitude(nav.destination - transform.position);
 
         if (goToDigging)
         {
             if (distance > choppingDistance)
             {
-                animator.SetInteger(ANIMATOR_GOLD, 0);
+                gold = 0;
                 run = true;
                 return;
             }
@@ -259,7 +261,7 @@ public class Worker : HumanUnit
                 renderer.enabled = false;
             }
 
-            animator.SetInteger(ANIMATOR_GOLD, 10);
+            gold = 10;
         }
         else
         {
@@ -287,7 +289,7 @@ public class Worker : HumanUnit
                 return;
             }
 
-            animator.SetInteger(ANIMATOR_GOLD, 0);
+            gold = 0;
             GoldBag.SetActive(false);
             _gameManager.UpdateGold(whichPlayer, 10);
 
@@ -336,10 +338,9 @@ public class Worker : HumanUnit
         }
 
         if (goToChopping == -1)
-            nav.SetDestination(target.position);
+            UpdateDistance();
         else if (goToChopping == 1)
-            nav.SetDestination(target.position + new Vector3(0, 0, -target.GetComponent<BuildingUnit>().SizeBuilding / 2));
-        float distance = Vector3.Magnitude(nav.destination - transform.position);
+            UpdateDistance(true);
 
         if (goToChopping == -1)
         {
@@ -350,10 +351,11 @@ public class Worker : HumanUnit
             }
 
             timmer = 0;
-            animator.SetBool(ANIMATOR_CHOP, true);
-            animator.SetInteger(ANIMATOR_WOOD, 0);
             run = false;
+            chop = true;
+            wood = 0;
             nav.velocity = Vector3.zero;
+
             return;
         }
         if (goToChopping == 0)
@@ -365,10 +367,11 @@ public class Worker : HumanUnit
             }
 
             target.GetComponent<Tree>().ChoppingProcess();
-            animator.SetBool(ANIMATOR_CHOP, false);
-            animator.SetInteger(ANIMATOR_WOOD, 10);
             run = true;
+            chop = false;
+            wood = 10;
             target = SearchNearWoodPlace();
+
             Woods.SetActive(true);
 
             if (target == null)
@@ -387,9 +390,10 @@ public class Worker : HumanUnit
                 return;
             }
             _gameManager.UpdateWood(whichPlayer, 10);
-            animator.SetBool(ANIMATOR_CHOP, false);
-            animator.SetInteger(ANIMATOR_WOOD, 0);
+
             run = true;
+            chop = false;
+            wood = 0;
             target = SearchNearTreePlace();
             Woods.SetActive(false);
 

@@ -42,27 +42,28 @@ public class HumanUnit : Unit
         }
     }
     Vector3 nearPoint;
-    protected void UpdateDistance(bool buildingTarget = false)
+    protected void UpdateDistance(bool buildingTarget = false, bool goldmineTarget = false)
     {
-
-
         if (target != null)
         {
-            if (buildingTarget && target.GetComponent<BuildingUnit>() != null)
+            if (goldmineTarget)
             {
-                if (!ifSearchNearBuildingPoint)
+                nav.SetDestination(new Vector3(target.position.x, 0, target.position.z - 4f));
+            }
+            else if (buildingTarget && target.GetComponent<BuildingUnit>() != null)
                 {
-                    nearPoint = SearchNearBuildingPoint(target.GetComponent<BuildingUnit>().Size);              
-                    ifSearchNearBuildingPoint = true;
+                    if (!ifSearchNearBuildingPoint)
+                    {
+                        nearPoint = SearchNearBuildingPoint(target.GetComponent<BuildingUnit>().Size);
+                        ifSearchNearBuildingPoint = true;
+                    }
+
+                    nav.SetDestination(nearPoint);
                 }
-
-
-                nav.SetDestination(nearPoint);
-            }
-            else
-            {
-                nav.SetDestination(new Vector3(target.position.x, 0, target.position.z));
-            }
+                else
+                {
+                    nav.SetDestination(new Vector3(target.position.x, 0, target.position.z));
+                }
         }
 
         distance = CalculateLenghtStraightLine(nav.destination, transform.position);

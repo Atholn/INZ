@@ -96,6 +96,17 @@ public class Player : MonoBehaviour
     {
         gameManager = GameObject.FindObjectOfType<GameManager>();
 
+        if(!ifCommandGold)
+        {
+            List<GameObject> listOfWorkers = gameManager._playersGameObjects[whichPlayer].Where(g => g.GetComponent<Worker>() != null).ToList();
+
+            listOfWorkers[1].SendMessage("SearchTree", null, SendMessageOptions.DontRequireReceiver);
+            listOfWorkers[2].SendMessage("SearchTree", null, SendMessageOptions.DontRequireReceiver);
+            listOfWorkers[3].SendMessage("SearchGoldmine", null, SendMessageOptions.DontRequireReceiver);
+            listOfWorkers[4].SendMessage("SearchGoldmine", null, SendMessageOptions.DontRequireReceiver);
+            ifCommandGold = true;
+        }
+
         switch (computerTask)
         {
             case ComputerTask.building: Building(); break;
@@ -164,34 +175,34 @@ public class Player : MonoBehaviour
         List<GameObject> listOfWorkers = gameManager._playersGameObjects[whichPlayer].Where(g => g.GetComponent<Worker>() != null).ToList();
         if (actualWood < buildingTarget.GetComponent<BuildingUnit>().WoodCost)
         {
-            if (!ifCommandWood)
-            {
-                foreach (GameObject worker in listOfWorkers)
-                {
-                    worker.SendMessage("SearchTree", null, SendMessageOptions.DontRequireReceiver);
-                }
-                ifCommandWood = true;
-            }
+            //if (!ifCommandWood)
+            //{
+            //    foreach (GameObject worker in listOfWorkers)
+            //    {
+            //        worker.SendMessage("SearchTree", null, SendMessageOptions.DontRequireReceiver);
+            //    }
+            //    ifCommandWood = true;
+            //}
 
             return;
         }
 
         if (actualGold < buildingTarget.GetComponent<BuildingUnit>().GoldCost)
         {
-            if (!ifCommandGold)
-            {
-                foreach (GameObject worker in listOfWorkers)
-                {
-                    worker.SendMessage("SearchGoldmine", null, SendMessageOptions.DontRequireReceiver);
-                }
-                ifCommandGold = true;
-            }
+            //if (!ifCommandGold)
+            //{
+            //    foreach (GameObject worker in listOfWorkers)
+            //    {
+            //        worker.SendMessage("SearchGoldmine", null, SendMessageOptions.DontRequireReceiver);
+            //    }
+            //    ifCommandGold = true;
+            //}
 
             return;
         }
 
-        ifCommandWood = false;
-        ifCommandGold = false;
+        //ifCommandWood = false;
+        //ifCommandGold = false;
         computerTaskBuilding = ComputerTaskBuilding.searchBuildPlace;
     }
 
@@ -363,34 +374,34 @@ public class Player : MonoBehaviour
         List<GameObject> listOfWorkers = gameManager._playersGameObjects[whichPlayer].Where(g => g.GetComponent<Worker>() != null).ToList();
         if (actualWood < soldierTarget.GetComponent<Soldier>().WoodCost)
         {
-            if (!ifCommandWood)
-            {
-                foreach (GameObject worker in listOfWorkers)
-                {
-                    worker.SendMessage("SearchTree", null, SendMessageOptions.DontRequireReceiver);
-                }
-                ifCommandWood = true;
-            }
+            //if (!ifCommandWood)
+            //{
+            //    foreach (GameObject worker in listOfWorkers)
+            //    {
+            //        worker.SendMessage("SearchTree", null, SendMessageOptions.DontRequireReceiver);
+            //    }
+            //    ifCommandWood = true;
+            //}
 
             return;
         }
 
         if (actualGold < soldierTarget.GetComponent<Soldier>().GoldCost)
         {
-            if (!ifCommandGold)
-            {
-                foreach (GameObject worker in listOfWorkers)
-                {
-                    worker.SendMessage("SearchGoldmine", null, SendMessageOptions.DontRequireReceiver);
-                }
-                ifCommandGold = true;
-            }
+            //if (!ifCommandGold)
+            //{
+            //    foreach (GameObject worker in listOfWorkers)
+            //    {
+            //        worker.SendMessage("SearchGoldmine", null, SendMessageOptions.DontRequireReceiver);
+            //    }
+            //    ifCommandGold = true;
+            //}
 
             return;
         }
 
-        ifCommandWood = false;
-        ifCommandGold = false;
+        //ifCommandWood = false;
+        //ifCommandGold = false;
         computerTaskAttacking = ComputerTaskAttacking.creatingSoldiers;
     }
 
