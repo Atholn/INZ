@@ -152,7 +152,7 @@ public class GameUI : MonoBehaviour
         _characterInfos[0].text = unit.Name;
         _characterInfos[1].text = $"Attack {unit.AttackPower}";
         _characterInfos[2].text = $"Defense {unit.Defense}";
-        _characterInfos[3].text = $"{unit.Hp} / {unit.Hp}";
+        _characterInfos[3].text = $"{unit.Hp} / {unit.HpMax}";
 
         //HideSpecialButtons();
         HideSpecialPanel();
