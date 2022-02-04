@@ -33,7 +33,6 @@ public class GameUI : MonoBehaviour
     private List<RawImage> _images = new List<RawImage>();
 
     private Button[] buttonsCancelCreate;
-    //private RawImage[] rawImages;
 
     private void Start()
     {
@@ -49,15 +48,12 @@ public class GameUI : MonoBehaviour
         BarracksSpecialPanel.SetActive(false);
 
         RawMaterials = RawMaterialsPanel.GetComponentsInChildren<Text>();
-
-        //rawImages = CreateProgressPanel.GetComponentsInChildren<RawImage>(true);
         buttonsCancelCreate = CreateProgressPanel.GetComponentsInChildren<Button>(true);
         for(int i=0;i< buttonsCancelCreate.Length;i++)
         {
-            //buttonsCancelCreate[i].GetComponent<CancelCreateUnit>().ButtonID = i;///
+            buttonsCancelCreate[i].GetComponent<CancelCreate>().ButtonID = i;
         }
-
-        
+      
     }
 
     #region TopPanel

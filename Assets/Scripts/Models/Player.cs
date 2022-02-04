@@ -56,7 +56,6 @@ public class Player : MonoBehaviour
     int whichBuilding;
 
     //getRawSource
-    private bool ifCommandWood = false;
     private bool ifCommandGold = false;
 
     //searchBuildPlace

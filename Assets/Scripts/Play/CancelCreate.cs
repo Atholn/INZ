@@ -2,8 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CancelCreateUnit : MonoBehaviour
-{ 
+public class CancelCreate : MonoBehaviour
+{
     internal int ButtonID;
 
     private BuildingUnit buildingParent;
