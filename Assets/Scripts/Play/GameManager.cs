@@ -121,18 +121,24 @@ public class GameManager : MonoBehaviour
         _players[whichPlayer].actualMaxUnitsPoint = UnitsMaxPointsUpdate(whichPlayer);
 
         if (whichPlayer == 0)
-         _gameUI.UpdateRawMaterials(2, _players[whichPlayer].actualUnitsPoint, _players[whichPlayer].actualMaxUnitsPoint);
+            _gameUI.UpdateRawMaterials(2, _players[whichPlayer].actualUnitsPoint, _players[whichPlayer].actualMaxUnitsPoint);
     }
 
     public int UnitsPointsUpdate(int whichPlayer)
     {
-        var points = _playersGameObjects[whichPlayer].Where(g => g.GetComponent<HumanUnit>() != null).Select(g => g.GetComponent<HumanUnit>().UnitPoint).Sum();
+        var points = _playersGameObjects[whichPlayer]
+            .Where(g => g.GetComponent<HumanUnit>() != null && g.GetComponent<HumanUnit>().Hp > 0)
+            .Select(g => g.GetComponent<HumanUnit>().UnitPoint)
+            .Sum();
         return _players[whichPlayer].actualUnitsPoint = points;
     }
 
     internal int UnitsMaxPointsUpdate(int whichPlayer)
     {
-        var points = _playersGameObjects[whichPlayer].Where(g => g.GetComponent<BuildingUnit>() != null &&  g.GetComponent<BuildingUnit>().BuildingPercent > g.GetComponent<BuildingUnit>().CreateTime).Select(g => g.GetComponent<BuildingUnit>().UnitToCreatePoints).Sum();
+        var points = _playersGameObjects[whichPlayer]
+            .Where(g => g.GetComponent<BuildingUnit>() != null && g.GetComponent<BuildingUnit>().BuildingPercent > g.GetComponent<BuildingUnit>().CreateTime)
+            .Select(g => g.GetComponent<BuildingUnit>().UnitToCreatePoints)
+            .Sum();
         return _players[whichPlayer].actualMaxUnitsPoint = points < _maxUnitsPoint ? points : _maxUnitsPoint;
     }
 
@@ -179,7 +185,7 @@ public class GameManager : MonoBehaviour
                 _playersGameObjects[i][j + 1].transform.GetChild(0).GetComponentInChildren<SkinnedMeshRenderer>().materials[1].color = _playersMaterials[i].color;
                 _playersGameObjects[i][j + 1].GetComponent<Unit>().WhichPlayer = i;
 
-                Worker w = _playersGameObjects[i][j+1].GetComponent<Worker>();
+                Worker w = _playersGameObjects[i][j + 1].GetComponent<Worker>();
                 //w.GetComponents();
             }
         }
@@ -218,9 +224,9 @@ public class GameManager : MonoBehaviour
             _gameUI.ShowProgressCreateUnitPanel(onlyOneSelectGO);
         }
 
-        foreach(Player player in _players)
+        foreach (Player player in _players)
         {
-            if(player.typeOfPlayer == Player.TypeOfPlayer.human)
+            if (player.typeOfPlayer == Player.TypeOfPlayer.human)
             {
                 continue;
             }
@@ -314,7 +320,7 @@ public class GameManager : MonoBehaviour
     public void UnitCreate(int whichPlayer, GameObject unitToCreate, Vector3 position, Vector3 pointerPosition)
     {
         _playersGameObjects[whichPlayer].Add(Instantiate(unitToCreate, position, unitToCreate.transform.rotation));
-        _playersGameObjects[whichPlayer][_playersGameObjects[whichPlayer].Count - 1].transform.GetChild(0).GetComponentInChildren<SkinnedMeshRenderer>().materials[1].color = _playersMaterials[whichPlayer].color;
+        _playersGameObjects[whichPlayer][_playersGameObjects[whichPlayer].Count - 1].transform.GetChild(0).GetComponentInChildren<SkinnedMeshRenderer>().materials[unitToCreate.GetComponent<HumanUnit>().UnitColorNum].color = _playersMaterials[whichPlayer].color;
         _playersGameObjects[whichPlayer][_playersGameObjects[whichPlayer].Count - 1].GetComponent<Unit>().WhichPlayer = whichPlayer;
 
         if (_playersGameObjects[whichPlayer][_playersGameObjects[whichPlayer].Count - 1].GetComponent<HumanUnit>() != null)

@@ -334,6 +334,7 @@ MonoBehaviour:
   GoldCost: 50
   WoodCost: 100
   UnitPoint: 3
+  UnitColorNum: 2
 --- !u!114 &8418041333762072847
 MonoBehaviour:
   m_ObjectHideFlags: 0

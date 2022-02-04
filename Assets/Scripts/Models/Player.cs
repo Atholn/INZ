@@ -87,7 +87,7 @@ public class Player : MonoBehaviour
 
     //creatingSoldiers
     private readonly int _computerSoldiersCount = 5;
-    private readonly int _computerSoldiersMinCount = 2;
+    private readonly int _computerSoldiersMinCount = 4;
     int creatingSoldiers = 0;
 
     //attackingEnemies
@@ -394,7 +394,7 @@ public class Player : MonoBehaviour
     {
         var soldiers = GetListUnits<Soldier>();
 
-        if(soldiers.Count == 0)
+        if (soldiers.Count == 0)
         {
             return;
         }
@@ -465,7 +465,7 @@ public class Player : MonoBehaviour
 
             for (int j = 0; j < gameManager._playersGameObjects[i].Count; j++)
             {
-                if(gameManager._playersGameObjects[i][j].GetComponent<Unit>().Hp < 0)
+                if (gameManager._playersGameObjects[i][j].GetComponent<Unit>().Hp < 0)
                 {
                     continue;
                 }

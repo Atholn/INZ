@@ -6,6 +6,7 @@ using UnityEngine.AI;
 public class HumanUnit : Unit
 {
     public int UnitPoint = 1;
+    public int UnitColorNum = 1;
 
     protected bool isDead = false;
     protected float timeDeath = 10f;
@@ -14,7 +15,6 @@ public class HumanUnit : Unit
     protected Transform target;
     protected NavMeshAgent nav;
     protected Animator animator;
-
     protected bool ifSearchNearBuildingPoint = false;
 
     protected override void Awake()
@@ -38,6 +38,7 @@ public class HumanUnit : Unit
 
         if (Hp <= 0)
         {
+            GameObject.FindObjectOfType<GameManager>().UpdateUnitPoints(WhichPlayer);
             isDead = true;
         }
     }

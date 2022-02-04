@@ -8,7 +8,7 @@ public class Soldier : HumanUnit
     }
 
     private SoldierTask task = SoldierTask.idle;
-
+    
     private const string ANIMATOR_DEAD = "Dead",
                          ANIMATOR_RUN = "Run",
                          ANIMATOR_ATTACK = "Attack";
@@ -101,6 +101,7 @@ public class Soldier : HumanUnit
         if (distance > AttackDistance)
         {
             run = true;
+            attack = false;
             timmer = 0;
             return;
         }
@@ -115,7 +116,7 @@ public class Soldier : HumanUnit
             timmer = 0;
             target.gameObject.GetComponent<Unit>().Hp -= AttackPower;
 
-            if(target.gameObject.GetComponent<BuildingUnit>() != null)
+            if (target.gameObject.GetComponent<BuildingUnit>() != null)
             {
                 target.gameObject.GetComponent<BuildingUnit>().UpdateFire();
             }
@@ -179,6 +180,11 @@ public class Soldier : HumanUnit
     #region Commands
     void Command(Vector3 destination)
     {
+        if (Hp < 0)
+        {
+            return;
+        }
+
         run = true;
         attack = false;
         target = null;
@@ -189,6 +195,10 @@ public class Soldier : HumanUnit
 
     void CommandPlayer(GameObject gameObject)
     {
+        if (Hp < 0)
+        {
+            return;
+        }
         run = true;
 
         target = gameObject.transform;
@@ -197,6 +207,10 @@ public class Soldier : HumanUnit
 
     void CommandEnemy(GameObject gameObject)
     {
+        if (Hp < 0)
+        {
+            return;
+        }
         run = true;
 
         target = gameObject.transform;

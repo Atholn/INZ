@@ -498,6 +498,11 @@ public class Worker : HumanUnit
     #region Commands
     void Command(Vector3 destination)
     {
+        if(Hp<0)
+        {
+            return;
+        }
+
         run = true;
         build = false;
         chop = false;
@@ -508,6 +513,11 @@ public class Worker : HumanUnit
 
     void Command(Tree tree)
     {
+        if (Hp < 0)
+        {
+            return;
+        }
+
         run = true;
         build = false;
         chop = false;
@@ -518,6 +528,11 @@ public class Worker : HumanUnit
 
     void Command(GoldMine goldMine)
     {
+        if (Hp < 0)
+        {
+            return;
+        }
+
         run = true;
         build = false;
         chop = false;
@@ -528,6 +543,11 @@ public class Worker : HumanUnit
 
     void Command(GameObject gameObject)
     {
+        if (Hp < 0)
+        {
+            return;
+        }
+
         if (gameObject.GetComponent<BuildingUnit>() != null)
         {
             BuildingUnit buildingUnit = gameObject.GetComponent<BuildingUnit>();
@@ -556,6 +576,11 @@ public class Worker : HumanUnit
     #region AICommands
     void CommandStop()
     {
+        if (Hp < 0)
+        {
+            return;
+        }
+
         run = false;
         target = null;
 
@@ -565,11 +590,21 @@ public class Worker : HumanUnit
 
     void SearchTree()
     {
+        if (Hp < 0)
+        {
+            return;
+        }
+
         target = SearchNearTreePlace();
         task = WorkerTask.chop;
     }
     void SearchGoldmine()
     {
+        if (Hp < 0)
+        {
+            return;
+        }
+
         target = SearchNearGoldminePlace();
         task = WorkerTask.dig;
     }
