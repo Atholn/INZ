@@ -31,6 +31,7 @@ public class Player : MonoBehaviour
         soldierSelection,
         getRawSourceSoldier,
         creatingSoldiers,
+        searchingEnemy,
         attackingEnemies,
         returnSoldiers,
     }
@@ -85,18 +86,23 @@ public class Player : MonoBehaviour
     int whichSoldier;
 
     //creatingSoldiers
-    private readonly int _computerUnitsCount = 10;
+    private readonly int _computerSoldiersCount = 5;
+    private readonly int _computerSoldiersMinCount = 2;
+    int creatingSoldiers = 0;
+
     //attackingEnemies
+    GameObject enemyTarget;
+    bool commandsAttack = false;
 
     //returnSoldiers
-
+    bool noHome = false;
     #endregion
 
     internal void UpdateComputer(List<GameObject> units)
     {
         gameManager = GameObject.FindObjectOfType<GameManager>();
 
-        if(!ifCommandGold)
+        if (!ifCommandGold)
         {
             List<GameObject> listOfWorkers = gameManager._playersGameObjects[whichPlayer].Where(g => g.GetComponent<Worker>() != null).ToList();
 
@@ -104,6 +110,7 @@ public class Player : MonoBehaviour
             listOfWorkers[2].SendMessage("SearchTree", null, SendMessageOptions.DontRequireReceiver);
             listOfWorkers[3].SendMessage("SearchGoldmine", null, SendMessageOptions.DontRequireReceiver);
             listOfWorkers[4].SendMessage("SearchGoldmine", null, SendMessageOptions.DontRequireReceiver);
+
             ifCommandGold = true;
         }
 
@@ -157,7 +164,7 @@ public class Player : MonoBehaviour
             {
                 if (listOfBuildng.Where(b => b.Name == gameManager.BuildingsPrefabs[2].GetComponent<BuildingUnit>().name).ToList().Count != 0)
                 {
-                    if (listOfBuildng.Where(b => b.Name == gameManager.BuildingsPrefabs[3].GetComponent<BuildingUnit>().name).ToList().Count > 5)
+                    if (listOfBuildng.Where(b => b.Name == gameManager.BuildingsPrefabs[3].GetComponent<BuildingUnit>().name).ToList().Count > 2)
                     {
                         return -1;
                     }
@@ -293,7 +300,7 @@ public class Player : MonoBehaviour
 
         gameManager._playersGameObjects[whichPlayer].Add(buildingTarget);
         gameManager._playersGameObjects[whichPlayer][gameManager._playersGameObjects[whichPlayer].Count - 1].GetComponent<MeshRenderer>().materials[1].color = gameManager._playersMaterials[whichPlayer].color;
-        gameManager._playersGameObjects[whichPlayer][gameManager._playersGameObjects[whichPlayer].Count - 1].GetComponent<Unit>().whichPlayer = whichPlayer;
+        gameManager._playersGameObjects[whichPlayer][gameManager._playersGameObjects[whichPlayer].Count - 1].GetComponent<Unit>().WhichPlayer = whichPlayer;
         gameManager._playersGameObjects[whichPlayer].Where(g => g.GetComponent<Worker>() != null).FirstOrDefault().GetComponent<Worker>().SendMessage("Command", buildingTarget, SendMessageOptions.DontRequireReceiver); ;
 
         Destroy(image);
@@ -331,6 +338,9 @@ public class Player : MonoBehaviour
             case ComputerTaskAttacking.creatingSoldiers:
                 CreatingSoldiers();
                 break;
+            case ComputerTaskAttacking.searchingEnemy:
+                SearchingEnemy();
+                break;
             case ComputerTaskAttacking.attackingEnemies:
                 AttackingEnemies();
                 break;
@@ -340,19 +350,17 @@ public class Player : MonoBehaviour
         }
     }
 
-    int creatingSoldiers = 0;
     private void SoldierSelection()
     {
-        if (gameManager._playersGameObjects[whichPlayer].Where(s => s.GetComponent<Soldier>() != null).ToList().Count() > _computerUnitsCount)
+        if (GetListUnits<Soldier>().Count() > _computerSoldiersCount)
         {
             computerTaskAttacking = ComputerTaskAttacking.attackingEnemies;
             return;
         }
 
-
-        if (creatingSoldiers > _computerUnitsCount)
+        if (creatingSoldiers > _computerSoldiersCount)
         {
-            computerTaskAttacking = ComputerTaskAttacking.attackingEnemies;
+            //computerTaskAttacking = ComputerTaskAttacking.attackingEnemies;
             return;
         }
 
@@ -371,61 +379,136 @@ public class Player : MonoBehaviour
 
     private void GetRawSourceSoldier()
     {
-        List<GameObject> listOfWorkers = gameManager._playersGameObjects[whichPlayer].Where(g => g.GetComponent<Worker>() != null).ToList();
         if (actualWood < soldierTarget.GetComponent<Soldier>().WoodCost)
         {
-            //if (!ifCommandWood)
-            //{
-            //    foreach (GameObject worker in listOfWorkers)
-            //    {
-            //        worker.SendMessage("SearchTree", null, SendMessageOptions.DontRequireReceiver);
-            //    }
-            //    ifCommandWood = true;
-            //}
-
             return;
         }
 
         if (actualGold < soldierTarget.GetComponent<Soldier>().GoldCost)
         {
-            //if (!ifCommandGold)
-            //{
-            //    foreach (GameObject worker in listOfWorkers)
-            //    {
-            //        worker.SendMessage("SearchGoldmine", null, SendMessageOptions.DontRequireReceiver);
-            //    }
-            //    ifCommandGold = true;
-            //}
-
             return;
         }
 
-        //ifCommandWood = false;
-        //ifCommandGold = false;
         computerTaskAttacking = ComputerTaskAttacking.creatingSoldiers;
     }
 
     private void CreatingSoldiers()
     {
         gameManager._playersGameObjects[whichPlayer]
-            .Where(b => b.GetComponent<BuildingUnit>() != null && b.GetComponent<BuildingUnit>().name == "Barracks")
+            .Where(b => b.GetComponent<BuildingUnit>() != null && b.GetComponent<BuildingUnit>().Name == "Barracks")
             .Select(b => b.GetComponent<BuildingUnit>())
             .FirstOrDefault()
             .CreateUnit(soldierTarget, whichPlayer);
 
+        computerTaskAttacking = ComputerTaskAttacking.soldierSelection;
+    }
 
-        //computerTaskAttacking = ComputerTaskAttacking.attackingEnemies;
+    private void SearchingEnemy()
+    {
+        enemyTarget = GetNearEnemy();
+
+        commandsAttack = false;
+        computerTaskAttacking = ComputerTaskAttacking.attackingEnemies;
     }
 
     private void AttackingEnemies()
     {
-        computerTaskAttacking = ComputerTaskAttacking.returnSoldiers;
+        var soldiers = GetListUnits<Soldier>();
+
+        if(soldiers.Count == 0)
+        {
+            return;
+        }
+
+        if (enemyTarget == null)
+        {
+            computerTaskAttacking = ComputerTaskAttacking.searchingEnemy;
+            commandsAttack = false;
+            return;
+        }
+
+        if (!commandsAttack)
+        {
+            foreach (Soldier soldier in soldiers)
+            {
+                soldier.SendMessage("CommandEnemy", enemyTarget, SendMessageOptions.DontRequireReceiver);
+            }
+            commandsAttack = true;
+            return;
+        }
+
+        if (noHome)
+        {
+            return;
+        }
+
+        if (soldiers.Count < _computerSoldiersMinCount)
+        {
+            computerTaskAttacking = ComputerTaskAttacking.returnSoldiers;
+            return;
+        }
     }
 
     private void ReturnSoldiers()
     {
+        var soldiers = GetListUnits<Soldier>();
+        var buildings = GetListUnits<BuildingUnit>();
+
+        if (buildings.Count == 0)
+        {
+            noHome = true;
+            computerTaskAttacking = ComputerTaskAttacking.attackingEnemies;
+            return;
+        }
+
+        foreach (Soldier soldier in soldiers)
+        {
+            soldier.SendMessage("Command", buildings[0].transform.position + new Vector3(0, 0, buildings[0].GetComponent<BuildingUnit>().Size), SendMessageOptions.DontRequireReceiver);
+        }
+
         computerTaskAttacking = ComputerTaskAttacking.creatingSoldiers;
     }
 
     #endregion
+
+    private GameObject GetNearEnemy()
+    {
+        var soldier = GetListUnits<Soldier>().FirstOrDefault();
+        GameObject nearEnemy = null;
+        float oldDistance = float.MaxValue;
+
+        for (int i = 0; i < gameManager._playersGameObjects.Count; i++)
+        {
+            if (i == whichPlayer)
+            {
+                continue;
+            }
+
+            for (int j = 0; j < gameManager._playersGameObjects[i].Count; j++)
+            {
+                if (nearEnemy == null)
+                {
+                    nearEnemy = gameManager._playersGameObjects[i][j];
+                    oldDistance = Vector3.Magnitude(soldier.transform.position - nearEnemy.transform.position);
+                    continue;
+                }
+
+                if (oldDistance > Vector3.Magnitude(nearEnemy.transform.position - gameManager._playersGameObjects[i][j].transform.position))
+                {
+                    nearEnemy = gameManager._playersGameObjects[i][j];
+                    oldDistance = Vector3.Magnitude(soldier.transform.position - nearEnemy.transform.position);
+                }
+            }
+        }
+
+        return nearEnemy;
+    }
+
+    private List<T> GetListUnits<T>() where T : Unit
+    {
+        return gameManager._playersGameObjects[whichPlayer]
+            .Where(u => u.GetComponent<T>() != null)
+            .Select(u => u.GetComponent<T>())
+            .ToList();
+    }
 }

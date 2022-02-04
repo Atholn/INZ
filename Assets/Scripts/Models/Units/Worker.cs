@@ -79,7 +79,7 @@ public class Worker : HumanUnit
     {
         base.Update();
 
-        if (isDead)
+        if (isDead && !dead)
         {
             task = WorkerTask.dead;
             nav.velocity = Vector3.zero;
@@ -168,7 +168,7 @@ public class Worker : HumanUnit
 
         bU.DustOff();
         bU.PointerPosition = new Vector3(target.transform.position.x, 0.45f, target.transform.position.z - (bU.Size / 2) - 1);
-        bU.UpdateUnitPoints(whichPlayer);
+        bU.UpdateUnitPoints(WhichPlayer);
 
         ifSearchNearBuildingPoint = false;
         build = false;
@@ -272,7 +272,7 @@ public class Worker : HumanUnit
 
             gold = 0;
             GoldBag.SetActive(false);
-            _gameManager.UpdateGold(whichPlayer, 10);
+            _gameManager.UpdateGold(WhichPlayer, 10);
 
             if (goldMineTarget == null)
             {
@@ -339,11 +339,19 @@ public class Worker : HumanUnit
 
             return;
         }
+
         if (goToChopping == 0)
         {
             if (timmer < choppingTime)
             {
                 timmer += Time.deltaTime;
+                return;
+            }
+
+            if(target == null)
+            {
+                target = SearchNearTreePlace();
+                chop = false;
                 return;
             }
 
@@ -370,7 +378,7 @@ public class Worker : HumanUnit
             {
                 return;
             }
-            _gameManager.UpdateWood(whichPlayer, 10);
+            _gameManager.UpdateWood(WhichPlayer, 10);
 
             run = true;
             chop = false;

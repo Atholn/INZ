@@ -170,14 +170,14 @@ public class GameManager : MonoBehaviour
             _playersGameObjects[i].Add(Instantiate(_townHall, _gameStartPoints[i].UnitStartLocation, _townHall.transform.rotation));
             _playersGameObjects[i][0].transform.GetComponent<MeshRenderer>().materials[1].color = _playersMaterials[i].color;
             _playersGameObjects[i][0].GetComponent<BuildingUnit>().BuildingPercent = _playersGameObjects[i][0].GetComponent<BuildingUnit>().CreateTime + 0.01f;
-            _playersGameObjects[i][0].GetComponent<Unit>().whichPlayer = i;
+            _playersGameObjects[i][0].GetComponent<Unit>().WhichPlayer = i;
             _playersGameObjects[i][0].GetComponent<BuildingUnit>().PointerPosition = new Vector3(_playersGameObjects[i][0].transform.position.x, 0.45f, _playersGameObjects[i][0].transform.position.z - (_playersGameObjects[i][0].GetComponent<BuildingUnit>().SizeBuilding / 2) - 1);
 
             for (int j = 0; j < _countOfWorkers; j++)
             {
                 _playersGameObjects[i].Add(Instantiate(_worker, _gameStartPoints[i].UnitStartLocation + new Vector3(5 + j * 1, 0, 5), _worker.transform.rotation));
                 _playersGameObjects[i][j + 1].transform.GetChild(0).GetComponentInChildren<SkinnedMeshRenderer>().materials[1].color = _playersMaterials[i].color;
-                _playersGameObjects[i][j + 1].GetComponent<Unit>().whichPlayer = i;
+                _playersGameObjects[i][j + 1].GetComponent<Unit>().WhichPlayer = i;
 
                 Worker w = _playersGameObjects[i][j+1].GetComponent<Worker>();
                 //w.GetComponents();
@@ -267,11 +267,8 @@ public class GameManager : MonoBehaviour
         }
     }
 
-
     internal void SetNonProfile()
     {
-        worker = null;
-
         actualClickBuild = null;
 
         _gameUI.SetNonProfile();
@@ -281,15 +278,9 @@ public class GameManager : MonoBehaviour
         Pointer.SetActive(false);
     }
 
-    HumanUnit worker = null;
-
     public void SetProfile(GameObject gameObject, int i)
     {
         _gameUI.SetCharacterInfo(gameObject, i);
-        if (gameObject.GetComponent<HumanUnit>())
-        {
-            worker = gameObject.GetComponent<HumanUnit>();
-        }
 
         if (gameObject.GetComponent<BuildingUnit>() != null)
         {
@@ -305,7 +296,6 @@ public class GameManager : MonoBehaviour
 
     internal void SetProfiles(List<GameObject> selectUnits)
     {
-        worker = null;
         selectUnits = selectUnits.OrderBy(x => x.GetComponent<Unit>().Priority).ToList();
         _gameUI.SetCharactersProfiles(selectUnits, _maxSelected);
 
@@ -325,22 +315,20 @@ public class GameManager : MonoBehaviour
     {
         _playersGameObjects[whichPlayer].Add(Instantiate(unitToCreate, position, unitToCreate.transform.rotation));
         _playersGameObjects[whichPlayer][_playersGameObjects[whichPlayer].Count - 1].transform.GetChild(0).GetComponentInChildren<SkinnedMeshRenderer>().materials[1].color = _playersMaterials[whichPlayer].color;
-        _playersGameObjects[whichPlayer][_playersGameObjects[whichPlayer].Count - 1].GetComponent<Unit>().whichPlayer = whichPlayer;
+        _playersGameObjects[whichPlayer][_playersGameObjects[whichPlayer].Count - 1].GetComponent<Unit>().WhichPlayer = whichPlayer;
 
         if (_playersGameObjects[whichPlayer][_playersGameObjects[whichPlayer].Count - 1].GetComponent<HumanUnit>() != null)
         {
             if (_playersGameObjects[whichPlayer][_playersGameObjects[whichPlayer].Count - 1].GetComponent<Worker>() != null)
             {
                 Worker w = _playersGameObjects[whichPlayer][_playersGameObjects[whichPlayer].Count - 1].GetComponent<Worker>();
-                //w.GetComponents();
                 w.SendMessage("Command", Pointer.transform.position, SendMessageOptions.DontRequireReceiver);
             }
 
             if (_playersGameObjects[whichPlayer][_playersGameObjects[whichPlayer].Count - 1].GetComponent<Soldier>() != null)
             {
                 Soldier s = _playersGameObjects[whichPlayer][_playersGameObjects[whichPlayer].Count - 1].GetComponent<Soldier>();
-                //s.GetComponents();
-                _playersGameObjects[whichPlayer][_playersGameObjects[whichPlayer].Count - 1].GetComponent<Soldier>().SendMessage("Command", Pointer.transform.position, SendMessageOptions.DontRequireReceiver);
+                s.SendMessage("Command", Pointer.transform.position, SendMessageOptions.DontRequireReceiver);
             }
         }
 

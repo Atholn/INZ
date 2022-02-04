@@ -58,6 +58,8 @@ public class CameraControll : MonoBehaviour
         {
             _gameManager._players[0].actualWood += 1000;
             _gameManager._players[0].actualGold += 1000;
+            _gameManager._players[1].actualWood += 1000;
+            _gameManager._players[1].actualGold += 1000;
         }
     }
 
@@ -114,7 +116,7 @@ public class CameraControll : MonoBehaviour
             _gameManager.building = false;
 
             _gameManager._playersGameObjects[0][_gameManager._playersGameObjects[0].Count - 1].GetComponent<MeshRenderer>().materials[1].color = _gameManager._playersMaterials[0].color;
-            _gameManager._playersGameObjects[0][_gameManager._playersGameObjects[0].Count - 1].GetComponent<Unit>().whichPlayer = 0;
+            _gameManager._playersGameObjects[0][_gameManager._playersGameObjects[0].Count - 1].GetComponent<Unit>().WhichPlayer = 0;
 
 
 

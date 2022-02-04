@@ -18,7 +18,7 @@ public class Unit : MonoBehaviour
     public int GoldCost;
     public int WoodCost;
 
-    internal int whichPlayer;
+    internal int WhichPlayer;
     internal int Hp;
 
     protected virtual void Awake()
@@ -37,8 +37,8 @@ public class Unit : MonoBehaviour
         {
             GameManager gameManager = GameObject.FindObjectOfType<GameManager>();
 
-            gameManager._playersGameObjects[whichPlayer].Remove(gameObject);
-            gameManager.UpdateUnitPoints(whichPlayer);
+            gameManager._playersGameObjects[WhichPlayer].Remove(gameObject);
+            gameManager.UpdateUnitPoints(WhichPlayer);
             gameManager.CheckWinLose();
         }
     }
