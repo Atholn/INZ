@@ -23,7 +23,6 @@ public class GameUI : MonoBehaviour
     public GameObject TownHallSpecialPanel;
     public GameObject BarracksSpecialPanel;
 
-    public List<GameObject> WorkerActions;
     private List<GameObject> _tmpActions = new List<GameObject>();
 
     private Text[] RawMaterials = new Text[3];
@@ -36,11 +35,6 @@ public class GameUI : MonoBehaviour
 
     private void Start()
     {
-        foreach (GameObject button in WorkerActions)
-        {
-            button.SetActive(false);
-        }
-
         WinLosePanel.SetActive(false);
 
         WorkerSpecialPanel.SetActive(false);

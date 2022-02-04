@@ -90,11 +90,11 @@ public class CameraControll : MonoBehaviour
             }
         }
 
-        if (Input.GetMouseButtonDown(1))
-        {
-            _selectUnits.Clear();
-            _gameManager.SetNonProfile();
-        }
+        //if (Input.GetMouseButtonDown(1))
+        //{
+        //    _selectUnits.Clear();
+        //    _gameManager.SetNonProfile();
+        //}
 
         if (_gameManager.building && Input.GetMouseButtonDown(0))
         {
@@ -127,7 +127,7 @@ public class CameraControll : MonoBehaviour
             return;
         }
 
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(1))
         {
             GiveCommand();
         }
