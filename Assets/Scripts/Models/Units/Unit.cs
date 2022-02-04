@@ -9,7 +9,7 @@ public class Unit : MonoBehaviour
     public string Name;
     public int Defense;
     public int AttackPower;
-    public int AttackDistance;
+    public float AttackDistance;
 
     public Texture2D Profile;
     public int Priority;

@@ -132,7 +132,7 @@ public class BuildingUnit : Unit
 
         if (queueCreateUnitProgress[0] > queueCreateUnit[0].GetComponent<Unit>().CreateTime)
         {
-            gameManager.UnitCreate(whichPlayerUnit, queueCreateUnit[0], transform.position + new Vector3(0, 0, -SizeBuilding / 2));
+            gameManager.UnitCreate(whichPlayerUnit, queueCreateUnit[0], transform.position + new Vector3(0, 0, -SizeBuilding / 2), PointerPosition);
             queueCreateUnit.Remove(queueCreateUnit[0]);
             queueCreateUnitProgress.Remove(queueCreateUnitProgress[0]);
 

@@ -311,7 +311,7 @@ public class GameManager : MonoBehaviour
     }
 
     #region GamePlayer
-    public void UnitCreate(int whichPlayer, GameObject unitToCreate, Vector3 position)
+    public void UnitCreate(int whichPlayer, GameObject unitToCreate, Vector3 position, Vector3 pointerPosition)
     {
         _playersGameObjects[whichPlayer].Add(Instantiate(unitToCreate, position, unitToCreate.transform.rotation));
         _playersGameObjects[whichPlayer][_playersGameObjects[whichPlayer].Count - 1].transform.GetChild(0).GetComponentInChildren<SkinnedMeshRenderer>().materials[1].color = _playersMaterials[whichPlayer].color;
@@ -322,13 +322,13 @@ public class GameManager : MonoBehaviour
             if (_playersGameObjects[whichPlayer][_playersGameObjects[whichPlayer].Count - 1].GetComponent<Worker>() != null)
             {
                 Worker w = _playersGameObjects[whichPlayer][_playersGameObjects[whichPlayer].Count - 1].GetComponent<Worker>();
-                w.SendMessage("Command", Pointer.transform.position, SendMessageOptions.DontRequireReceiver);
+                w.SendMessage("Command", pointerPosition, SendMessageOptions.DontRequireReceiver);
             }
 
             if (_playersGameObjects[whichPlayer][_playersGameObjects[whichPlayer].Count - 1].GetComponent<Soldier>() != null)
             {
                 Soldier s = _playersGameObjects[whichPlayer][_playersGameObjects[whichPlayer].Count - 1].GetComponent<Soldier>();
-                s.SendMessage("Command", Pointer.transform.position, SendMessageOptions.DontRequireReceiver);
+                s.SendMessage("Command", pointerPosition, SendMessageOptions.DontRequireReceiver);
             }
         }
 

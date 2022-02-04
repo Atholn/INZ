@@ -29,10 +29,9 @@ public class Soldier : HumanUnit
     {
         base.Update();
 
-        if (isDead)
+        if (isDead && !dead)
         {
             task = SoldierTask.dead;
-            nav.velocity = Vector3.zero;
             timmer = 0;
             dead = true;
             isDead = false;
@@ -108,7 +107,7 @@ public class Soldier : HumanUnit
 
         nav.velocity = Vector3.zero;
         attack = true;
-
+        run = false;
         timmer += Time.deltaTime;
 
         if (timmer > _attackLenghtTime)
@@ -165,7 +164,7 @@ public class Soldier : HumanUnit
             Destroy(gameObject);
             return;
         }
-
+        nav.velocity = Vector3.zero;
         timmer += Time.deltaTime;
     }
 

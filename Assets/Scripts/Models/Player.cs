@@ -182,34 +182,13 @@ public class Player : MonoBehaviour
         List<GameObject> listOfWorkers = gameManager._playersGameObjects[whichPlayer].Where(g => g.GetComponent<Worker>() != null).ToList();
         if (actualWood < buildingTarget.GetComponent<BuildingUnit>().WoodCost)
         {
-            //if (!ifCommandWood)
-            //{
-            //    foreach (GameObject worker in listOfWorkers)
-            //    {
-            //        worker.SendMessage("SearchTree", null, SendMessageOptions.DontRequireReceiver);
-            //    }
-            //    ifCommandWood = true;
-            //}
-
             return;
         }
 
         if (actualGold < buildingTarget.GetComponent<BuildingUnit>().GoldCost)
         {
-            //if (!ifCommandGold)
-            //{
-            //    foreach (GameObject worker in listOfWorkers)
-            //    {
-            //        worker.SendMessage("SearchGoldmine", null, SendMessageOptions.DontRequireReceiver);
-            //    }
-            //    ifCommandGold = true;
-            //}
-
             return;
         }
-
-        //ifCommandWood = false;
-        //ifCommandGold = false;
         computerTaskBuilding = ComputerTaskBuilding.searchBuildPlace;
     }
 
@@ -233,8 +212,8 @@ public class Player : MonoBehaviour
 
         if (image == null)
         {
-            //Debug.Log("test error");
-
+            computerTaskBuilding = ComputerTaskBuilding.checkBuilding;
+            ifStartPos = false;
             return;
         }
 
@@ -420,7 +399,7 @@ public class Player : MonoBehaviour
             return;
         }
 
-        if (enemyTarget == null)
+        if (enemyTarget == null || enemyTarget.GetComponent<Unit>().Hp < 0)
         {
             computerTaskAttacking = ComputerTaskAttacking.searchingEnemy;
             commandsAttack = false;
@@ -486,6 +465,11 @@ public class Player : MonoBehaviour
 
             for (int j = 0; j < gameManager._playersGameObjects[i].Count; j++)
             {
+                if(gameManager._playersGameObjects[i][j].GetComponent<Unit>().Hp < 0)
+                {
+                    continue;
+                }
+
                 if (nearEnemy == null)
                 {
                     nearEnemy = gameManager._playersGameObjects[i][j];
@@ -503,6 +487,8 @@ public class Player : MonoBehaviour
 
         return nearEnemy;
     }
+
+
 
     private List<T> GetListUnits<T>() where T : Unit
     {
