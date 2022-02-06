@@ -322,7 +322,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4156c12a6699e6d429a0baa451252acc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HpMax: 100
+  HpMax: 200
   Name: Bowman
   Defense: 5
   AttackPower: 15

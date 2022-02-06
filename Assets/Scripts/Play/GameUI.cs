@@ -33,9 +33,6 @@ public class GameUI : MonoBehaviour
 
     private Button[] buttonsCancelCreate;
 
-    public GameObject hpSlider;
-    private List<GameObject> sliders = new List<GameObject>();
-
     private void Start()
     {
         WinLosePanel.SetActive(false);
@@ -178,9 +175,9 @@ public class GameUI : MonoBehaviour
             }
         }
 
-        sliders.Add(Instantiate(hpSlider, gameObject.transform.position + new Vector3(0, 2, 0), gameObject.transform.rotation));
+        //sliders.Add(Instantiate(hpSlider, gameObject.transform.position + new Vector3(0, 2, 0), gameObject.transform.rotation));
 
-        sliders[0].transform.SetParent(gameObject.transform);
+        //sliders[0].transform.SetParent(gameObject.transform);
     }
 
     internal void ShowProgressCreateUnitPanel(GameObject gameObject)

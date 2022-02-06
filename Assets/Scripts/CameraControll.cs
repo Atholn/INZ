@@ -24,6 +24,11 @@ public class CameraControll : MonoBehaviour
 
     private bool _ifPlayerUnits = false;
 
+    public GameObject hpSliderPlayer;
+    public GameObject hpSliderEnemy;
+
+    private const float _hpBarsShift = 0.001f;
+
     private void Awake()
     {
         cameraControl = this;
@@ -34,6 +39,12 @@ public class CameraControll : MonoBehaviour
             _selectionBox.gameObject.SetActive(false);
         }
         _gameManager = GameObject.FindObjectOfType<GameManager>();
+
+        hpSliderPlayer.transform.rotation = transform.rotation;
+        hpSliderEnemy.transform.rotation = transform.rotation;
+
+        hpSliderEnemy.SetActive(false);
+        hpSliderPlayer.SetActive(true);
     }
 
     void Update()
@@ -48,8 +59,45 @@ public class CameraControll : MonoBehaviour
         delta *= Speed * Time.deltaTime;
         transform.localPosition += delta;
 
+
+
         if (_gameManager != null) UpdateSelection();
+        UpdateMouseDetection();
+
+
         UpdateCodes();
+    }
+
+    private void UpdateMouseDetection()
+    {
+        if (!Input.GetMouseButton(0))
+        {
+            ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out rayHit))
+            {
+                if (rayHit.collider.gameObject.GetComponent<Unit>() != null)
+                {
+                    hpSliderPlayer.SetActive(true);
+                    hpSliderPlayer.transform.rotation = camera.transform.rotation;
+                    hpSliderPlayer.transform.position = rayHit.collider.gameObject.transform.position + new Vector3(0, 5, 0);
+
+                    Unit unit = rayHit.collider.gameObject.GetComponent<Unit>();
+
+                    hpSliderPlayer.transform.localScale = new Vector3((float)unit.HpMax / 100, 1, 1);
+
+                    RectTransform rectTransform = hpSliderPlayer.GetComponentsInChildren<RectTransform>()[1];
+                    float hp = (float)unit.Hp / (float)unit.HpMax;
+                    float posX = -0.5f + (hp / 2 - _hpBarsShift);
+
+                    rectTransform.localScale = new Vector3(hp, 1, 1);
+                    rectTransform.localPosition = new Vector3(Input.mousePosition.x < Screen.width/2? -posX : posX, 0, 0);
+                }
+                else
+                {
+                    hpSliderPlayer.SetActive(false);
+                }
+            }
+        }
     }
 
     private void UpdateCodes()
@@ -65,6 +113,8 @@ public class CameraControll : MonoBehaviour
 
     private void UpdateSelection()
     {
+
+
         if (Input.GetMouseButtonDown(0))
         {
             _selectionBox.gameObject.SetActive(true);
@@ -74,8 +124,6 @@ public class CameraControll : MonoBehaviour
         {
             _selectionBox.gameObject.SetActive(false);
         }
-
-        if (EventSystem.current.IsPointerOverGameObject()) return;
 
         if (Input.GetMouseButton(0))
         {
@@ -89,7 +137,7 @@ public class CameraControll : MonoBehaviour
                 UpdateSelecting();
             }
         }
-
+        if (EventSystem.current.IsPointerOverGameObject()) return;
         //if (Input.GetMouseButtonDown(1))
         //{
         //    _selectUnits.Clear();
@@ -186,7 +234,7 @@ public class CameraControll : MonoBehaviour
                     int k = -1;
                     for (i = 0; i < _gameManager._playersGameObjects.Count; i++)
                     {
-                        if(_gameManager._playersGameObjects[i].Where(x => x == rayHit.collider.gameObject).FirstOrDefault() != null)
+                        if (_gameManager._playersGameObjects[i].Where(x => x == rayHit.collider.gameObject).FirstOrDefault() != null)
                         {
                             k = i;
                             break;
