@@ -5,10 +5,10 @@ using UnityEngine.AI;
 
 public class Arrow : MonoBehaviour
 {
-    private float timmer = 0f;
-    private float timmerMax = 10f;
-    private bool ifLanding = false;
-    private NavMeshAgent nav;
+    //private float timmer = 0f;
+    //private float timmerMax = 10f;
+    //private bool ifLanding = false;
+    //private NavMeshAgent nav;
     internal Vector3 target;
 
     //private void Update()

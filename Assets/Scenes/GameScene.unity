@@ -3655,8 +3655,7 @@ MonoBehaviour:
   WorkerSpecialPanel: {fileID: 1860349092}
   TownHallSpecialPanel: {fileID: 1314900380}
   BarracksSpecialPanel: {fileID: 1825980618}
-  WorkerActions:
-  - {fileID: 1860349092}
+  hpSlider: {fileID: 345162542440822276, guid: 921a2763c90fa8842899c906ea2d73bc, type: 3}
 --- !u!222 &1154579020
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -6192,7 +6191,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1860349093
 RectTransform:
   m_ObjectHideFlags: 0

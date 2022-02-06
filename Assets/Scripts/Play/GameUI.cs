@@ -33,6 +33,9 @@ public class GameUI : MonoBehaviour
 
     private Button[] buttonsCancelCreate;
 
+    public GameObject hpSlider;
+    private List<GameObject> sliders = new List<GameObject>();
+
     private void Start()
     {
         WinLosePanel.SetActive(false);
@@ -43,11 +46,10 @@ public class GameUI : MonoBehaviour
 
         RawMaterials = RawMaterialsPanel.GetComponentsInChildren<Text>();
         buttonsCancelCreate = CreateProgressPanel.GetComponentsInChildren<Button>(true);
-        for(int i=0;i< buttonsCancelCreate.Length;i++)
+        for (int i = 0; i < buttonsCancelCreate.Length; i++)
         {
             buttonsCancelCreate[i].GetComponent<CancelCreate>().ButtonID = i;
         }
-      
     }
 
     #region TopPanel
@@ -124,6 +126,8 @@ public class GameUI : MonoBehaviour
 
         //HideSpecialButtons();
         HideSpecialPanel();
+
+
     }
 
     internal void SetCharacterInfo(GameObject gameObject, int i)
@@ -174,7 +178,9 @@ public class GameUI : MonoBehaviour
             }
         }
 
-        //ShowProgressCreateUnitPanel(gameObject);
+        sliders.Add(Instantiate(hpSlider, gameObject.transform.position + new Vector3(0, 2, 0), gameObject.transform.rotation));
+
+        sliders[0].transform.SetParent(gameObject.transform);
     }
 
     internal void ShowProgressCreateUnitPanel(GameObject gameObject)
@@ -186,13 +192,13 @@ public class GameUI : MonoBehaviour
             CreateProgressPanel.SetActive(true);
 
             int queuesLength = buildingUnit.GetActualQueueLength();
-            Texture2D[] textures = new Texture2D[queuesLength  > buttonsCancelCreate.Length ? buttonsCancelCreate.Length : queuesLength];
+            Texture2D[] textures = new Texture2D[queuesLength > buttonsCancelCreate.Length ? buttonsCancelCreate.Length : queuesLength];
             float value = 0f;
             buildingUnit.UpdateProgressInfo(ref textures, ref value);
 
-            for(int i=0; i< buttonsCancelCreate.Length;i++)
+            for (int i = 0; i < buttonsCancelCreate.Length; i++)
             {
-                if( i < textures.Length)
+                if (i < textures.Length)
                 {
                     RawImage rawImage = buttonsCancelCreate[i].GetComponent<RawImage>();
                     rawImage.texture = textures[i];
@@ -298,7 +304,7 @@ public class GameUI : MonoBehaviour
         BottomPanel.SetActive(false);
         WinLosePanel.SetActive(true);
 
-        WinLosePanel.GetComponent<Image>().color = new Color(winnerColor.r, winnerColor.g, winnerColor.b, 150/255f);
+        WinLosePanel.GetComponent<Image>().color = new Color(winnerColor.r, winnerColor.g, winnerColor.b, 150 / 255f);
         WinLosePanel.GetComponentInChildren<Text>().text = winner == 0 ? "You win!" : $"You lose!\nPlayer {winner} win!";
     }
     #endregion
