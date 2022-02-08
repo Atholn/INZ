@@ -502,11 +502,6 @@ public class MapEditorManager : MonoBehaviour
                 continue;
             }
 
-            //startPointPrefab.item.ItemPrefab.GetComponent<MeshRenderer>().material = unitEditorPanel.ColorsUnitsButtons
-            //               .Where(m => m.GetComponent<UnitColorButton>().unitMaterial.name == eSP.UnitMaterialName)
-            //               .Select(m => m.GetComponent<UnitColorButton>().unitMaterial).FirstOrDefault(); 
-            // sprawdza sie tylko wtedy kiedy wejdziesz w panel z kolorami i startpointemm
-
             List<Material> materialList = MapToPlayStorage.ImportResources<Material>("Materials/Units/", ".mat");
             startPointPrefab.item.ItemPrefab.GetComponent<MeshRenderer>().material = materialList.Where(m => m.name == eSP.UnitMaterialName).FirstOrDefault();
 

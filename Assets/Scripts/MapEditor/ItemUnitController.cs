@@ -12,11 +12,6 @@ public class ItemUnitController : ItemController
         unitEditorPanel = FindObjectOfType<UnitEditorPanel>();
     }
 
-    private void Update()
-    {
-
-    }
-
     public override void ButtonClicked()
     {
         item.ItemImage.GetComponent<MeshRenderer>().material = unitEditorPanel.ActualMaterial;

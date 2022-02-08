@@ -5,7 +5,7 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Linq;
 
-public static class Pathe
+public static class Path
 {
     public static string GameAppPath
     {
@@ -28,7 +28,7 @@ public class FileMapSystem
         Load
     }
 
-    private string _path = Pathe.GameAppPath + $"/Game/Maps/";
+    private string _path = Path.GameAppPath + $"/Game/Maps/";
     public string FolderName;
 
     private void SaveLoadMapFile(string tmpPath, ref Map map, FileMode fileMode, Flag flag)

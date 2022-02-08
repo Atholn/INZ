@@ -24,7 +24,7 @@ public class MapToPlayStorage : MonoBehaviour
 
     private static List<string> GetNamesResources(string path, string end)
     {
-        return new DirectoryInfo(Pathe.GameAppPath + $"/Resources/{path}")
+        return new DirectoryInfo(Path.GameAppPath + $"/Resources/{path}")
             .GetFiles()
             .Where(n => !n.Name.Contains(".meta") && n.Name.Contains(end))
             .Select(n => n.Name)

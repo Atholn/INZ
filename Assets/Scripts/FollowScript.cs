@@ -64,6 +64,4 @@ public class FollowScript : MonoBehaviour
             case 1: gameObject.GetComponent<MeshRenderer>().material = MaterialAllowsBuild; break;
         }
     }
-
-
 }
