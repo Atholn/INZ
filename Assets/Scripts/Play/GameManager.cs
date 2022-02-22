@@ -39,7 +39,7 @@ public class GameManager : MonoBehaviour
 
     private GameObject onlyOneSelectGO = null;
 
-    RaycastHit hit;
+    private RaycastHit hit;
     internal Vector3 v;
     public NavMeshBaker navMeshBaker;
 
@@ -184,9 +184,6 @@ public class GameManager : MonoBehaviour
                 _playersGameObjects[i].Add(Instantiate(_worker, _gameStartPoints[i].UnitStartLocation + new Vector3(5 + j * 1, 0, 5), _worker.transform.rotation));
                 _playersGameObjects[i][j + 1].transform.GetChild(0).GetComponentInChildren<SkinnedMeshRenderer>().materials[1].color = _playersMaterials[i].color;
                 _playersGameObjects[i][j + 1].GetComponent<Unit>().WhichPlayer = i;
-
-                Worker w = _playersGameObjects[i][j + 1].GetComponent<Worker>();
-                //w.GetComponents();
             }
         }
     }
