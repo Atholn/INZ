@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Item : MonoBehaviour
 {
-
     public GameObject ItemPrefab;
     public GameObject ItemImage;
     public int ItemHeightLevel;
