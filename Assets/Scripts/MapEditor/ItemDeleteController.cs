@@ -8,7 +8,6 @@ public class ItemDeleteController : MonoBehaviour
 
     internal bool Pressed = false;
 
-
     public virtual void ButtonClicked()
     {
         Pressed = true;
