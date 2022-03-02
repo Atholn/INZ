@@ -59,11 +59,8 @@ public class CameraControll : MonoBehaviour
         delta *= Speed * Time.deltaTime;
         transform.localPosition += delta;
 
-
-
         if (_gameManager != null) UpdateSelection();
         UpdateMouseDetection();
-
 
         UpdateCodes();
     }
