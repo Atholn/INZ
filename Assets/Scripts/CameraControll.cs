@@ -143,7 +143,8 @@ public class CameraControll : MonoBehaviour
 
         if (_gameManager.building && Input.GetMouseButtonDown(0))
         {
-            if (_gameManager._players[0].actualGold < _gameManager.ItemControllers[_gameManager.CurrentButtonPressed].item.GetComponent<Unit>().GoldCost || _gameManager._players[0].actualWood < _gameManager.ItemControllers[_gameManager.CurrentButtonPressed].item.GetComponent<Unit>().WoodCost)
+            if (_gameManager._players[0].actualGold < _gameManager.ItemControllers[_gameManager.CurrentButtonPressed].item.GetComponent<Unit>().GoldCost ||
+                _gameManager._players[0].actualWood < _gameManager.ItemControllers[_gameManager.CurrentButtonPressed].item.GetComponent<Unit>().WoodCost)
             {
                 _gameManager.DestroyItemImages();
                 _gameManager.building = false;
