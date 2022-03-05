@@ -38,14 +38,9 @@ public class FollowScriptComputer : MonoBehaviour
         ifcollision = false;
     }
 
-
     internal void Check()
     {
-        
-        //if(ifcollision)
-        //{
-        //    Debug.LogError("Trigger");
-        //}
+
     }
     internal bool ifcollision = false;
 }
