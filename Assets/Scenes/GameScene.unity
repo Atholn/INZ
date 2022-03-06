@@ -2602,6 +2602,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.x
       value: -0.348
       objectReference: {fileID: 0}
+    - target: {fileID: 2955240248714139169, guid: e05f656521968204f9764e3b68ab1aaf, type: 3}
+      propertyPath: m_SortingLayer
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2955240248714139169, guid: e05f656521968204f9764e3b68ab1aaf, type: 3}
+      propertyPath: m_SortingLayerID
+      value: -969792949
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e05f656521968204f9764e3b68ab1aaf, type: 3}
 --- !u!1 &884283983
