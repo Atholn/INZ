@@ -46,6 +46,8 @@ public class Player : MonoBehaviour
 
     GameManager gameManager;
 
+    
+
     ComputerTask computerTask = ComputerTask.building;
     ComputerTaskBuilding computerTaskBuilding = ComputerTaskBuilding.checkBuilding;
     ComputerTaskAttacking computerTaskAttacking = ComputerTaskAttacking.soldierSelection;

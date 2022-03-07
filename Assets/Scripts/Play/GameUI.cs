@@ -123,8 +123,6 @@ public class GameUI : MonoBehaviour
 
         //HideSpecialButtons();
         HideSpecialPanel();
-
-
     }
 
     internal void SetCharacterInfo(GameObject gameObject, int i)

@@ -110,8 +110,6 @@ public class CameraControll : MonoBehaviour
 
     private void UpdateSelection()
     {
-
-
         if (Input.GetMouseButtonDown(0))
         {
             _selectionBox.gameObject.SetActive(true);
@@ -135,11 +133,6 @@ public class CameraControll : MonoBehaviour
             }
         }
         if (EventSystem.current.IsPointerOverGameObject()) return;
-        //if (Input.GetMouseButtonDown(1))
-        //{
-        //    _selectUnits.Clear();
-        //    _gameManager.SetNonProfile();
-        //}
 
         if (_gameManager.building && Input.GetMouseButtonDown(0))
         {
