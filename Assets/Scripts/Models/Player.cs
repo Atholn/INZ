@@ -45,8 +45,7 @@ public class Player : MonoBehaviour
     internal int actualGold = 0;
 
     GameManager gameManager;
-
-    
+    internal float[,] Upgrades;
 
     ComputerTask computerTask = ComputerTask.building;
     ComputerTaskBuilding computerTaskBuilding = ComputerTaskBuilding.checkBuilding;
@@ -76,7 +75,6 @@ public class Player : MonoBehaviour
     float acutalSteps = 1f;
     int steps = 2;
     float sizeStep;
-
     //building
 
     #endregion

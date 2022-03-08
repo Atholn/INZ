@@ -1,21 +1,29 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UpgradeUnit : MonoBehaviour
 {
     public int GoldCost;
     public int WoodCost;
+    public Unit Unit;
+    GameManager gameManager;
 
-    // Start is called before the first frame update
     void Start()
     {
-        
+        gameManager = GameObject.FindObjectOfType<GameManager>();
+
+        GetComponent<RawImage>().texture = Unit.GetComponent<Unit>().Profile;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        
+
+    }
+
+    public void ClickUpdate()
+    {
+
     }
 }
