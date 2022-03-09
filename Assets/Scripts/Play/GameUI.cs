@@ -22,6 +22,7 @@ public class GameUI : MonoBehaviour
     public GameObject WorkerSpecialPanel;
     public GameObject TownHallSpecialPanel;
     public GameObject BarracksSpecialPanel;
+    public GameObject BlackSmithsSpecialPanel;
 
     private List<GameObject> _tmpActions = new List<GameObject>();
 
@@ -40,6 +41,7 @@ public class GameUI : MonoBehaviour
         WorkerSpecialPanel.SetActive(false);
         TownHallSpecialPanel.SetActive(false);
         BarracksSpecialPanel.SetActive(false);
+        BlackSmithsSpecialPanel.SetActive(false);
 
         RawMaterials = RawMaterialsPanel.GetComponentsInChildren<Text>();
         buttonsCancelCreate = CreateProgressPanel.GetComponentsInChildren<Button>(true);
@@ -169,13 +171,12 @@ public class GameUI : MonoBehaviour
                 case "Barracks":
                     ShowSpecialPanel(BarracksSpecialPanel);
                     break;
+                case "Blacksmiths":
+                    ShowSpecialPanel(BlackSmithsSpecialPanel);
+                    break;
                 default: break;
             }
         }
-
-        //sliders.Add(Instantiate(hpSlider, gameObject.transform.position + new Vector3(0, 2, 0), gameObject.transform.rotation));
-
-        //sliders[0].transform.SetParent(gameObject.transform);
     }
 
     internal void ShowProgressCreateUnitPanel(GameObject gameObject)
@@ -245,7 +246,6 @@ public class GameUI : MonoBehaviour
 
     internal void SetCharactersProfiles(List<GameObject> selectUnits, int maxSelected)
     {
-        //HideSpecialButtons();
         HideSpecialPanel();
 
         OneCharacterPanel.SetActive(false);

@@ -25,7 +25,6 @@ public class CameraControll : MonoBehaviour
     private bool _ifPlayerUnits = false;
 
     public GameObject hpSliderPlayer;
-    public GameObject hpSliderEnemy;
 
     private const float _hpBarsShift = 0.001f;
 
@@ -41,9 +40,7 @@ public class CameraControll : MonoBehaviour
         _gameManager = GameObject.FindObjectOfType<GameManager>();
 
         hpSliderPlayer.transform.rotation = transform.rotation;
-        hpSliderEnemy.transform.rotation = transform.rotation;
 
-        hpSliderEnemy.SetActive(false);
         hpSliderPlayer.SetActive(true);
     }
 
@@ -157,8 +154,6 @@ public class CameraControll : MonoBehaviour
             _gameManager._playersGameObjects[0][_gameManager._playersGameObjects[0].Count - 1].GetComponent<MeshRenderer>().materials[1].color = _gameManager._playersMaterials[0].color;
             _gameManager._playersGameObjects[0][_gameManager._playersGameObjects[0].Count - 1].GetComponent<Unit>().WhichPlayer = 0;
 
-            //todo zmiana do tego jak computer bedzie chcial budowac
-
             GiveCommands(building, "Command");
             return;
         }
@@ -167,14 +162,6 @@ public class CameraControll : MonoBehaviour
         {
             GiveCommand();
         }
-
-        //if (Input.GetMouseButtonDown(2))
-        //{
-        //    foreach (GameObject obj in _selectUnits)
-        //    {
-        //        Debug.LogError(obj.name);
-        //    }
-        //}
     }
 
     void GiveCommand()

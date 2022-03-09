@@ -42,6 +42,7 @@ public class HumanUnit : Unit
             isDead = true;
         }
     }
+
     Vector3 nearPoint;
     protected void UpdateDistance(bool buildingTarget = false, bool goldmineTarget = false)
     {
