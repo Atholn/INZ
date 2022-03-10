@@ -177,8 +177,6 @@ public class CameraControll : MonoBehaviour
             if (Physics.Raycast(ray, out rayHit, 1000, commandLayerMask))
             {
 
-
-
             }
 
             object commandData = null;
@@ -404,7 +402,6 @@ public class CameraControll : MonoBehaviour
         }
 
         return false;
-
     }
 
     bool IsPointInRect(Rect rect, Vector2 point)
