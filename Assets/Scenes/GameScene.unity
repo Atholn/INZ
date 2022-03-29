@@ -2555,9 +2555,9 @@ GameObject:
   m_Component:
   - component: {fileID: 870690050}
   - component: {fileID: 870690054}
-  - component: {fileID: 870690052}
   - component: {fileID: 870690053}
   - component: {fileID: 870690051}
+  - component: {fileID: 870690052}
   m_Layer: 5
   m_Name: Bowman
   m_TagString: Untagged
@@ -2625,7 +2625,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GoldCost: 0
   WoodCost: 0
-  Unit: {fileID: -8796601668252471853, guid: fcbe62d3f647dcf4c8a1b09015325d5e, type: 3}
+  Unit: {fileID: 864852103316053753, guid: fcbe62d3f647dcf4c8a1b09015325d5e, type: 3}
 --- !u!114 &870690053
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3669,7 +3669,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Speed: 30
   hpSliderPlayer: {fileID: 1288831602}
-  hpSliderEnemy: {fileID: 0}
   commandLayerMask:
     serializedVersion: 2
     m_Bits: 136
@@ -4025,6 +4024,7 @@ MonoBehaviour:
   WorkerSpecialPanel: {fileID: 1860349092}
   TownHallSpecialPanel: {fileID: 1314900380}
   BarracksSpecialPanel: {fileID: 1825980618}
+  BlackSmithsSpecialPanel: {fileID: 439218099}
 --- !u!222 &1154579020
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -6857,7 +6857,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GoldCost: 0
   WoodCost: 0
-  Unit: {fileID: -7163868005701660075, guid: 59a7587de95fb8146ac03a5c72cc565b, type: 3}
+  Unit: {fileID: 151386186512295329, guid: 59a7587de95fb8146ac03a5c72cc565b, type: 3}
 --- !u!114 &1894756136
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7337,9 +7337,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1995717721}
   - component: {fileID: 1995717725}
-  - component: {fileID: 1995717723}
   - component: {fileID: 1995717724}
   - component: {fileID: 1995717722}
+  - component: {fileID: 1995717723}
   m_Layer: 5
   m_Name: Axeman
   m_TagString: Untagged
@@ -7407,7 +7407,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GoldCost: 0
   WoodCost: 0
-  Unit: {fileID: -3194243787047592191, guid: 898b5ff9c1c116543b528ae3ef41076d, type: 3}
+  Unit: {fileID: 1876881228447981026, guid: 898b5ff9c1c116543b528ae3ef41076d, type: 3}
 --- !u!114 &1995717724
 MonoBehaviour:
   m_ObjectHideFlags: 0
