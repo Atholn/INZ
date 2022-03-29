@@ -26,11 +26,11 @@ public class UpgradeUnit : MonoBehaviour
 
     public void ClickUpdate()
     {
-        //if (gameManager._players[0].actualGold >= Unit.GetComponent<Unit>().GoldCost &&
-        //    gameManager._players[0].actualWood >= Unit.GetComponent<Unit>().WoodCost)
+        if (gameManager._players[0].actualGold >= GoldCost &&
+            gameManager._players[0].actualWood >= WoodCost)
         {
-            //gameManager.UpdateWood(0, -Unit.GetComponent<Unit>().WoodCost);
-            //gameManager.UpdateGold(0, -Unit.GetComponent<Unit>().GoldCost);
+            gameManager.UpdateWood(0, GoldCost);
+            gameManager.UpdateGold(0, WoodCost);
             gameManager.UnitsPrefabs.IndexOf(Unit);
             Debug.LogError("a"+gameManager.UnitsPrefabs.IndexOf(Unit));
             //buildingParent = gameManager.actualClickBuild;
