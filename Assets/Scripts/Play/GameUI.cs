@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -46,6 +47,13 @@ public class GameUI : MonoBehaviour
         for (int i = 0; i < buttonsCancelCreate.Length; i++)
         {
             buttonsCancelCreate[i].GetComponent<CancelCreate>().ButtonID = i;
+        }
+
+        List<UpgradeUnit> upgradeUnitsNumbers = BlackSmithsSpecialPanel.GetComponentsInChildren<UpgradeUnit>().ToList();
+        for (int i = 0; i < upgradeUnitsNumbers.Count; i++)
+        {
+            Debug.LogError(i);
+            upgradeUnitsNumbers[i].NumberOfUpgrade = i;
         }
     }
 
@@ -269,8 +277,6 @@ public class GameUI : MonoBehaviour
             _images[i].texture = selectUnits[i].GetComponent<Unit>().Profile;
         }
     }
-
-
     #region ActionPanel
     public void ActionPanelShowHide(GameObject panel)
     {
@@ -289,7 +295,7 @@ public class GameUI : MonoBehaviour
     #endregion
 
 
-    #region WinLose
+    #region WinLosePanel
     public void ShowWinner(int winner, Color winnerColor)
     {
         TopPanel.SetActive(false);

@@ -9,6 +9,8 @@ public class UpgradeUnit : MonoBehaviour
     public int WoodCost;
     public GameObject Unit;
 
+    internal int NumberOfUpgrade;
+
     private BuildingUnit buildingParent;
     private GameManager gameManager;
 
@@ -29,12 +31,16 @@ public class UpgradeUnit : MonoBehaviour
         if (gameManager._players[0].actualGold >= GoldCost &&
             gameManager._players[0].actualWood >= WoodCost)
         {
+            //todo update player who play in play in network
             gameManager.UpdateWood(0, GoldCost);
             gameManager.UpdateGold(0, WoodCost);
-            gameManager.UnitsPrefabs.IndexOf(Unit);
-            Debug.LogError("a"+gameManager.UnitsPrefabs.IndexOf(Unit));
-            //buildingParent = gameManager.actualClickBuild;
-            //buildingParent.CreateUnit(Unit, 0);
+
+            gameManager.UpgradeUnit(0, NumberOfUpgrade);
+
+            return;
         }
+
+        //todo 
+        //not enought gold or wood
     }
 }

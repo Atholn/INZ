@@ -50,6 +50,9 @@ public class GameManager : MonoBehaviour
 
     public GameObject Fire;
     public GameObject Dust;
+
+    public float UpgradeFactor = 1.2f;
+
     void Start()
     {
         _gameUI = FindObjectOfType<GameUI>();
@@ -151,6 +154,11 @@ public class GameManager : MonoBehaviour
         _players[whichPlayer].actualGold += goldCount;
         if (whichPlayer == 0)
             _gameUI.UpdateRawMaterials(0, _players[0].actualGold);
+    }
+
+    internal void UpgradeUnit(int whichPlayer, int whichUnit)
+    {
+        _players[whichPlayer].upgradeFactor *= UpgradeFactor;
     }
 
     private void InitializePlayers()
@@ -334,5 +342,7 @@ public class GameManager : MonoBehaviour
 
         _gameUI.UpdateRawMaterials(2, UnitsPointsUpdate(whichPlayer), UnitsMaxPointsUpdate(whichPlayer));
     }
+
+    
     #endregion
 }
