@@ -158,7 +158,7 @@ public class GameManager : MonoBehaviour
 
     internal void UpgradeUnit(int whichPlayer, int whichUnit)
     {
-        _players[whichPlayer].upgradeFactor *= UpgradeFactor;
+        _players[whichPlayer].upgradeFactor[0] *= UpgradeFactor;
     }
 
     private void InitializePlayers()

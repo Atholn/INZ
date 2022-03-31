@@ -42,7 +42,7 @@ public class Player : MonoBehaviour
     internal int actualWood = 0;
     internal int actualGold = 0;
 
-    internal float upgradeFactor = 1.0f;
+    internal float[] upgradeFactor;
 
     GameManager gameManager;
     internal float[,] Upgrades;
