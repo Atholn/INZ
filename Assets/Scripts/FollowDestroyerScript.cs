@@ -4,18 +4,18 @@ using UnityEngine;
 
 public class FollowDestroyerScript : MonoBehaviour
 {
-    private MapEditorManager _mapEditorManager;
+    private MapEditorManager mapEditorManager;
 
     private void Start()
     {
-        _mapEditorManager = FindObjectOfType<MapEditorManager>();
+        mapEditorManager = FindObjectOfType<MapEditorManager>();
     }
 
     private void Update()
     {
-        int vx = (int)(_mapEditorManager.v.x - _mapEditorManager.v.x % 1);
-        int vz = (int)(_mapEditorManager.v.z - _mapEditorManager.v.z % 1);
+        int vx = (int)(mapEditorManager.v.x - mapEditorManager.v.x % 1);
+        int vz = (int)(mapEditorManager.v.z - mapEditorManager.v.z % 1);
 
-        transform.position = new Vector3(vx, _mapEditorManager.TypeTerrainToDestroy.value, vz);
+        transform.position = new Vector3(vx, mapEditorManager.TypeTerrainToDestroy.value, vz);
     }
 }

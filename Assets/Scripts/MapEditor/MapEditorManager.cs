@@ -256,7 +256,7 @@ public class MapEditorManager : MonoBehaviour
         {
             _mapWorldInfo.StartPoints.Add(new EditorStartPoint()
             {
-                UnitMaterialName = button.GetComponent<UnitColorButton>().unitMaterial.name,
+                UnitMaterialName = button.GetComponent<ItemUnitColorController>().unitMaterial.name,
                 UnitStartLocation = new float[3] { 0, 0, 0 },
             });
         }
