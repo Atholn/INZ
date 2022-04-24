@@ -522,6 +522,8 @@ public class MapEditorManager : MonoBehaviour
         _mapWorldInfo.SizeMapX = sizeX;
         _mapWorldInfo.SizeMapY = sizeY;
 
+        GameObject.FindObjectOfType<MapEditorCameraControll>().SetMapLimits(_mapWorldInfo.SizeMapX, _mapWorldInfo.SizeMapY);
+
         MapLoader.InitializeNewMap(ref _mapWorldInfo, ref mapsPrefabs, ref Terrain, GetPrefabsOnly(), _mapWorldInfo.MainGroundID);
     }
     #endregion
