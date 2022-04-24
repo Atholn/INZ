@@ -347,7 +347,6 @@ public class MapEditorManager : MonoBehaviour
 
         if (ArrayToVector3(spu.UnitStartLocation) == Vector3.zero)
         {
-            //spu.UnitStartLocation = Vector3ToArray(new Vector3(vx, ItemButtons[CurrentButtonPressed].item.ItemHeightPosY, vz));
             spu.UnitStartLocation[0] = vx;
             spu.UnitStartLocation[1] = ItemControllers[CurrentButtonPressed].item.ItemHeightPosY;
             spu.UnitStartLocation[2] = vz;
@@ -437,7 +436,6 @@ public class MapEditorManager : MonoBehaviour
         }
     }
 
-
     internal void DestroyItemImages()
     {
         for (int i = 0; i < ItemControllers.Length; i++)
@@ -513,8 +511,7 @@ public class MapEditorManager : MonoBehaviour
     {
         InitializeShowHidePanels(false);
 
-        _mapWorldInfo.MainGroundID = mainGroundID;
-        
+        _mapWorldInfo.MainGroundID = mainGroundID;      
         _mapWorldInfo.SizeMapX = sizeX;
         _mapWorldInfo.SizeMapY = sizeY;
 

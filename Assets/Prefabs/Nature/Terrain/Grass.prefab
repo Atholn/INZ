@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1335762709980830028}
   - component: {fileID: 6641381536954698891}
   - component: {fileID: -6208296305243752530}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Grass
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -101,6 +101,7 @@ MonoBehaviour:
   ItemImage: {fileID: 1643027924844237403, guid: c803417a66c2d984888fe49b0b83b525, type: 3}
   ItemHeightLevel: 0
   ItemHeightPosY: 0.35
+  ItemImageComputer: {fileID: 0}
   AllowsBuild: 1
 --- !u!114 &-6208296305243752530
 MonoBehaviour:
