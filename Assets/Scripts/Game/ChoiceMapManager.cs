@@ -29,7 +29,7 @@ public class ChoiceMapManager : MonoBehaviour
 
     private FileMapSystem FileMapSystem;
 
-    private List<float[]> _gameStartPoints;
+    private List<float[]> gameStartPoints;
 
     private void Start()
     {
@@ -41,6 +41,7 @@ public class ChoiceMapManager : MonoBehaviour
         InitializeFirstMap();
     }
 
+    #region Initialize
     private void InitializePlaceNumbers()
     {
         MapView = MapInfoPanel.GetComponentsInChildren<Image>().LastOrDefault();
@@ -106,15 +107,17 @@ public class ChoiceMapManager : MonoBehaviour
     {
         LoadMapInfo();
     }
+    #endregion
 
-    public void LoadMapInfo()
+    #region Load map info
+    internal void LoadMapInfo()
     {
         Map map = FileMapSystem.GetMapInfo(FileMapSystem.FolderName, MapsDropdown.options[MapsDropdown.value].text);
         InfoTexts[0].text = map.MapInfo.Name;
         InfoTexts[1].text = $"{map.MapWorldCreate.SizeMapX} x {map.MapWorldCreate.SizeMapY}";
         InfoTexts[2].text = map.MapInfo.Decription;
 
-        _gameStartPoints = map.MapWorldCreate.StartPoints.Where(s => s.UnitStartLocation[0] != 0 && s.UnitStartLocation[1] != 0 && s.UnitStartLocation[2] != 0).Select(s => s.UnitStartLocation).ToList();
+        gameStartPoints = map.MapWorldCreate.StartPoints.Where(s => s.UnitStartLocation[0] != 0 && s.UnitStartLocation[1] != 0 && s.UnitStartLocation[2] != 0).Select(s => s.UnitStartLocation).ToList();
 
         if (PanelPlayerList.Count > 1)
         {
@@ -136,21 +139,21 @@ public class ChoiceMapManager : MonoBehaviour
         float scaleX = rT.rect.width / map.MapWorldCreate.SizeMapX;
         float scaleY = rT.rect.height / map.MapWorldCreate.SizeMapY;
 
-        GeneratingDifferentFeatures(PanelPlayerList[0], _gameStartPoints.Count, 0);
-        PlaceNumbersList[0].transform.localPosition = new Vector3(-scaleX * ((map.MapWorldCreate.SizeMapX / 2) - _gameStartPoints[0][0]), -scaleY * ((map.MapWorldCreate.SizeMapY / 2) - _gameStartPoints[0][2]), 0);
+        GeneratingDifferentFeatures(PanelPlayerList[0], gameStartPoints.Count, 0);
+        PlaceNumbersList[0].transform.localPosition = new Vector3(-scaleX * ((map.MapWorldCreate.SizeMapX / 2) - gameStartPoints[0][0]), -scaleY * ((map.MapWorldCreate.SizeMapY / 2) - gameStartPoints[0][2]), 0);
         PlaceNumbersList[0].text = (1).ToString();
 
-        for (int i = 1; i < _gameStartPoints.Count; i++)
+        for (int i = 1; i < gameStartPoints.Count; i++)
         {
             PanelPlayerList.Add(Instantiate(PanelSettingsPlayers, new Vector3(PlaySettingsPanel.transform.position.x + DisplacementVector.x, PlaySettingsPanel.transform.position.y - i * PanelSettingsPlayers.GetComponent<RectTransform>().rect.height + DisplacementVector.y, DisplacementVector.z), PlaySettingsPanel.transform.localRotation));
             PanelPlayerList[i].gameObject.SetActive(true);
             PanelPlayerList[i].transform.SetParent(PlaySettingsPanel.transform);
 
-            GeneratingDifferentFeatures(PanelPlayerList[i], _gameStartPoints.Count, i);
+            GeneratingDifferentFeatures(PanelPlayerList[i], gameStartPoints.Count, i);
 
             PlaceNumbersList.Add(Instantiate(NumberText, new Vector3(), NumberText.transform.rotation));
             PlaceNumbersList[i].transform.SetParent(MapView.transform);
-            PlaceNumbersList[i].transform.localPosition = new Vector3(-scaleX * (map.MapWorldCreate.SizeMapX / 2 - _gameStartPoints[i][0]), -scaleY * (map.MapWorldCreate.SizeMapY / 2 - _gameStartPoints[i][2]), 0);
+            PlaceNumbersList[i].transform.localPosition = new Vector3(-scaleX * (map.MapWorldCreate.SizeMapX / 2 - gameStartPoints[i][0]), -scaleY * (map.MapWorldCreate.SizeMapY / 2 - gameStartPoints[i][2]), 0);
             PlaceNumbersList[i].text = (i + 1).ToString();
 
             TypeOfPlayerTmpList.Add(0);
@@ -172,28 +175,10 @@ public class ChoiceMapManager : MonoBehaviour
             }
         }
         texture.Apply();
-
-
     }
+    #endregion
 
-    private void GeneratingDifferentFeatures(GameObject panel, int countPlayers, int whichColour)
-    {
-        Dropdown[] dropdowns = panel.GetComponentsInChildren<Dropdown>(true);
-
-        dropdowns[1].value = whichColour;
-
-        List<string> placeList = new List<string>();
-        placeList.Add("Random");
-        for (int j = 0; j < countPlayers; j++)
-        {
-            placeList.Add((j + 1).ToString());
-        }
-
-        dropdowns[2].options.Clear();
-        dropdowns[2].AddOptions(placeList);
-        dropdowns[2].value = 0;
-    }
-
+    #region Change
     internal void ChangeTypeOfPlayer()
     {
         for (int i = 0; i < TypeOfPlayerTmpList.Count; i++)
@@ -278,8 +263,8 @@ public class ChoiceMapManager : MonoBehaviour
             PlaceNumbersTmpList[i] = dropdowns[2].value;
         }
     }
+    #endregion
 
-    ///--------------------------------------------------------
     internal void Play()
     {
         Map map = FileMapSystem.LoadEditorMap(MapsDropdown.options[MapsDropdown.value].text);
@@ -294,7 +279,6 @@ public class ChoiceMapManager : MonoBehaviour
 
             if (dropdowns[0].value == 0)
             {
-                /// when game have monsters or bandits example like War, we not continue but create monsters in this place
                 continue;
             }
 
@@ -307,11 +291,29 @@ public class ChoiceMapManager : MonoBehaviour
             gameStartPoints.Add(new GameStartPoint()
             {
                 UnitMaterial = materialList.Where(n => n.name == dropdowns[1].options[dropdowns[1].value].text).FirstOrDefault(),
-                UnitStartLocation = new Vector3(_gameStartPoints[dropdowns[2].value - 1][0], 1, _gameStartPoints[dropdowns[2].value - 1][2]),
+                UnitStartLocation = new Vector3(this.gameStartPoints[dropdowns[2].value - 1][0], 1, this.gameStartPoints[dropdowns[2].value - 1][2]),
             });
         }
 
         MapToPlayStorage.GameStartPoints = gameStartPoints;
+    }
+
+    private void GeneratingDifferentFeatures(GameObject panel, int countPlayers, int whichColour)
+    {
+        Dropdown[] dropdowns = panel.GetComponentsInChildren<Dropdown>(true);
+
+        dropdowns[1].value = whichColour;
+
+        List<string> placeList = new List<string>();
+        placeList.Add("Random");
+        for (int j = 0; j < countPlayers; j++)
+        {
+            placeList.Add((j + 1).ToString());
+        }
+
+        dropdowns[2].options.Clear();
+        dropdowns[2].AddOptions(placeList);
+        dropdowns[2].value = 0;
     }
 
     private int RandomNumberPlace()
@@ -323,7 +325,6 @@ public class ChoiceMapManager : MonoBehaviour
             if (!PlaceNumbersTmpList.Any(t => t == i + 1))
                 possibleValues.Add(i + 1);
         }
-        //possibleValues = possibleValues.Where(n => !PlaceNumbersTmpList.Any(t => t == n)).ToList();
 
         System.Random rnd = new System.Random();
         return possibleValues[rnd.Next(0, possibleValues.Count)];
