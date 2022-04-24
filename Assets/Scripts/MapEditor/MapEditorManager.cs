@@ -313,6 +313,13 @@ public class MapEditorManager : MonoBehaviour
             mapsPrefabs[level][vx][vz] = Instantiate(ItemControllers[CurrentButtonPressed].item.ItemPrefab,
                 new Vector3(vx, ItemControllers[CurrentButtonPressed].item.ItemHeightPosY, vz),
                 ItemControllers[CurrentButtonPressed].item.ItemPrefab.transform.rotation);
+
+            var colider = mapsPrefabs[level][vx][vz].GetComponent<BoxCollider>();
+
+            if(colider != null)
+            {
+                colider.enabled = false;
+            }
         }
     }
 
