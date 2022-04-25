@@ -8,7 +8,6 @@ using UnityEngine;
 
 public class FollowScriptComputer : MonoBehaviour
 {
-
     private void OnTriggerEnter(Collider other)
     {
         ifcollision = false;
