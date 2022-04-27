@@ -8,7 +8,7 @@ public class MapToPlayStorage : MonoBehaviour
 {
     public static Map Map;
     public static List<GameStartPoint> GameStartPoints;
-    public static TypeOfWin TypeOfWin;
+
     public static Dictionary<string, string> WinRequaried;
     public static string SceneToBack;
 
