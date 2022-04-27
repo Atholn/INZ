@@ -61,7 +61,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: e0c7ce2e99dc4c943b55451268870166, type: 2}
+  - {fileID: 2100000, guid: 6e69bebdfb715b84c9a99315896b8a55, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -99,4 +99,5 @@ MonoBehaviour:
   ItemImage: {fileID: 826525227639827491, guid: f549e40adb9a6e4498a3993c700a14d8, type: 3}
   ItemHeightLevel: 1
   ItemHeightPosY: 0.5
+  ItemImageComputer: {fileID: 0}
   BuildSize: 7

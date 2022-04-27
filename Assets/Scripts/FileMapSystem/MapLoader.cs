@@ -49,9 +49,13 @@ public class MapLoader : MonoBehaviour
         Vector3 firstScale = mainGround.ItemPrefab.transform.localScale;
 
         GameObject basicTerrainPrefab = mainGround.ItemPrefab;
-        basicTerrainPrefab.gameObject.transform.localScale = new Vector3(sizeX * firstScale.x,  firstScale.y, sizeY * firstScale.z);
+        basicTerrainPrefab.gameObject.transform.localScale = new Vector3(sizeX * firstScale.x, sizeY * firstScale.y, firstScale.z);
 
-        terrain = Instantiate(basicTerrainPrefab, new Vector3(sizeX % 2 == 0 ? sizeX / 2 - 0.5f : sizeX / 2, (mainGround as ItemTerrain).HeightCreateAsBasicTerrain, sizeY % 2 == 0 ? sizeY / 2 - 0.5f : sizeY / 2), basicTerrainPrefab.transform.rotation);
+        terrain = Instantiate(basicTerrainPrefab, 
+                              new Vector3(sizeX % 2 == 0 ? sizeX / 2 - 0.5f : sizeX / 2,
+                                (mainGround as ItemTerrain).HeightCreateAsBasicTerrain,
+                                sizeY % 2 == 0 ? sizeY / 2 - 0.5f : sizeY / 2),
+                              basicTerrainPrefab.transform.rotation);
 
         basicTerrainPrefab.gameObject.transform.localScale = firstScale;
     }
@@ -87,7 +91,10 @@ public class MapLoader : MonoBehaviour
                 {
                     if (actualMap.Maps[i][j][k] > 0)
                     {
-                        mapsPrefabs[i][j][k] = Instantiate(itemControllers[actualMap.Maps[i][j][k]].ItemPrefab, new Vector3(j, itemControllers[actualMap.Maps[i][j][k]].ItemHeightPosY, k), itemControllers[actualMap.Maps[i][j][k]].ItemPrefab.transform.rotation);
+                        mapsPrefabs[i][j][k] = 
+                            Instantiate(itemControllers[actualMap.Maps[i][j][k]].ItemPrefab,
+                            new Vector3(j, itemControllers[actualMap.Maps[i][j][k]].ItemHeightPosY, k),
+                            itemControllers[actualMap.Maps[i][j][k]].ItemPrefab.transform.rotation);
                     }
                 }
             }

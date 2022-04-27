@@ -100,6 +100,7 @@ MonoBehaviour:
   ItemImage: {fileID: 1643027924844237403, guid: c803417a66c2d984888fe49b0b83b525, type: 3}
   ItemHeightLevel: 0
   ItemHeightPosY: 0.17
+  ItemImageComputer: {fileID: 0}
   AllowsBuild: 0
 --- !u!65 &-6921917154435304946
 BoxCollider:

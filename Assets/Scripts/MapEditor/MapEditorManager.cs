@@ -256,7 +256,7 @@ public class MapEditorManager : MonoBehaviour
         {
             _mapWorldInfo.StartPoints.Add(new EditorStartPoint()
             {
-                UnitMaterialName = button.GetComponent<UnitColorButton>().unitMaterial.name,
+                UnitMaterialName = button.GetComponent<ItemUnitColorController>().unitMaterial.name,
                 UnitStartLocation = new float[3] { 0, 0, 0 },
             });
         }
@@ -313,6 +313,13 @@ public class MapEditorManager : MonoBehaviour
             mapsPrefabs[level][vx][vz] = Instantiate(ItemControllers[CurrentButtonPressed].item.ItemPrefab,
                 new Vector3(vx, ItemControllers[CurrentButtonPressed].item.ItemHeightPosY, vz),
                 ItemControllers[CurrentButtonPressed].item.ItemPrefab.transform.rotation);
+
+            var colider = mapsPrefabs[level][vx][vz].GetComponent<BoxCollider>();
+
+            if(colider != null)
+            {
+                colider.enabled = false;
+            }
         }
     }
 
@@ -347,7 +354,6 @@ public class MapEditorManager : MonoBehaviour
 
         if (ArrayToVector3(spu.UnitStartLocation) == Vector3.zero)
         {
-            //spu.UnitStartLocation = Vector3ToArray(new Vector3(vx, ItemButtons[CurrentButtonPressed].item.ItemHeightPosY, vz));
             spu.UnitStartLocation[0] = vx;
             spu.UnitStartLocation[1] = ItemControllers[CurrentButtonPressed].item.ItemHeightPosY;
             spu.UnitStartLocation[2] = vz;
@@ -437,7 +443,6 @@ public class MapEditorManager : MonoBehaviour
         }
     }
 
-
     internal void DestroyItemImages()
     {
         for (int i = 0; i < ItemControllers.Length; i++)
@@ -513,10 +518,11 @@ public class MapEditorManager : MonoBehaviour
     {
         InitializeShowHidePanels(false);
 
-        _mapWorldInfo.MainGroundID = mainGroundID;
-        
+        _mapWorldInfo.MainGroundID = mainGroundID;      
         _mapWorldInfo.SizeMapX = sizeX;
         _mapWorldInfo.SizeMapY = sizeY;
+
+        GameObject.FindObjectOfType<MapEditorCameraControll>().SetMapLimits(_mapWorldInfo.SizeMapX, _mapWorldInfo.SizeMapY);
 
         MapLoader.InitializeNewMap(ref _mapWorldInfo, ref mapsPrefabs, ref Terrain, GetPrefabsOnly(), _mapWorldInfo.MainGroundID);
     }

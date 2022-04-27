@@ -5,7 +5,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MenuEditorManager : MonoBehaviour
+public class UIMapEditorManager : MonoBehaviour
 {
     enum TypeOfMap
     {
@@ -40,7 +40,7 @@ public class MenuEditorManager : MonoBehaviour
 
     public GameObject optionsEditorPanel;
 
-    private MapInfo _mapInfo = new MapInfo();
+    private MapInfo mapInfo = new MapInfo();
 
     private FileMapSystem fileMapSystem;
 
@@ -130,14 +130,13 @@ public class MenuEditorManager : MonoBehaviour
         ActiveDeactivatePanel(filePanel, !filePanel.activeSelf);
 
         UnityEngine.SceneManagement.SceneManager.LoadScene("Editor");
-        //MapEditorManager.NewTerrain();
     }
 
     public void Save()
     {
         ActiveDeactivatePanel(filePanel, !filePanel.activeSelf);
 
-        if (_mapInfo.Name != "" && fileMapSystem.CheckIfExist(_mapInfo.Name))
+        if (mapInfo.Name != "" && fileMapSystem.CheckIfExist(mapInfo.Name))
         {
             Map map = MapMerging();
             fileMapSystem.SaveEditorMap(ref map);
@@ -199,10 +198,10 @@ public class MenuEditorManager : MonoBehaviour
     {
         Map map = fileMapSystem.LoadEditorMap(dropdownMapsToLoad.options[dropdownMapsToLoad.value].text);
 
-        _mapInfo = map.MapInfo;
+        mapInfo = map.MapInfo;
 
-        mapViewColors = _mapInfo.ViewMap;
-        mapInfoPanel.GetComponentInChildren<InputField>().text = _mapInfo.Decription;
+        mapViewColors = mapInfo.ViewMap;
+        mapInfoPanel.GetComponentInChildren<InputField>().text = mapInfo.Decription;
 
         MapEditorManager.ImportMap(map.MapWorldCreate);
 
@@ -228,22 +227,21 @@ public class MenuEditorManager : MonoBehaviour
         if (mapInfoPanel.activeSelf)
         {
             infoTexts[0].text = "Map info:";
-            infoTexts[1].text = _mapInfo.Name == "" ? "Name: untitled" : "Name: " + _mapInfo.Name;
-            infoTexts[2].text = _mapInfo.Type == "" ? "Type: no chose yet" : "Type: " + _mapInfo.Type;
+            infoTexts[1].text = mapInfo.Name == "" ? "Name: untitled" : "Name: " + mapInfo.Name;
+            infoTexts[2].text = mapInfo.Type == "" ? "Type: no chose yet" : "Type: " + mapInfo.Type;
             infoTexts[3].text = $"Size: {MapEditorManager.GetSizeMap()[0]} x {MapEditorManager.GetSizeMap()[1]}";
-            infoTexts[4].text = $"Create time: {_mapInfo.CreateTime}";
-            infoTexts[5].text = $"Last update: {_mapInfo.UpdateTime}";
+            infoTexts[4].text = $"Create time: {mapInfo.CreateTime}";
+            infoTexts[5].text = $"Last update: {mapInfo.UpdateTime}";
 
-            mapInfoPanel.GetComponentInChildren<InputField>().text = _mapInfo.Decription;
+            mapInfoPanel.GetComponentInChildren<InputField>().text = mapInfo.Decription;
 
             DrawMapView();
         }
     }
 
-
     public void SaveDescription()
     {
-        _mapInfo.Decription = mapInfoPanel.GetComponentInChildren<InputField>().text;
+        mapInfo.Decription = mapInfoPanel.GetComponentInChildren<InputField>().text;
         ActiveDeactivatePanel(mapInfoPanel, false);
     }
 
@@ -309,14 +307,14 @@ public class MenuEditorManager : MonoBehaviour
 
     private Map MapMerging()
     {
-        _mapInfo.CreateTime = _mapInfo.Name == "" && _mapInfo.Type == "" ? DateTime.UtcNow.ToLocalTime().ToString() : _mapInfo.CreateTime;
-        _mapInfo.UpdateTime = DateTime.UtcNow.ToLocalTime().ToString();
+        mapInfo.CreateTime = mapInfo.Name == "" && mapInfo.Type == "" ? DateTime.UtcNow.ToLocalTime().ToString() : mapInfo.CreateTime;
+        mapInfo.UpdateTime = DateTime.UtcNow.ToLocalTime().ToString();
 
-        _mapInfo.Name = _mapInfo.Name == "" ? nameOfMapInputField.text : _mapInfo.Name;
-        _mapInfo.Type = _mapInfo.Type == "" ? dropdownTypeOfMap.options[dropdownTypeOfMap.value].text : _mapInfo.Type;
-        _mapInfo.Decription = mapInfoPanel.GetComponentInChildren<InputField>().text;
-        _mapInfo.ViewMap = MapEditorManager.GeneratePixelsColors();
+        mapInfo.Name = mapInfo.Name == "" ? nameOfMapInputField.text : mapInfo.Name;
+        mapInfo.Type = mapInfo.Type == "" ? dropdownTypeOfMap.options[dropdownTypeOfMap.value].text : mapInfo.Type;
+        mapInfo.Decription = mapInfoPanel.GetComponentInChildren<InputField>().text;
+        mapInfo.ViewMap = MapEditorManager.GeneratePixelsColors();
 
-        return new Map() { MapInfo = _mapInfo, MapWorldCreate = MapEditorManager.ExportMap() };
+        return new Map() { MapInfo = mapInfo, MapWorldCreate = MapEditorManager.ExportMap() };
     }
 }

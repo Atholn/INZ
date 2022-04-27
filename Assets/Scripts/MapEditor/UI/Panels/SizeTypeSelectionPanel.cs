@@ -32,7 +32,10 @@ public class SizeTypeSelectionPanel : MonoBehaviour
             _sizes[i] = (int)Sliders[i].minValue;
         }
 
-        TypeTerrainLevel0 = MapEditorManager.ItemControllers.Where(t => t.item.ItemHeightLevel == 0).ToList();
+        TypeTerrainLevel0 = MapEditorManager.ItemControllers.Where(t => t.item.ItemHeightLevel == 0 &&
+                t.item.GetComponent<ItemTerrain>() != null &&
+                t.item.GetComponent<ItemTerrain>().AllowsBuild)
+            .ToList();
 
         for (int i = 0; i < TypeTerrainLevel0.Count; i++)
         {
