@@ -25,7 +25,20 @@ public class CampaignManager : MonoBehaviour
 
     void Update()
     {
-        
+        UpdateNextPreviousKeys();
+    }
+
+    private void UpdateNextPreviousKeys()
+    {
+        if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            NextCampaignMap();
+        }
+
+        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            PreviousCampaignMap();
+        }
     }
 
     internal void NextCampaignMap()
