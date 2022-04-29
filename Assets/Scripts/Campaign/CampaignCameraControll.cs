@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CampaignCameraControll : MonoBehaviour
 {
-    private Vector3 shiftVector = new Vector3(0, 0, -4);
+    private Vector3 shiftVector = new Vector3(0, 0, -2);
     private Vector3 actualPosTarget;
 
     private void Start()

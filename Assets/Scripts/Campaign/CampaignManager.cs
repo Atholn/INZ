@@ -8,7 +8,7 @@ public class CampaignManager : MonoBehaviour
     private List<CampaignMapPoint> campaignMapPoints;
     private CampaignCameraControll campaignCameraControll;
     private int actualTarget = 0;
-    private int availableTarget;
+    private int availableTarget = 100; // todo 
 
     void Start()
     {
@@ -20,7 +20,7 @@ public class CampaignManager : MonoBehaviour
     {
         //todo
         //read files , or dont files create
-
+        //availableTarget
     }
 
     void Update()
@@ -43,7 +43,7 @@ public class CampaignManager : MonoBehaviour
 
     internal void NextCampaignMap()
     {
-        if (actualTarget + 1 >= campaignMapPoints.Count)
+        if (actualTarget + 1 >= campaignMapPoints.Count || actualTarget + 1 >= availableTarget)
         {
             return;
         }
