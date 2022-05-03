@@ -12,6 +12,12 @@ public class CampaignManager : MonoBehaviour
 
     void Start()
     {
+        InitializeMapGameObjects();
+        InitializePlayerCampaignSettings();
+    }
+
+    private void InitializeMapGameObjects()
+    {
         campaignCameraControll = GameObject.FindObjectOfType<CampaignCameraControll>();
         campaignMapPoints = GameObject.FindObjectsOfType<CampaignMapPoint>().OrderBy(cmp => cmp.name).ToList();
     }
@@ -20,15 +26,13 @@ public class CampaignManager : MonoBehaviour
     {
         //todo
         //read files , or dont files create
-        //availableTarget
+        //availableTarget load
     }
 
     void Update()
     {
 
     }
-
-
 
     internal void NextCampaignMap()
     {
@@ -60,5 +64,8 @@ public class CampaignManager : MonoBehaviour
     }
 
     internal bool CheckFirstOrLastMission() =>
-     actualTarget == 0 || actualTarget == campaignMapPoints.Count - 1 ? true : false;
+        actualTarget == 0 || actualTarget == campaignMapPoints.Count - 1;
+
+    internal bool CheckLastAvaiableMission() =>
+        actualTarget <= availableTarget;
 }

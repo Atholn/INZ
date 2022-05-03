@@ -12,7 +12,7 @@ public class CampaignUIManager : MonoBehaviour
     private List<Button> missionsMapButtons; //0 - preview, 1 - next, 2 -  enter mission, 3 - exit 
     private CampaignManager campaignManager;
 
-    private void Start()
+    private void Awake()
     {
         campaignManager = GameObject.FindObjectOfType<CampaignManager>();
 
@@ -34,11 +34,10 @@ public class CampaignUIManager : MonoBehaviour
 
     private void Update()
     {
-        UpdateNextPreviousKeys();
-        ShowMissionDetails();
+        UpdateNextPreviousEnterKeys();
     }
 
-    private void UpdateNextPreviousKeys()
+    private void UpdateNextPreviousEnterKeys()
     {
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
@@ -48,6 +47,11 @@ public class CampaignUIManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
             NextCampaignMissionMap();
+        }
+
+        if(Input.GetKeyDown(KeyCode.Return))
+        {
+            EnterMissionDetails();
         }
     }
 
@@ -73,15 +77,18 @@ public class CampaignUIManager : MonoBehaviour
         missionsMapButtons[1].gameObject.SetActive(!campaignManager.CheckFirstOrLastMission());
     }
 
-    private void ShowMissionDetails()
+    private void EnterMissionDetails()
     {
-        if (Input.GetKeyDown(KeyCode.Return))
+        if(!campaignManager.CheckLastAvaiableMission())
         {
-            MissionsMapPanel.SetActive(false);
-            MissionPanel.SetActive(true);
+            missionsMapButtons[2].gameObject.SetActive(false);
+            return;
         }
-    }
 
+        MissionsMapPanel.SetActive(false);
+        MissionPanel.SetActive(true);
+        missionsMapButtons[2].gameObject.SetActive(true);
+    }
 
     #region Public methods in MissionsMapPanel
     public void PreviousCampaignMap()
@@ -96,7 +103,7 @@ public class CampaignUIManager : MonoBehaviour
 
     public void EnterCampaignMap()
     {
-        //todo
+        EnterMissionDetails();
     }
 
     public void ExitCampaignMap()
