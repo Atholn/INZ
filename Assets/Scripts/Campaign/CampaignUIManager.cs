@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class CampaignUIManager : MonoBehaviour
 {
+    public GameObject MissionsMapPanel;
+    public GameObject MissionPanel;
+
     private CampaignManager campaignManager;
 
     private void Awake()
