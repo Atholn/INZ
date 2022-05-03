@@ -53,12 +53,15 @@ public class GameManager : MonoBehaviour
 
     public float UpgradeFactor = 1.2f;
 
+    private Dictionary<string, string> winRequaried;
+
     void Start()
     {
         _gameUI = FindObjectOfType<GameUI>();
 
         _map = new MapWorld();
         _gameStartPoints = MapToPlayStorage.GameStartPoints;
+        winRequaried = MapToPlayStorage.WinRequaried;
 
         _worker = UnitsPrefabs.Where(w => w.name == "Worker").FirstOrDefault();
         _townHall = BuildingsPrefabs.Where(w => w.name == "TownHall").FirstOrDefault();
