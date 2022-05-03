@@ -296,6 +296,7 @@ public class ChoiceMapManager : MonoBehaviour
         }
 
         MapToPlayStorage.GameStartPoints = gameStartPoints;
+        MapToPlayStorage.AddDominateRequaried(true);
     }
 
     private void GeneratingDifferentFeatures(GameObject panel, int countPlayers, int whichColour)
