@@ -9,6 +9,7 @@ public class CampaignManager : MonoBehaviour
     private CampaignCameraControll campaignCameraControll;
     private int actualTarget = 0;
     private int availableTarget = 100; // todo 
+    private CampaignSettings campaignSettings;
 
     void Start()
     {
