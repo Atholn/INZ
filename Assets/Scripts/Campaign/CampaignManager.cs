@@ -25,21 +25,10 @@ public class CampaignManager : MonoBehaviour
 
     void Update()
     {
-        UpdateNextPreviousKeys();
+
     }
 
-    private void UpdateNextPreviousKeys()
-    {
-        if (Input.GetKeyDown(KeyCode.RightArrow))
-        {
-            NextCampaignMap();
-        }
 
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
-        {
-            PreviousCampaignMap();
-        }
-    }
 
     internal void NextCampaignMap()
     {
@@ -70,4 +59,6 @@ public class CampaignManager : MonoBehaviour
         campaignCameraControll.GoToCampaignPoint(newTargetPos);
     }
 
+    internal bool CheckFirstOrLastMission() =>
+     actualTarget == 0 || actualTarget == campaignMapPoints.Count - 1 ? true : false;
 }
