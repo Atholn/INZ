@@ -250,7 +250,6 @@ public class GameManager : MonoBehaviour
 
         foreach (KeyValuePair<string, Dictionary<string, string>> winRequaried in winRequarieds)
         {
-
             switch (winRequaried.Key)
             {
                 case "free": ifWin = false; break;
@@ -264,8 +263,6 @@ public class GameManager : MonoBehaviour
                 case "time": break;
                 case "attacks": break;
             }
-
-
         }
 
         if(ifWin)

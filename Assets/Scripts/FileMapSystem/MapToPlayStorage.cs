@@ -10,11 +10,11 @@ public class MapToPlayStorage : MonoBehaviour
     {
         free = 0, 
         dominate = 1, // 0 - lose, 1 - win
-        sources = 2, // 0 - gold, 1 - wood , 2 untis (food)  // count of sources
+        sources = 2, //  0 - all*, 1 - gold, 2 - wood, 3 - untis (food)  // count of sources  *gold and wood 
         upgrades = 3, // 0 - all, 1 - knight, 2 - axeman, 3 - bowman // true false
         soldiers = 4, // 0 - all, 1 - knight, 2 - axeman, 3 - bowman  // count    
-        time = 8,
-        attacks = 9,
+        time = 5,
+        attacks = 6,
     }
 
     public static Map Map;
