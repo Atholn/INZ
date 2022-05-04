@@ -8,14 +8,11 @@ public class MapToPlayStorage : MonoBehaviour
 {
     enum Wins
     {
-        free = 0, // -
+        free = 0, 
         dominate = 1, // 0 - lose, 1 - win
-        wood = 2, //cout
-        gold = 3, //cout
-        units = 4, //cout
-        upgrades = 5, // all upgrades
-        soldiers = 6, // cout of soldiers
-        soldiersType = 7, // cout of soldiers type, 
+        sources = 2, // 0 - gold, 1 - wood , 2 untis (food)  // count of sources
+        upgrades = 3, // 0 - all, 1 - knight, 2 - axeman, 3 - bowman // true false
+        soldiers = 4, // 0 - all, 1 - knight, 2 - axeman, 3 - bowman  // count    
         time = 8,
         attacks = 9,
     }
@@ -48,8 +45,41 @@ public class MapToPlayStorage : MonoBehaviour
             .ToList();
     }
 
+    //0
+    internal static void AddFreeRequaried()
+    {
+        WinRequarieds.Add(Wins.free.ToString(), new Dictionary<string, string>());
+    }
+
+    //1
     internal static void AddDominateRequaried(bool loseWin)
     {
-        //WinRequarieds.Add(Wins.dominate.ToString(), loseWin.ToString());
+        var additionalDictionary = new Dictionary<string, string>();
+        additionalDictionary.Add("win", loseWin.ToString());
+        WinRequarieds.Add(Wins.dominate.ToString(), additionalDictionary);
+    }
+
+    //2
+    internal static void AddSourcesRequaried(int whichSoruces, int count)
+    {
+        var additionalDictionary = new Dictionary<string, string>();
+        additionalDictionary.Add(whichSoruces.ToString(), count.ToString());
+        WinRequarieds.Add(Wins.sources.ToString(), additionalDictionary);
+    }
+
+    //3
+    internal static void AddUpgradesRequaried(int whichUpgrades, bool ifUpgrade)
+    {
+        var additionalDictionary = new Dictionary<string, string>();
+        additionalDictionary.Add(whichUpgrades.ToString(), ifUpgrade.ToString());
+        WinRequarieds.Add(Wins.upgrades.ToString(), additionalDictionary);
+    }
+
+    //4
+    internal static void AddSoldiersRequaried(int whichSoldiers, int count)
+    {
+        var additionalDictionary = new Dictionary<string, string>();
+        additionalDictionary.Add(whichSoldiers.ToString(), count.ToString());
+        WinRequarieds.Add(Wins.sources.ToString(), additionalDictionary);
     }
 }
