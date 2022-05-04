@@ -23,7 +23,7 @@ public class MapToPlayStorage : MonoBehaviour
     public static Map Map;
     public static List<GameStartPoint> GameStartPoints;
 
-    public static Dictionary<string, string> WinRequaried = new Dictionary<string, string>();
+    public static Dictionary<string, Dictionary<string, string>> WinRequarieds = new Dictionary<string, Dictionary<string, string>>();
     public static string SceneToBack;
 
     internal static List<T> ImportResources<T>(string path, string end) where T : UnityEngine.Object
@@ -50,6 +50,6 @@ public class MapToPlayStorage : MonoBehaviour
 
     internal static void AddDominateRequaried(bool loseWin)
     {
-        WinRequaried.Add(Wins.dominate.ToString(), loseWin.ToString());
+        //WinRequarieds.Add(Wins.dominate.ToString(), loseWin.ToString());
     }
 }

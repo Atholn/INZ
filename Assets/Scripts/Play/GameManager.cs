@@ -53,7 +53,8 @@ public class GameManager : MonoBehaviour
 
     public float UpgradeFactor = 1.2f;
 
-    private Dictionary<string, string> winRequaried;
+    private Dictionary<string, Dictionary<string, string>> winRequarieds;
+    private string sceneToBack;
 
     void Start()
     {
@@ -61,7 +62,8 @@ public class GameManager : MonoBehaviour
 
         _map = new MapWorld();
         _gameStartPoints = MapToPlayStorage.GameStartPoints;
-        winRequaried = MapToPlayStorage.WinRequaried;
+        winRequarieds = MapToPlayStorage.WinRequarieds;
+        sceneToBack = MapToPlayStorage.SceneToBack;
 
         _worker = UnitsPrefabs.Where(w => w.name == "Worker").FirstOrDefault();
         _townHall = BuildingsPrefabs.Where(w => w.name == "TownHall").FirstOrDefault();
@@ -238,7 +240,61 @@ public class GameManager : MonoBehaviour
 
             player.UpdateComputer(_playersGameObjects[player.whichPlayer]);
         }
+
+        UpdateWinRequaired();
     }
+
+    private void UpdateWinRequaired()
+    {
+        bool ifWin = true;
+
+        foreach (KeyValuePair<string, Dictionary<string, string>> winRequaried in winRequarieds)
+        {
+
+            switch (winRequaried.Key)
+            {
+                case "free": ifWin = false; break;
+                case "dominate": DominateCheckWin(ref ifWin); break;
+                case "wood": break;
+                case "gold": break;
+                case "units": break;
+                case "upgrades": break;
+                case "soldiers": break;
+                case "soldiersType": break;
+                case "time": break;
+                case "attacks": break;
+            }
+
+
+        }
+
+        if(ifWin)
+        {
+            UnityEngine.SceneManagement.SceneManager.LoadScene(sceneToBack);
+        }
+    }
+
+    #region ChecksWin
+
+    private void DominateCheckWin(ref bool ifWin)
+    {
+        int winner = -1;
+        for (int i = 0; i < _playersGameObjects.Count; i++)
+        {
+            if (_playersGameObjects[i].Count > 0)
+            {
+                if (winner != -1)
+                {
+                    ifWin = false;
+                    return;
+                }
+
+                winner = i;
+            }
+        }
+    }
+
+    #endregion
 
     internal void CheckWinLose()
     {
@@ -346,6 +402,6 @@ public class GameManager : MonoBehaviour
         _gameUI.UpdateRawMaterials(2, UnitsPointsUpdate(whichPlayer), UnitsMaxPointsUpdate(whichPlayer));
     }
 
-    
+
     #endregion
 }
