@@ -1,24 +1,7 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Linq;
-
-public static class Path
-{
-    public static string GameAppPath
-    {
-        get
-        {
-#if UNITY_EDITOR
-            return Application.dataPath;
-#else
-            return Directory.GetCurrentDirectory();
-#endif
-        }
-    }
-}
 
 public class FileMapSystem
 {
@@ -28,8 +11,8 @@ public class FileMapSystem
         Load
     }
 
-    private string _path = Path.GameAppPath + $"/Game/Maps/";
-    public string FolderName;
+    private readonly string _path = Path.GameAppPath + $"/Game/Maps/";
+    internal string FolderName;
 
     private void SaveLoadMapFile(string tmpPath, ref Map map, FileMode fileMode, Flag flag)
     {

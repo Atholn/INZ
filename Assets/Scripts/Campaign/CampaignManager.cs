@@ -8,8 +8,9 @@ public class CampaignManager : MonoBehaviour
     private List<CampaignMapPoint> campaignMapPoints;
     private CampaignCameraControll campaignCameraControll;
     private int actualTarget = 0;
-    private int availableTarget = 100; // todo 
+    private int availableTarget = 0; // todo 
     private CampaignSettings campaignSettings;
+    private CampaignSettingsFileSystem campaignSettingsFileSystem;
 
     void Start()
     {
@@ -25,9 +26,13 @@ public class CampaignManager : MonoBehaviour
 
     private void InitializePlayerCampaignSettings()
     {
-        //todo
-        //read files , or dont files create
-        //availableTarget load
+        campaignSettingsFileSystem = new CampaignSettingsFileSystem();
+        campaignSettings =  campaignSettingsFileSystem.LoadSettings();
+
+        actualTarget = 10; // campaignSettings.AvailableTarget;
+        availableTarget = 100;// campaignSettings.AvailableTarget;
+
+        SetNewTargetPos(campaignMapPoints[actualTarget]);
     }
 
     void Update()

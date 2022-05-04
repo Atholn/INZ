@@ -244,6 +244,7 @@ public class GameManager : MonoBehaviour
         UpdateWinRequaired();
     }
 
+    #region ChecksWin
     private void UpdateWinRequaired()
     {
         bool ifWin = true;
@@ -252,28 +253,32 @@ public class GameManager : MonoBehaviour
         {
             switch (winRequaried.Key)
             {
-                case "free": ifWin = false; break;
-                case "dominate": DominateCheckWin(ref ifWin); break;
-                case "wood": break;
-                case "gold": break;
-                case "units": break;
-                case "upgrades": break;
-                case "soldiers": break;
-                case "soldiersType": break;
+                case "free": FreeCheckWin(ref ifWin, winRequaried.Value); break;
+                case "dominate": DominateCheckWin(ref ifWin, winRequaried.Value); break;
+                case "sources": SourcesCheckWin(ref ifWin, winRequaried.Value); break;
+                case "upgrades": UpgradesCheckWin(ref ifWin, winRequaried.Value); break;
+                case "soldiers": SoldiersCheckWin(ref ifWin, winRequaried.Value); break;
+
+                //todo
                 case "time": break;
                 case "attacks": break;
             }
         }
 
+
         if(ifWin)
         {
+            //todo seen panel with summary
             UnityEngine.SceneManagement.SceneManager.LoadScene(sceneToBack);
         }
     }
 
-    #region ChecksWin
+    private void FreeCheckWin(ref bool ifWin, Dictionary<string, string> addional)
+    {
+        ifWin = false;
+    }
 
-    private void DominateCheckWin(ref bool ifWin)
+    private void DominateCheckWin(ref bool ifWin, Dictionary<string, string> addional)
     {
         int winner = -1;
         for (int i = 0; i < _playersGameObjects.Count; i++)
@@ -289,6 +294,43 @@ public class GameManager : MonoBehaviour
                 winner = i;
             }
         }
+
+        //todo if we want lose
+    }
+
+    private void SourcesCheckWin(ref bool ifWin, Dictionary<string, string> addional)
+    {
+        switch(addional.First().Key)
+        {
+            case "0": if (_players[0].actualWood + _players[0].actualGold < int.Parse(addional.First().Value)) ifWin = false; break;
+            case "1": if (_players[0].actualGold < int.Parse(addional.First().Value)) ifWin = false; break;
+            case "2": if (_players[0].actualWood < int.Parse(addional.First().Value)) ifWin = false; break;
+            case "3": if (_players[0].actualMaxUnitsPoint < int.Parse(addional.First().Value)) ifWin = false; break;              
+        }
+    }
+
+    private void UpgradesCheckWin(ref bool ifWin, Dictionary<string, string> addional)
+    {
+        ifWin = false;
+        //switch (addional.First().Key)
+        //{
+        //    case "0": if (_players[0].actualWood + _players[0].actualGold < int.Parse(addional.First().Value)) ifWin = false; break;
+        //    case "1": if (_players[0].actualGold < int.Parse(addional.First().Value)) ifWin = false; break;
+        //    case "2": if (_players[0].actualWood < int.Parse(addional.First().Value)) ifWin = false; break;
+        //    case "3": if (_players[0].actualMaxUnitsPoint < int.Parse(addional.First().Value)) ifWin = false; break;
+        //}
+    }
+
+    private void SoldiersCheckWin(ref bool ifWin, Dictionary<string, string> addional)
+    {
+        ifWin = false;
+        //switch (addional.First().Key)
+        //{
+        //    case "0": if (_players[0]. + _players[0].actualGold < int.Parse(addional.First().Value)) ifWin = false; break;
+        //    case "1": if (_players[0].actualGold < int.Parse(addional.First().Value)) ifWin = false; break;
+        //    case "2": if (_players[0].actualWood < int.Parse(addional.First().Value)) ifWin = false; break;
+        //    case "3": if (_players[0].actualMaxUnitsPoint < int.Parse(addional.First().Value)) ifWin = false; break;
+        //}
     }
 
     #endregion

@@ -52,7 +52,6 @@ public class GameUI : MonoBehaviour
         List<UpgradeUnit> upgradeUnitsNumbers = BlackSmithsSpecialPanel.GetComponentsInChildren<UpgradeUnit>().ToList();
         for (int i = 0; i < upgradeUnitsNumbers.Count; i++)
         {
-            Debug.LogError(i);
             upgradeUnitsNumbers[i].NumberOfUpgrade = i;
         }
     }
