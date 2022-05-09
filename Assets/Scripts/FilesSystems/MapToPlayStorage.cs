@@ -10,7 +10,7 @@ public class MapToPlayStorage : MonoBehaviour
     {
         free = 0, 
         dominate = 1, // 0 - lose, 1 - win
-        sources = 2, //  0 - all*, 1 - gold, 2 - wood, 3 - untis (food)  // count of sources  *gold and wood 
+        sources = 2, //  0 - all*, 1 - gold, 2 - wood, 3 - untis (food), 4 - units max // count of sources  *gold and wood 
         upgrades = 3, // 0 - all, 1 - knight, 2 - axeman, 3 - bowman // true false
         soldiers = 4, // 0 - all, 1 - knight, 2 - axeman, 3 - bowman  // count    
         buldings = 5, // 0 - all, 
@@ -82,5 +82,13 @@ public class MapToPlayStorage : MonoBehaviour
         var additionalDictionary = new Dictionary<string, string>();
         additionalDictionary.Add(whichSoldiers.ToString(), count.ToString());
         WinRequarieds.Add(Wins.sources.ToString(), additionalDictionary);
+    }
+
+    //5
+    internal static void AddBuildingRequaried(int whichBuildings, int count)
+    {
+        var additionalDictionary = new Dictionary<string, string>();
+        additionalDictionary.Add(whichBuildings.ToString(), count.ToString());
+        WinRequarieds.Add(Wins.buldings.ToString(), additionalDictionary);
     }
 }

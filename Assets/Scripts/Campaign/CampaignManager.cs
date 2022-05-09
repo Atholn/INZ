@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class CampaignManager : MonoBehaviour
 {
+    private readonly string _typeOfGame = "Campaign";
+
     private List<CampaignMapPoint> campaignMapPoints;
     private CampaignCameraControll campaignCameraControll;
     private int actualTarget = 0;
@@ -67,6 +69,13 @@ public class CampaignManager : MonoBehaviour
 
         actualTarget--;
         SetNewTargetPos(campaignMapPoints[actualTarget]);
+    }
+
+    internal void StartMap()
+    {
+        CampaignMissionsRequaried.SetRequired(actualTarget); 
+        
+        MapToPlayStorage.SceneToBack = _typeOfGame;
     }
 
     private void SetNewTargetPos(CampaignMapPoint campaignMapPoint)

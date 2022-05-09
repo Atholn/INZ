@@ -120,6 +120,11 @@ public class CampaignUIManager : MonoBehaviour
         MissionPanel.SetActive(false);
     }
 
+    public void StartMap()
+    {
+        campaignManager.StartMap();
+    }
+
     #endregion
 
 }

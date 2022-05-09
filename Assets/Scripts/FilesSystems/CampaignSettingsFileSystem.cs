@@ -9,7 +9,6 @@ public class CampaignSettingsFileSystem
     private readonly string _path = Path.GameAppPath + $"/Game/Campaign/";
     private readonly string _settingsFile = "CampaignSettings";
     private readonly int _firstMission = 0;
-    
 
     public CampaignSettings LoadSettings()
     {
