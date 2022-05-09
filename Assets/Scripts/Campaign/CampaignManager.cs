@@ -8,7 +8,7 @@ public class CampaignManager : MonoBehaviour
     private List<CampaignMapPoint> campaignMapPoints;
     private CampaignCameraControll campaignCameraControll;
     private int actualTarget = 0;
-    private int availableTarget = 0; // todo 
+    private int availableTarget = 0;
     private CampaignSettings campaignSettings;
     private CampaignSettingsFileSystem campaignSettingsFileSystem;
 
@@ -29,10 +29,17 @@ public class CampaignManager : MonoBehaviour
         campaignSettingsFileSystem = new CampaignSettingsFileSystem();
         campaignSettings =  campaignSettingsFileSystem.LoadSettings();
 
-        actualTarget = 10; // campaignSettings.AvailableTarget;
-        availableTarget = 100;// campaignSettings.AvailableTarget;
+        actualTarget  = campaignSettings.AvailableTarget;
+        availableTarget = campaignSettings.AvailableTarget;
+
 
         SetNewTargetPos(campaignMapPoints[actualTarget]);
+    }
+
+    internal Vector2 Getsss()
+    {
+        Transform transform = campaignMapPoints[actualTarget].GetComponent<Transform>();
+        return new Vector2(transform.position.x, transform.position.z);
     }
 
     void Update()
