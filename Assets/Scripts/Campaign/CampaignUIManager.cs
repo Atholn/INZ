@@ -29,7 +29,8 @@ public class CampaignUIManager : MonoBehaviour
     private void IntitializeMissionsMapButtons()
     {
         missionsMapButtons = MissionsMapPanel.GetComponentsInChildren<Button>().ToList();
-        Debug.LogError(missionsMapButtons.Count);
+        missionsMapButtons[0].gameObject.SetActive(!campaignManager.CheckFirstOrLastMission());
+        missionsMapButtons[1].gameObject.SetActive(!campaignManager.CheckFirstOrLastMission());
     }
 
     private void Update()
