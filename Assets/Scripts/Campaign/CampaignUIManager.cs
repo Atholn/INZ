@@ -108,7 +108,7 @@ public class CampaignUIManager : MonoBehaviour
 
     public void ExitCampaignMap()
     {
-        //todo
+        SceneLoader.MainMenu();
     }
 
     #endregion

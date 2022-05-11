@@ -73,7 +73,7 @@ public class CampaignManager : MonoBehaviour
 
     internal void StartMap()
     {
-        CampaignMissionsRequaried.SetRequired(actualTarget); 
+        //CampaignMissionsRequaried.SetRequired(actualTarget); 
         
         MapToPlayStorage.SceneToBack = _typeOfGame;
     }
