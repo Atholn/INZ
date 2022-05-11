@@ -124,6 +124,7 @@ public class CampaignUIManager : MonoBehaviour
     public void StartMap()
     {
         campaignManager.StartMap();
+        SceneLoader.GameScene();
     }
 
     #endregion

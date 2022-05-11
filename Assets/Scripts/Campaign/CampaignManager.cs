@@ -6,6 +6,8 @@ using UnityEngine;
 public class CampaignManager : MonoBehaviour
 {
     private readonly string _typeOfGame = "Campaign";
+    private readonly string _campaignColorPlayer = "blue";
+    private readonly string _campaignColorEnemy = "red";
 
     private List<CampaignMapPoint> campaignMapPoints;
     private CampaignCameraControll campaignCameraControll;
@@ -13,11 +15,13 @@ public class CampaignManager : MonoBehaviour
     private int availableTarget = 0;
     private CampaignSettings campaignSettings;
     private CampaignSettingsFileSystem campaignSettingsFileSystem;
-
+    private FileMapSystem fileMapSystem;
+    
     void Start()
     {
         InitializeMapGameObjects();
         InitializePlayerCampaignSettings();
+        InitializeFileMapLoader();
     }
 
     private void InitializeMapGameObjects()
@@ -36,6 +40,12 @@ public class CampaignManager : MonoBehaviour
 
 
         SetNewTargetPos(campaignMapPoints[actualTarget]);
+    }
+
+    private void InitializeFileMapLoader()
+    {
+        fileMapSystem = new FileMapSystem();
+        fileMapSystem.FolderName = _typeOfGame;
     }
 
     internal Vector2 Getsss()
@@ -73,9 +83,28 @@ public class CampaignManager : MonoBehaviour
 
     internal void StartMap()
     {
-        //CampaignMissionsRequaried.SetRequired(actualTarget); 
-        
+        CampaignMissionsRequaried.SetRequired(actualTarget);
         MapToPlayStorage.SceneToBack = _typeOfGame;
+
+        Map map = fileMapSystem.LoadEditorMap($"m{actualTarget}");
+        MapToPlayStorage.Map = map;
+        List<GameStartPoint> gameStartPoints = new List<GameStartPoint>();
+        List<Material> materialList = MapToPlayStorage.ImportResources<Material>("Materials/Units/", ".mat");
+
+        Material playerMaterial = materialList.Where(n => n.name == _campaignColorPlayer).FirstOrDefault();
+        Material enemyMaterial = materialList.Where(n => n.name == _campaignColorEnemy).FirstOrDefault();
+        Debug.Log(map);
+        for (int i = 0; i < map.MapWorldCreate.StartPoints.Count; i++)
+        {
+            Debug.Log(map.MapWorldCreate.StartPoints[i]);
+            gameStartPoints.Add(new GameStartPoint()
+            {
+                UnitMaterial = i == 0 ? playerMaterial : enemyMaterial,
+                UnitStartLocation = new Vector3(map.MapWorldCreate.StartPoints[i].UnitStartLocation[0], 1, map.MapWorldCreate.StartPoints[i].UnitStartLocation[2]),
+            });
+        }
+
+        MapToPlayStorage.GameStartPoints = gameStartPoints;
     }
 
     private void SetNewTargetPos(CampaignMapPoint campaignMapPoint)

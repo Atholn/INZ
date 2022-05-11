@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CampaignMissionsRequaried : MonoBehaviour
+public static class CampaignMissionsRequaried
 {
     public static void SetRequired(int number)
     {

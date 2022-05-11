@@ -2,8 +2,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Linq;
+using UnityEngine;
 
-public class FileMapSystem
+public class FileMapSystem : MonoBehaviour
 {
     enum Flag
     {
@@ -61,9 +62,10 @@ public class FileMapSystem
     public Map LoadEditorMap(string nameMap)
     {
         string tmpPath = _path + $"/{FolderName}/{nameMap}";
-
+        Debug.LogError(tmpPath);
         if (File.Exists(tmpPath))
         {
+            Debug.LogError("ddd" + tmpPath);
             Map loadMap = new Map();
             SaveLoadMapFile(tmpPath, ref loadMap, FileMode.Open, Flag.Load);
 

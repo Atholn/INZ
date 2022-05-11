@@ -6,4 +6,9 @@ public static class SceneLoader
     {
         SceneManager.LoadScene("MainMenu");
     }
+
+    public static void GameScene()
+    {
+        SceneManager.LoadScene("GameScene");
+    }
 }

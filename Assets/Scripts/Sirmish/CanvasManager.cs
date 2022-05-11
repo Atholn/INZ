@@ -30,11 +30,11 @@ public class CanvasManager : MonoBehaviour
     public void PlayButton()
     {
         Manager.Play();
-        SceneManager.LoadScene("GameScene");
+        SceneLoader.GameScene();
     }
 
     public void BackButton()
     {
-        SceneManager.LoadScene("MainMenu");
+        SceneLoader.MainMenu();
     }
 }
