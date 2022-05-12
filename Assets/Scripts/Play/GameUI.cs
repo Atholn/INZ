@@ -68,19 +68,9 @@ public class GameUI : MonoBehaviour
 
     #region MenuPanel
 
-    public void Save()
-    {
-
-    }
-
-    public void Load()
-    {
-
-    }
-
     public void Exit()
     {
-        UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
+        SceneLoader.MainMenu();
     }
 
     public void Back()
