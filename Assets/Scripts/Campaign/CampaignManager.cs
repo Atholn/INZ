@@ -6,8 +6,8 @@ using UnityEngine;
 public class CampaignManager : MonoBehaviour
 {
     private readonly string _typeOfGame = "Campaign";
-    private readonly string _campaignColorPlayer = "blue";
-    private readonly string _campaignColorEnemy = "red";
+    private readonly string _campaignColorPlayer = "Blue";
+    private readonly string _campaignColorEnemy = "Red";
 
     private List<CampaignMapPoint> campaignMapPoints;
     private CampaignCameraControll campaignCameraControll;
@@ -93,10 +93,10 @@ public class CampaignManager : MonoBehaviour
 
         Material playerMaterial = materialList.Where(n => n.name == _campaignColorPlayer).FirstOrDefault();
         Material enemyMaterial = materialList.Where(n => n.name == _campaignColorEnemy).FirstOrDefault();
-        Debug.Log(map);
+
         for (int i = 0; i < map.MapWorldCreate.StartPoints.Count; i++)
         {
-            Debug.Log(map.MapWorldCreate.StartPoints[i]);
+            if(map.MapWorldCreate.StartPoints[i].UnitStartLocation[0] != 0 && map.MapWorldCreate.StartPoints[i].UnitStartLocation[1] != 0 && map.MapWorldCreate.StartPoints[i].UnitStartLocation[1] != 0)
             gameStartPoints.Add(new GameStartPoint()
             {
                 UnitMaterial = i == 0 ? playerMaterial : enemyMaterial,

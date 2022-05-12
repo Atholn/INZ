@@ -105,7 +105,7 @@ public class Player : MonoBehaviour
         {
             List<GameObject> listOfWorkers = gameManager._playersGameObjects[whichPlayer].Where(g => g.GetComponent<Worker>() != null).ToList();
 
-            listOfWorkers[1].SendMessage("SearchTree", null, SendMessageOptions.DontRequireReceiver);
+            listOfWorkers[1].SendMessage("SearchTree", null, SendMessageOptions.DontRequireReceiver); 
             listOfWorkers[2].SendMessage("SearchTree", null, SendMessageOptions.DontRequireReceiver);
             listOfWorkers[3].SendMessage("SearchGoldmine", null, SendMessageOptions.DontRequireReceiver);
             listOfWorkers[4].SendMessage("SearchGoldmine", null, SendMessageOptions.DontRequireReceiver);

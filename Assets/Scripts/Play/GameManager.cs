@@ -112,7 +112,7 @@ public class GameManager : MonoBehaviour
         Pointer.SetActive(true);
         Pointer.GetComponentInChildren<SkinnedMeshRenderer>().material = _playersMaterials[0];
 
-        CheckWinLose();
+        //CheckWinLose();
 
         ///
         _gameUI.UpdateRawMaterials(0, 0);
@@ -268,7 +268,9 @@ public class GameManager : MonoBehaviour
 
         if(ifWin)
         {
+            Debug.Log("dupa");
             //todo seen panel with summary
+            MapToPlayStorage.WinRequarieds = null;
             UnityEngine.SceneManagement.SceneManager.LoadScene(sceneToBack);
         }
     }

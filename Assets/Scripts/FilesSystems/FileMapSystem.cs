@@ -62,10 +62,8 @@ public class FileMapSystem : MonoBehaviour
     public Map LoadEditorMap(string nameMap)
     {
         string tmpPath = _path + $"/{FolderName}/{nameMap}";
-        Debug.LogError(tmpPath);
         if (File.Exists(tmpPath))
         {
-            Debug.LogError("ddd" + tmpPath);
             Map loadMap = new Map();
             SaveLoadMapFile(tmpPath, ref loadMap, FileMode.Open, Flag.Load);
 

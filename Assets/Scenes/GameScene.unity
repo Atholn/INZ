@@ -4267,6 +4267,7 @@ MonoBehaviour:
   Pointer: {fileID: 291794950}
   Fire: {fileID: 6489927978423749966, guid: 80bf0e1a219a1e2458fec6f1e7a0a870, type: 3}
   Dust: {fileID: 5453611526577253938, guid: e8d922be61c06a94f83ccb533bc7ed73, type: 3}
+  UpgradeFactor: 1.2
 --- !u!4 &1251306219
 Transform:
   m_ObjectHideFlags: 0

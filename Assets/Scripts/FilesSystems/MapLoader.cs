@@ -49,7 +49,7 @@ public class MapLoader : MonoBehaviour
         Vector3 firstScale = mainGround.ItemPrefab.transform.localScale;
 
         GameObject basicTerrainPrefab = mainGround.ItemPrefab;
-        basicTerrainPrefab.gameObject.transform.localScale = new Vector3(sizeX * firstScale.x, sizeY * firstScale.y, firstScale.z);
+        basicTerrainPrefab.gameObject.transform.localScale = new Vector3(sizeX * firstScale.x, firstScale.z, sizeY * firstScale.y);
 
         terrain = Instantiate(basicTerrainPrefab, 
                               new Vector3(sizeX % 2 == 0 ? sizeX / 2 - 0.5f : sizeX / 2,
