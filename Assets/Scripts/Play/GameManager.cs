@@ -268,8 +268,6 @@ public class GameManager : MonoBehaviour
 
         if(ifWin)
         {
-            Debug.Log("dupa");
-            //todo seen panel with summary
             MapToPlayStorage.WinRequarieds = null;
             UnityEngine.SceneManagement.SceneManager.LoadScene(sceneToBack);
         }
