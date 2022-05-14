@@ -273,8 +273,8 @@ public class Player : MonoBehaviour
         gameManager.UpdateGold(whichPlayer, -gameManager.BuildingsPrefabs[whichBuilding].GetComponent<Unit>().GoldCost);
 
         buildingTarget = (Instantiate(buildingTarget,
-            new Vector3(image.transform.position.x, -(gameManager.ItemControllers[gameManager.CurrentButtonPressed].item as ItemGame).HeightBuilding, image.transform.position.z),
-            gameManager.ItemControllers[gameManager.CurrentButtonPressed].item.ItemPrefab.transform.rotation));
+            new Vector3(image.transform.position.x, -(gameManager.GameItemControllers[gameManager.CurrentButtonPressed].item as ItemGame).HeightBuilding, image.transform.position.z),
+            gameManager.GameItemControllers[gameManager.CurrentButtonPressed].item.ItemPrefab.transform.rotation));
 
         gameManager._playersGameObjects[whichPlayer].Add(buildingTarget);
         gameManager._playersGameObjects[whichPlayer][gameManager._playersGameObjects[whichPlayer].Count - 1].GetComponent<MeshRenderer>().materials[1].color = gameManager._playersMaterials[whichPlayer].color;

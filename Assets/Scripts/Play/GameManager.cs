@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 public class GameManager : MonoBehaviour
 {
-    public GameItemController[] ItemControllers;
+    public GameItemController[] GameItemControllers;
     internal int CurrentButtonPressed;
 
     public List<Item> TerrainPrefabs;
@@ -104,9 +104,9 @@ public class GameManager : MonoBehaviour
 
         _gameUI.SetLookBottomPanel(_playersMaterials[0].color);
 
-        for (int i = 0; i < ItemControllers.Length; i++)
+        for (int i = 0; i < GameItemControllers.Length; i++)
         {
-            ItemControllers[i].item.ID = i;
+            GameItemControllers[i].item.ID = i;
         }
 
         Pointer.SetActive(true);
@@ -359,12 +359,12 @@ public class GameManager : MonoBehaviour
 
     internal void DestroyItemImages()
     {
-        for (int i = 0; i < ItemControllers.Length; i++)
+        for (int i = 0; i < GameItemControllers.Length; i++)
         {
-            ItemControllers[i].Clicked = false;
-            if (ItemControllers[i].item.ItemHeightLevel == 0)
+            GameItemControllers[i].Clicked = false;
+            if (GameItemControllers[i].item.ItemHeightLevel == 0)
             {
-                ItemControllers[i].item.ItemImage.transform.localScale = ItemControllers[i].firstScale;
+                GameItemControllers[i].item.ItemImage.transform.localScale = GameItemControllers[i].firstScale;
             }
         }
 

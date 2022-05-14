@@ -12,9 +12,9 @@ public class GameFollowScript : MonoBehaviour
     {
 
         _gameManager = FindObjectOfType<GameManager>();
-        height = _gameManager.ItemControllers[_gameManager.CurrentButtonPressed].item.ItemHeightPosY;
+        height = _gameManager.GameItemControllers[_gameManager.CurrentButtonPressed].item.ItemHeightPosY;
 
-        ItemStartPoint startPointUnit = _gameManager.ItemControllers[_gameManager.CurrentButtonPressed].item.ItemPrefab.GetComponent<ItemStartPoint>();
+        ItemStartPoint startPointUnit = _gameManager.GameItemControllers[_gameManager.CurrentButtonPressed].item.ItemPrefab.GetComponent<ItemStartPoint>();
 
         limit = startPointUnit != null ? startPointUnit.BuildSize / 2 : 0;
     }

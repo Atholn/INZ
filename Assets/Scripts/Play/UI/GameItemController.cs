@@ -28,12 +28,12 @@ public class GameItemController : MonoBehaviour
     {
         gameManager.DestroyItemImages();
 
-        Vector3 screenPosition = new Vector3(Input.mousePosition.x, gameManager.ItemControllers[item.ID].item.ItemHeightLevel, Input.mousePosition.z);
+        Vector3 screenPosition = new Vector3(Input.mousePosition.x, gameManager.GameItemControllers[item.ID].item.ItemHeightLevel, Input.mousePosition.z);
         Vector3 worldPosition = Camera.main.ScreenToWorldPoint(screenPosition);
         Clicked = true;
 
-        GameObject image = Instantiate(gameManager.ItemControllers[item.ID].item.ItemImage,
-            new Vector3(worldPosition.x, gameManager.ItemControllers[item.ID].item.ItemHeightLevel, worldPosition.z),
+        GameObject image = Instantiate(gameManager.GameItemControllers[item.ID].item.ItemImage,
+            new Vector3(worldPosition.x, gameManager.GameItemControllers[item.ID].item.ItemHeightLevel, worldPosition.z),
             item.ItemPrefab.transform.rotation);
 
         gameManager.CurrentButtonPressed = item.ID;
