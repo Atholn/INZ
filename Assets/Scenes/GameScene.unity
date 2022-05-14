@@ -4231,7 +4231,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f2362e0de9b5974a956b3499bd31cdc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ItemControllers:
+  GameItemControllers:
   - {fileID: 772820914}
   - {fileID: 594155195}
   - {fileID: 907285107}

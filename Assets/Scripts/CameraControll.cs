@@ -48,7 +48,7 @@ public class CameraControll : MonoBehaviour
     {
         _keyboardInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
         mousePos = Input.mousePosition;
-        if (_gameManager != null) mousePosScreen = camera.ScreenToViewportPoint(mousePos);
+        mousePosScreen = camera.ScreenToViewportPoint(mousePos);
 
         Vector2 movementDirection = _keyboardInput;
 
@@ -56,7 +56,7 @@ public class CameraControll : MonoBehaviour
         delta *= Speed * Time.deltaTime;
         transform.localPosition += delta;
 
-        if (_gameManager != null) UpdateSelection();
+        UpdateSelection();
         UpdateMouseDetection();
 
         UpdateCodes();
@@ -133,6 +133,7 @@ public class CameraControll : MonoBehaviour
 
         if (_gameManager.building && Input.GetMouseButtonDown(0))
         {
+            Debug.Log("eeee");
             if (_gameManager._players[0].actualGold < _gameManager.GameItemControllers[_gameManager.CurrentButtonPressed].item.GetComponent<Unit>().GoldCost ||
                 _gameManager._players[0].actualWood < _gameManager.GameItemControllers[_gameManager.CurrentButtonPressed].item.GetComponent<Unit>().WoodCost)
             {
