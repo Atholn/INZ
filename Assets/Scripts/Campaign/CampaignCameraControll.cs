@@ -10,6 +10,12 @@ public class CampaignCameraControll : MonoBehaviour
     private void Start()
     {
         actualPosTarget = transform.position;
+        GoToFirstAvaiablePoint();
+    }
+
+    private void GoToFirstAvaiablePoint()
+    {
+
     }
 
     private void Update()

@@ -48,7 +48,7 @@ public class CameraControll : MonoBehaviour
     {
         _keyboardInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
         mousePos = Input.mousePosition;
-        if (_gameManager != null) mousePosScreen = camera.ScreenToViewportPoint(mousePos);
+        mousePosScreen = camera.ScreenToViewportPoint(mousePos);
 
         Vector2 movementDirection = _keyboardInput;
 
@@ -56,7 +56,7 @@ public class CameraControll : MonoBehaviour
         delta *= Speed * Time.deltaTime;
         transform.localPosition += delta;
 
-        if (_gameManager != null) UpdateSelection();
+        UpdateSelection();
         UpdateMouseDetection();
 
         UpdateCodes();
@@ -133,19 +133,19 @@ public class CameraControll : MonoBehaviour
 
         if (_gameManager.building && Input.GetMouseButtonDown(0))
         {
-            if (_gameManager._players[0].actualGold < _gameManager.ItemControllers[_gameManager.CurrentButtonPressed].item.GetComponent<Unit>().GoldCost ||
-                _gameManager._players[0].actualWood < _gameManager.ItemControllers[_gameManager.CurrentButtonPressed].item.GetComponent<Unit>().WoodCost)
+            if (_gameManager._players[0].actualGold < _gameManager.GameItemControllers[_gameManager.CurrentButtonPressed].item.GetComponent<Unit>().GoldCost ||
+                _gameManager._players[0].actualWood < _gameManager.GameItemControllers[_gameManager.CurrentButtonPressed].item.GetComponent<Unit>().WoodCost)
             {
                 _gameManager.DestroyItemImages();
                 _gameManager.building = false;
                 return;
             }
-            _gameManager.UpdateWood(0, -_gameManager.ItemControllers[_gameManager.CurrentButtonPressed].item.GetComponent<Unit>().WoodCost);
-            _gameManager.UpdateGold(0, -_gameManager.ItemControllers[_gameManager.CurrentButtonPressed].item.GetComponent<Unit>().GoldCost);
+            _gameManager.UpdateWood(0, -_gameManager.GameItemControllers[_gameManager.CurrentButtonPressed].item.GetComponent<Unit>().WoodCost);
+            _gameManager.UpdateGold(0, -_gameManager.GameItemControllers[_gameManager.CurrentButtonPressed].item.GetComponent<Unit>().GoldCost);
 
-            GameObject building = (Instantiate(_gameManager.ItemControllers[_gameManager.CurrentButtonPressed].item.ItemPrefab,
-                new Vector3(_gameManager.v.x, -(_gameManager.ItemControllers[_gameManager.CurrentButtonPressed].item as ItemGame).HeightBuilding, _gameManager.v.z),
-                _gameManager.ItemControllers[_gameManager.CurrentButtonPressed].item.ItemPrefab.transform.rotation));
+            GameObject building = (Instantiate(_gameManager.GameItemControllers[_gameManager.CurrentButtonPressed].item.ItemPrefab,
+                new Vector3(_gameManager.v.x, -(_gameManager.GameItemControllers[_gameManager.CurrentButtonPressed].item as ItemGame).HeightBuilding, _gameManager.v.z),
+                _gameManager.GameItemControllers[_gameManager.CurrentButtonPressed].item.ItemPrefab.transform.rotation));
 
             _gameManager._playersGameObjects[0].Add(building);
             _gameManager.DestroyItemImages();

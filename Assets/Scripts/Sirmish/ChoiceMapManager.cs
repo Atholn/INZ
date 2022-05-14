@@ -7,7 +7,8 @@ using System.Linq;
 
 public class ChoiceMapManager : MonoBehaviour
 {
-    public string TypeOfGame = "Sirmish";
+    private readonly string _typeOfGame = "Sirmish";
+
     public GameObject ChoiceMapPanel;
     public GameObject PlaySettingsPanel;
     public GameObject MapInfoPanel;
@@ -55,7 +56,7 @@ public class ChoiceMapManager : MonoBehaviour
 
     private void InitializeFileMapSystem()
     {
-        FileMapSystem = new FileMapSystem() { FolderName = TypeOfGame };
+        FileMapSystem = new FileMapSystem() { FolderName = _typeOfGame };
     }
 
     private void InitializeMapList()
@@ -296,6 +297,8 @@ public class ChoiceMapManager : MonoBehaviour
         }
 
         MapToPlayStorage.GameStartPoints = gameStartPoints;
+        MapToPlayStorage.AddDominateRequaried(true);
+        MapToPlayStorage.SceneToBack = _typeOfGame;
     }
 
     private void GeneratingDifferentFeatures(GameObject panel, int countPlayers, int whichColour)

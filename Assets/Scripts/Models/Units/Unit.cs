@@ -39,7 +39,7 @@ public class Unit : MonoBehaviour
 
             gameManager._playersGameObjects[WhichPlayer].Remove(gameObject);
             gameManager.UpdateUnitPoints(WhichPlayer);
-            gameManager.CheckWinLose();
+            //gameManager.CheckWinLose();
         }
     }
 }

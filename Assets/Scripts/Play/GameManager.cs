@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 public class GameManager : MonoBehaviour
 {
-    public ItemController[] ItemControllers;
+    public GameItemController[] GameItemControllers;
     internal int CurrentButtonPressed;
 
     public List<Item> TerrainPrefabs;
@@ -53,12 +53,17 @@ public class GameManager : MonoBehaviour
 
     public float UpgradeFactor = 1.2f;
 
+    private Dictionary<string, Dictionary<string, string>> winRequarieds;
+    private string sceneToBack;
+
     void Start()
     {
         _gameUI = FindObjectOfType<GameUI>();
 
         _map = new MapWorld();
         _gameStartPoints = MapToPlayStorage.GameStartPoints;
+        winRequarieds = MapToPlayStorage.WinRequarieds;
+        sceneToBack = MapToPlayStorage.SceneToBack;
 
         _worker = UnitsPrefabs.Where(w => w.name == "Worker").FirstOrDefault();
         _townHall = BuildingsPrefabs.Where(w => w.name == "TownHall").FirstOrDefault();
@@ -99,15 +104,15 @@ public class GameManager : MonoBehaviour
 
         _gameUI.SetLookBottomPanel(_playersMaterials[0].color);
 
-        for (int i = 0; i < ItemControllers.Length; i++)
+        for (int i = 0; i < GameItemControllers.Length; i++)
         {
-            ItemControllers[i].item.ID = i;
+            GameItemControllers[i].item.ID = i;
         }
 
         Pointer.SetActive(true);
         Pointer.GetComponentInChildren<SkinnedMeshRenderer>().material = _playersMaterials[0];
 
-        CheckWinLose();
+        //CheckWinLose();
 
         ///
         _gameUI.UpdateRawMaterials(0, 0);
@@ -235,7 +240,103 @@ public class GameManager : MonoBehaviour
 
             player.UpdateComputer(_playersGameObjects[player.whichPlayer]);
         }
+
+        UpdateWinRequaired();
     }
+
+    #region ChecksWin
+    private void UpdateWinRequaired()
+    {
+        bool ifWin = true;
+
+        foreach (KeyValuePair<string, Dictionary<string, string>> winRequaried in winRequarieds)
+        {
+            switch (winRequaried.Key)
+            {
+                case "free": FreeCheckWin(ref ifWin, winRequaried.Value); break;
+                case "dominate": DominateCheckWin(ref ifWin, winRequaried.Value); break;
+                case "sources": SourcesCheckWin(ref ifWin, winRequaried.Value); break;
+                case "upgrades": UpgradesCheckWin(ref ifWin, winRequaried.Value); break;
+                case "soldiers": SoldiersCheckWin(ref ifWin, winRequaried.Value); break;
+
+                //todo
+                case "time": break;
+                case "attacks": break;
+            }
+        }
+
+
+        if(ifWin)
+        {
+
+
+            UnityEngine.SceneManagement.SceneManager.LoadScene(sceneToBack);
+
+            CampaignStorage.Win = true;
+        }
+    }
+
+    private void FreeCheckWin(ref bool ifWin, Dictionary<string, string> addional)
+    {
+        ifWin = false;
+    }
+
+    private void DominateCheckWin(ref bool ifWin, Dictionary<string, string> addional)
+    {
+        int winner = -1;
+        for (int i = 0; i < _playersGameObjects.Count; i++)
+        {
+            if (_playersGameObjects[i].Count > 0)
+            {
+                if (winner != -1)
+                {
+                    ifWin = false;
+                    return;
+                }
+
+                winner = i;
+            }
+        }
+
+        //todo if we want lose
+    }
+
+    private void SourcesCheckWin(ref bool ifWin, Dictionary<string, string> addional)
+    {
+        switch(addional.First().Key)
+        {
+            case "0": if (_players[0].actualWood + _players[0].actualGold < int.Parse(addional.First().Value)) ifWin = false; break;
+            case "1": if (_players[0].actualGold < int.Parse(addional.First().Value)) ifWin = false; break;
+            case "2": if (_players[0].actualWood < int.Parse(addional.First().Value)) ifWin = false; break;
+            case "3": if (_players[0].actualMaxUnitsPoint < int.Parse(addional.First().Value)) ifWin = false; break;              
+        }
+    }
+
+    private void UpgradesCheckWin(ref bool ifWin, Dictionary<string, string> addional)
+    {
+        ifWin = false;
+        //switch (addional.First().Key)
+        //{
+        //    case "0": if (_players[0].actualWood + _players[0].actualGold < int.Parse(addional.First().Value)) ifWin = false; break;
+        //    case "1": if (_players[0].actualGold < int.Parse(addional.First().Value)) ifWin = false; break;
+        //    case "2": if (_players[0].actualWood < int.Parse(addional.First().Value)) ifWin = false; break;
+        //    case "3": if (_players[0].actualMaxUnitsPoint < int.Parse(addional.First().Value)) ifWin = false; break;
+        //}
+    }
+
+    private void SoldiersCheckWin(ref bool ifWin, Dictionary<string, string> addional)
+    {
+        ifWin = false;
+        //switch (addional.First().Key)
+        //{
+        //    case "0": if (_players[0]. + _players[0].actualGold < int.Parse(addional.First().Value)) ifWin = false; break;
+        //    case "1": if (_players[0].actualGold < int.Parse(addional.First().Value)) ifWin = false; break;
+        //    case "2": if (_players[0].actualWood < int.Parse(addional.First().Value)) ifWin = false; break;
+        //    case "3": if (_players[0].actualMaxUnitsPoint < int.Parse(addional.First().Value)) ifWin = false; break;
+        //}
+    }
+
+    #endregion
 
     internal void CheckWinLose()
     {
@@ -258,12 +359,12 @@ public class GameManager : MonoBehaviour
 
     internal void DestroyItemImages()
     {
-        for (int i = 0; i < ItemControllers.Length; i++)
+        for (int i = 0; i < GameItemControllers.Length; i++)
         {
-            ItemControllers[i].Clicked = false;
-            if (ItemControllers[i].item.ItemHeightLevel == 0)
+            GameItemControllers[i].Clicked = false;
+            if (GameItemControllers[i].item.ItemHeightLevel == 0)
             {
-                ItemControllers[i].item.ItemImage.transform.localScale = ItemControllers[i].firstScale;
+                GameItemControllers[i].item.ItemImage.transform.localScale = GameItemControllers[i].firstScale;
             }
         }
 
@@ -343,6 +444,6 @@ public class GameManager : MonoBehaviour
         _gameUI.UpdateRawMaterials(2, UnitsPointsUpdate(whichPlayer), UnitsMaxPointsUpdate(whichPlayer));
     }
 
-    
+
     #endregion
 }
