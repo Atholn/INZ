@@ -36,7 +36,7 @@ public class UpgradeUnit : MonoBehaviour
             gameManager.UpdateGold(0, WoodCost);
 
             gameManager.UpgradeUnit(0, NumberOfUpgrade);
-
+            gameObject.SetActive(false);
             return;
         }
 

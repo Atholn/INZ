@@ -165,12 +165,6 @@ public class GameManager : MonoBehaviour
     {
         _players[whichPlayer].upgradeFactor[whichUnit] = UpgradeFactor;
 
-        Debug.Log("xxx1");
-        foreach (var x in _players[whichPlayer].upgradeFactor)
-        {
-            Debug.Log("xxx" + x);
-        }
-        Debug.Log("xxx2");
     }
 
     private void InitializePlayers()

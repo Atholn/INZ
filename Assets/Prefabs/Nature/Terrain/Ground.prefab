@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 6013503852072562852}
   - component: {fileID: 5048293355935676941}
   - component: {fileID: -5455650789359923801}
+  - component: {fileID: 4117755926031112583}
   m_Layer: 7
   m_Name: Ground
   m_TagString: Untagged
@@ -111,7 +112,7 @@ TerrainCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 426985600659949882}
   m_Material: {fileID: 0}
-  m_Enabled: 1
+  m_Enabled: 0
   m_TerrainData: {fileID: 0}
   m_EnableTreeColliders: 1
 --- !u!114 &-5455650789359923801
@@ -143,3 +144,16 @@ MonoBehaviour:
   m_VoxelSize: 0.16666667
   m_BuildHeightMesh: 0
   m_NavMeshData: {fileID: 0}
+--- !u!65 &4117755926031112583
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 426985600659949882}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.02, y: 0.02, z: 0.02}
+  m_Center: {x: 0, y: 0, z: 0}
