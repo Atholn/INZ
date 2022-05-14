@@ -163,7 +163,14 @@ public class GameManager : MonoBehaviour
 
     internal void UpgradeUnit(int whichPlayer, int whichUnit)
     {
-        _players[whichPlayer].upgradeFactor[0] *= UpgradeFactor;
+        _players[whichPlayer].upgradeFactor[whichUnit] = UpgradeFactor;
+
+        Debug.Log("xxx1");
+        foreach (var x in _players[whichPlayer].upgradeFactor)
+        {
+            Debug.Log("xxx" + x);
+        }
+        Debug.Log("xxx2");
     }
 
     private void InitializePlayers()
@@ -177,8 +184,8 @@ public class GameManager : MonoBehaviour
             _playersGameObjects.Add(new List<GameObject>());
             _playersMaterials.Add(_gameStartPoints[i].UnitMaterial);
 
-            if (i == 0) _players.Add(new Player { typeOfPlayer = Player.TypeOfPlayer.human });
-            else _players.Add(new Player { typeOfPlayer = Player.TypeOfPlayer.computer, whichPlayer = i });
+            if (i == 0) _players.Add(new Player { typeOfPlayer = Player.TypeOfPlayer.human, upgradeFactor = new float [3]});
+            else _players.Add(new Player { typeOfPlayer = Player.TypeOfPlayer.computer, whichPlayer = i, upgradeFactor = new float[3]});
         }
 
         for (int i = 0; i < _gameStartPoints.Count; i++)

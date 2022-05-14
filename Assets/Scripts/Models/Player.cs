@@ -45,7 +45,6 @@ public class Player : MonoBehaviour
     internal float[] upgradeFactor;
 
     GameManager gameManager;
-    internal float[,] Upgrades;
 
     ComputerTask computerTask = ComputerTask.building;
     ComputerTaskBuilding computerTaskBuilding = ComputerTaskBuilding.checkBuilding;

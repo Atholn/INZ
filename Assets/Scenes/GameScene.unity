@@ -215,7 +215,7 @@ GameObject:
   - component: {fileID: 98304508}
   - component: {fileID: 98304507}
   - component: {fileID: 98304506}
-  m_Layer: 7
+  m_Layer: 6
   m_Name: Terrain
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2623,8 +2623,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab04436daf77d5147989fbf02330415e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GoldCost: 0
-  WoodCost: 0
+  GoldCost: 100
+  WoodCost: 100
   Unit: {fileID: 864852103316053753, guid: fcbe62d3f647dcf4c8a1b09015325d5e, type: 3}
 --- !u!114 &870690053
 MonoBehaviour:
@@ -3628,7 +3628,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 4294967231
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -6858,8 +6858,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab04436daf77d5147989fbf02330415e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GoldCost: 0
-  WoodCost: 0
+  GoldCost: 100
+  WoodCost: 100
   Unit: {fileID: 151386186512295329, guid: 59a7587de95fb8146ac03a5c72cc565b, type: 3}
 --- !u!114 &1894756136
 MonoBehaviour:
@@ -7408,8 +7408,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab04436daf77d5147989fbf02330415e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GoldCost: 0
-  WoodCost: 0
+  GoldCost: 100
+  WoodCost: 100
   Unit: {fileID: 1876881228447981026, guid: 898b5ff9c1c116543b528ae3ef41076d, type: 3}
 --- !u!114 &1995717724
 MonoBehaviour:
