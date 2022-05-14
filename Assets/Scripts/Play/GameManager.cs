@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 public class GameManager : MonoBehaviour
 {
-    public ItemController[] ItemControllers;
+    public GameItemController[] ItemControllers;
     internal int CurrentButtonPressed;
 
     public List<Item> TerrainPrefabs;
@@ -268,8 +268,11 @@ public class GameManager : MonoBehaviour
 
         if(ifWin)
         {
-            MapToPlayStorage.WinRequarieds = null;
+
+
             UnityEngine.SceneManagement.SceneManager.LoadScene(sceneToBack);
+
+            CampaignStorage.Win = true;
         }
     }
 
