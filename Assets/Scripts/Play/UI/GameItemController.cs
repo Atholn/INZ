@@ -37,5 +37,7 @@ public class GameItemController : MonoBehaviour
             item.ItemPrefab.transform.rotation);
 
         gameManager.CurrentButtonPressed = item.ID;
+        image.transform.GetComponent<MeshRenderer>().materials[1].color = gameManager._playersMaterials[0].color;
+       //_playersGameObjects[i][j + 1].transform.GetChild(0).GetComponentInChildren<SkinnedMeshRenderer>().materials[1].color = _playersMaterials[i].color;
     }
 }
