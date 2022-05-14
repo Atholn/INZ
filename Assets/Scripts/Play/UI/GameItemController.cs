@@ -27,6 +27,7 @@ public class GameItemController : MonoBehaviour
     public virtual void ButtonClicked()
     {
         gameManager.DestroyItemImages();
+        gameManager.building = true;
 
         Vector3 screenPosition = new Vector3(Input.mousePosition.x, gameManager.GameItemControllers[item.ID].item.ItemHeightLevel, Input.mousePosition.z);
         Vector3 worldPosition = Camera.main.ScreenToWorldPoint(screenPosition);

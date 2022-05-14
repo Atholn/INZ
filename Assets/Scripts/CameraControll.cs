@@ -133,7 +133,6 @@ public class CameraControll : MonoBehaviour
 
         if (_gameManager.building && Input.GetMouseButtonDown(0))
         {
-            Debug.Log("eeee");
             if (_gameManager._players[0].actualGold < _gameManager.GameItemControllers[_gameManager.CurrentButtonPressed].item.GetComponent<Unit>().GoldCost ||
                 _gameManager._players[0].actualWood < _gameManager.GameItemControllers[_gameManager.CurrentButtonPressed].item.GetComponent<Unit>().WoodCost)
             {
