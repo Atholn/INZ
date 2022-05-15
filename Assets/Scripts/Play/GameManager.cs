@@ -452,4 +452,9 @@ public class GameManager : MonoBehaviour
     {
         _gameUI.ShowHints(texts);
     }
+
+    internal void ShowErrors(bool[] errors)
+    {
+        _gameUI.ShowErrors(errors);
+    }
 }

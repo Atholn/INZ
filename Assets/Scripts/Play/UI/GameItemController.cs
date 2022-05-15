@@ -27,6 +27,19 @@ public class GameItemController : MonoBehaviour
     public virtual void ButtonClicked()
     {
         gameManager.DestroyItemImages();
+
+        Unit unit = item.GetComponent<Unit>();
+        if (gameManager._players[0].actualGold < unit.GoldCost ||
+            gameManager._players[0].actualWood < unit.WoodCost)
+        {
+            bool[] errors = new bool[2];
+            errors[0] = gameManager._players[0].actualGold < unit.GoldCost;
+            errors[1] = gameManager._players[0].actualWood < unit.WoodCost;
+
+            gameManager.ShowErrors(errors);
+            return;
+        }
+
         gameManager.building = true;
 
         Vector3 screenPosition = new Vector3(Input.mousePosition.x, gameManager.GameItemControllers[item.ID].item.ItemHeightLevel, Input.mousePosition.z);

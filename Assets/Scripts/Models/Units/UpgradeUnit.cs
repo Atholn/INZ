@@ -41,8 +41,11 @@ public class UpgradeUnit : MonoBehaviour
             return;
         }
 
-        //todo 
-        //not enought gold or wood
+        bool[] errors = new bool[2];
+        errors[0] = gameManager._players[0].actualGold < GoldCost;
+        errors[1] = gameManager._players[0].actualWood < WoodCost;
+
+        gameManager.ShowErrors(errors);
     }
 
     public void ShowHints()

@@ -23,6 +23,7 @@ public class GameUI : MonoBehaviour
     public GameObject BarracksSpecialPanel;
     public GameObject BlackSmithsSpecialPanel;
     public GameObject HintsPanel;
+    public GameObject ErrorsPanel;
 
     private List<GameObject> _tmpActions = new List<GameObject>();
 
@@ -37,6 +38,12 @@ public class GameUI : MonoBehaviour
     private List<Text> hintsTexts;
     private List<Image> hintsIcons;
 
+    private List<Text> errorsTexts;
+    private List<Image> errorsIcons;
+    private float showTime = 0f;
+    private float showTimeMax = 2f;
+    private bool showErrors = false;
+
     private void Start()
     {
         WinLosePanel.SetActive(false);
@@ -46,6 +53,7 @@ public class GameUI : MonoBehaviour
         BarracksSpecialPanel.SetActive(false);
         BlackSmithsSpecialPanel.SetActive(false);
         HintsPanel.SetActive(false);
+        ErrorsPanel.SetActive(false);
 
         RawMaterials = RawMaterialsPanel.GetComponentsInChildren<Text>();
         buttonsCancelCreate = CreateProgressPanel.GetComponentsInChildren<Button>(true);
@@ -62,7 +70,22 @@ public class GameUI : MonoBehaviour
 
         hintsTexts = HintsPanel.GetComponentsInChildren<Text>().ToList();
         hintsIcons = HintsPanel.GetComponentsInChildren<Image>().ToList();
-        
+        errorsTexts = ErrorsPanel.GetComponentsInChildren<Text>().ToList();
+        errorsIcons = ErrorsPanel.GetComponentsInChildren<Image>().ToList();
+    }
+
+    private void Update()
+    {
+        if(showErrors)
+        {
+            showTime += Time.deltaTime;
+            if(showTime > showTimeMax)
+            {
+                showErrors = false;
+                ErrorsPanel.SetActive(false);
+            }
+        }
+
     }
 
     #region TopPanel
@@ -315,15 +338,15 @@ public class GameUI : MonoBehaviour
         if (texts.Length == 3)
         {
             hintsTexts[2].gameObject.SetActive(true);
-            hintsIcons[2].gameObject.SetActive(true);
+            hintsIcons[3].gameObject.SetActive(true);
             hintsTexts[2].text = texts[2];
         }
         else
         {
             hintsTexts[2].gameObject.SetActive(false);
-            hintsIcons[2].gameObject.SetActive(false);
+            hintsIcons[3].gameObject.SetActive(false);
         }
-        
+
         HintsPanel.SetActive(true);
     }
 
@@ -331,6 +354,32 @@ public class GameUI : MonoBehaviour
     {
         HintsPanel.SetActive(false);
     }
-    
+
+    public void ShowErrors(bool[] errors)
+    {
+        if(!errors[0] && !errors[1] && !errors[2])
+        {
+            ErrorsPanel.SetActive(false);
+            showErrors = false;
+            return;
+        }
+
+        ErrorsPanel.SetActive(true);
+        for (int i = 0; i < errors.Length; i++)
+        {
+            errorsTexts[i].gameObject.SetActive(errors[i]);
+            errorsIcons[i+1].gameObject.SetActive(errors[i]);          
+        }
+
+        if(errors.Length == 2)
+        {
+            errorsTexts[2].gameObject.SetActive(false);
+            errorsIcons[3].gameObject.SetActive(false);
+        }
+
+        showTime = 0f;
+        showErrors = true;
+    }
+
     #endregion
 }

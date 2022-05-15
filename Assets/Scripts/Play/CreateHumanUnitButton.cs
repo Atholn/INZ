@@ -28,6 +28,13 @@ public class CreateHumanUnitButton : MonoBehaviour
 
             buildingParent.CreateUnit(Unit, 0);
         }
+
+        var hu = Unit.GetComponent<HumanUnit>();
+        bool[] errors = new bool[3];
+        errors[0] = gameManager._players[0].actualGold < hu.GoldCost;
+        errors[1] = gameManager._players[0].actualWood < hu.WoodCost;
+        errors[2] = gameManager._players[0].actualUnitsPoint + hu.UnitPoint > gameManager._players[0].actualMaxUnitsPoint;
+        gameManager.ShowErrors(errors);
     }
 
     public void ShowHints()
