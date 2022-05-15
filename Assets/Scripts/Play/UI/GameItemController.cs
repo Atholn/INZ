@@ -40,4 +40,13 @@ public class GameItemController : MonoBehaviour
         gameManager.CurrentButtonPressed = item.ID;
         image.transform.GetComponent<MeshRenderer>().materials[1].color = gameManager._playersMaterials[0].color;
     }
+
+    public void ShowHints()
+    {
+        string[] texts = new string[2];
+        texts[0] = item.GetComponent<BuildingUnit>().GoldCost.ToString();
+        texts[1] = item.GetComponent<BuildingUnit>().WoodCost.ToString();
+
+        gameManager.ShowHints(texts);
+    }
 }

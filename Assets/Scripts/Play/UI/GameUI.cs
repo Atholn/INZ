@@ -22,6 +22,7 @@ public class GameUI : MonoBehaviour
     public GameObject TownHallSpecialPanel;
     public GameObject BarracksSpecialPanel;
     public GameObject BlackSmithsSpecialPanel;
+    public GameObject HintsPanel;
 
     private List<GameObject> _tmpActions = new List<GameObject>();
 
@@ -33,6 +34,9 @@ public class GameUI : MonoBehaviour
 
     private Button[] buttonsCancelCreate;
 
+    private List<Text> hintsTexts;
+    private List<Image> hintsIcons;
+
     private void Start()
     {
         WinLosePanel.SetActive(false);
@@ -41,6 +45,7 @@ public class GameUI : MonoBehaviour
         TownHallSpecialPanel.SetActive(false);
         BarracksSpecialPanel.SetActive(false);
         BlackSmithsSpecialPanel.SetActive(false);
+        HintsPanel.SetActive(false);
 
         RawMaterials = RawMaterialsPanel.GetComponentsInChildren<Text>();
         buttonsCancelCreate = CreateProgressPanel.GetComponentsInChildren<Button>(true);
@@ -54,6 +59,10 @@ public class GameUI : MonoBehaviour
         {
             upgradeUnitsNumbers[i].NumberOfUpgrade = i;
         }
+
+        hintsTexts = HintsPanel.GetComponentsInChildren<Text>().ToList();
+        hintsIcons = HintsPanel.GetComponentsInChildren<Image>().ToList();
+        
     }
 
     #region TopPanel
@@ -295,5 +304,33 @@ public class GameUI : MonoBehaviour
         WinLosePanel.GetComponent<Image>().color = new Color(winnerColor.r, winnerColor.g, winnerColor.b, 150 / 255f);
         WinLosePanel.GetComponentInChildren<Text>().text = winner == 0 ? "You win!" : $"You lose!\nPlayer {winner} win!";
     }
+    #endregion
+
+    #region hints
+    internal void ShowHints(string[] texts)
+    {
+        hintsTexts[0].text = texts[0];
+        hintsTexts[1].text = texts[1];
+
+        if (texts.Length == 3)
+        {
+            hintsTexts[2].gameObject.SetActive(true);
+            hintsIcons[2].gameObject.SetActive(true);
+            hintsTexts[2].text = texts[2];
+        }
+        else
+        {
+            hintsTexts[2].gameObject.SetActive(false);
+            hintsIcons[2].gameObject.SetActive(false);
+        }
+        
+        HintsPanel.SetActive(true);
+    }
+
+    public void HideHints()
+    {
+        HintsPanel.SetActive(false);
+    }
+    
     #endregion
 }

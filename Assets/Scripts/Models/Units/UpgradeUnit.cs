@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class UpgradeUnit : MonoBehaviour
 {
@@ -42,5 +43,14 @@ public class UpgradeUnit : MonoBehaviour
 
         //todo 
         //not enought gold or wood
+    }
+
+    public void ShowHints()
+    {
+        string[] texts = new string[2];
+        texts[0] = GoldCost.ToString();
+        texts[1] = WoodCost.ToString();
+
+        gameManager.ShowHints(texts);
     }
 }

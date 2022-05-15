@@ -447,4 +447,9 @@ public class GameManager : MonoBehaviour
 
 
     #endregion
+
+    internal void ShowHints(string[] texts)
+    {
+        _gameUI.ShowHints(texts);
+    }
 }
