@@ -109,7 +109,7 @@ public class SizeTypeSelectionPanel : MonoBehaviour
         Sprite sprite = Sprite.Create(texture, new Rect(0, 0, _maxSize, _maxSize), Vector2.zero);
         TypeOfMapImage.sprite = sprite;
 
-        Color tmp = TypeTerrainLevel0[_groundId].item.ItemPrefab.GetComponent<MeshRenderer>().sharedMaterials[0].color;
+        Color tmp = TypeTerrainLevel0[_groundId].item.ItemPrefab.GetComponentInChildren<MeshRenderer>().sharedMaterials[0].color;
         for (int i = 0; i < texture.width; i++)
         {
             for (int j = 0; j < texture.height; j++)

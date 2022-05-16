@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &6333110819727023937
+--- !u!1 &4688108968896582665
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,47 +8,45 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 5616757904596287728}
-  - component: {fileID: 5587960410446977560}
-  - component: {fileID: 1335762709980830028}
-  - component: {fileID: 6641381536954698891}
-  - component: {fileID: -6208296305243752530}
-  m_Layer: 7
-  m_Name: Grass
+  - component: {fileID: 5351493414243733171}
+  - component: {fileID: 9073497045907013910}
+  - component: {fileID: 6489544352179221980}
+  m_Layer: 0
+  m_Name: NewGrass
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &5616757904596287728
+--- !u!4 &5351493414243733171
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6333110819727023937}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 60}
-  m_LocalScale: {x: 56, y: 56, z: 50}
+  m_GameObject: {fileID: 4688108968896582665}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 5021934146888890526}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &5587960410446977560
+  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
+--- !u!33 &9073497045907013910
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6333110819727023937}
-  m_Mesh: {fileID: 8254687373856176130, guid: bda1c9f340357ae4fb00163603b17865, type: 3}
---- !u!23 &1335762709980830028
+  m_GameObject: {fileID: 4688108968896582665}
+  m_Mesh: {fileID: 8254687373856176130, guid: 90cd5529889167a4ebcea29cdb473d19, type: 3}
+--- !u!23 &6489544352179221980
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6333110819727023937}
+  m_GameObject: {fileID: 4688108968896582665}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -62,8 +60,8 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -2505642851634945670, guid: bda1c9f340357ae4fb00163603b17865, type: 3}
-  - {fileID: -889481370847912251, guid: bda1c9f340357ae4fb00163603b17865, type: 3}
+  - {fileID: -2505642851634945670, guid: 90cd5529889167a4ebcea29cdb473d19, type: 3}
+  - {fileID: -889481370847912251, guid: 90cd5529889167a4ebcea29cdb473d19, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -85,31 +83,64 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &6641381536954698891
+--- !u!1 &7508282342529118954
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5021934146888890526}
+  - component: {fileID: 3568522350267536745}
+  - component: {fileID: 8653834463350547327}
+  m_Layer: 0
+  m_Name: NewGrass 1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5021934146888890526
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7508282342529118954}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -139.81883, y: 305.28015, z: -1091.4404}
+  m_LocalScale: {x: 100, y: 99.999985, z: 99.999985}
+  m_Children:
+  - {fileID: 5351493414243733171}
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3568522350267536745
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6333110819727023937}
+  m_GameObject: {fileID: 7508282342529118954}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a564e2afdef5bcb4e84afd2a1c566fad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ItemPrefab: {fileID: 6333110819727023937}
+  ItemPrefab: {fileID: 7508282342529118954}
   ItemImage: {fileID: 1643027924844237403, guid: c803417a66c2d984888fe49b0b83b525, type: 3}
   ItemHeightLevel: 0
   ItemHeightPosY: 0.35
   ItemImageComputer: {fileID: 0}
   AllowsBuild: 1
---- !u!114 &-6208296305243752530
+--- !u!114 &8653834463350547327
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6333110819727023937}
+  m_GameObject: {fileID: 7508282342529118954}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7a5ac11cc976e418e8d13136b07e1f52, type: 3}
