@@ -105,7 +105,7 @@ public class Soldier : HumanUnit
             timmer = 0;
             return;
         }
-
+        transform.LookAt(target);
         nav.velocity = Vector3.zero;
         attack = true;
         run = false;
@@ -123,6 +123,7 @@ public class Soldier : HumanUnit
 
             if (GetComponentInParent<BowShot>() != null)
             {
+                transform.LookAt(target);
                 BowShoting();
             }
 
