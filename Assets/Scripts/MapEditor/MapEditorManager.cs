@@ -605,7 +605,7 @@ public class MapEditorManager : MonoBehaviour
                 GameObject prefab = mapsPrefabs[1][i][j] != null ? mapsPrefabs[1][i][j] :
                     mapsPrefabs[0][i][j] != null ? mapsPrefabs[0][i][j] : Terrain;
 
-                MeshRenderer mesh = prefab.gameObject.GetComponent<MeshRenderer>();
+                MeshRenderer mesh = prefab.gameObject.GetComponentInChildren<MeshRenderer>();
 
                 newPixelsColors[i][j][0] = mesh.material.color.r;
                 newPixelsColors[i][j][1] = mesh.material.color.g;

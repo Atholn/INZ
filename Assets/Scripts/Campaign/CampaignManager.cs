@@ -38,7 +38,6 @@ public class CampaignManager : MonoBehaviour
         actualTarget  = campaignSettings.AvailableTarget;
         availableTarget = campaignSettings.AvailableTarget;
 
-
         SetNewTargetPos(campaignMapPoints[actualTarget]);
     }
 
@@ -56,16 +55,27 @@ public class CampaignManager : MonoBehaviour
 
     void Update()
     {
+        if(CampaignStorage.Win)
+        {
+            if(CampaignStorage.MissionNumber == availableTarget)
+            {
+                availableTarget++;
+                actualTarget++;
+                campaignSettingsFileSystem.SaveSettings(availableTarget);
+            }
 
+            CampaignStorage.Win = false;
+            SetNewTargetPos(campaignMapPoints[actualTarget]);
+        }
     }
 
     internal void NextCampaignMap()
     {
-        if (actualTarget + 1 >= campaignMapPoints.Count || actualTarget + 1 >= availableTarget)
+        if (actualTarget + 1 >= campaignMapPoints.Count || actualTarget + 1 > availableTarget)
         {
             return;
         }
-
+        
         actualTarget++;
         SetNewTargetPos(campaignMapPoints[actualTarget]);
     }
@@ -105,6 +115,9 @@ public class CampaignManager : MonoBehaviour
         }
 
         MapToPlayStorage.GameStartPoints = gameStartPoints;
+
+        //Campaign Storage
+        CampaignStorage.MissionNumber = actualTarget;
     }
 
     private void SetNewTargetPos(CampaignMapPoint campaignMapPoint)

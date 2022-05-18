@@ -24,9 +24,17 @@ public class CampaignSettingsFileSystem
         return campaignSettings;
     }
 
-    public void SaveSettings()
+    public void SaveSettings(int availableTarget)
     {
+        string tmpPath = _path + $"{_settingsFile}";
+        SettingsIfNotExist(tmpPath);
 
+        BinaryFormatter binaryFormatter = new BinaryFormatter();
+        FileStream stream = new FileStream(tmpPath, FileMode.Open);
+        CampaignSettings campaignSettings = new CampaignSettings { AvailableTarget = availableTarget };
+        binaryFormatter.Serialize(stream, campaignSettings);
+
+        stream.Close();
     }
 
     public void SettingsIfNotExist(string tmpPath)

@@ -7,15 +7,9 @@ public class CampaignCameraControll : MonoBehaviour
     private Vector3 shiftVector = new Vector3(0, 0, -2);
     private Vector3 actualPosTarget;
 
-    private void Start()
+    private void Awake()
     {
         actualPosTarget = transform.position;
-        GoToFirstAvaiablePoint();
-    }
-
-    private void GoToFirstAvaiablePoint()
-    {
-
     }
 
     private void Update()
@@ -24,7 +18,6 @@ public class CampaignCameraControll : MonoBehaviour
         {
             transform.position = Vector3.Lerp(transform.position, actualPosTarget, 2.0f * Time.deltaTime);
         }
-
     }
 
     internal void GoToCampaignPoint(Vector2 newTargetPos)

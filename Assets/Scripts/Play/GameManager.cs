@@ -164,7 +164,6 @@ public class GameManager : MonoBehaviour
     internal void UpgradeUnit(int whichPlayer, int whichUnit)
     {
         _players[whichPlayer].upgradeFactor[whichUnit] = UpgradeFactor;
-
     }
 
     private void InitializePlayers()
@@ -269,11 +268,12 @@ public class GameManager : MonoBehaviour
 
         if(ifWin)
         {
-
-
+            if(sceneToBack == "Campaign")
+            {
+                CampaignStorage.Win = true;
+            }
             UnityEngine.SceneManagement.SceneManager.LoadScene(sceneToBack);
-
-            CampaignStorage.Win = true;
+            MapToPlayStorage.WinRequarieds = new Dictionary<string, Dictionary<string, string>>();
         }
     }
 
