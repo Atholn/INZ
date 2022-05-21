@@ -3,9 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class UIMapEditorManager : MonoBehaviour
+public class UIMapEditorManager : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     enum TypeOfMap
     {
@@ -317,4 +318,17 @@ public class UIMapEditorManager : MonoBehaviour
 
         return new Map() { MapInfo = mapInfo, MapWorldCreate = MapEditorManager.ExportMap() };
     }
+
+
+    #region Mouse on GUI
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        MapEditorManager.mouseOnUI = true;
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        MapEditorManager.mouseOnUI = false;
+    }
+    #endregion
 }

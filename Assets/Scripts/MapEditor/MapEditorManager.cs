@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class MapEditorManager : MonoBehaviour
@@ -39,6 +40,8 @@ public class MapEditorManager : MonoBehaviour
     public GameObject sizeMapPanel;
 
     internal GameObject image;
+
+    internal bool mouseOnUI = false;
 
     private void Start()
     {
@@ -142,6 +145,11 @@ public class MapEditorManager : MonoBehaviour
     #region CreateEditor
     private void UpdateCreate()
     {
+        if (mouseOnUI)
+        {
+            return;
+        }
+
         if (singleMultiToggle.isOn && Input.GetMouseButtonDown(0))
         {
             CreateTerrainCube();
@@ -624,4 +632,6 @@ public class MapEditorManager : MonoBehaviour
     {
         return sizeSlider.value;
     }
+
+    
 }
