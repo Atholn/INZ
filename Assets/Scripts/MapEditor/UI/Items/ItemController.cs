@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,7 +12,7 @@ public class ItemController : MonoBehaviour
     internal bool Clicked = false;
     internal Vector3 firstScale = new Vector3();
 
-    private MapEditorManager _editor;
+    private MapEditorManager editor;
 
     private void Awake()
     {
@@ -22,21 +23,23 @@ public class ItemController : MonoBehaviour
         firstScale = item.ItemPrefab.transform.localScale;
         item.ItemImage.transform.localScale = item.ItemPrefab.transform.localScale;
 
-        _editor = GameObject.FindObjectOfType<MapEditorManager>();
+        editor = GameObject.FindObjectOfType<MapEditorManager>();
     }
 
     public virtual void ButtonClicked()
     {
-        _editor.DestroyItemImages();
+        editor.DestroyItemImages();
 
-        Vector3 screenPosition = new Vector3(Input.mousePosition.x, _editor.ItemControllers[item.ID].item.ItemHeightLevel, Input.mousePosition.z);
+        Vector3 screenPosition = new Vector3(Input.mousePosition.x, editor.ItemControllers[item.ID].item.ItemHeightLevel, Input.mousePosition.z);
         Vector3 worldPosition = Camera.main.ScreenToWorldPoint(screenPosition);
         Clicked = true;
+ 
+        editor.image = Instantiate(editor.ItemControllers[item.ID].item.ItemImage,
+                                   new Vector3(worldPosition.x,
+                                               editor.ItemControllers[item.ID].item.ItemHeightLevel,
+                                               worldPosition.z),
+                                   item.ItemPrefab.transform.rotation);
 
-        GameObject image =  Instantiate(_editor.ItemControllers[item.ID].item.ItemImage,
-            new Vector3(worldPosition.x, _editor.ItemControllers[item.ID].item.ItemHeightLevel, worldPosition.z),
-            item.ItemPrefab.transform.rotation);
-
-        _editor.CurrentButtonPressed = item.ID;
+        editor.CurrentButtonPressed = item.ID;
     }
 }

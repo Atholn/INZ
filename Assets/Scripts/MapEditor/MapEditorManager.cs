@@ -38,6 +38,8 @@ public class MapEditorManager : MonoBehaviour
     public GameObject[] craftingPanels;
     public GameObject sizeMapPanel;
 
+    internal GameObject image;
+
     private void Start()
     {
         InitializeShowHidePanels(true);
@@ -120,7 +122,10 @@ public class MapEditorManager : MonoBehaviour
 
         if (ItemControllers[CurrentButtonPressed].item.ItemHeightLevel == 0)
         {
-            ItemControllers[CurrentButtonPressed].item.ItemImage.transform.localScale = new Vector3(ItemControllers[CurrentButtonPressed].firstScale.x * sizeSlider.value, ItemControllers[CurrentButtonPressed].firstScale.y * sizeSlider.value, ItemControllers[CurrentButtonPressed].firstScale.z);
+            if(image != null)
+            {
+                image.transform.localScale = new Vector3(ItemControllers[CurrentButtonPressed].firstScale.x * sizeSlider.value, ItemControllers[CurrentButtonPressed].firstScale.y, ItemControllers[CurrentButtonPressed].firstScale.z * sizeSlider.value);
+            }
         }
 
         if (replaceToggle.isOn)
@@ -438,8 +443,7 @@ public class MapEditorManager : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(1))
         {
-            DestroyItemImages();
-            
+            DestroyItemImages();    
         }
     }
 
@@ -614,5 +618,10 @@ public class MapEditorManager : MonoBehaviour
         }
 
         return newPixelsColors;
+    }
+
+    internal float GetSizeSlider()
+    {
+        return sizeSlider.value;
     }
 }
