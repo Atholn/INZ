@@ -16,7 +16,7 @@ public class CampaignManager : MonoBehaviour
     private CampaignSettings campaignSettings;
     private CampaignSettingsFileSystem campaignSettingsFileSystem;
     private FileMapSystem fileMapSystem;
-    
+
     void Start()
     {
         InitializeMapGameObjects();
@@ -33,9 +33,9 @@ public class CampaignManager : MonoBehaviour
     private void InitializePlayerCampaignSettings()
     {
         campaignSettingsFileSystem = new CampaignSettingsFileSystem();
-        campaignSettings =  campaignSettingsFileSystem.LoadSettings();
+        campaignSettings = campaignSettingsFileSystem.LoadSettings();
 
-        actualTarget  = campaignSettings.AvailableTarget;
+        actualTarget = campaignSettings.AvailableTarget;
         availableTarget = campaignSettings.AvailableTarget;
 
         SetNewTargetPos(campaignMapPoints[actualTarget]);
@@ -55,9 +55,9 @@ public class CampaignManager : MonoBehaviour
 
     void Update()
     {
-        if(CampaignStorage.Win)
+        if (CampaignStorage.Win)
         {
-            if(CampaignStorage.MissionNumber == availableTarget)
+            if (CampaignStorage.MissionNumber == availableTarget)
             {
                 availableTarget++;
                 actualTarget++;
@@ -75,7 +75,7 @@ public class CampaignManager : MonoBehaviour
         {
             return;
         }
-        
+
         actualTarget++;
         SetNewTargetPos(campaignMapPoints[actualTarget]);
     }
@@ -106,12 +106,12 @@ public class CampaignManager : MonoBehaviour
 
         for (int i = 0; i < map.MapWorldCreate.StartPoints.Count; i++)
         {
-            if(map.MapWorldCreate.StartPoints[i].UnitStartLocation[0] != 0 && map.MapWorldCreate.StartPoints[i].UnitStartLocation[1] != 0 && map.MapWorldCreate.StartPoints[i].UnitStartLocation[1] != 0)
-            gameStartPoints.Add(new GameStartPoint()
-            {
-                UnitMaterial = i == 0 ? playerMaterial : enemyMaterial,
-                UnitStartLocation = new Vector3(map.MapWorldCreate.StartPoints[i].UnitStartLocation[0], 1, map.MapWorldCreate.StartPoints[i].UnitStartLocation[2]),
-            });
+            if (map.MapWorldCreate.StartPoints[i].UnitStartLocation[0] != 0 && map.MapWorldCreate.StartPoints[i].UnitStartLocation[1] != 0 && map.MapWorldCreate.StartPoints[i].UnitStartLocation[1] != 0)
+                gameStartPoints.Add(new GameStartPoint()
+                {
+                    UnitMaterial = i == 0 ? playerMaterial : enemyMaterial,
+                    UnitStartLocation = new Vector3(map.MapWorldCreate.StartPoints[i].UnitStartLocation[0], 1, map.MapWorldCreate.StartPoints[i].UnitStartLocation[2]),
+                });
         }
 
         MapToPlayStorage.GameStartPoints = gameStartPoints;
@@ -132,4 +132,7 @@ public class CampaignManager : MonoBehaviour
 
     internal bool CheckLastAvaiableMission() =>
         actualTarget <= availableTarget;
+
+    internal bool CheckZeroMission() =>
+        availableTarget == 0;
 }

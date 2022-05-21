@@ -50,7 +50,7 @@ public class CampaignUIManager : MonoBehaviour
             NextCampaignMissionMap();
         }
 
-        if(Input.GetKeyDown(KeyCode.Return))
+        if (Input.GetKeyDown(KeyCode.Return))
         {
             EnterMissionDetails();
         }
@@ -63,8 +63,16 @@ public class CampaignUIManager : MonoBehaviour
             campaignManager.PreviousCampaignMap();
         }
 
-        missionsMapButtons[0].gameObject.SetActive(!campaignManager.CheckFirstOrLastMission());
-        missionsMapButtons[1].gameObject.SetActive(true);
+        if (campaignManager.CheckZeroMission())
+        {
+            missionsMapButtons[0].gameObject.SetActive(false);
+            missionsMapButtons[1].gameObject.SetActive(false);
+        }
+        else
+        {
+            missionsMapButtons[0].gameObject.SetActive(!campaignManager.CheckFirstOrLastMission());
+            missionsMapButtons[1].gameObject.SetActive(true);
+        }
     }
 
     private void NextCampaignMissionMap()
@@ -74,13 +82,21 @@ public class CampaignUIManager : MonoBehaviour
             campaignManager.NextCampaignMap();
         }
 
-        missionsMapButtons[0].gameObject.SetActive(true);
-        missionsMapButtons[1].gameObject.SetActive(!campaignManager.CheckFirstOrLastMission());
+        if (campaignManager.CheckZeroMission())
+        {
+            missionsMapButtons[0].gameObject.SetActive(false);
+            missionsMapButtons[1].gameObject.SetActive(false);
+        }
+        else
+        {
+            missionsMapButtons[0].gameObject.SetActive(true);
+            missionsMapButtons[1].gameObject.SetActive(!campaignManager.CheckFirstOrLastMission());
+        }
     }
 
     private void EnterMissionDetails()
     {
-        if(!campaignManager.CheckLastAvaiableMission())
+        if (!campaignManager.CheckLastAvaiableMission())
         {
             missionsMapButtons[2].gameObject.SetActive(false);
             return;
