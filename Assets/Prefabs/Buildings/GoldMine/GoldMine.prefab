@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 3213346689669805719}
   - component: {fileID: 1961249877362817330}
   - component: {fileID: 4382905233751002616}
-  - component: {fileID: -8730686178862457017}
   - component: {fileID: -3221046198409623454}
   - component: {fileID: 741062581}
+  - component: {fileID: -3460764833372876571}
   m_Layer: 7
   m_Name: GoldMine
   m_TagString: Goldmine
@@ -87,22 +87,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &-8730686178862457017
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2869858829959588909}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b7c1fa7a823bd1f49a6909ffdbaf02e4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ItemPrefab: {fileID: 2869858829959588909}
-  ItemImage: {fileID: 4420636024694049999, guid: 62ac079d0773d5f4eb759b16cf7a8ab2, type: 3}
-  ItemHeightLevel: 1
-  ItemHeightPosY: 0.95
 --- !u!114 &-3221046198409623454
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -129,3 +113,21 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.018805804, y: 0.018718, z: 0.0072837006}
   m_Center: {x: -0.00052516535, y: -0.000354635, z: 0.0016135519}
+--- !u!114 &-3460764833372876571
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2869858829959588909}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 674ecf726faea2c4dbdf68f9f40a2c88, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ItemPrefab: {fileID: 2869858829959588909}
+  ItemImage: {fileID: 4420636024694049999, guid: 62ac079d0773d5f4eb759b16cf7a8ab2, type: 3}
+  ItemHeightLevel: 1
+  ItemHeightPosY: 0.95
+  ItemImageComputer: {fileID: 0}
+  GoldmineSize: 6

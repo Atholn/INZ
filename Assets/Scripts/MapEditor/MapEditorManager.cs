@@ -125,7 +125,7 @@ public class MapEditorManager : MonoBehaviour
 
         if (ItemControllers[CurrentButtonPressed].item.ItemHeightLevel == 0)
         {
-            if(image != null)
+            if (image != null)
             {
                 image.transform.localScale = new Vector3(ItemControllers[CurrentButtonPressed].firstScale.x * sizeSlider.value, ItemControllers[CurrentButtonPressed].firstScale.y, ItemControllers[CurrentButtonPressed].firstScale.z * sizeSlider.value);
             }
@@ -211,14 +211,16 @@ public class MapEditorManager : MonoBehaviour
 
     private void GenerateNatureUnit(int vx, int vz, int level)
     {
-        if (ItemControllers[CurrentButtonPressed] is ItemUnitController)
+        if (ItemControllers[CurrentButtonPressed].item is ItemStartPoint || ItemControllers[CurrentButtonPressed].item is ItemGoldmine)
         {
-            if (_mapWorldInfo.StartPoints == null)
+            if (_mapWorldInfo.StartPoints == null && ItemControllers[CurrentButtonPressed].item is ItemStartPoint)
             {
                 InitializeEditorStartPoints();
             }
 
-            int fullSize = (ItemControllers[CurrentButtonPressed].item as ItemStartPoint).BuildSize;
+            int fullSize = ItemControllers[CurrentButtonPressed].item is ItemStartPoint ?
+                           (ItemControllers[CurrentButtonPressed].GetComponent<ItemUnitController>().item as ItemStartPoint).BuildSize :
+                           (ItemControllers[CurrentButtonPressed].GetComponent<ItemController>().item as ItemGoldmine).GoldmineSize;
 
             if (vx < fullSize / 2 || vx >= _mapWorldInfo.SizeMapX - fullSize / 2 || vz < fullSize / 2 || vz >= _mapWorldInfo.SizeMapY - fullSize / 2)
             {
@@ -285,12 +287,17 @@ public class MapEditorManager : MonoBehaviour
                 int j = -1;
                 for (int i = 0; i < _mapWorldInfo.StartPoints.Count; i++)
                 {
-                    if (_mapWorldInfo.StartPoints[i].UnitStartLocation[0] == 0 && _mapWorldInfo.StartPoints[i].UnitStartLocation[1] == 0 && _mapWorldInfo.StartPoints[i].UnitStartLocation[2] == 0)
+                    if (_mapWorldInfo.StartPoints[i].UnitStartLocation[0] == 0 &&
+                        _mapWorldInfo.StartPoints[i].UnitStartLocation[1] == 0 &&
+                        _mapWorldInfo.StartPoints[i].UnitStartLocation[2] == 0)
                     {
                         continue;
                     }
 
-                    tmpMin = (vx - _mapWorldInfo.StartPoints[i].UnitStartLocation[0]) * (vx - _mapWorldInfo.StartPoints[i].UnitStartLocation[0]) - (vz - _mapWorldInfo.StartPoints[i].UnitStartLocation[2]) * (vx - _mapWorldInfo.StartPoints[i].UnitStartLocation[2]);
+                    tmpMin = (vx - _mapWorldInfo.StartPoints[i].UnitStartLocation[0]) *
+                        (vx - _mapWorldInfo.StartPoints[i].UnitStartLocation[0]) - (vz - _mapWorldInfo.StartPoints[i].UnitStartLocation[2]) *
+                        (vx - _mapWorldInfo.StartPoints[i].UnitStartLocation[2]);
+
                     if (min == -1 || tmpMin < min)
                     {
                         min = tmpMin;
@@ -298,11 +305,38 @@ public class MapEditorManager : MonoBehaviour
                     }
                 }
 
-                ResetAreaAfterCreate((int)_mapWorldInfo.StartPoints[j].UnitStartLocation[0], (int)_mapWorldInfo.StartPoints[j].UnitStartLocation[2], level);
+                if (j != -1)
+                {
+                    ResetAreaAfterCreate((int)_mapWorldInfo.StartPoints[j].UnitStartLocation[0], (int)_mapWorldInfo.StartPoints[j].UnitStartLocation[2], level);                
+                }
+                else
+                {
+                    var goldmineSize = ItemControllers.Where(i => i.item is ItemGoldmine).Select(i=> (i.item as ItemGoldmine).GoldmineSize).FirstOrDefault();
+
+                    for (int i= 0 ; i < goldmineSize; i++)
+                    {
+                        for (int k = 0; k < goldmineSize; k++)
+                        {
+                            var tmpVX = vx - goldmineSize / 2 + i;
+                            var tmpVY = vz - goldmineSize / 2 + k;
+
+                            if(tmpVX < 0 || 
+                                tmpVY < 0 || 
+                                tmpVX >= mapsPrefabs[0].Length || 
+                                tmpVY >= mapsPrefabs[0][0].Length || 
+                                mapsPrefabs[level][tmpVX][tmpVY] == null)
+                            {
+                                continue;
+                            }
+                            ResetAreaAfterCreate(tmpVX, tmpVY, level);
+                        }
+                    }
+                }
             }
             else
             {
-                if (mapsPrefabs[level][vx][vz].GetComponent<ItemStartPoint>() != null)
+                if (mapsPrefabs[level][vx][vz].GetComponent<ItemStartPoint>() != null
+                    || mapsPrefabs[level][vx][vz].GetComponent<ItemGoldmine>() != null)
                 {
                     ResetAreaAfterCreate(vx, vz, level);
                 }
@@ -329,7 +363,7 @@ public class MapEditorManager : MonoBehaviour
 
             var colider = mapsPrefabs[level][vx][vz].GetComponent<BoxCollider>();
 
-            if(colider != null)
+            if (colider != null)
             {
                 colider.enabled = false;
             }
@@ -338,9 +372,9 @@ public class MapEditorManager : MonoBehaviour
 
     private void ResetAreaAfterCreate(int vx, int vz, int level)
     {
-        EditorStartPoint spu = _mapWorldInfo.StartPoints.Where(u => u.UnitStartLocation[0] == vx && u.UnitStartLocation[2] == vz).First();
-
-        int areaToReset = mapsPrefabs[level][vx][vz].GetComponent<ItemStartPoint>().BuildSize;
+        int areaToReset = mapsPrefabs[level][vx][vz].GetComponent<ItemStartPoint>() != null ?
+            mapsPrefabs[level][vx][vz].GetComponent<ItemStartPoint>().BuildSize :
+            mapsPrefabs[level][vx][vz].GetComponent<ItemGoldmine>().GoldmineSize;
         int tempvx, tempvz;
 
         for (int i = 0; i < areaToReset; i++)
@@ -354,11 +388,16 @@ public class MapEditorManager : MonoBehaviour
             }
         }
 
+        if(mapsPrefabs[level][vx][vz].GetComponent<ItemStartPoint>() != null)
+        {
+            EditorStartPoint spu = _mapWorldInfo.StartPoints.Where(u => u.UnitStartLocation[0] == vx && u.UnitStartLocation[2] == vz).First();
+            spu.UnitStartLocation[0] = 0;
+            spu.UnitStartLocation[1] = 0;
+            spu.UnitStartLocation[2] = 0;
+        }
+
         DeleteGameObject(vx, vz, level);
 
-        spu.UnitStartLocation[0] = 0;
-        spu.UnitStartLocation[1] = 0;
-        spu.UnitStartLocation[2] = 0;
     }
 
     private void UpdateStartUnitList(int vx, int vz, int level)
@@ -451,7 +490,7 @@ public class MapEditorManager : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(1))
         {
-            DestroyItemImages();    
+            DestroyItemImages();
         }
     }
 
@@ -530,7 +569,7 @@ public class MapEditorManager : MonoBehaviour
     {
         InitializeShowHidePanels(false);
 
-        _mapWorldInfo.MainGroundID = mainGroundID;      
+        _mapWorldInfo.MainGroundID = mainGroundID;
         _mapWorldInfo.SizeMapX = sizeX;
         _mapWorldInfo.SizeMapY = sizeY;
 
@@ -564,9 +603,11 @@ public class MapEditorManager : MonoBehaviour
     {
         if (ItemControllers[CurrentButtonPressed].item.ItemHeightLevel == 1)
         {
-            if (ItemControllers[CurrentButtonPressed].item is ItemStartPoint)
+            if (ItemControllers[CurrentButtonPressed].item is ItemStartPoint || ItemControllers[CurrentButtonPressed].item is ItemGoldmine)
             {
-                int area = (ItemControllers[CurrentButtonPressed].GetComponent<ItemUnitController>().item as ItemStartPoint).BuildSize;
+                int area = ItemControllers[CurrentButtonPressed].item is ItemStartPoint ?
+                           (ItemControllers[CurrentButtonPressed].GetComponent<ItemUnitController>().item as ItemStartPoint).BuildSize :
+                           (ItemControllers[CurrentButtonPressed].GetComponent<ItemController>().item as ItemGoldmine).GoldmineSize;
                 int tempvx, tempvz;
 
                 for (int i = 0; i < area; i++)
@@ -576,7 +617,12 @@ public class MapEditorManager : MonoBehaviour
                         tempvx = x - area / 2 + i;
                         tempvz = z - area / 2 + j;
 
-                        if (_mapWorldInfo.Maps[1][tempvx][tempvz] != 0 || !(ItemControllers[_mapWorldInfo.Maps[0][tempvx][tempvz]].item as ItemTerrain).AllowsBuild)
+                        if (tempvx < 0 || 
+                            tempvz < 0 ||
+                            tempvx >= mapsPrefabs[0].Length ||
+                            tempvz >= mapsPrefabs[0][0].Length ||
+                            _mapWorldInfo.Maps[1][tempvx][tempvz] != 0 || 
+                            !(ItemControllers[_mapWorldInfo.Maps[0][tempvx][tempvz]].item as ItemTerrain).AllowsBuild)
                         {
                             return 0;
                         }
@@ -633,5 +679,5 @@ public class MapEditorManager : MonoBehaviour
         return sizeSlider.value;
     }
 
-    
+
 }
