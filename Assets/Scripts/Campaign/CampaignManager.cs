@@ -47,12 +47,6 @@ public class CampaignManager : MonoBehaviour
         fileMapSystem.FolderName = _typeOfGame;
     }
 
-    internal Vector2 Getsss()
-    {
-        Transform transform = campaignMapPoints[actualTarget].GetComponent<Transform>();
-        return new Vector2(transform.position.x, transform.position.z);
-    }
-
     void Update()
     {
         if (CampaignStorage.Win)
@@ -128,7 +122,9 @@ public class CampaignManager : MonoBehaviour
     }
 
     internal bool CheckFirstOrLastMission() =>
-        actualTarget == 0 || actualTarget == campaignMapPoints.Count - 1;
+        actualTarget == 0 ||
+        actualTarget == availableTarget ||
+        actualTarget == campaignMapPoints.Count - 1;
 
     internal bool CheckLastAvaiableMission() =>
         actualTarget <= availableTarget;

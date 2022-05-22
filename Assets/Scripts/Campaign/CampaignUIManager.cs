@@ -12,7 +12,7 @@ public class CampaignUIManager : MonoBehaviour
     private List<Button> missionsMapButtons; //0 - preview, 1 - next, 2 -  enter mission, 3 - exit 
     private CampaignManager campaignManager;
 
-    private void Awake()
+    private void Start()
     {
         campaignManager = GameObject.FindObjectOfType<CampaignManager>();
 
@@ -29,8 +29,23 @@ public class CampaignUIManager : MonoBehaviour
     private void IntitializeMissionsMapButtons()
     {
         missionsMapButtons = MissionsMapPanel.GetComponentsInChildren<Button>().ToList();
-        missionsMapButtons[0].gameObject.SetActive(!campaignManager.CheckFirstOrLastMission());
-        missionsMapButtons[1].gameObject.SetActive(!campaignManager.CheckFirstOrLastMission());
+
+        if (campaignManager.CheckZeroMission())
+        {
+            missionsMapButtons[0].gameObject.SetActive(false);
+            missionsMapButtons[1].gameObject.SetActive(false);
+            return;
+        }
+
+        if (campaignManager.CheckLastAvaiableMission())
+        {
+            missionsMapButtons[0].gameObject.SetActive(true);
+            missionsMapButtons[1].gameObject.SetActive(false);
+            return;
+        }
+
+        missionsMapButtons[0].gameObject.SetActive(false);
+        missionsMapButtons[1].gameObject.SetActive(true);
     }
 
     private void Update()
