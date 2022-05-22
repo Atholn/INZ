@@ -53,6 +53,7 @@ public class CampaignUIManager : MonoBehaviour
         UpdateNextPreviousEnterKeys();
     }
 
+    #region Update Keys
     private void UpdateNextPreviousEnterKeys()
     {
         if (Input.GetKeyDown(KeyCode.LeftArrow))
@@ -121,6 +122,8 @@ public class CampaignUIManager : MonoBehaviour
         MissionPanel.SetActive(true);
         missionsMapButtons[2].gameObject.SetActive(true);
     }
+
+    #endregion
 
     #region Public methods in MissionsMapPanel
     public void PreviousCampaignMap()
