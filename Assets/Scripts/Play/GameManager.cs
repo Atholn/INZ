@@ -258,7 +258,7 @@ public class GameManager : MonoBehaviour
                 case "sources": SourcesCheckWin(ref ifWin, winRequaried.Value); break;
                 case "upgrades": UpgradesCheckWin(ref ifWin, winRequaried.Value); break;
                 case "soldiers": SoldiersCheckWin(ref ifWin, winRequaried.Value); break;
-
+                case "buldings": BuldingsCheckWin(ref ifWin, winRequaried.Value); break;
                 //todo
                 case "time": break;
                 case "attacks": break;
@@ -275,6 +275,11 @@ public class GameManager : MonoBehaviour
             UnityEngine.SceneManagement.SceneManager.LoadScene(sceneToBack);
             MapToPlayStorage.WinRequarieds = new Dictionary<string, Dictionary<string, string>>();
         }
+    }
+
+    private void BuldingsCheckWin(ref bool ifWin, Dictionary<string, string> value)
+    {
+        ifWin = false;
     }
 
     private void FreeCheckWin(ref bool ifWin, Dictionary<string, string> addional)

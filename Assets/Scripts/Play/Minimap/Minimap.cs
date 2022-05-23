@@ -35,7 +35,7 @@ public class Minimap : MonoBehaviour
         for (int i = 0; i < _gameManager.Nature.Count; i++)
         {
             Color pixelColor =
-            _gameManager.Nature[i].transform.GetComponent<MeshRenderer>().materials[0].color;
+            _gameManager.Nature[i].transform.GetComponentInChildren<MeshRenderer>().materials[0].color;
 
             texture.SetPixel((int)_gameManager.Nature[i].transform.position.x, (int)_gameManager.Nature[i].transform.position.z, pixelColor);
         }
@@ -45,9 +45,9 @@ public class Minimap : MonoBehaviour
             if (objects.Count == 0) continue;
 
             Color pixelColor =
-            objects[0].transform.GetComponent<MeshRenderer>() == null ?
+            objects[0].transform.GetComponentInChildren<MeshRenderer>() == null ?
             objects[0].transform.GetChild(0).GetComponentInChildren<SkinnedMeshRenderer>().materials[1].color :
-            objects[0].transform.GetComponent<MeshRenderer>().materials[1].color;
+            objects[0].transform.GetComponentInChildren<MeshRenderer>().materials[1].color;
 
 
             foreach (GameObject obj in objects)

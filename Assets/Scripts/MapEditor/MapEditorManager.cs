@@ -150,13 +150,8 @@ public class MapEditorManager : MonoBehaviour
             return;
         }
 
-        if (singleMultiToggle.isOn && Input.GetMouseButtonDown(0))
-        {
-            CreateTerrainCube();
-            return;
-        }
-
-        if (!singleMultiToggle.isOn && Input.GetMouseButton(0))
+        if ((singleMultiToggle.isOn && Input.GetMouseButtonDown(0)) ||
+            (!singleMultiToggle.isOn && Input.GetMouseButton(0)))
         {
             CreateTerrainCube();
             return;
@@ -397,7 +392,6 @@ public class MapEditorManager : MonoBehaviour
         }
 
         DeleteGameObject(vx, vz, level);
-
     }
 
     private void UpdateStartUnitList(int vx, int vz, int level)
@@ -440,7 +434,7 @@ public class MapEditorManager : MonoBehaviour
     {
         if (ItemDelete.Pressed)
         {
-            if (Input.GetMouseButtonDown(0))
+            if ((singleMultiToggle.isOn && Input.GetMouseButtonDown(0)) || (!singleMultiToggle.isOn && Input.GetMouseButton(0)))
             {
                 switch (TypeTerrainToDestroy.value)
                 {
@@ -548,7 +542,7 @@ public class MapEditorManager : MonoBehaviour
     {
         InitializeShowHidePanels(false);
 
-        MapLoader.ResetAndLoad(ref _mapWorldInfo, ref newMap, ref mapsPrefabs, ref Terrain, GetPrefabsOnly());
+        MapLoader.ResetAndLoad(ref _mapWorldInfo, ref newMap, ref mapsPrefabs, ref Terrain, GetPrefabsOnly(), coliderAfterLoad: false);
 
         ItemController startPointPrefab = ItemControllers.Where(i => i is ItemUnitController).FirstOrDefault();
         foreach (EditorStartPoint eSP in _mapWorldInfo.StartPoints)
@@ -678,6 +672,4 @@ public class MapEditorManager : MonoBehaviour
     {
         return sizeSlider.value;
     }
-
-
 }

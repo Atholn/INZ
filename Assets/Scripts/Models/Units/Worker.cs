@@ -162,7 +162,7 @@ public class Worker : HumanUnit
             bU.BuildingPercent += Time.deltaTime;
             bU.DustOn();
             target.transform.position = new Vector3(target.transform.position.x, -it.HeightBuilding + (bU.BuildingPercent / bU.CreateTime) * (it.ItemHeightPosY + it.HeightBuilding), target.transform.position.z);
-            
+
             return;
         }
 
@@ -348,7 +348,7 @@ public class Worker : HumanUnit
                 return;
             }
 
-            if(target == null)
+            if (target == null)
             {
                 target = SearchNearTreePlace();
                 chop = false;
@@ -498,7 +498,7 @@ public class Worker : HumanUnit
     #region Commands
     void Command(Vector3 destination)
     {
-        if(Hp<0)
+        if (Hp < 0)
         {
             return;
         }
@@ -507,6 +507,7 @@ public class Worker : HumanUnit
         build = false;
         chop = false;
 
+        target = null;
         nav.SetDestination(destination);
         task = WorkerTask.run;
     }

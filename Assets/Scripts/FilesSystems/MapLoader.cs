@@ -3,7 +3,12 @@ using UnityEngine;
 
 public class MapLoader : MonoBehaviour
 {
-    internal static void ResetAndLoad(ref MapWorld actualMap, ref MapWorld newMap, ref GameObject[][][] mapsPrefabs, ref GameObject terrain, List<Item> itemControllers)
+    internal static void ResetAndLoad(ref MapWorld actualMap,
+        ref MapWorld newMap,
+        ref GameObject[][][] mapsPrefabs,
+        ref GameObject terrain,
+        List<Item> itemControllers,
+        bool coliderAfterLoad = true)
     {
         DeleteMapGameObjects(ref actualMap, ref mapsPrefabs, ref terrain);
 
@@ -11,7 +16,7 @@ public class MapLoader : MonoBehaviour
         InitializeTerrainArrays(newMap.SizeMapX, newMap.SizeMapY, ref actualMap, ref mapsPrefabs);
 
         actualMap = newMap;
-        InitializeNewMap(ref actualMap, ref mapsPrefabs, itemControllers);
+        InitializeNewMap(ref actualMap, ref mapsPrefabs, itemControllers, coliderAfterLoad);
     }
 
     internal static void InitializeNewMap(ref MapWorld newMap, ref GameObject[][][] mapsPrefabs, ref GameObject terrain, List<Item> itemControllers, int mainGroundID = 0)
@@ -22,7 +27,7 @@ public class MapLoader : MonoBehaviour
 
     public static void DeleteMapGameObjects(ref MapWorld map, ref GameObject[][][] mapsPrefabs, ref GameObject terrain)
     {
-        if(mapsPrefabs == null)
+        if (mapsPrefabs == null)
         {
             return;
         }
@@ -51,7 +56,7 @@ public class MapLoader : MonoBehaviour
         GameObject basicTerrainPrefab = mainGround.ItemPrefab;
         basicTerrainPrefab.gameObject.transform.localScale = new Vector3(sizeX * firstScale.x, firstScale.y, sizeY * firstScale.z);
 
-        terrain = Instantiate(basicTerrainPrefab, 
+        terrain = Instantiate(basicTerrainPrefab,
                               new Vector3(sizeX % 2 == 0 ? sizeX / 2 - 0.5f : sizeX / 2,
                                 (mainGround as ItemTerrain).HeightCreateAsBasicTerrain,
                                 sizeY % 2 == 0 ? sizeY / 2 - 0.5f : sizeY / 2),
@@ -81,7 +86,7 @@ public class MapLoader : MonoBehaviour
         }
     }
 
-    private static void InitializeNewMap(ref MapWorld actualMap, ref GameObject[][][] mapsPrefabs, List<Item> itemControllers)
+    private static void InitializeNewMap(ref MapWorld actualMap, ref GameObject[][][] mapsPrefabs, List<Item> itemControllers, bool coliderAfterLoad = true)
     {
         for (int i = 0; i < actualMap.MapsCount; i++)
         {
@@ -91,13 +96,27 @@ public class MapLoader : MonoBehaviour
                 {
                     if (actualMap.Maps[i][j][k] > 0)
                     {
-                        mapsPrefabs[i][j][k] = 
-                            Instantiate(itemControllers[actualMap.Maps[i][j][k]].ItemPrefab,
-                            new Vector3(j, itemControllers[actualMap.Maps[i][j][k]].ItemHeightPosY, k),
-                            itemControllers[actualMap.Maps[i][j][k]].ItemPrefab.transform.rotation);
+                        mapsPrefabs[i][j][k] = Instantiate(itemControllers[actualMap.Maps[i][j][k]].ItemPrefab,
+                                                            new Vector3(j, itemControllers[actualMap.Maps[i][j][k]].ItemHeightPosY, k),
+                                                            itemControllers[actualMap.Maps[i][j][k]].ItemPrefab.transform.rotation);
+
+                        if (!coliderAfterLoad)
+                        {
+                            ColiderOff(mapsPrefabs[i][j][k]);
+                        }
+
                     }
                 }
             }
+        }
+    }
+
+    private static void ColiderOff(GameObject gameObject)
+    {
+        var collider = gameObject.GetComponent<Collider>();
+        if (collider != null)
+        {
+            collider.enabled = false;
         }
     }
 }

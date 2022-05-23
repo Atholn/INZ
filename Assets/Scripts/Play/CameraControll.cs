@@ -183,21 +183,12 @@ public class CameraControll : MonoBehaviour
 
             foreach (GameObject gameObject in _selectUnits)
             {
-                if (rayHit.collider is TerrainCollider)
+                if (gameObject.GetComponent<BuildingUnit>() != null)
                 {
-                    commandData = rayHit.point;
-
-                    if (gameObject.GetComponent<BuildingUnit>() != null)
-                    {
-                        gameObject.GetComponent<BuildingUnit>().PointerPosition = new Vector3(rayHit.point.x, 0.45f, rayHit.point.z);
-                        _gameManager.Pointer.transform.position = new Vector3(rayHit.point.x, 0.45f, rayHit.point.z);
-                        continue;
-                    }
-
-                    GiveCommands(commandData, "Command");
+                    gameObject.GetComponent<BuildingUnit>().PointerPosition = new Vector3(rayHit.point.x, 0.45f, rayHit.point.z);
+                    _gameManager.Pointer.transform.position = new Vector3(rayHit.point.x, 0.45f, rayHit.point.z);
                     continue;
                 }
-
 
                 if (gameObject.GetComponent<Soldier>() != null)
                 {
@@ -229,22 +220,28 @@ public class CameraControll : MonoBehaviour
 
                 if (gameObject.GetComponent<Worker>() != null)
                 {
-
                     if (rayHit.collider.gameObject.GetComponent<Tree>() != null)
                     {
                         commandData = rayHit.collider.gameObject.GetComponent<Tree>();
                         GiveCommands(commandData, "Command");
+                        continue;
                     }
-
+                    Debug.Log("asda");
                     if (rayHit.collider.gameObject.GetComponent<GoldMine>() != null)
                     {
                         commandData = rayHit.collider.gameObject.GetComponent<GoldMine>();
                         GiveCommands(commandData, "Command");
+                        continue;
                     }
-                    continue;
+
+                    if (rayHit.collider is TerrainCollider)
+                    {
+                        commandData = rayHit.point;
+
+                        GiveCommands(commandData, "Command");
+                        continue;
+                    }
                 }
-
-
             }
         }
     }

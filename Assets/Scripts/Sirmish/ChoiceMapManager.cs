@@ -118,7 +118,10 @@ public class ChoiceMapManager : MonoBehaviour
         InfoTexts[1].text = $"{map.MapWorldCreate.SizeMapX} x {map.MapWorldCreate.SizeMapY}";
         InfoTexts[2].text = map.MapInfo.Decription;
 
-        gameStartPoints = map.MapWorldCreate.StartPoints.Where(s => s.UnitStartLocation[0] != 0 && s.UnitStartLocation[1] != 0 && s.UnitStartLocation[2] != 0).Select(s => s.UnitStartLocation).ToList();
+        gameStartPoints = map.MapWorldCreate.StartPoints
+            .Where(s => s.UnitStartLocation[0] != 0 && s.UnitStartLocation[1] != 0 && s.UnitStartLocation[2] != 0)
+            .Select(s => s.UnitStartLocation)
+            .ToList();
 
         if (PanelPlayerList.Count > 1)
         {
@@ -297,6 +300,7 @@ public class ChoiceMapManager : MonoBehaviour
         }
 
         MapToPlayStorage.GameStartPoints = gameStartPoints;
+        MapToPlayStorage.WinRequarieds = new Dictionary<string, Dictionary<string, string>>();
         MapToPlayStorage.AddDominateRequaried(true);
         MapToPlayStorage.SceneToBack = _typeOfGame;
     }
