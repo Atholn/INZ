@@ -13,7 +13,7 @@ public class MapToPlayStorage : MonoBehaviour
         sources = 2, //  0 - all*, 1 - gold, 2 - wood, 3 - untis (food), 4 - units max // count of sources  *gold and wood 
         upgrades = 3, // 0 - all, 1 - knight, 2 - axeman, 3 - bowman // true false
         soldiers = 4, // 0 - all, 1 - knight, 2 - axeman, 3 - bowman  // count    
-        buldings = 5, // 0 - all, 
+        buldings = 5, // 0 - all, 1 - townhall, 2 - barracks, 3 - farm, 4 - blacksmith, 5 - tower
         time = 6,
         attacks = 7,
     }

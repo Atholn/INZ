@@ -177,8 +177,8 @@ public class GameManager : MonoBehaviour
             _playersGameObjects.Add(new List<GameObject>());
             _playersMaterials.Add(_gameStartPoints[i].UnitMaterial);
 
-            if (i == 0) _players.Add(new Player { typeOfPlayer = Player.TypeOfPlayer.human, upgradeFactor = new float [3]});
-            else _players.Add(new Player { typeOfPlayer = Player.TypeOfPlayer.computer, whichPlayer = i, upgradeFactor = new float[3]});
+            if (i == 0) _players.Add(new Player { typeOfPlayer = Player.TypeOfPlayer.human, upgradeFactor = new float[3] });
+            else _players.Add(new Player { typeOfPlayer = Player.TypeOfPlayer.computer, whichPlayer = i, upgradeFactor = new float[3] });
         }
 
         for (int i = 0; i < _gameStartPoints.Count; i++)
@@ -266,20 +266,15 @@ public class GameManager : MonoBehaviour
         }
 
 
-        if(ifWin)
+        if (ifWin)
         {
-            if(sceneToBack == "Campaign")
+            if (sceneToBack == "Campaign")
             {
                 CampaignStorage.Win = true;
             }
             UnityEngine.SceneManagement.SceneManager.LoadScene(sceneToBack);
             MapToPlayStorage.WinRequarieds = new Dictionary<string, Dictionary<string, string>>();
         }
-    }
-
-    private void BuldingsCheckWin(ref bool ifWin, Dictionary<string, string> value)
-    {
-        ifWin = false;
     }
 
     private void FreeCheckWin(ref bool ifWin, Dictionary<string, string> addional)
@@ -309,12 +304,12 @@ public class GameManager : MonoBehaviour
 
     private void SourcesCheckWin(ref bool ifWin, Dictionary<string, string> addional)
     {
-        switch(addional.First().Key)
+        switch (addional.First().Key)
         {
             case "0": if (_players[0].actualWood + _players[0].actualGold < int.Parse(addional.First().Value)) ifWin = false; break;
             case "1": if (_players[0].actualGold < int.Parse(addional.First().Value)) ifWin = false; break;
             case "2": if (_players[0].actualWood < int.Parse(addional.First().Value)) ifWin = false; break;
-            case "3": if (_players[0].actualMaxUnitsPoint < int.Parse(addional.First().Value)) ifWin = false; break;              
+            case "3": if (_players[0].actualMaxUnitsPoint < int.Parse(addional.First().Value)) ifWin = false; break;
         }
     }
 
@@ -342,6 +337,45 @@ public class GameManager : MonoBehaviour
         //}
     }
 
+    private void BuldingsCheckWin(ref bool ifWin, Dictionary<string, string> values)
+    {
+        foreach (var value in values)
+        {
+            if (value.Key == "0")
+            {
+                for (int i = 0; i < BuildingsPrefabs.Count && ifWin; i++)
+                {
+                    CheckBuild(ref ifWin, i, int.Parse(value.Value));
+                }
+                continue;
+            }
+
+            if (value.Key == "1" || value.Key == "2" || value.Key == "3" || value.Key == "4" || value.Key == "5")
+            {
+                CheckBuild(ref ifWin, int.Parse(value.Key) - 1, int.Parse(value.Value));
+                continue;
+            }
+
+        }
+    }
+
+    private void CheckBuild(ref bool ifWin, int numberOfBuilding, int countOfBuilidng)
+    {
+        var building = _playersGameObjects[0]
+            .Where(b => b.GetComponent<BuildingUnit>() != null)
+            .Select(b => b.GetComponent<BuildingUnit>())
+            .Where(b => b.Name == BuildingsPrefabs[numberOfBuilding].GetComponent<BuildingUnit>().Name &&
+                b.BuildingPercent >= b.CreateTime)
+            .ToList(); 
+
+        if (building == null)
+        {
+            ifWin = false;
+            return;
+        }
+
+        ifWin = building.Count >= countOfBuilidng;
+    }
     #endregion
 
     internal void CheckWinLose()

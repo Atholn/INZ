@@ -226,7 +226,6 @@ public class CameraControll : MonoBehaviour
                         GiveCommands(commandData, "Command");
                         continue;
                     }
-                    Debug.Log("asda");
                     if (rayHit.collider.gameObject.GetComponent<GoldMine>() != null)
                     {
                         commandData = rayHit.collider.gameObject.GetComponent<GoldMine>();
