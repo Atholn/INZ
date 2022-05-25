@@ -16,14 +16,15 @@ public class GameUI : MonoBehaviour
 
     public GameObject RawMaterialsPanel;
 
-    public GameObject ActionPanel;
     private GameObject _tmpSpecialPanel;
     public GameObject WorkerSpecialPanel;
     public GameObject TownHallSpecialPanel;
     public GameObject BarracksSpecialPanel;
     public GameObject BlackSmithsSpecialPanel;
+
     public GameObject HintsPanel;
     public GameObject ErrorsPanel;
+    public GameObject GoldmineHintPanel;
 
     private List<GameObject> _tmpActions = new List<GameObject>();
 
@@ -40,9 +41,12 @@ public class GameUI : MonoBehaviour
 
     private List<Text> errorsTexts;
     private List<Image> errorsIcons;
+
     private float showTime = 0f;
     private float showTimeMax = 2f;
     private bool showErrors = false;
+
+    private Text goldmineText;
 
     private void Start()
     {
@@ -54,6 +58,7 @@ public class GameUI : MonoBehaviour
         BlackSmithsSpecialPanel.SetActive(false);
         HintsPanel.SetActive(false);
         ErrorsPanel.SetActive(false);
+        GoldmineHintPanel.SetActive(false);
 
         RawMaterials = RawMaterialsPanel.GetComponentsInChildren<Text>();
         buttonsCancelCreate = CreateProgressPanel.GetComponentsInChildren<Button>(true);
@@ -72,6 +77,7 @@ public class GameUI : MonoBehaviour
         hintsIcons = HintsPanel.GetComponentsInChildren<Image>().ToList();
         errorsTexts = ErrorsPanel.GetComponentsInChildren<Text>().ToList();
         errorsIcons = ErrorsPanel.GetComponentsInChildren<Image>().ToList();
+        goldmineText = GoldmineHintPanel.GetComponentInChildren<Text>();
     }
 
     private void Update()
@@ -85,7 +91,6 @@ public class GameUI : MonoBehaviour
                 ErrorsPanel.SetActive(false);
             }
         }
-
     }
 
     #region TopPanel
@@ -119,7 +124,6 @@ public class GameUI : MonoBehaviour
     #endregion
 
     #region BottomPanel
-
     public void SetLookBottomPanel(Color color)
     {
         BottomPanel.SetActive(true);
@@ -150,7 +154,6 @@ public class GameUI : MonoBehaviour
         OneCharacterPanel.SetActive(false);
         ManyCharactersPanel.SetActive(false);
 
-        //HideSpecialButtons();
         HideSpecialPanel();
     }
 
@@ -187,7 +190,6 @@ public class GameUI : MonoBehaviour
             {
                 //Human Units
                 case "Worker":
-                    //ShowSpecialButtons(WorkerActions); 
                     ShowSpecialPanel(WorkerSpecialPanel);
                     break;
 
@@ -253,24 +255,6 @@ public class GameUI : MonoBehaviour
         _tmpSpecialPanel.SetActive(true);
     }
 
-    private void HideSpecialButtons()
-    {
-        foreach (GameObject button in _tmpActions)
-        {
-            button.SetActive(false);
-        }
-        _tmpActions.Clear();
-    }
-
-    private void ShowSpecialButtons(List<GameObject> gameObjects)
-    {
-        foreach (GameObject button in gameObjects)
-        {
-            button.SetActive(true);
-            _tmpActions.Add(button);
-        }
-    }
-
     internal void SetCharactersProfiles(List<GameObject> selectUnits, int maxSelected)
     {
         HideSpecialPanel();
@@ -298,21 +282,6 @@ public class GameUI : MonoBehaviour
             _images[i].texture = selectUnits[i].GetComponent<Unit>().Profile;
         }
     }
-    #region ActionPanel
-    public void ActionPanelShowHide(GameObject panel)
-    {
-        if (ActionPanel.gameObject.activeSelf)
-        {
-            ActionPanel.gameObject.SetActive(false);
-            panel.SetActive(true);
-            return;
-        }
-
-        ActionPanel.gameObject.SetActive(true);
-        panel.SetActive(false);
-    }
-    #endregion
-
     #endregion
 
 
@@ -379,6 +348,23 @@ public class GameUI : MonoBehaviour
 
         showTime = 0f;
         showErrors = true;
+    }
+
+    internal void ShowGoldmineHint(float goldmineSource)
+    {
+        if(goldmineSource == -1)
+        {
+            GoldmineHintPanel.SetActive(false);
+            return;
+        }
+
+        if(!GoldmineHintPanel.activeSelf)
+        {
+            GoldmineHintPanel.SetActive(true);
+            GoldmineHintPanel.transform.position = Input.mousePosition;
+        }
+
+        goldmineText.text = goldmineSource.ToString();
     }
 
     #endregion

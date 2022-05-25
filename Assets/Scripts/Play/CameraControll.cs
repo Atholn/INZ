@@ -58,8 +58,25 @@ public class CameraControll : MonoBehaviour
 
         UpdateSelection();
         UpdateMouseDetection();
+        UpdateGoldMineHint();
 
         UpdateCodes();
+    }
+
+    private void UpdateGoldMineHint()
+    {
+        ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if(Physics.Raycast(ray, out rayHit))
+        {   
+            GoldMine goldMine = rayHit.collider.gameObject.GetComponent<GoldMine>();
+            if (goldMine == null)
+            {
+                _gameManager.ShowGoldmineHint(-1);
+                return;
+            }
+
+            _gameManager.ShowGoldmineHint(goldMine.GoldResource);
+        }
     }
 
     private void UpdateMouseDetection()

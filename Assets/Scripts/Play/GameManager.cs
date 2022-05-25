@@ -158,7 +158,6 @@ public class GameManager : MonoBehaviour
         if (Input.GetMouseButtonDown(1))
         {
             DestroyItemImages();
-
             building = false;
         }
 
@@ -192,8 +191,6 @@ public class GameManager : MonoBehaviour
 
         UpdateWinRequaired();
     }
-
-
 
     #region Update sources
     internal void UpdateUnitPoints(int whichPlayer)
@@ -491,6 +488,11 @@ public class GameManager : MonoBehaviour
     internal void ShowErrors(bool[] errors)
     {
         _gameUI.ShowErrors(errors);
+    }
+
+    internal void ShowGoldmineHint(float goldmineSource)
+    {
+        _gameUI.ShowGoldmineHint(goldmineSource);
     }
     #endregion
 }
