@@ -393,6 +393,7 @@ public class GameManager : MonoBehaviour
         _gameUI.ShowWinner(winner, _playersMaterials[winner].color);
     }
     #endregion
+
     internal void DestroyItemImages()
     {
         for (int i = 0; i < GameItemControllers.Length; i++)
@@ -479,10 +480,9 @@ public class GameManager : MonoBehaviour
 
         _gameUI.UpdateRawMaterials(2, UnitsPointsUpdate(whichPlayer), UnitsMaxPointsUpdate(whichPlayer));
     }
-
-
     #endregion
 
+    #region Show hints/errors
     internal void ShowHints(string[] texts)
     {
         _gameUI.ShowHints(texts);
@@ -492,4 +492,5 @@ public class GameManager : MonoBehaviour
     {
         _gameUI.ShowErrors(errors);
     }
+    #endregion
 }
