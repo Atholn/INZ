@@ -46,8 +46,6 @@ public class GameManager : MonoBehaviour
 
     private readonly int _maxUnitsPoint = 100;
 
-    //internal int[][][] maps;
-
     public GameObject Fire;
     public GameObject Dust;
 
@@ -112,58 +110,9 @@ public class GameManager : MonoBehaviour
         Pointer.SetActive(true);
         Pointer.GetComponentInChildren<SkinnedMeshRenderer>().material = _playersMaterials[0];
 
-        //CheckWinLose();
-
-        ///
         _gameUI.UpdateRawMaterials(0, 0);
         _gameUI.UpdateRawMaterials(1, 0);
         UpdateUnitPoints(0);
-    }
-
-    internal void UpdateUnitPoints(int whichPlayer)
-    {
-        _players[whichPlayer].actualUnitsPoint = UnitsPointsUpdate(whichPlayer);
-        _players[whichPlayer].actualMaxUnitsPoint = UnitsMaxPointsUpdate(whichPlayer);
-
-        if (whichPlayer == 0)
-            _gameUI.UpdateRawMaterials(2, _players[whichPlayer].actualUnitsPoint, _players[whichPlayer].actualMaxUnitsPoint);
-    }
-
-    public int UnitsPointsUpdate(int whichPlayer)
-    {
-        var points = _playersGameObjects[whichPlayer]
-            .Where(g => g.GetComponent<HumanUnit>() != null && g.GetComponent<HumanUnit>().Hp > 0)
-            .Select(g => g.GetComponent<HumanUnit>().UnitPoint)
-            .Sum();
-        return _players[whichPlayer].actualUnitsPoint = points;
-    }
-
-    internal int UnitsMaxPointsUpdate(int whichPlayer)
-    {
-        var points = _playersGameObjects[whichPlayer]
-            .Where(g => g.GetComponent<BuildingUnit>() != null && g.GetComponent<BuildingUnit>().BuildingPercent > g.GetComponent<BuildingUnit>().CreateTime)
-            .Select(g => g.GetComponent<BuildingUnit>().UnitToCreatePoints)
-            .Sum();
-        return _players[whichPlayer].actualMaxUnitsPoint = points < _maxUnitsPoint ? points : _maxUnitsPoint;
-    }
-
-    internal void UpdateWood(int whichPlayer, int woodCount)
-    {
-        _players[whichPlayer].actualWood += woodCount;
-        if (whichPlayer == 0)
-            _gameUI.UpdateRawMaterials(1, _players[0].actualWood);
-    }
-
-    internal void UpdateGold(int whichPlayer, int goldCount)
-    {
-        _players[whichPlayer].actualGold += goldCount;
-        if (whichPlayer == 0)
-            _gameUI.UpdateRawMaterials(0, _players[0].actualGold);
-    }
-
-    internal void UpgradeUnit(int whichPlayer, int whichUnit)
-    {
-        _players[whichPlayer].upgradeFactor[whichUnit] = UpgradeFactor;
     }
 
     private void InitializePlayers()
@@ -244,6 +193,56 @@ public class GameManager : MonoBehaviour
         UpdateWinRequaired();
     }
 
+
+
+    #region Update sources
+    internal void UpdateUnitPoints(int whichPlayer)
+    {
+        _players[whichPlayer].actualUnitsPoint = UnitsPointsUpdate(whichPlayer);
+        _players[whichPlayer].actualMaxUnitsPoint = UnitsMaxPointsUpdate(whichPlayer);
+
+        if (whichPlayer == 0)
+            _gameUI.UpdateRawMaterials(2, _players[whichPlayer].actualUnitsPoint, _players[whichPlayer].actualMaxUnitsPoint);
+    }
+
+    internal int UnitsPointsUpdate(int whichPlayer)
+    {
+        var points = _playersGameObjects[whichPlayer]
+            .Where(g => g.GetComponent<HumanUnit>() != null && g.GetComponent<HumanUnit>().Hp > 0)
+            .Select(g => g.GetComponent<HumanUnit>().UnitPoint)
+            .Sum();
+        return _players[whichPlayer].actualUnitsPoint = points;
+    }
+
+    internal int UnitsMaxPointsUpdate(int whichPlayer)
+    {
+        var points = _playersGameObjects[whichPlayer]
+            .Where(g => g.GetComponent<BuildingUnit>() != null && g.GetComponent<BuildingUnit>().BuildingPercent > g.GetComponent<BuildingUnit>().CreateTime)
+            .Select(g => g.GetComponent<BuildingUnit>().UnitToCreatePoints)
+            .Sum();
+        return _players[whichPlayer].actualMaxUnitsPoint = points < _maxUnitsPoint ? points : _maxUnitsPoint;
+    }
+
+    internal void UpdateWood(int whichPlayer, int woodCount)
+    {
+        _players[whichPlayer].actualWood += woodCount;
+        if (whichPlayer == 0)
+            _gameUI.UpdateRawMaterials(1, _players[0].actualWood);
+    }
+
+    internal void UpdateGold(int whichPlayer, int goldCount)
+    {
+        _players[whichPlayer].actualGold += goldCount;
+        if (whichPlayer == 0)
+            _gameUI.UpdateRawMaterials(0, _players[0].actualGold);
+    }
+
+    internal void UpgradeUnit(int whichPlayer, int whichUnit)
+    {
+        _players[whichPlayer].upgradeFactor[whichUnit] = UpgradeFactor;
+    }
+    #endregion
+
     #region ChecksWin
     private void UpdateWinRequaired()
     {
@@ -265,15 +264,14 @@ public class GameManager : MonoBehaviour
             }
         }
 
-
         if (ifWin)
         {
             if (sceneToBack == "Campaign")
             {
                 CampaignStorage.Win = true;
             }
-            UnityEngine.SceneManagement.SceneManager.LoadScene(sceneToBack);
             MapToPlayStorage.WinRequarieds = new Dictionary<string, Dictionary<string, string>>();
+            UnityEngine.SceneManagement.SceneManager.LoadScene(sceneToBack);
         }
     }
 
@@ -355,7 +353,6 @@ public class GameManager : MonoBehaviour
                 CheckBuild(ref ifWin, int.Parse(value.Key) - 1, int.Parse(value.Value));
                 continue;
             }
-
         }
     }
 
@@ -376,7 +373,6 @@ public class GameManager : MonoBehaviour
 
         ifWin = building.Count >= countOfBuilidng;
     }
-    #endregion
 
     internal void CheckWinLose()
     {
@@ -396,7 +392,7 @@ public class GameManager : MonoBehaviour
 
         _gameUI.ShowWinner(winner, _playersMaterials[winner].color);
     }
-
+    #endregion
     internal void DestroyItemImages()
     {
         for (int i = 0; i < GameItemControllers.Length; i++)

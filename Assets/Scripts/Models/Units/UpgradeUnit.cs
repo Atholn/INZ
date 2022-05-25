@@ -22,11 +22,6 @@ public class UpgradeUnit : MonoBehaviour
         GetComponent<RawImage>().texture = Unit.GetComponent<Unit>().Profile;
     }
 
-    void Update()
-    {
-
-    }
-
     public void ClickUpdate()
     {
         if (gameManager._players[0].actualGold >= GoldCost &&
