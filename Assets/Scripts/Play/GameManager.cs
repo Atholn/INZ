@@ -449,9 +449,7 @@ public class GameManager : MonoBehaviour
     }
 
     internal int GetMaxSelected()
-    {
-        return _maxSelected;
-    }
+        => _maxSelected;
 
     #region GamePlayer
     public void UnitCreate(int whichPlayer, GameObject unitToCreate, Vector3 position, Vector3 pointerPosition)
