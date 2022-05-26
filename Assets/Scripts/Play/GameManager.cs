@@ -143,7 +143,7 @@ public class GameManager : MonoBehaviour
 
         for (int i = 0; i < _gameStartPoints.Count; i++)
         {
-            _playersGameObjects[i].Add(Instantiate(_townHall, _gameStartPoints[i].UnitStartLocation, _townHall.transform.rotation));
+            _playersGameObjects[i].Add(Instantiate(_townHall, new Vector3(_gameStartPoints[i].UnitStartLocation.x, _townHall.GetComponent<ItemGame>().ItemHeightPosY, _gameStartPoints[i].UnitStartLocation.z), _townHall.transform.rotation));
             _playersGameObjects[i][0].transform.GetComponent<MeshRenderer>().materials[1].color = _playersMaterials[i].color;
             _playersGameObjects[i][0].GetComponent<BuildingUnit>().BuildingPercent = _playersGameObjects[i][0].GetComponent<BuildingUnit>().CreateTime + 0.01f;
             _playersGameObjects[i][0].GetComponent<Unit>().WhichPlayer = i;
