@@ -134,7 +134,7 @@ MonoBehaviour:
   ItemHeightLevel: 1
   ItemHeightPosY: 0.3
   ItemImageComputer: {fileID: 7807356495026858179, guid: 955f6e435fd353642892af315255b5ac, type: 3}
-  HeightBuilding: 3.5
+  HeightBuilding: 3.75
 --- !u!65 &802356331
 BoxCollider:
   m_ObjectHideFlags: 0
