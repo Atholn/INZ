@@ -126,8 +126,19 @@ public class GameManager : MonoBehaviour
             _playersGameObjects.Add(new List<GameObject>());
             _playersMaterials.Add(_gameStartPoints[i].UnitMaterial);
 
-            if (i == 0) _players.Add(new Player { typeOfPlayer = Player.TypeOfPlayer.human, upgradeFactor = new float[3] });
-            else _players.Add(new Player { typeOfPlayer = Player.TypeOfPlayer.computer, whichPlayer = i, upgradeFactor = new float[3] });
+            _players.Add(new Player());
+            _players[i].typeOfPlayer = i == 0 ? Player.TypeOfPlayer.human : Player.TypeOfPlayer.computer;
+
+            int soldierTypesCount = UnitsPrefabs
+                .Where(u => u.GetComponent<Soldier>() != null)
+                .ToList().Count;
+            _players[i].upgradeFactors = new float[soldierTypesCount];
+            for (int j = 0; j < _players[i].upgradeFactors.Length; j++)
+            {
+                _players[i].upgradeFactors[j] = 1;
+            }
+
+            _players[i].whichPlayer = i;
         }
 
         for (int i = 0; i < _gameStartPoints.Count; i++)
@@ -171,6 +182,11 @@ public class GameManager : MonoBehaviour
                     playerObjects += $"{go.name} ";
                 }
                 Debug.Log(playerObjects);
+            }
+
+            foreach (var x in _players[0].upgradeFactors)
+            {
+                Debug.Log("upgrade " + x);
             }
         }
 
@@ -236,7 +252,20 @@ public class GameManager : MonoBehaviour
 
     internal void UpgradeUnit(int whichPlayer, int whichUnit)
     {
-        _players[whichPlayer].upgradeFactor[whichUnit] = UpgradeFactor;
+        _players[whichPlayer].upgradeFactors[whichUnit] = UpgradeFactor;
+
+        var name = UnitsPrefabs[whichUnit + 1].GetComponent<Soldier>().Name;
+
+        var soldiersOneType = _playersGameObjects[whichPlayer]
+            .Where(u => u.GetComponent<Unit>().Name == name)
+            .ToList();
+
+        foreach(var x in soldiersOneType)
+        {
+            var unit = x.GetComponent<Unit>();
+
+            unit.AttackPower = (int)((float)(unit.AttackPower) * UpgradeFactor);
+        }        
     }
     #endregion
 
@@ -360,7 +389,7 @@ public class GameManager : MonoBehaviour
             .Select(b => b.GetComponent<BuildingUnit>())
             .Where(b => b.Name == BuildingsPrefabs[numberOfBuilding].GetComponent<BuildingUnit>().Name &&
                 b.BuildingPercent >= b.CreateTime)
-            .ToList(); 
+            .ToList();
 
         if (building == null)
         {
@@ -469,7 +498,13 @@ public class GameManager : MonoBehaviour
             if (_playersGameObjects[whichPlayer][_playersGameObjects[whichPlayer].Count - 1].GetComponent<Soldier>() != null)
             {
                 Soldier s = _playersGameObjects[whichPlayer][_playersGameObjects[whichPlayer].Count - 1].GetComponent<Soldier>();
+
                 s.SendMessage("Command", pointerPosition, SendMessageOptions.DontRequireReceiver);
+
+                var index = UnitsPrefabs.IndexOf(unitToCreate) - 1;
+                var factor = _players[whichPlayer].upgradeFactors[index];
+
+                s.AttackPower = (int)((float)(s.AttackPower) * factor);
             }
         }
 
