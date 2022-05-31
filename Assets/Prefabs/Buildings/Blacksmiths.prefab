@@ -108,7 +108,7 @@ MonoBehaviour:
   Profile: {fileID: 2800000, guid: a9559f93e2189d74dbb1687f8c8a0e21, type: 3}
   Priority: 0
   CreateTime: 5
-  HeightPosY: 0.01
+  HeightPosY: 0.3
   GoldCost: 0
   WoodCost: 0
   Size: 4

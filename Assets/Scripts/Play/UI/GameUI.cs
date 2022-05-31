@@ -245,7 +245,11 @@ public class GameUI : MonoBehaviour
 
     private void HideSpecialPanel()
     {
-        if (_tmpSpecialPanel != null) _tmpSpecialPanel.SetActive(false);
+        if (_tmpSpecialPanel != null)
+            _tmpSpecialPanel.SetActive(false);
+
+        HintsPanel.SetActive(false);
+        ErrorsPanel.SetActive(false);
         _tmpSpecialPanel = null;
     }
 

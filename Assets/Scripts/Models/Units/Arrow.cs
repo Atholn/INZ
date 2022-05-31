@@ -5,48 +5,56 @@ using UnityEngine.AI;
 
 public class Arrow : MonoBehaviour
 {
-    //private float timmer = 0f;
-    //private float timmerMax = 10f;
-    //private bool ifLanding = false;
-    //private NavMeshAgent nav;
-    internal Vector3 target;
+    [SerializeField]
+    private float torque;
 
-    //private void Update()
-    //{
-    //    //float distance = Vector3.Magnitude(nav.destination - transform.position);
-    //    //if (distance < 1f && !ifLanding)
-    //    //{
-    //    //    nav.velocity = Vector3.zero;
-    //    //    ifLanding = true;
-    //    //}
-        
-    //    //if(ifLanding)
-    //    //{
-    //    //    nav.velocity = Vector3.zero;
-    //    //    timmer += Time.deltaTime;
-
-    //    //    if(timmer > timmerMax)
-    //    //    {
-    //    //        Destroy(gameObject);
-    //    //    }
-    //    //}
-    //}
-
-    Rigidbody rb;
-    private void Start()
-    {
-        rb = GetComponent<Rigidbody>();
-    }
+    private Rigidbody rigidbody;
+    private float timeStopMax = 3f;
+    private float timeStop = 0f;
+    private bool ifStop = false;
+    private int attackPower = 0;
 
     private void Update()
     {
-        transform.rotation = Quaternion.LookRotation(target);//rb.velocity);
-        //rb.MovePosition(new Vector3(0.01f, 0,0.01f));
+        if (ifStop)
+        {
+            timeStop += Time.deltaTime;
+            if (timeStop >= timeStopMax)
+            {
+                Destroy(gameObject);
+            }
+        }
     }
 
-    //internal void SetLandingPlace(Vector3 vector3)
-    //{
-    //    nav = GetComponent<NavMeshAgent>();
-    //    nav.SetDestination(vector3);
-    //}
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(ifStop)
+        {
+            return;
+        }
+
+        rigidbody.velocity = Vector3.zero;
+        rigidbody.freezeRotation = true;
+        transform.SetParent(collision.transform);
+        transform.position += new Vector3(0, 1, 0);
+        ifStop = true;
+
+        Unit unit = collision.transform.GetComponent<Unit>();
+        if(unit != null)
+        {
+            unit.Hp -= attackPower;
+            if(unit is BuildingUnit)
+            {
+                (unit as BuildingUnit).UpdateFire();
+            }
+        }
+    }
+
+    internal void SetLandingPlace(Vector3 vector3, int attackPowerUnit)
+    {
+        attackPower = attackPowerUnit;
+        rigidbody = GetComponent<Rigidbody>();
+        rigidbody.AddForce((vector3 - transform.position) * 10);
+        rigidbody.AddTorque(transform.right * torque);
+    }
 }

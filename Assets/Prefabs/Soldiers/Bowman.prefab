@@ -335,6 +335,7 @@ MonoBehaviour:
   WoodCost: 100
   UnitPoint: 3
   UnitColorNum: 2
+  shootForce: 20
 --- !u!114 &8418041333762072847
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -347,7 +348,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb6378a4a605d294083ed9a765fbb3cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Arrow: {fileID: 463158472352916999, guid: 4afa49cdf34c14343b0f13d428645117, type: 3}
+  Arrow: {fileID: 6765940976332294992, guid: dff91dc7b53ed9544b77d7307e2c0e40, type: 3}
 --- !u!1 &888381768492796571
 GameObject:
   m_ObjectHideFlags: 0

@@ -114,17 +114,22 @@ public class Soldier : HumanUnit
         if (timmer > _attackLenghtTime)
         {
             timmer = 0;
-            target.gameObject.GetComponent<Unit>().Hp -= AttackPower;
-
-            if (target.gameObject.GetComponent<BuildingUnit>() != null)
-            {
-                target.gameObject.GetComponent<BuildingUnit>().UpdateFire();
-            }
 
             if (GetComponentInParent<BowShot>() != null)
             {
-                transform.LookAt(target);
                 BowShoting();
+            }
+            else
+            {
+                Unit unit = target.gameObject.GetComponent<Unit>();
+                if (unit != null)
+                {
+                    unit.Hp -= AttackPower;
+                    if (unit is BuildingUnit)
+                    {
+                        (unit as BuildingUnit).UpdateFire();
+                    }
+                }
             }
 
             if (target.gameObject.GetComponent<Unit>().Hp <= 0)
@@ -140,23 +145,13 @@ public class Soldier : HumanUnit
 
     private void BowShoting()
     {
-        //    BowShot bowShot = GetComponent<BowShot>();
-        //    //GameObject arrow = (Instantiate(bowShot.Arrow, new Vector3 (0,0,0) , bowShot.Arrow.transform.rotation));
-        //    GameObject Arrow = bowShot.Arrow;
-        //    ////arrow.transform.SetParent(transform);
-        //    //arrow.transform.localPosition = new Vector3(transform.position.x, 3, transform.position.z);
-        //    //arrow.GetComponent<Arrow>().SetLandingPlace(target.transform.position);
-
-
-        //    GameObject newArrow = Instantiate(Arrow, transform.position + new Vector3(0,2,0), Arrow.transform.rotation);
-        //    //newArrow.transform.rotation = Arrow.transform.rotation;
-        //    //newArrow.transform.position = transform.position;
-        //    Rigidbody rb = newArrow.GetComponent<Rigidbody>();
-
-        //    //newArrow.GetComponent<Arrow>().SetLandingPlace(target.transform.position);
-        //    newArrow.GetComponent<Arrow>().target = target.position;
-        //    //rb.velocity = transform.forward * 30;
-        //    //rb.MovePosition
+        BowShot bowShot = GetComponent<BowShot>();
+        GameObject shot = Instantiate(bowShot.Arrow, transform.position, bowShot.Arrow.transform.rotation, transform);
+        shot.transform.localPosition += new Vector3(1, 4, 8.5f);
+        shot.transform.rotation = Quaternion.LookRotation(target.position);
+        shot.transform.localScale = new Vector3(1 / transform.localScale.x, 1 / transform.localScale.x, 1 / transform.localScale.x);
+        shot.transform.SetParent(null);
+        shot.GetComponent<Arrow>().SetLandingPlace(new Vector3(target.position.x, shot.transform.position.y, target.position.z), AttackPower);
     }
 
     private void Death()

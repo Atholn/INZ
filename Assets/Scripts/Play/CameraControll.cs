@@ -209,6 +209,14 @@ public class CameraControll : MonoBehaviour
 
                 if (gameObject.GetComponent<Soldier>() != null)
                 {
+                    if (rayHit.collider is TerrainCollider)
+                    {
+                        commandData = rayHit.point;
+
+                        GiveCommands(commandData, "Command");
+                        continue;
+                    }
+
                     int i = 0;
                     int k = -1;
                     for (i = 0; i < _gameManager._playersGameObjects.Count; i++)
