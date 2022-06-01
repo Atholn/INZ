@@ -4492,6 +4492,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Speed: 30
   hpSliderPlayer: {fileID: 1288831602}
+  unitCircleRed: {fileID: 8414172193506436506, guid: 919d9ce7349147945a73b9221ed4ca88, type: 3}
+  unitCircleGreen: {fileID: 1486091727971993827, guid: eb0cd83c56df0264d9dafd03a1331327, type: 3}
+  tmpUnitCircleRed: {fileID: 0}
+  tmpUnitCircleGreen: {fileID: 0}
   commandLayerMask:
     serializedVersion: 2
     m_Bits: 200

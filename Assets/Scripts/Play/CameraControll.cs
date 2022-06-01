@@ -10,6 +10,12 @@ using UnityEngine.UI;
 public class CameraControll : MonoBehaviour
 {
     public float Speed;
+    public GameObject hpSliderPlayer;
+
+    public ParticleSystem unitCircleRed;
+    public ParticleSystem unitCircleGreen;
+    public ParticleSystem tmpUnitCircleRed;
+    public ParticleSystem tmpUnitCircleGreen;
 
     static CameraControll cameraControl;
     new Camera camera;
@@ -24,7 +30,6 @@ public class CameraControll : MonoBehaviour
 
     private bool _ifPlayerUnits = false;
 
-    public GameObject hpSliderPlayer;
 
     private const float _hpBarsShift = 0.001f;
 
@@ -42,6 +47,11 @@ public class CameraControll : MonoBehaviour
         hpSliderPlayer.transform.rotation = transform.rotation;
 
         hpSliderPlayer.SetActive(true);
+
+        tmpUnitCircleRed = Instantiate(unitCircleRed, Vector3.zero, unitCircleRed.transform.rotation);
+        tmpUnitCircleRed.gameObject.SetActive(false);
+        tmpUnitCircleGreen = Instantiate(unitCircleGreen, Vector3.zero, unitCircleGreen.transform.rotation);
+        tmpUnitCircleGreen.gameObject.SetActive(false);
     }
 
     void Update()
@@ -66,8 +76,8 @@ public class CameraControll : MonoBehaviour
     private void UpdateGoldMineHint()
     {
         ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if(Physics.Raycast(ray, out rayHit))
-        {   
+        if (Physics.Raycast(ray, out rayHit))
+        {
             GoldMine goldMine = rayHit.collider.gameObject.GetComponent<GoldMine>();
             if (goldMine == null)
             {
@@ -88,6 +98,7 @@ public class CameraControll : MonoBehaviour
             {
                 if (rayHit.collider.gameObject.GetComponent<Unit>() != null)
                 {
+                    #region hpbar
                     hpSliderPlayer.SetActive(true);
                     hpSliderPlayer.transform.rotation = camera.transform.rotation;
                     hpSliderPlayer.transform.position = rayHit.collider.gameObject.transform.position + new Vector3(0, 5, 0);
@@ -101,14 +112,55 @@ public class CameraControll : MonoBehaviour
                     float posX = -0.5f + (hp / 2 - _hpBarsShift);
 
                     rectTransform.localScale = new Vector3(hp, 1, 1);
-                    rectTransform.localPosition = new Vector3(Input.mousePosition.x < Screen.width/2? -posX : posX, 0, 0);
+                    rectTransform.localPosition = new Vector3(Input.mousePosition.x < Screen.width / 2 ? -posX : posX, 0, 0);
+                    #endregion
+
+                    #region circles
+                    if (_gameManager._playersGameObjects[0].Contains(rayHit.collider.gameObject))
+                    {
+                        UpdateCircleUnit(tmpUnitCircleGreen, rayHit.collider.gameObject);
+                    }
+                    else
+                    {
+                        UpdateCircleUnit(tmpUnitCircleRed, rayHit.collider.gameObject);
+                    }
+                    #endregion
                 }
                 else
                 {
                     hpSliderPlayer.SetActive(false);
+
+                    tmpUnitCircleRed.gameObject.SetActive(false);
+                    tmpUnitCircleRed.transform.SetParent(null);
+                    tmpUnitCircleGreen.gameObject.SetActive(false);
+                    tmpUnitCircleGreen.transform.SetParent(null);
                 }
             }
         }
+    }
+
+    private void UpdateCircleUnit(ParticleSystem unitCircleGreen, GameObject gameObject)
+    {
+        unitCircleGreen.gameObject.SetActive(true);
+        unitCircleGreen.transform.SetParent(rayHit.collider.gameObject.transform);
+
+        #region Position update
+        unitCircleGreen.transform.localPosition = new Vector3(0, 0, 0);
+        Worker worker = gameObject.GetComponent<Worker>();
+        if (worker != null)
+        {
+            unitCircleGreen.transform.localPosition += new Vector3(0, 0, 2);
+        }
+        #endregion
+
+        #region Scale update
+        unitCircleGreen.transform.localScale = new Vector3(1, 1, 1);
+        BuildingUnit buildingUnit = gameObject.GetComponent<BuildingUnit>();
+        if (buildingUnit != null)
+        {
+            unitCircleGreen.transform.localScale *= buildingUnit.Size + 1;
+        }
+        #endregion
     }
 
     private void UpdateCodes()
