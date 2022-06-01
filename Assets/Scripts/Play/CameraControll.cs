@@ -16,7 +16,7 @@ public class CameraControll : MonoBehaviour
     public ParticleSystem unitCircleGreen;
     public ParticleSystem tmpUnitCircleRed;
     public ParticleSystem tmpUnitCircleGreen;
-
+    public List<ParticleSystem> tmpUnitCircles;
     static CameraControll cameraControl;
     new Camera camera;
 
@@ -139,30 +139,6 @@ public class CameraControll : MonoBehaviour
         }
     }
 
-    private void UpdateCircleUnit(ParticleSystem unitCircleGreen, GameObject gameObject)
-    {
-        unitCircleGreen.gameObject.SetActive(true);
-        unitCircleGreen.transform.SetParent(rayHit.collider.gameObject.transform);
-
-        #region Position update
-        unitCircleGreen.transform.localPosition = new Vector3(0, 0, 0);
-        Worker worker = gameObject.GetComponent<Worker>();
-        if (worker != null)
-        {
-            unitCircleGreen.transform.localPosition += new Vector3(0, 0, 2);
-        }
-        #endregion
-
-        #region Scale update
-        unitCircleGreen.transform.localScale = new Vector3(1, 1, 1);
-        BuildingUnit buildingUnit = gameObject.GetComponent<BuildingUnit>();
-        if (buildingUnit != null)
-        {
-            unitCircleGreen.transform.localScale *= buildingUnit.Size + 1;
-        }
-        #endregion
-    }
-
     private void UpdateCodes()
     {
         if (Input.GetMouseButtonDown(4))
@@ -243,10 +219,7 @@ public class CameraControll : MonoBehaviour
             }
 
             ray = camera.ViewportPointToRay(mousePosScreen);
-            if (Physics.Raycast(ray, out rayHit, 1000, commandLayerMask))
-            {
-
-            }
+            Physics.Raycast(ray, out rayHit, 1000, commandLayerMask);
 
             object commandData = null;
 
@@ -383,9 +356,9 @@ public class CameraControll : MonoBehaviour
     {
         _ifPlayerUnits = false;
         _selectUnits.Clear();
+        DeleteCircles();
 
         int i;
-
         for (i = 0; i < _gameManager._playersGameObjects.Count; i++)
         {
             List<GameObject> objects = new List<GameObject>();
@@ -404,10 +377,8 @@ public class CameraControll : MonoBehaviour
                 }
             }
 
-            foreach (GameObject gameObject in objects)
-            {
-                _selectUnits.Add(gameObject);
-            }
+            objects.ForEach(o => _selectUnits.Add(o));
+            CreateCircles();
 
             if (i == 0 && objects.Count != 0)
             {
@@ -433,7 +404,6 @@ public class CameraControll : MonoBehaviour
         {
             if (i > 0)
             {
-                //todo show health 
                 return;
             }
 
@@ -441,6 +411,54 @@ public class CameraControll : MonoBehaviour
             return;
         }
     }
+
+    #region Circles units 
+    private void UpdateCircleUnit(ParticleSystem unitCircle, GameObject gameObject)
+    {
+        unitCircle.gameObject.SetActive(true);
+        unitCircle.transform.SetParent(gameObject.transform);
+
+        #region Position update
+        unitCircle.transform.localPosition = new Vector3(0, 0, 0);
+        Worker worker = gameObject.GetComponent<Worker>();
+        if (worker != null)
+        {
+            unitCircle.transform.localPosition += new Vector3(0, 0, 2);
+        }
+        #endregion
+
+        #region Scale update
+        unitCircle.transform.localScale = Vector3.one;
+        BuildingUnit buildingUnit = gameObject.GetComponent<BuildingUnit>();
+        if (buildingUnit != null)
+        {
+            unitCircle.transform.localScale *= buildingUnit.Size + 1;
+        }
+        #endregion
+    }
+
+    private void CreateCircles()
+    {
+        for (int i = 0; i < _selectUnits.Count; i++)
+        {
+            var tmpUnitCircle =
+                _gameManager._playersGameObjects[0].Contains(_selectUnits[i]) ?
+                unitCircleGreen :
+                unitCircleRed;
+            tmpUnitCircles.Add(Instantiate(tmpUnitCircle, Vector3.zero, unitCircleRed.transform.rotation));
+            UpdateCircleUnit(tmpUnitCircles[i], _selectUnits[i]);
+        }
+    }
+
+    private void DeleteCircles()
+    {
+        for (int i = 0; i < tmpUnitCircles.Count; i++)
+        {
+            Destroy(tmpUnitCircles[i]);
+        }
+        tmpUnitCircles.Clear();
+    }
+    #endregion
 
     private bool TryAddGameObject(GameObject gameObject, ref List<GameObject> objects)
     {
