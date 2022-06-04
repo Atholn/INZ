@@ -438,6 +438,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    #region Profiles
     internal void SetNonProfile()
     {
         actualClickBuild = null;
@@ -475,6 +476,7 @@ public class GameManager : MonoBehaviour
 
         Pointer.SetActive(false);
     }
+    #endregion
 
     internal int GetMaxSelected()
         => _maxSelected;
