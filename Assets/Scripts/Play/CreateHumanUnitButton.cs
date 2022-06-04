@@ -26,7 +26,7 @@ public class CreateHumanUnitButton : MonoBehaviour
 
             buildingParent = gameManager.actualClickBuild;
 
-            buildingParent.CreateUnit(Unit, 0);
+            buildingParent.CreateUnit(Unit);
         }
 
         var hu = Unit.GetComponent<HumanUnit>();
