@@ -72,10 +72,10 @@ public class BuildingUnit : Unit
             return;
         }
 
-        ShotUpdate();
+        UpdateShot();
     }
 
-    private void ShotUpdate()
+    private void UpdateShot()
     {
         if (arrowShot == null || BuildingPercent < CreateTime)
             return;
@@ -128,10 +128,9 @@ public class BuildingUnit : Unit
         dust.SetActive(false);
     }
 
-    internal void CreateUnit(GameObject unitToCreate, int whichPlayer)
+    internal void CreateUnit(GameObject unitToCreate)
     {
         createUnit = true;
-        whichPlayerUnit = whichPlayer;
         queueCreateUnit.Add(unitToCreate);
         queueCreateUnitProgress.Add(0f);
     }
@@ -154,7 +153,8 @@ public class BuildingUnit : Unit
             return;
         }
 
-        if (gameManager._players[0].actualUnitsPoint + queueCreateUnit[0].GetComponent<HumanUnit>().UnitPoint > gameManager._players[0].actualMaxUnitsPoint)
+        if (gameManager._players[WhichPlayer].actualUnitsPoint + queueCreateUnit[0].GetComponent<HumanUnit>().UnitPoint > 
+            gameManager._players[WhichPlayer].actualMaxUnitsPoint)
         {
             return;
         }
@@ -163,7 +163,7 @@ public class BuildingUnit : Unit
 
         if (queueCreateUnitProgress[0] > queueCreateUnit[0].GetComponent<Unit>().CreateTime)
         {
-            gameManager.UnitCreate(whichPlayerUnit, queueCreateUnit[0], transform.position + new Vector3(0, 0, -SizeBuilding / 2), PointerPosition);
+            gameManager.UnitCreate(WhichPlayer, queueCreateUnit[0], transform.position + new Vector3(0, 0, -SizeBuilding / 2), PointerPosition);
             queueCreateUnit.Remove(queueCreateUnit[0]);
             queueCreateUnitProgress.Remove(queueCreateUnitProgress[0]);
 

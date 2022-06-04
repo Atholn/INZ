@@ -213,7 +213,6 @@ public class GameManager : MonoBehaviour
     {
         _players[whichPlayer].actualUnitsPoint = UnitsPointsUpdate(whichPlayer);
         _players[whichPlayer].actualMaxUnitsPoint = UnitsMaxPointsUpdate(whichPlayer);
-        Debug.Log("wp" + whichPlayer);
         if (whichPlayer == 0)
             _gameUI.UpdateRawMaterials(2, _players[whichPlayer].actualUnitsPoint, _players[whichPlayer].actualMaxUnitsPoint);
     }

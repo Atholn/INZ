@@ -375,7 +375,7 @@ public class Player : MonoBehaviour
             .Where(b => b.GetComponent<BuildingUnit>() != null && b.GetComponent<BuildingUnit>().Name == "Barracks")
             .Select(b => b.GetComponent<BuildingUnit>())
             .FirstOrDefault()
-            .CreateUnit(soldierTarget, whichPlayer);
+            .CreateUnit(soldierTarget);
 
         computerTaskAttacking = ComputerTaskAttacking.soldierSelection;
     }
