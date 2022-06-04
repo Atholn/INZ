@@ -417,21 +417,33 @@ public class CameraControll : MonoBehaviour
         unitCircle.gameObject.SetActive(true);
         unitCircle.transform.SetParent(gameObject.transform);
 
-        #region Position update
         unitCircle.transform.localPosition = new Vector3(0, 0, 0);
+        unitCircle.transform.localScale = Vector3.one;
+
+        #region Worker update
         Worker worker = gameObject.GetComponent<Worker>();
         if (worker != null)
         {
             unitCircle.transform.localPosition += new Vector3(0, 0, 2);
+            return;
         }
         #endregion
 
-        #region Scale update
-        unitCircle.transform.localScale = Vector3.one;
+        #region Soldier update
+        Soldier soldier = gameObject.GetComponent<Soldier>();
+        if (soldier != null)
+        {
+            unitCircle.transform.localPosition += new Vector3(0, -6, 0);
+            return;
+        }
+        #endregion
+
+        #region Building update
         BuildingUnit buildingUnit = gameObject.GetComponent<BuildingUnit>();
         if (buildingUnit != null)
         {
             unitCircle.transform.localScale *= buildingUnit.Size + 1;
+            return;
         }
         #endregion
     }

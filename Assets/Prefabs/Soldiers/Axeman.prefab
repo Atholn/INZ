@@ -482,7 +482,7 @@ MonoBehaviour:
   Name: Axeman
   Defense: 7
   AttackPower: 20
-  AttackDistance: 0.5
+  AttackDistance: 0.75
   Profile: {fileID: 2800000, guid: fa1e7dfb2146278418662456fc31f8d4, type: 3}
   Priority: 1
   CreateTime: 10

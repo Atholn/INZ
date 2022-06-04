@@ -105,7 +105,7 @@ public class Soldier : HumanUnit
             timmer = 0;
             return;
         }
-        transform.LookAt(target);
+        transform.LookAt(target.position + new Vector3(0,1,0));
         nav.velocity = Vector3.zero;
         attack = true;
         run = false;
