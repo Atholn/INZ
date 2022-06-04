@@ -18,7 +18,6 @@ public class BuildingUnit : Unit
     /// unit
     /// </summary>
     internal bool createUnit = false;
-    //internal GameObject acutalUnitCreate;
     private List<GameObject> queueCreateUnit = new List<GameObject>();
     private List<float> queueCreateUnitProgress = new List<float>();
     internal float unitCreateProgress;
@@ -31,6 +30,12 @@ public class BuildingUnit : Unit
     private GameObject fire;
     private GameObject dust;
     private int maxParticles;
+
+    private ArrowShot arrowShot;
+    private GameObject nearGameObject;
+
+    private float nextShotTime = 0f;
+    private readonly float _nextShotTimeMax = 2f;
 
     protected override void Start()
     {
@@ -49,7 +54,10 @@ public class BuildingUnit : Unit
         dust.SetActive(false);
 
         maxParticles = gameManager.Fire.GetComponent<ParticleSystem>().main.maxParticles;
+
+        arrowShot = gameObject.GetComponent<ArrowShot>();
     }
+
     protected override void Update()
     {
         base.Update();
@@ -63,6 +71,34 @@ public class BuildingUnit : Unit
             Destroy(gameObject);
             return;
         }
+
+        ShotUpdate();
+    }
+
+    private void ShotUpdate()
+    {
+        if (arrowShot == null || BuildingPercent < CreateTime)
+            return;
+
+        nextShotTime += Time.deltaTime;
+        if (nextShotTime < _nextShotTimeMax)
+            return;
+
+        nearGameObject = gameManager.CheckNearEnemy(WhichPlayer, transform.position);
+        nextShotTime = 0f;
+
+        if (nearGameObject != null)
+        {
+            ArrowShot bowShot = GetComponent<ArrowShot>();
+            GameObject shot = Instantiate(bowShot.Arrow, transform.position, bowShot.Arrow.transform.rotation, transform);
+            //shot.transform.localPosition += new Vector3(0, 10, 0);
+
+            shot.transform.localScale = new Vector3(1 / transform.localScale.x, 1 / transform.localScale.x, 1 / transform.localScale.x);
+            shot.transform.SetParent(null);
+            shot.transform.position = new Vector3(shot.transform.position.x, 10, shot.transform.position.z);
+            shot.GetComponent<Arrow>().SetLandingPlace(nearGameObject.transform.position, AttackPower);
+        }
+        
     }
 
     internal void UpdateFire()
@@ -98,11 +134,6 @@ public class BuildingUnit : Unit
         whichPlayerUnit = whichPlayer;
         queueCreateUnit.Add(unitToCreate);
         queueCreateUnitProgress.Add(0f);
-    }
-
-    internal GameObject HowUnitInID(int i)
-    {
-        return queueCreateUnit[i];
     }
 
     internal void CancelCreateUnit(int i)
@@ -158,13 +189,13 @@ public class BuildingUnit : Unit
         return queueCreateUnit.Count;
     }
 
+    internal GameObject HowUnitInID(int i)
+    {
+        return queueCreateUnit[i];
+    }
 
-
-    ////
     public void UpdateUnitPoints(int whichPlayer)
     {
         gameManager.UpdateUnitPoints(whichPlayer);
     }
-
-
 }

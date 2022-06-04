@@ -228,7 +228,7 @@ GameObject:
   - component: {fileID: 4254229230709917829}
   - component: {fileID: -5203980940988498147}
   - component: {fileID: -8796601668252471853}
-  - component: {fileID: 8418041333762072847}
+  - component: {fileID: 6891508386612684045}
   m_Layer: 3
   m_Name: Bowman
   m_TagString: Untagged
@@ -335,8 +335,7 @@ MonoBehaviour:
   WoodCost: 100
   UnitPoint: 3
   UnitColorNum: 2
-  shootForce: 20
---- !u!114 &8418041333762072847
+--- !u!114 &6891508386612684045
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -345,7 +344,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 864852103316053753}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bb6378a4a605d294083ed9a765fbb3cc, type: 3}
+  m_Script: {fileID: 11500000, guid: e105af80a56085044a784f20adb90b22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Arrow: {fileID: 6765940976332294992, guid: dff91dc7b53ed9544b77d7307e2c0e40, type: 3}

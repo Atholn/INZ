@@ -14,9 +14,9 @@ public class CameraControll : MonoBehaviour
 
     public ParticleSystem unitCircleRed;
     public ParticleSystem unitCircleGreen;
-    public ParticleSystem tmpUnitCircleRed;
-    public ParticleSystem tmpUnitCircleGreen;
-    public List<ParticleSystem> tmpUnitCircles;
+    private ParticleSystem tmpUnitCircleRed;
+    private ParticleSystem tmpUnitCircleGreen;
+    private List<ParticleSystem> tmpUnitCircles;
     static CameraControll cameraControl;
     new Camera camera;
 
@@ -52,6 +52,7 @@ public class CameraControll : MonoBehaviour
         tmpUnitCircleRed.gameObject.SetActive(false);
         tmpUnitCircleGreen = Instantiate(unitCircleGreen, Vector3.zero, unitCircleGreen.transform.rotation);
         tmpUnitCircleGreen.gameObject.SetActive(false);
+        tmpUnitCircles = new List<ParticleSystem>();
     }
 
     void Update()
@@ -336,8 +337,6 @@ public class CameraControll : MonoBehaviour
             else
             {
                 commandData = rayHit.collider.gameObject.GetComponent<Unit>();
-                // todo follow
-                //return;
             }
 
             GiveCommands(commandData, "Command");

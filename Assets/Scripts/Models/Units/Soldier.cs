@@ -115,7 +115,7 @@ public class Soldier : HumanUnit
         {
             timmer = 0;
 
-            if (GetComponentInParent<BowShot>() != null)
+            if (GetComponentInParent<ArrowShot>() != null)
             {
                 BowShoting();
             }
@@ -145,7 +145,7 @@ public class Soldier : HumanUnit
 
     private void BowShoting()
     {
-        BowShot bowShot = GetComponent<BowShot>();
+        ArrowShot bowShot = GetComponent<ArrowShot>();
         GameObject shot = Instantiate(bowShot.Arrow, transform.position, bowShot.Arrow.transform.rotation, transform);
         shot.transform.localPosition += new Vector3(1, 4, 8.5f);
         shot.transform.rotation = Quaternion.LookRotation(target.position);

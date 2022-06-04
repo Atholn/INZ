@@ -213,7 +213,7 @@ public class GameManager : MonoBehaviour
     {
         _players[whichPlayer].actualUnitsPoint = UnitsPointsUpdate(whichPlayer);
         _players[whichPlayer].actualMaxUnitsPoint = UnitsMaxPointsUpdate(whichPlayer);
-
+        Debug.Log("wp" + whichPlayer);
         if (whichPlayer == 0)
             _gameUI.UpdateRawMaterials(2, _players[whichPlayer].actualUnitsPoint, _players[whichPlayer].actualMaxUnitsPoint);
     }
@@ -528,4 +528,30 @@ public class GameManager : MonoBehaviour
         _gameUI.ShowGoldmineHint(goldmineSource);
     }
     #endregion
+
+    internal GameObject CheckNearEnemy(int player, Vector3 shooterPosition)
+    {
+        float nearDistance = -1f;
+        GameObject nearEnemy = null;
+
+        for(int i = 0; i < _playersGameObjects.Count; i++)
+        {
+            if(i == player)
+            {
+                continue;
+            }
+
+            for (int j = 0; j < _playersGameObjects[i].Count; j++)
+            {
+                var tmpDistance = Vector3.Distance(shooterPosition, _playersGameObjects[i][j].transform.position);
+                if(nearEnemy == null || tmpDistance < nearDistance)
+                {
+                    nearDistance = tmpDistance;
+                    nearEnemy = _playersGameObjects[i][j];
+                }
+            }
+        }
+
+        return nearEnemy;
+    }
 }
