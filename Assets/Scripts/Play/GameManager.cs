@@ -508,7 +508,8 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        _gameUI.UpdateRawMaterials(2, UnitsPointsUpdate(whichPlayer), UnitsMaxPointsUpdate(whichPlayer));
+        if(whichPlayer == 0)
+         _gameUI.UpdateRawMaterials(2, UnitsPointsUpdate(whichPlayer), UnitsMaxPointsUpdate(whichPlayer));
     }
     #endregion
 
