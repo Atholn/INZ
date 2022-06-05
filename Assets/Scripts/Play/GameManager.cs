@@ -332,7 +332,8 @@ public class GameManager : MonoBehaviour
             case "0": if (_players[0].actualWood + _players[0].actualGold < int.Parse(addional.First().Value)) ifWin = false; break;
             case "1": if (_players[0].actualGold < int.Parse(addional.First().Value)) ifWin = false; break;
             case "2": if (_players[0].actualWood < int.Parse(addional.First().Value)) ifWin = false; break;
-            case "3": if (_players[0].actualMaxUnitsPoint < int.Parse(addional.First().Value)) ifWin = false; break;
+            case "3": if (_players[0].actualUnitsPoint < int.Parse(addional.First().Value)) ifWin = false; break;
+            case "4": if( _players[0].actualMaxUnitsPoint < int.Parse(addional.First().Value)) ifWin = false; break;
         }
     }
 
