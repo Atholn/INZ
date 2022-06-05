@@ -45,13 +45,21 @@ public class BuildingUnit : Unit
         new Vector3(-0.025f, 0, 0.05f),
         new Vector3(0, 0.025f, 0.05f)
     };
-    
+
     private readonly Vector3[] arrowRotations = new Vector3[]
     {
         new Vector3(0, -90, 0),
         new Vector3(0, -180, 0),
         new Vector3(180, -90, 0),
         new Vector3(0, 0, 0)
+    };
+
+    private readonly Vector3[] arrowShifs = new Vector3[]
+    {
+        new Vector3(-3, 0, 0),
+        new Vector3(0, 0, -3),
+        new Vector3(3, 0, 0),
+        new Vector3(0, 0, 3)
     };
 
     protected override void Start()
@@ -110,21 +118,16 @@ public class BuildingUnit : Unit
             GameObject shot = Instantiate(bowShot.Arrow, transform.position, bowShot.Arrow.transform.rotation, transform);
             shot.transform.localScale = new Vector3(1 / transform.localScale.x, 1 / transform.localScale.x, 1 / transform.localScale.x);
 
-            var distances = new Dictionary<int, float>();
-            distances.Add(0, Vector3.Distance(nearGameObject.transform.position, transform.transform.position + new Vector3(-3, 0, 0)));
-            distances.Add(1, Vector3.Distance(nearGameObject.transform.position, transform.transform.position + new Vector3(0, 0, -3)));
-            distances.Add(2, Vector3.Distance(nearGameObject.transform.position, transform.transform.position + new Vector3(3, 0, 0)));
-            distances.Add(3, Vector3.Distance(nearGameObject.transform.position, transform.transform.position + new Vector3(0, 0, 3)));
+            Dictionary<int, float> distances = new Dictionary<int, float>();
+            for (int i = 0; i < arrowShifs.Length; i++)
+                distances.Add(i, Vector3.Distance(nearGameObject.transform.position, transform.transform.position + arrowShifs[i]));
 
             int index = distances.OrderBy(d => d.Value).FirstOrDefault().Key;
             shot.transform.localPosition = arrowPosiotions[index];
             shot.transform.SetParent(null);
-            
             shot.transform.rotation = Quaternion.Euler(arrowRotations[index]);
-
             shot.GetComponent<Arrow>().SetLandingPlace(nearGameObject.transform.position, AttackPower);
         }
-
     }
 
     internal void UpdateFire()
