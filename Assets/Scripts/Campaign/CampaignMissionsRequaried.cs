@@ -11,7 +11,7 @@ public static class CampaignMissionsRequaried
             case 0: MapToPlayStorage.AddSourcesRequaried(1, 200); break;
             case 1: MapToPlayStorage.AddSourcesRequaried(2, 300); break;
             case 2: MapToPlayStorage.AddBuildingRequaried(0, 1); break; 
-            case 3: MapToPlayStorage.AddSourcesRequaried(4, 100); break;
+            case 3: MapToPlayStorage.AddSourcesRequaried(4, 60); break;
             case 4: 
                 MapToPlayStorage.AddSoldiersRequaried(1, 1);
                 MapToPlayStorage.AddSoldiersRequaried(2, 1);
@@ -25,8 +25,8 @@ public static class CampaignMissionsRequaried
             case 10: MapToPlayStorage.AddDominateRequaried(true); break;
             case 11:
                 MapToPlayStorage.AddSourcesRequaried(0, 1000);
-                MapToPlayStorage.AddSourcesRequaried(3, 100);
-                MapToPlayStorage.AddSourcesRequaried(4, 90);
+                MapToPlayStorage.AddSourcesRequaried(3, 90);
+                MapToPlayStorage.AddSourcesRequaried(4, 100);
                 break;
             case 12: MapToPlayStorage.AddDominateRequaried(true); break;
             case 13: MapToPlayStorage.AddDominateRequaried(true); break;
