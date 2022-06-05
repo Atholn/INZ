@@ -30,14 +30,8 @@ public class FollowScript : MonoBehaviour
         int vx = (int)(mapEditorManager.v.x - (mapEditorManager.v.x % 1));
         int vz = (int)(mapEditorManager.v.z - (mapEditorManager.v.z % 1));
 
-        if(mapEditorManager == null)
-        {
-            transform.position = new Vector3(vx, height + 0.2f, vz);
-            return;
-        }
-
         if (vx >= limit && vx <= mapEditorManager.GetSizeMap()[0] - limit - 1 &&
-            vz >= limit && vz <= mapEditorManager.GetSizeMap()[1] - limit -1)
+            vz >= limit && vz <= mapEditorManager.GetSizeMap()[1] - limit - 1)
         {
             transform.position = new Vector3(vx, height + 0.2f, vz);
         }

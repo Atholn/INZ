@@ -226,17 +226,17 @@ public class CameraControll : MonoBehaviour
 
             foreach (GameObject gameObject in _selectUnits)
             {
+                if(rayHit.collider is null)
+                {
+                    return;
+                }
+
                 if (gameObject.GetComponent<BuildingUnit>() != null)
                 {
                     gameObject.GetComponent<BuildingUnit>().PointerPosition = new Vector3(rayHit.point.x, 0.45f, rayHit.point.z);
                     _gameManager.Pointer.transform.position = new Vector3(rayHit.point.x, 0.45f, rayHit.point.z);
                     continue;
-                }
-                 
-                if(rayHit.collider is null)
-                {
-                    return;
-                }
+                }              
 
                 if (gameObject.GetComponent<Soldier>() != null)
                 {

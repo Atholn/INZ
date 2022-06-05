@@ -556,4 +556,7 @@ public class GameManager : MonoBehaviour
 
         return nearEnemy;
     }
+
+    internal int[] GetSizeMap()
+        => new int [2]{ _map.SizeMapX, _map.SizeMapY };
 }
