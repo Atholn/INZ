@@ -232,6 +232,11 @@ public class CameraControll : MonoBehaviour
                     _gameManager.Pointer.transform.position = new Vector3(rayHit.point.x, 0.45f, rayHit.point.z);
                     continue;
                 }
+                 
+                if(rayHit.collider is null)
+                {
+                    return;
+                }
 
                 if (gameObject.GetComponent<Soldier>() != null)
                 {
