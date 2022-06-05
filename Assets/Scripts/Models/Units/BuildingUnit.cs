@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class BuildingUnit : Unit
@@ -37,6 +38,22 @@ public class BuildingUnit : Unit
     private float nextShotTime = 0f;
     private readonly float _nextShotTimeMax = 2f;
 
+    private readonly Vector3[] arrowPosiotions = new Vector3[]
+    {
+        new Vector3(0.025f, 0, 0.05f),
+        new Vector3(0, -0.025f, 0.05f),
+        new Vector3(-0.025f, 0, 0.05f),
+        new Vector3(0, 0.025f, 0.05f)
+    };
+    
+    private readonly Vector3[] arrowRotations = new Vector3[]
+    {
+        new Vector3(0, -90, 0),
+        new Vector3(0, -180, 0),
+        new Vector3(180, -90, 0),
+        new Vector3(0, 0, 0)
+    };
+
     protected override void Start()
     {
         base.Start();
@@ -48,7 +65,7 @@ public class BuildingUnit : Unit
         dust = Instantiate(gameManager.Dust, new Vector3(transform.position.x, HeightPosY, transform.position.z), gameManager.Dust.transform.rotation);
 
         fire.transform.localScale = new Vector3(Size, Size, Size);
-        dust.transform.localScale = new Vector3(Size, Size, Size/2);
+        dust.transform.localScale = new Vector3(Size, Size, Size / 2);
 
         fire.SetActive(false);
         dust.SetActive(false);
@@ -77,7 +94,7 @@ public class BuildingUnit : Unit
 
     private void UpdateShot()
     {
-        if (arrowShot == null || BuildingPercent < CreateTime)
+        if (arrowShot == null || BuildingPercent < CreateTime || Hp <= 0)
             return;
 
         nextShotTime += Time.deltaTime;
@@ -91,14 +108,23 @@ public class BuildingUnit : Unit
         {
             ArrowShot bowShot = GetComponent<ArrowShot>();
             GameObject shot = Instantiate(bowShot.Arrow, transform.position, bowShot.Arrow.transform.rotation, transform);
-            //shot.transform.localPosition += new Vector3(0, 10, 0);
-
             shot.transform.localScale = new Vector3(1 / transform.localScale.x, 1 / transform.localScale.x, 1 / transform.localScale.x);
+
+            var distances = new Dictionary<int, float>();
+            distances.Add(0, Vector3.Distance(nearGameObject.transform.position, transform.transform.position + new Vector3(-3, 0, 0)));
+            distances.Add(1, Vector3.Distance(nearGameObject.transform.position, transform.transform.position + new Vector3(0, 0, -3)));
+            distances.Add(2, Vector3.Distance(nearGameObject.transform.position, transform.transform.position + new Vector3(3, 0, 0)));
+            distances.Add(3, Vector3.Distance(nearGameObject.transform.position, transform.transform.position + new Vector3(0, 0, 3)));
+
+            int index = distances.OrderBy(d => d.Value).FirstOrDefault().Key;
+            shot.transform.localPosition = arrowPosiotions[index];
             shot.transform.SetParent(null);
-            shot.transform.position = new Vector3(shot.transform.position.x, 10, shot.transform.position.z);
+            
+            shot.transform.rotation = Quaternion.Euler(arrowRotations[index]);
+
             shot.GetComponent<Arrow>().SetLandingPlace(nearGameObject.transform.position, AttackPower);
         }
-        
+
     }
 
     internal void UpdateFire()
@@ -153,7 +179,7 @@ public class BuildingUnit : Unit
             return;
         }
 
-        if (gameManager._players[WhichPlayer].actualUnitsPoint + queueCreateUnit[0].GetComponent<HumanUnit>().UnitPoint > 
+        if (gameManager._players[WhichPlayer].actualUnitsPoint + queueCreateUnit[0].GetComponent<HumanUnit>().UnitPoint >
             gameManager._players[WhichPlayer].actualMaxUnitsPoint)
         {
             return;
