@@ -144,10 +144,11 @@ public class CameraControll : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(4))
         {
-            _gameManager._players[0].actualWood += 1000;
-            _gameManager._players[0].actualGold += 1000;
-            _gameManager._players[1].actualWood += 1000;
-            _gameManager._players[1].actualGold += 1000;
+            for (int i = 0; i < _gameManager._players.Count; i++)
+            {
+                _gameManager.UpdateWood(i, 1000);
+                _gameManager.UpdateGold(i, 1000);
+            }
         }
     }
 
@@ -226,7 +227,7 @@ public class CameraControll : MonoBehaviour
 
             foreach (GameObject gameObject in _selectUnits)
             {
-                if(rayHit.collider is null)
+                if (rayHit.collider is null)
                 {
                     return;
                 }
@@ -236,7 +237,7 @@ public class CameraControll : MonoBehaviour
                     gameObject.GetComponent<BuildingUnit>().PointerPosition = new Vector3(rayHit.point.x, 0.45f, rayHit.point.z);
                     _gameManager.Pointer.transform.position = new Vector3(rayHit.point.x, 0.45f, rayHit.point.z);
                     continue;
-                }              
+                }
 
                 if (gameObject.GetComponent<Soldier>() != null)
                 {
