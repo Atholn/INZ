@@ -226,15 +226,15 @@ public class CameraControll : MonoBehaviour
             ray = camera.ViewportPointToRay(mousePosScreen);
             Physics.Raycast(ray, out rayHit, 1000, commandLayerMask);
 
+            if (rayHit.collider is null)
+            {
+                return;
+            }
+
             object commandData = null;
 
             foreach (GameObject gameObject in _selectUnits)
             {
-                if (rayHit.collider is null)
-                {
-                    return;
-                }
-
                 if (gameObject.GetComponent<BuildingUnit>() != null)
                 {
                     gameObject.GetComponent<BuildingUnit>().PointerPosition = new Vector3(rayHit.point.x, 0.45f, rayHit.point.z);
@@ -247,7 +247,6 @@ public class CameraControll : MonoBehaviour
                     if (rayHit.collider is TerrainCollider)
                     {
                         commandData = rayHit.point;
-
                         GiveCommands(commandData, "Command");
                         continue;
                     }
