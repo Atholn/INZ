@@ -569,15 +569,17 @@ public class GameManager : MonoBehaviour
                         new Vector3(x, buildingPlaceHeigh, z),
                         BuildingPlacePrefab.transform.rotation);
         var buildingUnit = building.GetComponent<BuildingUnit>();
+        var size = buildingUnit.Size;
 
-        var size = building.GetComponent<BuildingUnit>().Size;
         buildingPlace.transform.localScale =
             new Vector3(size * buildingPlace.transform.localScale.x, size * buildingPlace.transform.localScale.y, buildingPlace.transform.localScale.z);
-        buildingUnit.buildingPlace = buildingPlace;
 
         var dust = buildingPlace.GetComponentInChildren<ParticleSystem>().gameObject;
         dust.transform.localScale *= size;
-        buildingUnit.dust = dust;
         dust.SetActive(false);
+
+        buildingUnit.buildingPlace = buildingPlace;
+        buildingUnit.dust = dust;
+        buildingPlace.GetComponent<BuildingPlace>().Building = building;
     }
 }

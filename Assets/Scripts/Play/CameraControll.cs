@@ -214,8 +214,6 @@ public class CameraControll : MonoBehaviour
         }
     }
 
-    
-
     void GiveCommand()
     {
         if (_ifPlayerUnits)
@@ -282,6 +280,13 @@ public class CameraControll : MonoBehaviour
 
                 if (gameObject.GetComponent<Worker>() != null)
                 {
+                    if (rayHit.collider.gameObject.GetComponent<BuildingPlace>() != null)
+                    {
+                        commandData = rayHit.collider.gameObject.GetComponent<BuildingPlace>().Building;
+                        GiveCommands(commandData, "Command");
+                        continue;
+                    }
+
                     if (rayHit.collider.gameObject.GetComponent<Tree>() != null)
                     {
                         commandData = rayHit.collider.gameObject.GetComponent<Tree>();
@@ -298,7 +303,6 @@ public class CameraControll : MonoBehaviour
                     if (rayHit.collider is TerrainCollider)
                     {
                         commandData = rayHit.point;
-
                         GiveCommands(commandData, "Command");
                         continue;
                     }
