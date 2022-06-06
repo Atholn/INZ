@@ -167,6 +167,7 @@ public class Worker : HumanUnit
         }
 
         bU.DustOff();
+        bU.DestroyBuildingEffects();
         bU.PointerPosition = new Vector3(target.transform.position.x, 0.45f, target.transform.position.z - (bU.Size / 2) - 1);
         bU.UpdateUnitPoints(WhichPlayer);
 

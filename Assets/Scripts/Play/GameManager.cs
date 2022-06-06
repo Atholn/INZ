@@ -46,8 +46,10 @@ public class GameManager : MonoBehaviour
 
     private readonly int _maxUnitsPoint = 100;
 
-    public GameObject Fire;
-    public GameObject Dust;
+    public GameObject FirePrefab;
+    public GameObject DustPrefab;
+    public GameObject BuildingPlacePrefab;
+    internal float buildingPlaceHeigh = 0.75f;
 
     public float UpgradeFactor = 1.2f;
 
@@ -560,4 +562,22 @@ public class GameManager : MonoBehaviour
 
     internal int[] GetSizeMap()
         => new int [2]{ _map.SizeMapX, _map.SizeMapY };
+
+    internal void GenerateBuildingPlaceAndDust(GameObject building, float x, float z)
+    {
+        GameObject buildingPlace = Instantiate(BuildingPlacePrefab,
+                        new Vector3(x, buildingPlaceHeigh, z),
+                        BuildingPlacePrefab.transform.rotation);
+        var buildingUnit = building.GetComponent<BuildingUnit>();
+
+        var size = building.GetComponent<BuildingUnit>().Size;
+        buildingPlace.transform.localScale =
+            new Vector3(size * buildingPlace.transform.localScale.x, size * buildingPlace.transform.localScale.y, buildingPlace.transform.localScale.z);
+        buildingUnit.buildingPlace = buildingPlace;
+
+        var dust = buildingPlace.GetComponentInChildren<ParticleSystem>().gameObject;
+        dust.transform.localScale *= size;
+        buildingUnit.dust = dust;
+        dust.SetActive(false);
+    }
 }

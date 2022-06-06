@@ -30,7 +30,6 @@ public class CameraControll : MonoBehaviour
 
     private bool _ifPlayerUnits = false;
 
-
     private const float _hpBarsShift = 0.001f;
 
     private void Awake()
@@ -190,9 +189,9 @@ public class CameraControll : MonoBehaviour
             _gameManager.UpdateWood(0, -_gameManager.GameItemControllers[_gameManager.CurrentButtonPressed].item.GetComponent<Unit>().WoodCost);
             _gameManager.UpdateGold(0, -_gameManager.GameItemControllers[_gameManager.CurrentButtonPressed].item.GetComponent<Unit>().GoldCost);
 
-            GameObject building = (Instantiate(_gameManager.GameItemControllers[_gameManager.CurrentButtonPressed].item.ItemPrefab,
+            GameObject building = Instantiate(_gameManager.GameItemControllers[_gameManager.CurrentButtonPressed].item.ItemPrefab,
                 new Vector3(_gameManager.v.x, -(_gameManager.GameItemControllers[_gameManager.CurrentButtonPressed].item as ItemGame).HeightBuilding, _gameManager.v.z),
-                _gameManager.GameItemControllers[_gameManager.CurrentButtonPressed].item.ItemPrefab.transform.rotation));
+                _gameManager.GameItemControllers[_gameManager.CurrentButtonPressed].item.ItemPrefab.transform.rotation);
 
             _gameManager._playersGameObjects[0].Add(building);
             _gameManager.DestroyItemImages();
@@ -200,6 +199,10 @@ public class CameraControll : MonoBehaviour
 
             _gameManager._playersGameObjects[0][_gameManager._playersGameObjects[0].Count - 1].GetComponent<MeshRenderer>().materials[1].color = _gameManager._playersMaterials[0].color;
             _gameManager._playersGameObjects[0][_gameManager._playersGameObjects[0].Count - 1].GetComponent<Unit>().WhichPlayer = 0;
+
+            #region Building place and dust
+            _gameManager.GenerateBuildingPlaceAndDust(building, _gameManager.v.x, _gameManager.v.z);
+            #endregion
 
             GiveCommands(building, "Command");
             return;
@@ -210,6 +213,8 @@ public class CameraControll : MonoBehaviour
             GiveCommand();
         }
     }
+
+    
 
     void GiveCommand()
     {

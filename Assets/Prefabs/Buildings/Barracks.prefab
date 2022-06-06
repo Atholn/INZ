@@ -113,7 +113,7 @@ MonoBehaviour:
   Size: 8
   PlaceWood: 0
   PlaceGold: 0
-  SizeBuilding: 6
+  SizeBuilding: 8
   CanCreateUnit: 1
   UnitToCreatePoints: 0
 --- !u!114 &6440763114986004256

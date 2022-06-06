@@ -22,14 +22,14 @@ public class BuildingUnit : Unit
     private List<GameObject> queueCreateUnit = new List<GameObject>();
     private List<float> queueCreateUnitProgress = new List<float>();
     internal float unitCreateProgress;
-    private int whichPlayerUnit;
 
     private GameManager gameManager;
 
     public int UnitToCreatePoints = 0;
 
     private GameObject fire;
-    private GameObject dust;
+    internal GameObject dust;
+    internal GameObject buildingPlace;
     private int maxParticles;
 
     private ArrowShot arrowShot;
@@ -62,6 +62,8 @@ public class BuildingUnit : Unit
         new Vector3(0, 0, 3)
     };
 
+
+
     protected override void Start()
     {
         base.Start();
@@ -69,16 +71,16 @@ public class BuildingUnit : Unit
 
         float h = gameObject.GetComponent<ItemGame>().HeightBuilding;
 
-        fire = Instantiate(gameManager.Fire, new Vector3(transform.position.x, h, transform.position.z), gameManager.Fire.transform.rotation);
-        dust = Instantiate(gameManager.Dust, new Vector3(transform.position.x, HeightPosY, transform.position.z), gameManager.Dust.transform.rotation);
+        fire = Instantiate(gameManager.FirePrefab, new Vector3(transform.position.x, h, transform.position.z), gameManager.FirePrefab.transform.rotation);
+        //dust = Instantiate(gameManager.Dust, new Vector3(transform.position.x, HeightPosY, transform.position.z), gameManager.Dust.transform.rotation);
 
         fire.transform.localScale = new Vector3(Size, Size, Size);
-        dust.transform.localScale = new Vector3(Size, Size, Size / 2);
+        //dust.transform.localScale = new Vector3(Size, Size, Size / 2);
 
         fire.SetActive(false);
-        dust.SetActive(false);
+        //dust.SetActive(false);
 
-        maxParticles = gameManager.Fire.GetComponent<ParticleSystem>().main.maxParticles;
+        maxParticles = gameManager.FirePrefab.GetComponent<ParticleSystem>().main.maxParticles;
 
         arrowShot = gameObject.GetComponent<ArrowShot>();
     }
@@ -92,7 +94,6 @@ public class BuildingUnit : Unit
         if (Hp <= 0)
         {
             Destroy(fire);
-            Destroy(dust);
             Destroy(gameObject);
             return;
         }
@@ -226,5 +227,11 @@ public class BuildingUnit : Unit
     public void UpdateUnitPoints(int whichPlayer)
     {
         gameManager.UpdateUnitPoints(whichPlayer);
+    }
+
+    internal void DestroyBuildingEffects()
+    {
+        Destroy(dust);
+        Destroy(buildingPlace);
     }
 }
