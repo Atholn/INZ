@@ -36,23 +36,9 @@ public class Unit : MonoBehaviour
         if (Hp <= 0)
         {
             GameManager gameManager = GameObject.FindObjectOfType<GameManager>();
-
             gameManager._playersGameObjects[WhichPlayer].Remove(gameObject);
             gameManager.UpdateUnitPoints(WhichPlayer);
-
-            var redCircle = gameObject.transform.Find("Enemy Particle System(Clone)");
-            var greenCircle = gameObject.transform.Find("Player Particle System(Clone)");
-
-            if(redCircle != null)
-            {
-                redCircle.transform.SetParent(null);
-            }
-
-            if (greenCircle != null)
-            {
-                greenCircle.transform.SetParent(null);
-            }
-            //gameManager.CheckWinLose();
+            gameManager.SetNullParentInCircles(gameObject);
         }
     }
 }

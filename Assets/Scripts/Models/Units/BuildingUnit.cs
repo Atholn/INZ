@@ -62,26 +62,17 @@ public class BuildingUnit : Unit
         new Vector3(0, 0, 3)
     };
 
-
-
     protected override void Start()
     {
         base.Start();
         gameManager = GameObject.FindObjectOfType<GameManager>();
 
         float h = gameObject.GetComponent<ItemGame>().HeightBuilding;
-
         fire = Instantiate(gameManager.FirePrefab, new Vector3(transform.position.x, h, transform.position.z), gameManager.FirePrefab.transform.rotation);
-        //dust = Instantiate(gameManager.Dust, new Vector3(transform.position.x, HeightPosY, transform.position.z), gameManager.Dust.transform.rotation);
-
         fire.transform.localScale = new Vector3(Size, Size, Size);
-        //dust.transform.localScale = new Vector3(Size, Size, Size / 2);
-
         fire.SetActive(false);
-        //dust.SetActive(false);
 
         maxParticles = gameManager.FirePrefab.GetComponent<ParticleSystem>().main.maxParticles;
-
         arrowShot = gameObject.GetComponent<ArrowShot>();
     }
 
@@ -231,6 +222,7 @@ public class BuildingUnit : Unit
 
     internal void DestroyBuildingEffects()
     {
+        gameManager.SetNullParentInCircles(buildingPlace);
         Destroy(dust);
         Destroy(buildingPlace);
     }

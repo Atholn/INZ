@@ -51,6 +51,12 @@ public class GameManager : MonoBehaviour
     public GameObject BuildingPlacePrefab;
     internal float buildingPlaceHeigh = 0.75f;
 
+    public ParticleSystem unitCircleGreen;
+    public ParticleSystem unitCircleRed;
+    private ParticleSystem tmpUnitCircleGreen; //0
+    private ParticleSystem tmpUnitCircleRed; //1
+    private List<ParticleSystem> tmpUnitCircles;
+
     public float UpgradeFactor = 1.2f;
 
     private Dictionary<string, Dictionary<string, string>> winRequarieds;
@@ -115,6 +121,17 @@ public class GameManager : MonoBehaviour
         _gameUI.UpdateRawMaterials(0, 0);
         _gameUI.UpdateRawMaterials(1, 0);
         UpdateUnitPoints(0);
+
+        InitializeCircles();
+    }
+
+    private void InitializeCircles()
+    {
+        tmpUnitCircleRed = Instantiate(unitCircleRed, Vector3.zero, unitCircleRed.transform.rotation);
+        tmpUnitCircleRed.gameObject.SetActive(false);
+        tmpUnitCircleGreen = Instantiate(unitCircleGreen, Vector3.zero, unitCircleGreen.transform.rotation);
+        tmpUnitCircleGreen.gameObject.SetActive(false);
+        tmpUnitCircles = new List<ParticleSystem>();
     }
 
     private void InitializePlayers()
@@ -582,4 +599,99 @@ public class GameManager : MonoBehaviour
         buildingUnit.dust = dust;
         buildingPlace.GetComponent<BuildingPlace>().Building = building;
     }
+
+
+    #region Circles units 
+    internal void UpdateCircleUnitFromCamera(int which, GameObject gameObject)
+        => UpdateCircleUnit(which == 0 ? tmpUnitCircleGreen : tmpUnitCircleRed, gameObject);
+
+    internal void HideTmpCircle(int which)
+        => HideCircle(which == 0 ? tmpUnitCircleGreen : tmpUnitCircleRed);
+
+    internal void CreateCircles(List<GameObject> _selectUnits)
+    {
+        for (int i = 0; i < _selectUnits.Count; i++)
+        {
+            var tmpUnitCircle =
+                _playersGameObjects[0].Contains(_selectUnits[i]) ?
+                unitCircleGreen :
+                unitCircleRed;
+            tmpUnitCircles.Add(Instantiate(tmpUnitCircle, Vector3.zero, unitCircleRed.transform.rotation));
+            UpdateCircleUnit(tmpUnitCircles[i], _selectUnits[i]);
+        }
+    }
+
+    internal void DeleteCircles()
+    {
+        for (int i = 0; i < tmpUnitCircles.Count; i++)
+        {
+            Destroy(tmpUnitCircles[i]);
+        }
+        tmpUnitCircles.Clear();
+    }
+
+    internal void SetNullParentInCircles(GameObject parentGameObject)
+    {
+        if (tmpUnitCircleGreen.transform.IsChildOf(parentGameObject.transform))
+        {
+            HideCircle(tmpUnitCircleGreen);
+        }
+
+        if (tmpUnitCircleRed.transform.IsChildOf(parentGameObject.transform))
+        {
+            HideCircle(tmpUnitCircleRed);
+        }
+    }
+
+    private void UpdateCircleUnit(ParticleSystem unitCircle, GameObject gameObject)
+    {
+        unitCircle.gameObject.SetActive(true);
+        unitCircle.transform.SetParent(gameObject.transform);
+
+        unitCircle.transform.localPosition = new Vector3(0, 0, 0);
+        unitCircle.transform.localScale = Vector3.one;
+
+        #region Worker update
+        Worker worker = gameObject.GetComponent<Worker>();
+        if (worker != null)
+        {
+            unitCircle.transform.localPosition += new Vector3(0, 0, 2);
+            return;
+        }
+        #endregion
+
+        #region Soldier update
+        Soldier soldier = gameObject.GetComponent<Soldier>();
+        if (soldier != null)
+        {
+            unitCircle.transform.localPosition += new Vector3(0, -6, 0);
+            return;
+        }
+        #endregion
+
+        #region Building update
+        BuildingUnit buildingUnit = gameObject.GetComponent<BuildingUnit>();
+        if (buildingUnit != null)
+        {
+            if (buildingUnit.buildingPlace != null)
+            {
+                unitCircle.transform.SetParent(buildingUnit.buildingPlace.transform);
+                unitCircle.transform.localPosition = new Vector3(0, 0, 0);
+                unitCircle.transform.localScale = Vector3.one;
+            }
+            //unitCircle.transform.localPosition += new Vector3(0, 1, 0);
+            unitCircle.transform.localScale *= buildingUnit.Size + 1;
+
+            return;
+        }
+        #endregion
+    }
+
+    private void HideCircle(ParticleSystem circle)
+    {
+        circle.gameObject.SetActive(false);
+        circle.transform.SetParent(null);
+    }
+    #endregion
+
 }

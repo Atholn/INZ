@@ -4444,8 +4444,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Speed: 30
   hpSliderPlayer: {fileID: 1288831602}
-  unitCircleRed: {fileID: 8414172193506436506, guid: 919d9ce7349147945a73b9221ed4ca88, type: 3}
-  unitCircleGreen: {fileID: 1486091727971993827, guid: eb0cd83c56df0264d9dafd03a1331327, type: 3}
   commandLayerMask:
     serializedVersion: 2
     m_Bits: 200
@@ -5283,6 +5281,8 @@ MonoBehaviour:
   FirePrefab: {fileID: 6489927978423749966, guid: 80bf0e1a219a1e2458fec6f1e7a0a870, type: 3}
   DustPrefab: {fileID: 5453611526577253938, guid: e8d922be61c06a94f83ccb533bc7ed73, type: 3}
   BuildingPlacePrefab: {fileID: 1204660787036148196, guid: a7a60d5a8c0ce4b438c0abb86d315776, type: 3}
+  unitCircleGreen: {fileID: 1486091727971993827, guid: eb0cd83c56df0264d9dafd03a1331327, type: 3}
+  unitCircleRed: {fileID: 8414172193506436506, guid: 919d9ce7349147945a73b9221ed4ca88, type: 3}
   UpgradeFactor: 1.2
 --- !u!4 &1251306219
 Transform:

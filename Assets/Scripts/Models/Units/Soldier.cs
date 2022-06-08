@@ -150,7 +150,7 @@ public class Soldier : HumanUnit
         shot.transform.localPosition += new Vector3(1, 4, 8.5f);
         shot.transform.rotation = Quaternion.LookRotation(target.position);
         shot.transform.localScale = new Vector3(1 / transform.localScale.x, 1 / transform.localScale.x, 1 / transform.localScale.x);
-        //shot.transform.SetParent(null);
+        shot.transform.SetParent(null);
         shot.GetComponent<Arrow>().SetLandingPlace(new Vector3(target.position.x, shot.transform.position.y, target.position.z), AttackPower);
     }
 
