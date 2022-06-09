@@ -39,7 +39,6 @@ public class CameraControll : MonoBehaviour
         _gameManager = GameObject.FindObjectOfType<GameManager>();
 
         hpSliderPlayer.transform.rotation = transform.rotation;
-
         hpSliderPlayer.SetActive(true);
     }
 
@@ -83,52 +82,68 @@ public class CameraControll : MonoBehaviour
         if (!Input.GetMouseButton(0))
         {
             ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out rayHit))
+            Physics.Raycast(ray, out rayHit);
+
+            if (rayHit.collider.gameObject.GetComponent<Unit>() != null)
             {
-                if (rayHit.collider.gameObject.GetComponent<Unit>() != null || rayHit.collider.gameObject.GetComponent<BuildingPlace>() != null)
+                HpBarUpdateForUnit();
+
+                if (_gameManager._playersGameObjects[0].Contains(rayHit.collider.gameObject))
                 {
-                    #region hpbar
-                    hpSliderPlayer.SetActive(true);
-                    hpSliderPlayer.transform.rotation = camera.transform.rotation;
-                    hpSliderPlayer.transform.position = rayHit.collider.gameObject.transform.position + new Vector3(0, 5, 0);
-
-                    Unit unit = rayHit.collider.gameObject.GetComponent<Unit>();
-
-                    if(unit == null)
-                    {
-                        unit = rayHit.collider.gameObject.GetComponent<BuildingPlace>().Building.GetComponent<Unit>();
-                    }
-
-                    hpSliderPlayer.transform.localScale = new Vector3((float)unit.HpMax / 100, 1, 1);
-
-                    RectTransform rectTransform = hpSliderPlayer.GetComponentsInChildren<RectTransform>()[1];
-                    float hp = (float)unit.Hp / (float)unit.HpMax;
-                    float posX = -0.5f + (hp / 2 - _hpBarsShift);
-
-                    rectTransform.localScale = new Vector3(hp, 1, 1);
-                    rectTransform.localPosition = new Vector3(Input.mousePosition.x < Screen.width / 2 ? -posX : posX, 0, 0);
-                    #endregion
-
-                    #region circles
-                    if (_gameManager._playersGameObjects[0].Contains(rayHit.collider.gameObject))
-                    {
-                        _gameManager.UpdateCircleUnitFromCamera(0, rayHit.collider.gameObject);
-                    }
-                    else
-                    {
-                        _gameManager.UpdateCircleUnitFromCamera(1, rayHit.collider.gameObject);
-                    }
-                    #endregion
+                    _gameManager.UpdateCircleUnitFromCamera(0, rayHit.collider.gameObject);
                 }
                 else
                 {
-                    hpSliderPlayer.SetActive(false);
-
-                    _gameManager.HideTmpCircle(0);
-                    _gameManager.HideTmpCircle(1);
+                    _gameManager.UpdateCircleUnitFromCamera(1, rayHit.collider.gameObject);
                 }
+
+                return;
             }
+
+            if(rayHit.collider.gameObject.GetComponent<BuildingPlace>() != null)
+            {
+                HpBarUpdateForUnit();
+
+                GameObject building = rayHit.collider.gameObject.GetComponent<BuildingPlace>().Building;
+                if (_gameManager._playersGameObjects[0].Contains(building))
+                {
+                    _gameManager.UpdateCircleUnitFromCamera(0, rayHit.collider.gameObject);
+                }
+                else
+                {
+                    _gameManager.UpdateCircleUnitFromCamera(1, rayHit.collider.gameObject);
+                }
+
+                return;
+            }
+
+            hpSliderPlayer.SetActive(false);
+            _gameManager.HideTmpCircle(0);
+            _gameManager.HideTmpCircle(1);              
         }
+    }
+
+    private void HpBarUpdateForUnit()
+    {
+        hpSliderPlayer.SetActive(true);
+        hpSliderPlayer.transform.rotation = camera.transform.rotation;
+        hpSliderPlayer.transform.position = rayHit.collider.gameObject.transform.position + new Vector3(0, 5, 0);
+
+        Unit unit = rayHit.collider.gameObject.GetComponent<Unit>();
+
+        if (unit == null)
+        {
+            unit = rayHit.collider.gameObject.GetComponent<BuildingPlace>().Building.GetComponent<Unit>();
+        }
+
+        hpSliderPlayer.transform.localScale = new Vector3((float)unit.HpMax / 100, 1, 1);
+
+        RectTransform rectTransform = hpSliderPlayer.GetComponentsInChildren<RectTransform>()[1];
+        float hp = (float)unit.Hp / (float)unit.HpMax;
+        float posX = -0.5f + (hp / 2 - _hpBarsShift);
+
+        rectTransform.localScale = new Vector3(hp, 1, 1);
+        rectTransform.localPosition = new Vector3(Input.mousePosition.x < Screen.width / 2 ? -posX : posX, 0, 0);
     }
 
     private void UpdateCodes()

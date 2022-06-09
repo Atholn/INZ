@@ -127,10 +127,10 @@ public class GameManager : MonoBehaviour
 
     private void InitializeCircles()
     {
-        tmpUnitCircleRed = Instantiate(unitCircleRed, Vector3.zero, unitCircleRed.transform.rotation);
-        tmpUnitCircleRed.gameObject.SetActive(false);
         tmpUnitCircleGreen = Instantiate(unitCircleGreen, Vector3.zero, unitCircleGreen.transform.rotation);
         tmpUnitCircleGreen.gameObject.SetActive(false);
+        tmpUnitCircleRed = Instantiate(unitCircleRed, Vector3.zero, unitCircleRed.transform.rotation);
+        tmpUnitCircleRed.gameObject.SetActive(false);
         tmpUnitCircles = new List<ParticleSystem>();
     }
 
@@ -643,16 +643,16 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void UpdateCircleUnit(ParticleSystem unitCircle, GameObject gameObject)
+    private void UpdateCircleUnit(ParticleSystem unitCircle, GameObject gameObjectWithCircle)
     {
         unitCircle.gameObject.SetActive(true);
-        unitCircle.transform.SetParent(gameObject.transform);
+        unitCircle.transform.SetParent(gameObjectWithCircle.transform);
 
         unitCircle.transform.localPosition = new Vector3(0, 0, 0);
         unitCircle.transform.localScale = Vector3.one;
 
         #region Worker update
-        Worker worker = gameObject.GetComponent<Worker>();
+        Worker worker = gameObjectWithCircle.GetComponent<Worker>();
         if (worker != null)
         {
             unitCircle.transform.localPosition += new Vector3(0, 0, 2);
@@ -661,7 +661,7 @@ public class GameManager : MonoBehaviour
         #endregion
 
         #region Soldier update
-        Soldier soldier = gameObject.GetComponent<Soldier>();
+        Soldier soldier = gameObjectWithCircle.GetComponent<Soldier>();
         if (soldier != null)
         {
             unitCircle.transform.localPosition += new Vector3(0, -6, 0);
@@ -670,18 +670,19 @@ public class GameManager : MonoBehaviour
         #endregion
 
         #region Building update
-        BuildingUnit buildingUnit = gameObject.GetComponent<BuildingUnit>();
+        BuildingUnit buildingUnit = gameObjectWithCircle.GetComponent<BuildingUnit>();
         if (buildingUnit != null)
         {
-            if (buildingUnit.buildingPlace != null)
-            {
-                unitCircle.transform.SetParent(buildingUnit.buildingPlace.transform);
-                unitCircle.transform.localPosition = new Vector3(0, 0, 0);
-                unitCircle.transform.localScale = Vector3.one;
-            }
-            //unitCircle.transform.localPosition += new Vector3(0, 1, 0);
             unitCircle.transform.localScale *= buildingUnit.Size + 1;
+            return;
+        }
+        #endregion
 
+        #region
+        BuildingPlace buildingPlace = gameObjectWithCircle.GetComponent<BuildingPlace>();
+        if(buildingPlace != null)
+        {           
+            unitCircle.transform.localScale *= buildingPlace.Building.GetComponent<BuildingUnit>().Size + 1;
             return;
         }
         #endregion
