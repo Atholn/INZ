@@ -40,11 +40,6 @@ public class MainMenuManager : MonoBehaviour
         SceneManager.LoadScene("Sirmish");
     }
 
-    public void FreeGame()
-    {
-        SceneManager.LoadScene("FreeGame");
-    }
-
     public void Editor()
     {
         SceneManager.LoadScene("Editor");
