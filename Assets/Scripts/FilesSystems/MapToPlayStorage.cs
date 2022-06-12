@@ -14,8 +14,6 @@ public class MapToPlayStorage : MonoBehaviour
         upgrades = 3, // 0 - all, 1 - knight, 2 - axeman, 3 - bowman // true false
         soldiers = 4, // 0 - all, 1 - knight, 2 - axeman, 3 - bowman  // count    
         buldings = 5, // 0 - all, 1 - townhall, 2 - barracks, 3 - farm, 4 - blacksmith, 5 - tower
-        time = 6,
-        attacks = 7,
     }
 
     public static Map Map;
