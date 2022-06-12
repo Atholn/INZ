@@ -60,33 +60,31 @@ public class MapToPlayStorage : MonoBehaviour
 
     //2
     internal static void AddSourcesRequaried(int whichSoruces, int count)
-    {
-        var additionalDictionary = new Dictionary<string, string>();
-        additionalDictionary.Add(whichSoruces.ToString(), count.ToString());
-        WinRequarieds.Add(Wins.sources.ToString(), additionalDictionary);
-    }
+        => AddRequaried(Wins.sources.ToString(), whichSoruces.ToString(), count.ToString());
 
     //3
     internal static void AddUpgradesRequaried(int whichUpgrades, bool ifUpgrade)
-    {
-        var additionalDictionary = new Dictionary<string, string>();
-        additionalDictionary.Add(whichUpgrades.ToString(), ifUpgrade.ToString());
-        WinRequarieds.Add(Wins.upgrades.ToString(), additionalDictionary);
-    }
+        => AddRequaried(Wins.upgrades.ToString(), whichUpgrades.ToString(), ifUpgrade.ToString());
 
     //4
     internal static void AddSoldiersRequaried(int whichSoldiers, int count)
-    {
-        var additionalDictionary = new Dictionary<string, string>();
-        additionalDictionary.Add(whichSoldiers.ToString(), count.ToString());
-        WinRequarieds.Add(Wins.sources.ToString(), additionalDictionary);
-    }
+        => AddRequaried(Wins.soldiers.ToString(), whichSoldiers.ToString(), count.ToString());
 
     //5
     internal static void AddBuildingRequaried(int whichBuildings, int count)
+        => AddRequaried(Wins.buldings.ToString(), whichBuildings.ToString(), count.ToString());
+
+    private static void AddRequaried(string type, string which, string cout)
     {
-        var additionalDictionary = new Dictionary<string, string>();
-        additionalDictionary.Add(whichBuildings.ToString(), count.ToString());
-        WinRequarieds.Add(Wins.buldings.ToString(), additionalDictionary);
+        if (WinRequarieds.Keys.Where(k => k == type).Count() == 0)
+        {
+            var additionalDictionary = new Dictionary<string, string>();
+            additionalDictionary.Add(which, cout);
+            WinRequarieds.Add(type, additionalDictionary);
+        }
+        else
+        {
+            WinRequarieds[type].Add(which, cout);
+        }
     }
 }

@@ -292,7 +292,7 @@ public class GameManager : MonoBehaviour
     {
         bool ifWin = true;
 
-        foreach (KeyValuePair<string, Dictionary<string, string>> winRequaried in winRequarieds)
+        foreach (var winRequaried in winRequarieds)
         {
             switch (winRequaried.Key)
             {
@@ -302,9 +302,6 @@ public class GameManager : MonoBehaviour
                 case "upgrades": UpgradesCheckWin(ref ifWin, winRequaried.Value); break;
                 case "soldiers": SoldiersCheckWin(ref ifWin, winRequaried.Value); break;
                 case "buldings": BuldingsCheckWin(ref ifWin, winRequaried.Value); break;
-                //todo
-                case "time": break;
-                case "attacks": break;
             }
         }
 
@@ -344,16 +341,23 @@ public class GameManager : MonoBehaviour
         //todo if we want lose
     }
 
-    private void SourcesCheckWin(ref bool ifWin, Dictionary<string, string> addional)
+    private void SourcesCheckWin(ref bool ifWin, Dictionary<string, string> addionals)
     {
-        switch (addional.First().Key)
+        foreach (var addional in addionals)
         {
-            case "0": if (_players[0].actualWood + _players[0].actualGold < int.Parse(addional.First().Value)) ifWin = false; break;
-            case "1": if (_players[0].actualGold < int.Parse(addional.First().Value)) ifWin = false; break;
-            case "2": if (_players[0].actualWood < int.Parse(addional.First().Value)) ifWin = false; break;
-            case "3": if (_players[0].actualUnitsPoint < int.Parse(addional.First().Value)) ifWin = false; break;
-            case "4": if (_players[0].actualMaxUnitsPoint < int.Parse(addional.First().Value)) ifWin = false; break;
+            switch (addional.Key)
+            {
+                case "0": if (_players[0].actualWood + _players[0].actualGold < int.Parse(addional.Value)) ifWin = false; break;
+                case "1": if (_players[0].actualGold < int.Parse(addional.Value)) ifWin = false; break;
+                case "2": if (_players[0].actualWood < int.Parse(addional.Value)) ifWin = false; break;
+                case "3": if (_players[0].actualUnitsPoint < int.Parse(addional.Value)) ifWin = false; break;
+                case "4": if (_players[0].actualMaxUnitsPoint < int.Parse(addional.Value)) ifWin = false; break;
+            }
+
+            if (!ifWin)
+                return;
         }
+
     }
 
     private void UpgradesCheckWin(ref bool ifWin, Dictionary<string, string> addional)
@@ -382,21 +386,27 @@ public class GameManager : MonoBehaviour
         return true;
     }
 
-    private void SoldiersCheckWin(ref bool ifWin, Dictionary<string, string> addional)
+    private void SoldiersCheckWin(ref bool ifWin, Dictionary<string, string> addionals)
     {
-        int coutOfSoldiers;
-
-        if (addional.First().Key == "0")
+        foreach (var addional in addionals)
         {
-            coutOfSoldiers = _playersGameObjects[0].Where(u => u.GetComponent<Soldier>() != null).Count();
-        }
-        else
-        {
-            string nameOfUnit = UnitsPrefabs[int.Parse(addional.First().Key)].GetComponent<Unit>().Name;
-            coutOfSoldiers = _playersGameObjects[0].Where(u => u.GetComponent<Unit>().Name == nameOfUnit).Count();
-        }
+            int coutOfSoldiers;
+            //Debug.LogError(int.Parse(addional.Key) + " " + addional.Key + " " + addional.Value);
+            if (addional.Key == "0")
+            {
+                coutOfSoldiers = _playersGameObjects[0].Where(u => u.GetComponent<Soldier>() != null).Count();
+            }
+            else
+            {
+                
+                string nameOfUnit = UnitsPrefabs[int.Parse(addional.Key)].GetComponent<Unit>().Name;
+                coutOfSoldiers = _playersGameObjects[0].Where(u => u.GetComponent<Unit>().Name == nameOfUnit).Count();
+            }
 
-        ifWin = coutOfSoldiers >= int.Parse(addional.First().Value);
+            ifWin = coutOfSoldiers >= int.Parse(addional.Value);
+            if (!ifWin)
+                return;
+        }
     }
 
     private void BuldingsCheckWin(ref bool ifWin, Dictionary<string, string> values)
