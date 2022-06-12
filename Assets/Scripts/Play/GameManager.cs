@@ -412,11 +412,7 @@ public class GameManager : MonoBehaviour
                 continue;
             }
 
-            if (value.Key == "1" || value.Key == "2" || value.Key == "3" || value.Key == "4" || value.Key == "5")
-            {
-                CheckBuild(ref ifWin, int.Parse(value.Key) - 1, int.Parse(value.Value));
-                continue;
-            }
+            CheckBuild(ref ifWin, int.Parse(value.Key) - 1, int.Parse(value.Value));
         }
     }
 
