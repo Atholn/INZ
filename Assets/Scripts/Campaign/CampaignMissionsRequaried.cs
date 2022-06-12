@@ -35,6 +35,5 @@ public static class CampaignMissionsRequaried
             case 16: MapToPlayStorage.AddDominateRequaried(true); break;
             case 17: MapToPlayStorage.AddDominateRequaried(true); break;
         }
-
     }
 }
