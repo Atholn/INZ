@@ -384,14 +384,19 @@ public class GameManager : MonoBehaviour
 
     private void SoldiersCheckWin(ref bool ifWin, Dictionary<string, string> addional)
     {
-        ifWin = false;
-        //switch (addional.First().Key)
-        //{
-        //    case "0": if (_players[0]. + _players[0].actualGold < int.Parse(addional.First().Value)) ifWin = false; break;
-        //    case "1": if (_players[0].actualGold < int.Parse(addional.First().Value)) ifWin = false; break;
-        //    case "2": if (_players[0].actualWood < int.Parse(addional.First().Value)) ifWin = false; break;
-        //    case "3": if (_players[0].actualMaxUnitsPoint < int.Parse(addional.First().Value)) ifWin = false; break;
-        //}
+        int coutOfSoldiers;
+
+        if (addional.First().Key == "0")
+        {
+            coutOfSoldiers = _playersGameObjects[0].Where(u => u.GetComponent<Soldier>() != null).Count();
+        }
+        else
+        {
+            string nameOfUnit = UnitsPrefabs[int.Parse(addional.First().Key)].GetComponent<Unit>().Name;
+            coutOfSoldiers = _playersGameObjects[0].Where(u => u.GetComponent<Unit>().Name == nameOfUnit).Count();
+        }
+
+        ifWin = coutOfSoldiers >= int.Parse(addional.First().Value);
     }
 
     private void BuldingsCheckWin(ref bool ifWin, Dictionary<string, string> values)
@@ -420,8 +425,7 @@ public class GameManager : MonoBehaviour
         var building = _playersGameObjects[0]
             .Where(b => b.GetComponent<BuildingUnit>() != null)
             .Select(b => b.GetComponent<BuildingUnit>())
-            .Where(b => b.Name == BuildingsPrefabs[numberOfBuilding].GetComponent<BuildingUnit>().Name &&
-                b.BuildingPercent >= b.CreateTime)
+            .Where(b => b.Name == BuildingsPrefabs[numberOfBuilding].GetComponent<BuildingUnit>().Name && b.BuildingPercent >= b.CreateTime)
             .ToList();
 
         if (building == null)
