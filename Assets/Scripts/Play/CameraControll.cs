@@ -323,49 +323,6 @@ public class CameraControll : MonoBehaviour
     Ray ray;
     RaycastHit rayHit;
     public LayerMask commandLayerMask = -1;
-    void GiveCommands()
-    {
-        ray = camera.ViewportPointToRay(mousePosScreen);
-        if (Physics.Raycast(ray, out rayHit, 1000, commandLayerMask))
-        {
-            if (_selectUnits.Count == 0)
-            {
-                return;
-            }
-
-            object commandData = null;
-            if (rayHit.collider is TerrainCollider)
-            {
-                commandData = rayHit.point;
-            }
-
-            else if (_selectUnits[0].GetComponent<Worker>() != null && rayHit.collider is BoxCollider)
-            {
-                if (rayHit.collider.gameObject.GetComponent<Tree>() != null)
-                {
-                    commandData = rayHit.collider.gameObject.GetComponent<Tree>();
-                }
-
-                if (rayHit.collider.gameObject.GetComponent<GoldMine>() != null)
-                {
-                    commandData = rayHit.collider.gameObject.GetComponent<GoldMine>();
-                }
-
-                if (rayHit.collider.gameObject.GetComponent<BuildingUnit>() != null)
-                {
-                    _selectUnits[0].GetComponent<NavMeshAgent>().velocity = Vector3.zero;
-
-                    commandData = rayHit.collider.gameObject;
-                }
-            }
-            else
-            {
-                commandData = rayHit.collider.gameObject.GetComponent<Unit>();
-            }
-
-            GiveCommands(commandData, "Command");
-        }
-    }
 
     void GiveCommands(object dataCommand, string commandName)
     {
