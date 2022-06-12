@@ -81,8 +81,11 @@ public class CameraControll : MonoBehaviour
     {
         if (!Input.GetMouseButton(0))
         {
-            ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            Physics.Raycast(ray, out rayHit);
+            ray = Camera.main.ScreenPointToRay(Input.mousePosition);           
+            if(!Physics.Raycast(ray, out rayHit))
+            {
+                return;
+            }
 
             if (rayHit.collider.gameObject.GetComponent<Unit>() != null)
             {
