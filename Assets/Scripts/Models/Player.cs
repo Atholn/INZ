@@ -74,6 +74,7 @@ public class Player : MonoBehaviour
     float acutalSteps = 1f;
     int steps = 2;
     float sizeStep;
+    float bloackMapEdge;
     //building
 
     #endregion
@@ -200,7 +201,7 @@ public class Player : MonoBehaviour
             Vector3 startPos = startBuilding.transform.position;
             sizeStep = buildingTarget.GetComponent<ItemGame>().ItemPrefab.GetComponent<BuildingUnit>().SizeBuilding;
             startPos = new Vector3(startPos.x - startPos.x % 1, 1, startPos.z - startPos.z % 1 + sizeStep);
-
+            bloackMapEdge = sizeStep / 2 + 1;
             sizeStep = sizeStep / 10f;
 
             image = Instantiate(buildingTarget.GetComponent<ItemGame>().ItemImageComputer, startPos, buildingTarget.transform.rotation);
@@ -213,6 +214,15 @@ public class Player : MonoBehaviour
             computerTaskBuilding = ComputerTaskBuilding.checkBuilding;
             ifStartPos = false;
             return;
+        }
+
+        var sizes = gameManager.GetSizeMap();
+        if (image.transform.position.x < bloackMapEdge ||
+            image.transform.position.z < bloackMapEdge ||
+            image.transform.position.x > sizes[0] - bloackMapEdge ||
+            image.transform.position.z > sizes[1] - bloackMapEdge)
+        {
+            image.GetComponent<FollowScriptComputer>().ifcollision = false;
         }
 
         if (!image.GetComponent<FollowScriptComputer>().ifcollision)
@@ -487,8 +497,6 @@ public class Player : MonoBehaviour
 
         return nearEnemy;
     }
-
-
 
     private List<T> GetListUnits<T>() where T : Unit
     {
