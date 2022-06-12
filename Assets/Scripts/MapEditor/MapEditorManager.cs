@@ -47,7 +47,6 @@ public class MapEditorManager : MonoBehaviour
     {
         InitializeShowHidePanels(true);
         InitializeIDButtons();
-        InitializeHeightMainTerrain();
         InitializeDestroyDropdown();
     }
 
@@ -69,16 +68,6 @@ public class MapEditorManager : MonoBehaviour
         for (int i = 0; i < ItemControllers.Length; i++)
         {
             ItemControllers[i].item.ID = i;
-        }
-    }
-    private void InitializeHeightMainTerrain()
-    {
-        foreach (ItemController itemController in ItemControllers)
-        {
-            if (itemController.item is ItemTerrain)
-            {
-                (itemController.item as ItemTerrain).Initialize();
-            }
         }
     }
 

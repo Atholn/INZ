@@ -58,7 +58,7 @@ public class MapLoader : MonoBehaviour
 
         terrain = Instantiate(basicTerrainPrefab,
                               new Vector3(sizeX % 2 == 0 ? sizeX / 2 - 0.5f : sizeX / 2,
-                                (mainGround as ItemTerrain).HeightCreateAsBasicTerrain,
+                                (mainGround as ItemTerrain).ItemHeightPosY - 0.01f,
                                 sizeY % 2 == 0 ? sizeY / 2 - 0.5f : sizeY / 2),
                               basicTerrainPrefab.transform.rotation);
 
