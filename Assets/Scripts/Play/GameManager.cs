@@ -278,12 +278,12 @@ public class GameManager : MonoBehaviour
             .Where(u => u.GetComponent<Unit>().Name == name)
             .ToList();
 
-        foreach(var x in soldiersOneType)
+        foreach (var x in soldiersOneType)
         {
             var unit = x.GetComponent<Unit>();
 
             unit.AttackPower = (int)((float)(unit.AttackPower) * UpgradeFactor);
-        }        
+        }
     }
     #endregion
 
@@ -352,20 +352,34 @@ public class GameManager : MonoBehaviour
             case "1": if (_players[0].actualGold < int.Parse(addional.First().Value)) ifWin = false; break;
             case "2": if (_players[0].actualWood < int.Parse(addional.First().Value)) ifWin = false; break;
             case "3": if (_players[0].actualUnitsPoint < int.Parse(addional.First().Value)) ifWin = false; break;
-            case "4": if( _players[0].actualMaxUnitsPoint < int.Parse(addional.First().Value)) ifWin = false; break;
+            case "4": if (_players[0].actualMaxUnitsPoint < int.Parse(addional.First().Value)) ifWin = false; break;
         }
     }
 
     private void UpgradesCheckWin(ref bool ifWin, Dictionary<string, string> addional)
     {
-        ifWin = false;
-        //switch (addional.First().Key)
-        //{
-        //    case "0": if (_players[0].actualWood + _players[0].actualGold < int.Parse(addional.First().Value)) ifWin = false; break;
-        //    case "1": if (_players[0].actualGold < int.Parse(addional.First().Value)) ifWin = false; break;
-        //    case "2": if (_players[0].actualWood < int.Parse(addional.First().Value)) ifWin = false; break;
-        //    case "3": if (_players[0].actualMaxUnitsPoint < int.Parse(addional.First().Value)) ifWin = false; break;
-        //}
+        if (addional.First().Key != "0")
+        {
+            ifWin = CheckUpgrade(int.Parse(addional.First().Key) - 1, bool.Parse(addional.First().Value));
+            return;
+        }
+
+        for (int i = 0; i < _players[0].upgradeFactors.Length && ifWin; i++)
+        {
+            ifWin = CheckUpgrade(i, bool.Parse(addional.First().Value));
+        }
+    }
+
+    private bool CheckUpgrade(int numberOfUbgrade, bool ifUpgrade)
+    {
+        if (_players[0].upgradeFactors[numberOfUbgrade] == UpgradeFactor)
+        {
+            if (ifUpgrade) return true;
+            return false;
+        }
+
+        if (ifUpgrade) return false;
+        return true;
     }
 
     private void SoldiersCheckWin(ref bool ifWin, Dictionary<string, string> addional)
@@ -529,8 +543,8 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        if(whichPlayer == 0)
-         _gameUI.UpdateRawMaterials(2, UnitsPointsUpdate(whichPlayer), UnitsMaxPointsUpdate(whichPlayer));
+        if (whichPlayer == 0)
+            _gameUI.UpdateRawMaterials(2, UnitsPointsUpdate(whichPlayer), UnitsMaxPointsUpdate(whichPlayer));
     }
     #endregion
 
@@ -556,9 +570,9 @@ public class GameManager : MonoBehaviour
         float nearDistance = -1f;
         GameObject nearEnemy = null;
 
-        for(int i = 0; i < _playersGameObjects.Count; i++)
+        for (int i = 0; i < _playersGameObjects.Count; i++)
         {
-            if(i == player)
+            if (i == player)
             {
                 continue;
             }
@@ -566,7 +580,7 @@ public class GameManager : MonoBehaviour
             for (int j = 0; j < _playersGameObjects[i].Count; j++)
             {
                 var tmpDistance = Vector3.Distance(shooterPosition, _playersGameObjects[i][j].transform.position);
-                if(nearEnemy == null || tmpDistance < nearDistance)
+                if (nearEnemy == null || tmpDistance < nearDistance)
                 {
                     nearDistance = tmpDistance;
                     nearEnemy = _playersGameObjects[i][j];
@@ -578,7 +592,7 @@ public class GameManager : MonoBehaviour
     }
 
     internal int[] GetSizeMap()
-        => new int [2]{ _map.SizeMapX, _map.SizeMapY };
+        => new int[2] { _map.SizeMapX, _map.SizeMapY };
 
     internal void GenerateBuildingPlaceAndDust(GameObject building, float x, float z)
     {
@@ -680,8 +694,8 @@ public class GameManager : MonoBehaviour
 
         #region
         BuildingPlace buildingPlace = gameObjectWithCircle.GetComponent<BuildingPlace>();
-        if(buildingPlace != null)
-        {           
+        if (buildingPlace != null)
+        {
             unitCircle.transform.localScale *= buildingPlace.Building.GetComponent<BuildingUnit>().Size + 1;
             return;
         }
