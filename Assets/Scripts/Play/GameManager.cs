@@ -311,8 +311,7 @@ public class GameManager : MonoBehaviour
             {
                 CampaignStorage.Win = true;
             }
-            MapToPlayStorage.WinRequarieds = new Dictionary<string, Dictionary<string, string>>();
-            UnityEngine.SceneManagement.SceneManager.LoadScene(sceneToBack);
+            ExitToBackScene();
         }
     }
 
@@ -461,6 +460,13 @@ public class GameManager : MonoBehaviour
 
         _gameUI.ShowWinner(winner, _playersMaterials[winner].color);
     }
+
+    internal void ExitToBackScene()
+    {
+        MapToPlayStorage.WinRequarieds = new Dictionary<string, Dictionary<string, string>>();
+        UnityEngine.SceneManagement.SceneManager.LoadScene(sceneToBack);
+    }
+
     #endregion
 
     internal void DestroyItemImages()

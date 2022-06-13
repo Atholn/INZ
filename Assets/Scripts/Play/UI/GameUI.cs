@@ -48,6 +48,8 @@ public class GameUI : MonoBehaviour
 
     private Text goldmineText;
 
+    private GameManager gameManager;
+
     private void Start()
     {
         WinLosePanel.SetActive(false);
@@ -78,6 +80,8 @@ public class GameUI : MonoBehaviour
         errorsTexts = ErrorsPanel.GetComponentsInChildren<Text>().ToList();
         errorsIcons = ErrorsPanel.GetComponentsInChildren<Image>().ToList();
         goldmineText = GoldmineHintPanel.GetComponentInChildren<Text>();
+
+        gameManager = GameObject.FindObjectOfType<GameManager>();
     }
 
     private void Update()
@@ -107,7 +111,7 @@ public class GameUI : MonoBehaviour
 
     public void Exit()
     {
-        SceneLoader.MainMenu();
+        gameManager.ExitToBackScene();
     }
 
     public void Back()
@@ -175,7 +179,6 @@ public class GameUI : MonoBehaviour
         _characterInfos[2].text = $"Defense {unit.Defense}";
         _characterInfos[3].text = $"{unit.Hp} / {unit.HpMax}";
 
-        //HideSpecialButtons();
         HideSpecialPanel();
 
         BuildingUnit buildingUnit = gameObject.GetComponent<BuildingUnit>();
@@ -192,7 +195,6 @@ public class GameUI : MonoBehaviour
                 case "Worker":
                     ShowSpecialPanel(WorkerSpecialPanel);
                     break;
-
                 // Building Units
                 case "TownHall":
                     ShowSpecialPanel(TownHallSpecialPanel);
