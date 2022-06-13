@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class CampaignUIManager : MonoBehaviour
 {
     public GameObject MissionsMapPanel;
-    public GameObject MissionPanel;
+    public GameObject MissionDetailsPanel;
 
     private List<Button> missionsMapButtons; //0 - preview, 1 - next, 2 -  enter mission, 3 - exit 
     private CampaignManager campaignManager;
@@ -20,10 +20,11 @@ public class CampaignUIManager : MonoBehaviour
         IntitializeMissionsMapButtons();
     }
 
+    #region Initialize
     private void IntitializePanels()
     {
         MissionsMapPanel.SetActive(true);
-        MissionPanel.SetActive(false);
+        MissionDetailsPanel.SetActive(false);
     }
 
     private void IntitializeMissionsMapButtons()
@@ -47,31 +48,106 @@ public class CampaignUIManager : MonoBehaviour
         missionsMapButtons[0].gameObject.SetActive(false);
         missionsMapButtons[1].gameObject.SetActive(true);
     }
+    #endregion
 
     private void Update()
     {
-        UpdateNextPreviousEnterKeys();
+        UpdateMissionMapKeys();
+        UpdateMissionDetailsKeys();
     }
 
     #region Update Keys
-    private void UpdateNextPreviousEnterKeys()
+    private void UpdateMissionMapKeys()
     {
+        if (!MissionsMapPanel.activeSelf)
+        {
+            return;
+        }
+
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
             PreviousCampaignMissionMap();
+            return;
         }
 
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
             NextCampaignMissionMap();
+            return;
         }
 
         if (Input.GetKeyDown(KeyCode.Return))
         {
-            EnterMissionDetails();
+            EnterMissionDetailsPanel();
+            return;
+        }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            ExitCampaignScene();
+            return;
         }
     }
 
+    private void UpdateMissionDetailsKeys()
+    {
+        if (!MissionDetailsPanel.activeSelf)
+        {
+            return;
+        }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            EnterMissionsMapPanel();
+            return;
+        }
+
+        if (Input.GetKeyDown(KeyCode.Return))
+        {
+            StartCampaignMap();
+            return;
+        }
+    }
+
+    #endregion
+
+    #region Public methods in MissionsMapPanel
+    public void PreviousCampaignMap()
+    {
+        PreviousCampaignMissionMap();
+    }
+
+    public void NextCampaignMap()
+    {
+        NextCampaignMissionMap();
+    }
+
+    public void EnterCampaignMap()
+    {
+        EnterMissionDetailsPanel();
+    }
+
+    public void ExitCampaignMap()
+    {
+        ExitCampaignScene();
+    }
+
+    #endregion
+
+    #region Public methods in MissionDetailsPanel
+    public void BackToMissionsMap()
+    {
+        EnterMissionsMapPanel();
+    }
+
+    public void StartMap()
+    {
+        StartCampaignMap();
+    }
+
+    #endregion
+
+    #region Private methods for MissionsMapPanel
     private void PreviousCampaignMissionMap()
     {
         if (MissionsMapPanel.activeSelf)
@@ -110,7 +186,7 @@ public class CampaignUIManager : MonoBehaviour
         }
     }
 
-    private void EnterMissionDetails()
+    private void EnterMissionDetailsPanel()
     {
         if (!campaignManager.CheckLastAvaiableMission())
         {
@@ -119,48 +195,27 @@ public class CampaignUIManager : MonoBehaviour
         }
 
         MissionsMapPanel.SetActive(false);
-        MissionPanel.SetActive(true);
+        MissionDetailsPanel.SetActive(true);
         missionsMapButtons[2].gameObject.SetActive(true);
     }
 
-    #endregion
-
-    #region Public methods in MissionsMapPanel
-    public void PreviousCampaignMap()
-    {
-        PreviousCampaignMissionMap();
-    }
-
-    public void NextCampaignMap()
-    {
-        NextCampaignMissionMap();
-    }
-
-    public void EnterCampaignMap()
-    {
-        EnterMissionDetails();
-    }
-
-    public void ExitCampaignMap()
+    private void ExitCampaignScene()
     {
         SceneLoader.MainMenu();
     }
-
     #endregion
 
-    #region Public methods in MissionPanel
-    public void BackToMissionsMap()
+    #region Private methods for MissionDetailsPanel
+    private void EnterMissionsMapPanel()
     {
         MissionsMapPanel.SetActive(true);
-        MissionPanel.SetActive(false);
+        MissionDetailsPanel.SetActive(false);
     }
 
-    public void StartMap()
+    private void StartCampaignMap()
     {
         campaignManager.StartMap();
         SceneLoader.GameScene();
     }
-
     #endregion
-
 }
