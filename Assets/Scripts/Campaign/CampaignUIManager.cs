@@ -12,22 +12,25 @@ public class CampaignUIManager : MonoBehaviour
     private List<Button> missionsMapButtons; //0 - preview, 1 - next, 2 -  enter mission, 3 - exit 
     private CampaignManager campaignManager;
 
+    private Text missionDetailsText;
+
     private void Start()
     {
         campaignManager = GameObject.FindObjectOfType<CampaignManager>();
 
-        IntitializePanels();
-        IntitializeMissionsMapButtons();
+        InitializePanels();
+        InitializeMissionsMapButtons();
+        InitializeMissionDetails();
     }
 
     #region Initialize
-    private void IntitializePanels()
+    private void InitializePanels()
     {
         MissionsMapPanel.SetActive(true);
         MissionDetailsPanel.SetActive(false);
     }
 
-    private void IntitializeMissionsMapButtons()
+    private void InitializeMissionsMapButtons()
     {
         missionsMapButtons = MissionsMapPanel.GetComponentsInChildren<Button>().ToList();
 
@@ -47,6 +50,11 @@ public class CampaignUIManager : MonoBehaviour
 
         missionsMapButtons[0].gameObject.SetActive(false);
         missionsMapButtons[1].gameObject.SetActive(true);
+    }
+
+    private void InitializeMissionDetails()
+    {
+        missionDetailsText = MissionDetailsPanel.GetComponentInChildren<Text>();
     }
     #endregion
 
@@ -197,6 +205,8 @@ public class CampaignUIManager : MonoBehaviour
         MissionsMapPanel.SetActive(false);
         MissionDetailsPanel.SetActive(true);
         missionsMapButtons[2].gameObject.SetActive(true);
+
+        missionDetailsText.text = campaignManager.SetRequaried();
     }
 
     private void ExitCampaignScene()
@@ -217,5 +227,6 @@ public class CampaignUIManager : MonoBehaviour
         campaignManager.StartMap();
         SceneLoader.GameScene();
     }
+
     #endregion
 }

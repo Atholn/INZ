@@ -19,9 +19,10 @@ public class MapToPlayStorage : MonoBehaviour
     public static Map Map;
     public static List<GameStartPoint> GameStartPoints;
 
-    public static Dictionary<string, Dictionary<string, string>> WinRequarieds = new Dictionary<string, Dictionary<string, string>>();
+    internal static Dictionary<string, Dictionary<string, string>> WinRequarieds = new Dictionary<string, Dictionary<string, string>>();
     public static string SceneToBack;
 
+    #region Resources
     internal static List<T> ImportResources<T>(string path, string end) where T : UnityEngine.Object
     {
         List<string> list = GetNamesResources(path, end);
@@ -42,6 +43,13 @@ public class MapToPlayStorage : MonoBehaviour
             .Where(n => !n.Name.Contains(".meta") && n.Name.Contains(end))
             .Select(n => n.Name)
             .ToList();
+    }
+    #endregion
+
+    #region Requaried
+    internal static void ResetRequaried()
+    {
+        WinRequarieds = new Dictionary<string, Dictionary<string, string>>();
     }
 
     //0
@@ -87,4 +95,5 @@ public class MapToPlayStorage : MonoBehaviour
             WinRequarieds[type].Add(which, cout);
         }
     }
+    #endregion Requaried
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -87,7 +88,7 @@ public class CampaignManager : MonoBehaviour
 
     internal void StartMap()
     {
-        CampaignMissionsRequaried.SetRequired(actualTarget);
+        //CampaignMissionsRequaried.SetRequired(actualTarget);
         MapToPlayStorage.SceneToBack = _typeOfGame;
 
         Map map = fileMapSystem.LoadEditorMap($"m{actualTarget}");
@@ -131,4 +132,7 @@ public class CampaignManager : MonoBehaviour
 
     internal bool CheckZeroMission() =>
         availableTarget == 0;
+
+    internal string SetRequaried() =>
+        CampaignMissionsRequaried.ResetRequired(actualTarget);
 }
