@@ -53,6 +53,7 @@ public static class CampaignMissionsRequaried
             }
             reqText += "\n";
         }
+
         return reqText;
     }
 
@@ -131,7 +132,7 @@ public static class CampaignMissionsRequaried
 
     private static string GetBuldingsText(Dictionary<string, string> reqs)
     {
-        string tmpText = "Soldiers requaried:\n";
+        string tmpText = "Buldings requaried:\n";
 
         foreach (var req in reqs)
         {
