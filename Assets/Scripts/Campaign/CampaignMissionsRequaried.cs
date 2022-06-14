@@ -1,18 +1,16 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 public static class CampaignMissionsRequaried
 {
     public static void SetRequired(int number)
     {
-        switch(number)
+        switch (number)
         {
             case 0: MapToPlayStorage.AddSourcesRequaried(1, 200); break;
             case 1: MapToPlayStorage.AddSourcesRequaried(2, 300); break;
-            case 2: MapToPlayStorage.AddBuildingRequaried(0, 1); break; 
+            case 2: MapToPlayStorage.AddBuildingRequaried(0, 1); break;
             case 3: MapToPlayStorage.AddSourcesRequaried(4, 60); break;
-            case 4: 
+            case 4:
                 MapToPlayStorage.AddSoldiersRequaried(1, 1);
                 MapToPlayStorage.AddSoldiersRequaried(2, 1);
                 MapToPlayStorage.AddSoldiersRequaried(3, 1);
@@ -43,9 +41,9 @@ public static class CampaignMissionsRequaried
         SetRequired(number);
 
         string reqText = "";
-        foreach(var pair in  MapToPlayStorage.WinRequarieds)
+        foreach (var pair in MapToPlayStorage.WinRequarieds)
         {
-            switch(pair.Key)
+            switch (pair.Key)
             {
                 case "dominate": reqText += GetDominateText(pair.Value); break;
                 case "sources": reqText += GetSourcesText(pair.Value); break;
@@ -62,9 +60,9 @@ public static class CampaignMissionsRequaried
     {
         string tmpText = "";
 
-        foreach(var pair in reqs)
+        foreach (var pair in reqs)
         {
-            switch(pair.Value)
+            switch (pair.Value)
             {
                 case "win": tmpText += bool.Parse(pair.Value) ? "Dominate enemy" : "Lose with enemy"; break;
             }
@@ -77,9 +75,9 @@ public static class CampaignMissionsRequaried
     {
         string tmpText = "Soruces requaried:\n";
 
-        foreach(var req in reqs)
+        foreach (var req in reqs)
         {
-            switch(req.Key)
+            switch (req.Key)
             {
                 case "0": tmpText += $"- Wood and gold total: {req.Value}"; break;
                 case "1": tmpText += $"- Gold total: {req.Value}"; break;
@@ -101,7 +99,7 @@ public static class CampaignMissionsRequaried
         {
             switch (req.Key)
             {
-                case "0": tmpText += bool.Parse(req.Value) ? "- A" : "- No a"  + "ll upgrades"; break;
+                case "0": tmpText += bool.Parse(req.Value) ? "- A" : "- No a" + "ll upgrades"; break;
                 case "1": tmpText += bool.Parse(req.Value) ? "- K" : "- No k" + "night upgrade"; break;
                 case "2": tmpText += bool.Parse(req.Value) ? "- A" : "- No a" + "xeman upgrade"; break;
                 case "3": tmpText += bool.Parse(req.Value) ? "- B" : "- No b" + "owman upgrade"; break;
