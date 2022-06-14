@@ -35,7 +35,7 @@ public static class CampaignMissionsRequaried
         }
     }
 
-    public static string ResetRequired(int number)
+    public static string SetRequiredAndReset(int number)
     {
         MapToPlayStorage.ResetRequaried();
         SetRequired(number);

@@ -9,25 +9,28 @@ public class CampaignUIManager : MonoBehaviour
     public GameObject MissionsMapPanel;
     public GameObject MissionDetailsPanel;
 
-    private List<Button> missionsMapButtons; //0 - preview, 1 - next, 2 -  enter mission, 3 - exit 
     private CampaignManager campaignManager;
+    private List<Button> missionsMapButtons; //0 - preview, 1 - next, 2 -  enter mission, 3 - exit 
 
     private Text missionDetailsText;
 
     private void Start()
     {
-        campaignManager = GameObject.FindObjectOfType<CampaignManager>();
-
+        InitializeCampaignManager();
         InitializePanels();
         InitializeMissionsMapButtons();
         InitializeMissionDetails();
     }
 
     #region Initialize
+    private void InitializeCampaignManager()
+    {
+        campaignManager = GameObject.FindObjectOfType<CampaignManager>();
+    }
+
     private void InitializePanels()
     {
-        MissionsMapPanel.SetActive(true);
-        MissionDetailsPanel.SetActive(false);
+        EnterMissionsMapPanel();
     }
 
     private void InitializeMissionsMapButtons()

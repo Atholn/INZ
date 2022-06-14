@@ -25,6 +25,7 @@ public class CampaignManager : MonoBehaviour
         InitializeFileMapLoader();
     }
 
+    #region Initialize
     private void InitializeMapGameObjects()
     {
         campaignCameraControll = GameObject.FindObjectOfType<CampaignCameraControll>();
@@ -47,6 +48,7 @@ public class CampaignManager : MonoBehaviour
         fileMapSystem = new FileMapSystem();
         fileMapSystem.FolderName = _typeOfGame;
     }
+    #endregion
 
     void Update()
     {
@@ -88,7 +90,6 @@ public class CampaignManager : MonoBehaviour
 
     internal void StartMap()
     {
-        //CampaignMissionsRequaried.SetRequired(actualTarget);
         MapToPlayStorage.SceneToBack = _typeOfGame;
 
         Map map = fileMapSystem.LoadEditorMap($"m{actualTarget}");
@@ -134,5 +135,5 @@ public class CampaignManager : MonoBehaviour
         availableTarget == 0;
 
     internal string SetRequaried() =>
-        CampaignMissionsRequaried.ResetRequired(actualTarget);
+        CampaignMissionsRequaried.SetRequiredAndReset(actualTarget);
 }
