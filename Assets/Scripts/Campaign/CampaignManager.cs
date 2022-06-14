@@ -18,7 +18,7 @@ public class CampaignManager : MonoBehaviour
     private CampaignSettingsFileSystem campaignSettingsFileSystem;
     private FileMapSystem fileMapSystem;
 
-    void Start()
+    private void Start()
     {
         InitializeMapGameObjects();
         InitializePlayerCampaignSettings();
@@ -50,7 +50,7 @@ public class CampaignManager : MonoBehaviour
     }
     #endregion
 
-    void Update()
+    private void Update()
     {
         if (CampaignStorage.Win)
         {
@@ -116,13 +116,6 @@ public class CampaignManager : MonoBehaviour
         CampaignStorage.MissionNumber = actualTarget;
     }
 
-    private void SetNewTargetPos(CampaignMapPoint campaignMapPoint)
-    {
-        Transform transform = campaignMapPoint.GetComponent<Transform>();
-        Vector2 newTargetPos = new Vector2(transform.position.x, transform.position.z);
-        campaignCameraControll.GoToCampaignPoint(newTargetPos);
-    }
-
     internal bool CheckFirstOrLastMission() =>
         actualTarget == 0 ||
         actualTarget == availableTarget ||
@@ -136,4 +129,11 @@ public class CampaignManager : MonoBehaviour
 
     internal string SetRequaried() =>
         CampaignMissionsRequaried.SetRequiredAndReset(actualTarget);
+
+    private void SetNewTargetPos(CampaignMapPoint campaignMapPoint)
+    {
+        Transform transform = campaignMapPoint.GetComponent<Transform>();
+        Vector2 newTargetPos = new Vector2(transform.position.x, transform.position.z);
+        campaignCameraControll.GoToCampaignPoint(newTargetPos);
+    }
 }
