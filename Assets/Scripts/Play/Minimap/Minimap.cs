@@ -38,17 +38,18 @@ public class Minimap : MonoBehaviour
             texture.SetPixel((int)_gameManager.Nature[i].transform.position.x, (int)_gameManager.Nature[i].transform.position.z, pixelColor);
         }
 
-        foreach (List<GameObject> objects in _gameManager._playersGameObjects)
+        for(int whichPlayer = 0; whichPlayer < _gameManager._playersGameObjects.Count; whichPlayer++)
         {
-            if (objects.Count == 0) continue;
-
-            Color pixelColor =
-                objects[0].transform.GetComponentInChildren<MeshRenderer>() == null ?
-                objects[0].transform.GetChild(0).GetComponentInChildren<SkinnedMeshRenderer>().materials[1].color :
-                objects[0].transform.GetComponentInChildren<MeshRenderer>().materials[1].color;
+            if (_gameManager._playersGameObjects[whichPlayer].Count == 0) continue;
 
 
-            foreach (GameObject obj in objects)
+            Color pixelColor = _gameManager._playersMaterials[whichPlayer].color;
+                //objects[0].transform.GetComponentInChildren<MeshRenderer>() == null ?
+                //objects[0].transform.GetChild(0).GetComponentInChildren<SkinnedMeshRenderer>().materials[1].color :
+                //objects[0].transform.GetComponentInChildren<MeshRenderer>().materials[1].color;
+
+
+            foreach (GameObject obj in _gameManager._playersGameObjects[whichPlayer])
             {
                 int size = obj.GetComponent<BuildingUnit>() == null ? 1 : obj.GetComponent<BuildingUnit>().Size;
 

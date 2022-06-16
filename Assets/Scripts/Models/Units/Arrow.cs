@@ -52,7 +52,7 @@ public class Arrow : MonoBehaviour
     {
         attackPower = attackPowerUnit;
         rigidbody = GetComponent<Rigidbody>();
-        rigidbody.AddForce((vector3 - transform.position) * 10);
+        rigidbody.AddForce((vector3 - transform.position) * 15);
         rigidbody.AddTorque(transform.right * torque);
         player = playerNumber;
     }

@@ -36,7 +36,7 @@ public class BuildingUnit : Unit
 
     private float nextShotTime = 0f;
     private readonly float _nextShotTimeMax = 2f;
-    private readonly float _maxShotDistance = 5f;
+    private readonly float _maxShotDistance = 10f;
 
     private readonly Vector3[] arrowPosiotions = new Vector3[]
     {
@@ -85,6 +85,7 @@ public class BuildingUnit : Unit
 
         if (Hp <= 0)
         {
+            gameManager._playersGameObjects[WhichPlayer].Remove(gameObject);
             Destroy(fire);
             Destroy(gameObject);
             return;
@@ -103,7 +104,8 @@ public class BuildingUnit : Unit
             return;
 
         nearGameObject = gameManager.CheckNearEnemy(WhichPlayer, transform.position);
-        if(Vector3.Distance(nearGameObject.transform.position, transform.transform.position) > _maxShotDistance)
+
+        if(nearGameObject == null || Vector3.Distance(nearGameObject.transform.position, transform.transform.position) > _maxShotDistance)
         {
             return;
         }

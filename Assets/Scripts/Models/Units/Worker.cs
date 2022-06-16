@@ -220,6 +220,8 @@ public class Worker : HumanUnit
             run = false;
             target = null;
             task = WorkerTask.idle;
+
+
         }
 
         UpdateDistance(true, true);
@@ -258,14 +260,38 @@ public class Worker : HumanUnit
                     target.GetComponent<GoldMine>().DiggingGoldmine();
                     target = SearchNearGoldPlace();
 
-                    run = true;
                     GoldBag.SetActive(true);
+
+                    if (target == null)
+                    {
+                        foreach (Renderer renderer in gameObject.GetComponentsInChildren<Renderer>())
+                        {
+                            renderer.enabled = true;
+                        }
+                        nav.velocity = Vector3.zero;
+                        run = false;
+                        target = null;
+                        task = WorkerTask.idle;
+
+                        return;
+                    }
+
+                    run = true;
                 }
                 return;
             }
 
             if (distance > stopDiggingDistance)
             {
+                return;
+            }
+
+            if(target == null)
+            {
+                nav.velocity = Vector3.zero;
+                run = false;
+                target = null;
+                task = WorkerTask.idle;
                 return;
             }
 
@@ -377,6 +403,16 @@ public class Worker : HumanUnit
             {
                 return;
             }
+
+            if (target == null)
+            {
+                nav.velocity = Vector3.zero;
+                run = false;
+                target = null;
+                task = WorkerTask.idle;
+                return;
+            }
+
             _gameManager.UpdateWood(WhichPlayer, 10);
 
             run = true;

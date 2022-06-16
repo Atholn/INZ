@@ -38,7 +38,9 @@ public class HumanUnit : Unit
 
         if (Hp <= 0)
         {
-            GameObject.FindObjectOfType<GameManager>().UpdateUnitPoints(WhichPlayer);
+            GameManager gameManager = GameObject.FindObjectOfType<GameManager>();
+            gameManager.UpdateUnitPoints(WhichPlayer);
+            gameManager._playersGameObjects[WhichPlayer].Remove(gameObject);
             isDead = true;
         }
     }
@@ -64,7 +66,7 @@ public class HumanUnit : Unit
                 }
                 else
                 {
-                    nav.SetDestination(new Vector3(target.position.x, 0, target.position.z));
+                    nav.SetDestination(new Vector3(target.position.x, 1.2f, target.position.z));
                 }
         }
 
