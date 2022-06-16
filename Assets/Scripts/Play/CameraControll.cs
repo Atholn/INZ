@@ -262,7 +262,10 @@ public class CameraControll : MonoBehaviour
                     int k = -1;
                     for (i = 0; i < _gameManager._playersGameObjects.Count; i++)
                     {
-                        if (_gameManager._playersGameObjects[i].Where(x => x == rayHit.collider.gameObject).FirstOrDefault() != null)
+                        BuildingPlace bp = rayHit.collider.gameObject.GetComponent<BuildingPlace>();
+                        GameObject go = bp == null ? rayHit.collider.gameObject : bp.Building;
+
+                        if (_gameManager._playersGameObjects[i].Where(x => x == go).FirstOrDefault() != null)
                         {
                             k = i;
                             break;
@@ -271,7 +274,10 @@ public class CameraControll : MonoBehaviour
 
                     if (k == -1) continue;
 
-                    commandData = rayHit.collider.gameObject;
+                    BuildingPlace bpToCommand = rayHit.collider.gameObject.GetComponent<BuildingPlace>();
+                    GameObject goCommand = bpToCommand == null ? rayHit.collider.gameObject : bpToCommand.Building;
+
+                    commandData = goCommand;
 
                     if (k == 0)
                     {
@@ -289,6 +295,13 @@ public class CameraControll : MonoBehaviour
                     if (rayHit.collider.gameObject.GetComponent<BuildingPlace>() != null)
                     {
                         commandData = rayHit.collider.gameObject.GetComponent<BuildingPlace>().Building;
+                        GiveCommands(commandData, "Command");
+                        continue;
+                    }
+
+                    if(rayHit.collider.gameObject.GetComponent<BuildingUnit>() != null)
+                    {
+                        commandData = rayHit.collider.gameObject.GetComponent<BuildingUnit>().gameObject;
                         GiveCommands(commandData, "Command");
                         continue;
                     }

@@ -489,6 +489,7 @@ MonoBehaviour:
   HeightPosY: 1.6
   GoldCost: 100
   WoodCost: 50
+  Hp: 0
   UnitPoint: 3
   UnitColorNum: 3
 --- !u!1 &1898475520625527168

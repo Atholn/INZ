@@ -81,16 +81,23 @@ public class BuildingUnit : Unit
     {
         base.Update();
 
-        UpdateCreate();
-
         if (Hp <= 0)
         {
             gameManager._playersGameObjects[WhichPlayer].Remove(gameObject);
+
+            if (buildingPlace != null)
+            {
+                gameManager.SetNullParentInCircles(buildingPlace);
+                Destroy(buildingPlace.gameObject);
+            }
+
             Destroy(fire);
             Destroy(gameObject);
+
             return;
         }
 
+        UpdateCreate();
         UpdateShot();
     }
 

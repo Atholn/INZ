@@ -25,7 +25,6 @@ public class Unit : MonoBehaviour
 
     protected virtual void  Start()
     {
-        //Hp = HpMax;
     }
 
     protected virtual void Update()

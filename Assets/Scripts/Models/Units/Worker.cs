@@ -141,6 +141,14 @@ public class Worker : HumanUnit
 
     private void Building()
     {
+        if(target == null)
+        {
+            nav.velocity = Vector3.zero;
+            run = false;
+            build = false;
+            task = WorkerTask.idle;
+        }
+
         UpdateDistance(true);
 
         if (distance > _stoppingDistance)
@@ -192,7 +200,8 @@ public class Worker : HumanUnit
 
         if (bU.Hp < bU.HpMax)
         {
-            bU.Hp += 1;
+            bU.Hp += (int)((float)bU.HpMax * Time.deltaTime / bU.CreateTime) + 1;
+            
             target.gameObject.GetComponent<BuildingUnit>().UpdateFire();
             return;
         }
@@ -597,10 +606,13 @@ public class Worker : HumanUnit
                 ifSearchNearBuildingPoint = false;
                 return;
             }
+            Debug.LogError("ddd1");
 
-            if (buildingUnit.Hp < HpMax)
+            if (buildingUnit.Hp < buildingUnit.HpMax)
             {
+                Debug.LogError("ddd2");
                 task = WorkerTask.repair;
+                ifSearchNearBuildingPoint = false;
                 return;
             }
 

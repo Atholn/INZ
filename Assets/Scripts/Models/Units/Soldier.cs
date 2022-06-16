@@ -105,7 +105,8 @@ public class Soldier : HumanUnit
             return;
         }
         
-        transform.LookAt(target.position + new Vector3(0,1,0));
+        transform.LookAt(target.position);
+        transform.rotation = new Quaternion(0, transform.rotation.z, 0, 0);
         nav.velocity = Vector3.zero;
         attack = true;
         run = false;
@@ -209,8 +210,8 @@ public class Soldier : HumanUnit
         {
             return;
         }
-        run = true;
 
+        run = true;
         target = gameObject.transform;
         ifSearchNearBuildingPoint = false;
         task = SoldierTask.attack;

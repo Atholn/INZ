@@ -85,8 +85,8 @@ public class Player : MonoBehaviour
     int whichSoldier;
 
     //creatingSoldiers
-    private readonly int _computerSoldiersCount = 2;
-    private readonly int _computerSoldiersMinCount = 0;
+    private readonly int _computerSoldiersCount = 5;
+    private readonly int _computerSoldiersMinCount = 2;
     int creatingSoldiers = 0;
 
     //attackingEnemies
@@ -146,6 +146,7 @@ public class Player : MonoBehaviour
         if (whichBuilding == -1)
         {
             computerTask = ComputerTask.attacking;
+            creatingSoldiers = GetListUnits<Soldier>().Count();
             return;
         }
 
@@ -163,7 +164,7 @@ public class Player : MonoBehaviour
             {
                 if (listOfBuildng.Where(b => b.Name == gameManager.BuildingsPrefabs[2].GetComponent<BuildingUnit>().name).ToList().Count != 0)
                 {
-                    if (listOfBuildng.Where(b => b.Name == gameManager.BuildingsPrefabs[3].GetComponent<BuildingUnit>().name).ToList().Count > 1)
+                    if (listOfBuildng.Where(b => b.Name == gameManager.BuildingsPrefabs[3].GetComponent<BuildingUnit>().name).ToList().Count > 3)
                     {
                         return -1;
                     }
@@ -303,7 +304,13 @@ public class Player : MonoBehaviour
 
     private void BuildingBuilding()
     {
+        if(buildingTarget == null)
+        {
+            computerTaskBuilding = ComputerTaskBuilding.checkBuilding;
+            return;
+        }
         BuildingUnit bU = buildingTarget.GetComponent<BuildingUnit>();
+
         if (bU.BuildingPercent < bU.CreateTime)
         {
             return;
@@ -383,6 +390,12 @@ public class Player : MonoBehaviour
 
     private void CreatingSoldiers()
     {
+        if(CheckAllBuildings() != -1)
+        {
+            computerTask = ComputerTask.building;
+            computerTaskAttacking = ComputerTaskAttacking.soldierSelection;
+        }
+
         gameManager._playersGameObjects[whichPlayer]
             .Where(b => b.GetComponent<BuildingUnit>() != null && b.GetComponent<BuildingUnit>().Name == "Barracks")
             .Select(b => b.GetComponent<BuildingUnit>())
@@ -455,7 +468,9 @@ public class Player : MonoBehaviour
             soldier.SendMessage("Command", buildings[0].transform.position + new Vector3(0, 0, buildings[0].GetComponent<BuildingUnit>().Size), SendMessageOptions.DontRequireReceiver);
         }
 
-        computerTaskAttacking = ComputerTaskAttacking.creatingSoldiers;
+        computerTask = ComputerTask.building;
+        computerTaskBuilding = ComputerTaskBuilding.checkBuilding;
+        computerTaskAttacking = ComputerTaskAttacking.soldierSelection;
     }
 
     #endregion
