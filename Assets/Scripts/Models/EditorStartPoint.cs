@@ -1,4 +1,5 @@
-﻿[System.Serializable]
+﻿
+[System.Serializable]
 public class EditorStartPoint
 {
     public float[] UnitStartLocation = new float[3];
