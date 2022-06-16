@@ -1,9 +1,6 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.AI;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
@@ -13,7 +10,7 @@ public class CameraControll : MonoBehaviour
     public GameObject hpSliderPlayer;
 
     static CameraControll cameraControl;
-    new Camera camera;
+    private Camera camera  = new Camera();
 
     private Vector2 mousePos, mousePosScreen, _keyboardInput;
 

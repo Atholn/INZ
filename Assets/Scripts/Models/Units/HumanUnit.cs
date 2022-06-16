@@ -59,7 +59,7 @@ public class HumanUnit : Unit
                         nearPoint = SearchNearBuildingPoint(target.GetComponent<BuildingUnit>().Size);
                         ifSearchNearBuildingPoint = true;
                     }
-
+                    
                     nav.SetDestination(nearPoint);
                 }
                 else

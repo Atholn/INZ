@@ -45,9 +45,9 @@ public class Minimap : MonoBehaviour
             if (objects.Count == 0) continue;
 
             Color pixelColor =
-            objects[0].transform.GetComponentInChildren<MeshRenderer>() == null ?
-            objects[0].transform.GetChild(0).GetComponentInChildren<SkinnedMeshRenderer>().materials[1].color :
-            objects[0].transform.GetComponentInChildren<MeshRenderer>().materials[1].color;
+                objects[0].transform.GetComponentInChildren<MeshRenderer>() == null ?
+                objects[0].transform.GetChild(0).GetComponentInChildren<SkinnedMeshRenderer>().materials[1].color :
+                objects[0].transform.GetComponentInChildren<MeshRenderer>().materials[1].color;
 
 
             foreach (GameObject obj in objects)

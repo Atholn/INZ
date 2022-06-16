@@ -85,8 +85,8 @@ public class Player : MonoBehaviour
     int whichSoldier;
 
     //creatingSoldiers
-    private readonly int _computerSoldiersCount = 5;
-    private readonly int _computerSoldiersMinCount = 4;
+    private readonly int _computerSoldiersCount = 2;
+    private readonly int _computerSoldiersMinCount = 0;
     int creatingSoldiers = 0;
 
     //attackingEnemies
@@ -163,7 +163,7 @@ public class Player : MonoBehaviour
             {
                 if (listOfBuildng.Where(b => b.Name == gameManager.BuildingsPrefabs[2].GetComponent<BuildingUnit>().name).ToList().Count != 0)
                 {
-                    if (listOfBuildng.Where(b => b.Name == gameManager.BuildingsPrefabs[3].GetComponent<BuildingUnit>().name).ToList().Count > 2)
+                    if (listOfBuildng.Where(b => b.Name == gameManager.BuildingsPrefabs[3].GetComponent<BuildingUnit>().name).ToList().Count > 1)
                     {
                         return -1;
                     }

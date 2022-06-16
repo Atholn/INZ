@@ -97,7 +97,6 @@ public class Soldier : HumanUnit
         }
 
         UpdateDistance(target.gameObject.GetComponent<BuildingUnit>() != null ? true : false);
-
         if (distance > AttackDistance)
         {
             run = true;
@@ -105,6 +104,7 @@ public class Soldier : HumanUnit
             timmer = 0;
             return;
         }
+        
         transform.LookAt(target.position + new Vector3(0,1,0));
         nav.velocity = Vector3.zero;
         attack = true;
@@ -151,7 +151,7 @@ public class Soldier : HumanUnit
         shot.transform.rotation = Quaternion.LookRotation(target.position);
         shot.transform.localScale = new Vector3(1 / transform.localScale.x, 1 / transform.localScale.x, 1 / transform.localScale.x);
         shot.transform.SetParent(null);
-        shot.GetComponent<Arrow>().SetLandingPlace(new Vector3(target.position.x, shot.transform.position.y, target.position.z), AttackPower);
+        shot.GetComponent<Arrow>().SetLandingPlace(new Vector3(target.position.x, shot.transform.position.y, target.position.z), AttackPower, WhichPlayer);
     }
 
     private void Death()
@@ -186,6 +186,7 @@ public class Soldier : HumanUnit
         target = null;
 
         nav.SetDestination(destination);
+        ifSearchNearBuildingPoint = false;
         task = SoldierTask.run;
     }
 
@@ -198,6 +199,7 @@ public class Soldier : HumanUnit
         run = true;
 
         target = gameObject.transform;
+        ifSearchNearBuildingPoint = false;
         task = SoldierTask.follow;
     }
 
@@ -210,6 +212,7 @@ public class Soldier : HumanUnit
         run = true;
 
         target = gameObject.transform;
+        ifSearchNearBuildingPoint = false;
         task = SoldierTask.attack;
     }
     #endregion

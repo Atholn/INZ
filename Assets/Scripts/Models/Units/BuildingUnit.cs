@@ -37,6 +37,7 @@ public class BuildingUnit : Unit
 
     private float nextShotTime = 0f;
     private readonly float _nextShotTimeMax = 2f;
+    private readonly float _maxShotDistance = 5f;
 
     private readonly Vector3[] arrowPosiotions = new Vector3[]
     {
@@ -61,6 +62,7 @@ public class BuildingUnit : Unit
         new Vector3(3, 0, 0),
         new Vector3(0, 0, 3)
     };
+
 
     protected override void Start()
     {
@@ -102,6 +104,11 @@ public class BuildingUnit : Unit
             return;
 
         nearGameObject = gameManager.CheckNearEnemy(WhichPlayer, transform.position);
+        if(Vector3.Distance(nearGameObject.transform.position, transform.transform.position) > _maxShotDistance)
+        {
+            return;
+        }
+
         nextShotTime = 0f;
 
         if (nearGameObject != null)
@@ -115,10 +122,11 @@ public class BuildingUnit : Unit
                 distances.Add(i, Vector3.Distance(nearGameObject.transform.position, transform.transform.position + arrowShifs[i]));
 
             int index = distances.OrderBy(d => d.Value).FirstOrDefault().Key;
+
             shot.transform.localPosition = arrowPosiotions[index];
             shot.transform.SetParent(null);
             shot.transform.rotation = Quaternion.Euler(arrowRotations[index]);
-            shot.GetComponent<Arrow>().SetLandingPlace(nearGameObject.transform.position, AttackPower);
+            shot.GetComponent<Arrow>().SetLandingPlace(nearGameObject.transform.position, AttackPower, WhichPlayer);
         }
     }
 
