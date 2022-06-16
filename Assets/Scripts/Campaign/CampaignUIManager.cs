@@ -95,7 +95,7 @@ public class CampaignUIManager : MonoBehaviour
             return;
         }
 
-        if (Input.GetKeyUp(KeyCode.Return))
+        if (Input.GetKeyDown(KeyCode.Return))
         {
             EnterMissionDetailsPanel();
             ifCountTime = true;
@@ -127,7 +127,7 @@ public class CampaignUIManager : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyUp(KeyCode.Return) && !ifCountTime)
+        if (Input.GetKeyDown(KeyCode.Return) && !ifCountTime)
         {
             StartCampaignMap();
             return;
