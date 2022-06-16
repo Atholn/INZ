@@ -19,13 +19,13 @@ public class Unit : MonoBehaviour
     internal int Hp;
 
     protected virtual void Awake()
-    {   
-
+    {
+        Hp = HpMax;
     }
 
     protected virtual void  Start()
     {
-        Hp = HpMax;
+        //Hp = HpMax;
     }
 
     protected virtual void Update()

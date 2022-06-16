@@ -174,6 +174,8 @@ public class GameManager : MonoBehaviour
                 _playersGameObjects[i][j + 1].transform.GetChild(0).GetComponentInChildren<SkinnedMeshRenderer>().materials[1].color = _playersMaterials[i].color;
                 _playersGameObjects[i][j + 1].GetComponent<Unit>().WhichPlayer = i;
             }
+
+            UpdateUnitPoints(i);
         }
     }
 
@@ -232,6 +234,7 @@ public class GameManager : MonoBehaviour
     {
         _players[whichPlayer].actualUnitsPoint = UnitsPointsUpdate(whichPlayer);
         _players[whichPlayer].actualMaxUnitsPoint = UnitsMaxPointsUpdate(whichPlayer);
+
         if (whichPlayer == 0)
             _gameUI.UpdateRawMaterials(2, _players[whichPlayer].actualUnitsPoint, _players[whichPlayer].actualMaxUnitsPoint);
     }
@@ -539,6 +542,8 @@ public class GameManager : MonoBehaviour
         _playersGameObjects[whichPlayer][_playersGameObjects[whichPlayer].Count - 1].transform.GetChild(0).GetComponentInChildren<SkinnedMeshRenderer>().materials[unitToCreate.GetComponent<HumanUnit>().UnitColorNum].color = _playersMaterials[whichPlayer].color;
         _playersGameObjects[whichPlayer][_playersGameObjects[whichPlayer].Count - 1].GetComponent<Unit>().WhichPlayer = whichPlayer;
 
+        UpdateUnitPoints(whichPlayer);
+
         if (_playersGameObjects[whichPlayer][_playersGameObjects[whichPlayer].Count - 1].GetComponent<HumanUnit>() != null)
         {
             if (_playersGameObjects[whichPlayer][_playersGameObjects[whichPlayer].Count - 1].GetComponent<Worker>() != null)
@@ -559,9 +564,6 @@ public class GameManager : MonoBehaviour
                 s.AttackPower = (int)((float)(s.AttackPower) * factor);
             }
         }
-
-        if (whichPlayer == 0)
-            _gameUI.UpdateRawMaterials(2, UnitsPointsUpdate(whichPlayer), UnitsMaxPointsUpdate(whichPlayer));
     }
     #endregion
 
