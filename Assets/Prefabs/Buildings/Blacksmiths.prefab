@@ -109,8 +109,8 @@ MonoBehaviour:
   Priority: 0
   CreateTime: 20
   HeightPosY: 0.45
-  GoldCost: 0
-  WoodCost: 0
+  GoldCost: 100
+  WoodCost: 100
   Size: 4
   PlaceWood: 0
   PlaceGold: 0

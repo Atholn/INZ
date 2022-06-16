@@ -367,9 +367,11 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        for (int i = 0; i < _players[0].upgradeFactors.Length && ifWin; i++)
+        for (int i = 0; i < _players[0].upgradeFactors.Length; i++)
         {
             ifWin = CheckUpgrade(i, bool.Parse(addional.First().Value));
+            if (!ifWin)
+                return;
         }
     }
 
@@ -396,8 +398,7 @@ public class GameManager : MonoBehaviour
                 coutOfSoldiers = _playersGameObjects[0].Where(u => u.GetComponent<Soldier>() != null).Count();
             }
             else
-            {
-                
+            {  
                 string nameOfUnit = UnitsPrefabs[int.Parse(addional.Key)].GetComponent<Unit>().Name;
                 coutOfSoldiers = _playersGameObjects[0].Where(u => u.GetComponent<Unit>().Name == nameOfUnit).Count();
             }

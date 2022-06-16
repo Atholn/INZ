@@ -367,7 +367,10 @@ public class GameUI : MonoBehaviour
         if(!GoldmineHintPanel.activeSelf)
         {
             GoldmineHintPanel.SetActive(true);
-            GoldmineHintPanel.transform.position = Input.mousePosition;
+            GoldmineHintPanel.transform.position = 
+                new Vector3(Input.mousePosition.x,
+                Input.mousePosition.y + GoldmineHintPanel.GetComponent<RectTransform>().sizeDelta.y,
+                0);
         }
 
         goldmineText.text = goldmineSource.ToString();

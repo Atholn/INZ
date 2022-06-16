@@ -9,7 +9,6 @@ public class UpgradeUnit : MonoBehaviour
 
     internal int NumberOfUpgrade;
 
-    private BuildingUnit buildingParent;
     private GameManager gameManager;
 
     void Start()
@@ -24,9 +23,8 @@ public class UpgradeUnit : MonoBehaviour
         if (gameManager._players[0].actualGold >= GoldCost &&
             gameManager._players[0].actualWood >= WoodCost)
         {
-            //todo update player who play in play in network
-            gameManager.UpdateWood(0, GoldCost);
-            gameManager.UpdateGold(0, WoodCost);
+            gameManager.UpdateWood(0, -GoldCost);
+            gameManager.UpdateGold(0, -WoodCost);
 
             gameManager.UpgradeUnit(0, NumberOfUpgrade);
             gameObject.SetActive(false);
