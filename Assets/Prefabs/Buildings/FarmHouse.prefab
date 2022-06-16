@@ -106,10 +106,10 @@ MonoBehaviour:
   AttackDistance: 0
   Profile: {fileID: 2800000, guid: ec017144467513442a7b3efb1727b0d1, type: 3}
   Priority: 0
-  CreateTime: 5
+  CreateTime: 15
   HeightPosY: 0.45
-  GoldCost: 0
-  WoodCost: 0
+  GoldCost: 80
+  WoodCost: 20
   Size: 4
   PlaceWood: 0
   PlaceGold: 0
