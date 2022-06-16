@@ -67,7 +67,7 @@ public static class CampaignMissionsRequaried
 
         foreach (var pair in reqs)
         {
-            switch (pair.Value)
+            switch (pair.Key)
             {
                 case "win": tmpText += bool.Parse(pair.Value) ? "Dominate enemy" : "Lose with enemy"; break;
             }
