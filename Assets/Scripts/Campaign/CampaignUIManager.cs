@@ -12,6 +12,9 @@ public class CampaignUIManager : MonoBehaviour
     private List<Button> missionsMapButtons; //0 - preview, 1 - next, 2 -  enter mission, 3 - exit 
 
     private Text missionDetailsText;
+    private bool ifCountTime = false;
+    private float timeBeetweenEnter = 0f;
+    private float maxTimeBeetweenEnter = 1f;
 
     private void Start()
     {
@@ -86,15 +89,16 @@ public class CampaignUIManager : MonoBehaviour
             return;
         }
 
-        if (Input.GetKeyDown(KeyCode.Return))
-        {
-            EnterMissionDetailsPanel();
-            return;
-        }
-
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             ExitCampaignScene();
+            return;
+        }
+
+        if (Input.GetKeyUp(KeyCode.Return))
+        {
+            EnterMissionDetailsPanel();
+            ifCountTime = true;
             return;
         }
     }
@@ -112,7 +116,18 @@ public class CampaignUIManager : MonoBehaviour
             return;
         }
 
-        if (Input.GetKeyDown(KeyCode.Return))
+        if (ifCountTime)
+        {
+            timeBeetweenEnter += Time.deltaTime;
+
+            if (timeBeetweenEnter > maxTimeBeetweenEnter)
+            {
+                ifCountTime = false;
+                timeBeetweenEnter = 0f;
+            }
+        }
+
+        if (Input.GetKeyUp(KeyCode.Return) && !ifCountTime)
         {
             StartCampaignMap();
             return;
