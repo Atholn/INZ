@@ -100,10 +100,10 @@ public static class CampaignMissionsRequaried
         {
             switch (req.Key)
             {
-                case "0": tmpText += bool.Parse(req.Value) ? "- A" : "- No a" + "ll upgrades"; break;
-                case "1": tmpText += bool.Parse(req.Value) ? "- K" : "- No k" + "night upgrade"; break;
-                case "2": tmpText += bool.Parse(req.Value) ? "- A" : "- No a" + "xeman upgrade"; break;
-                case "3": tmpText += bool.Parse(req.Value) ? "- B" : "- No b" + "owman upgrade"; break;
+                case "0": tmpText += (bool.Parse(req.Value) ? "- A" : "- No a") + "ll upgrades"; break;
+                case "1": tmpText += (bool.Parse(req.Value) ? "- K" : "- No k") + "night upgrade"; break;
+                case "2": tmpText += (bool.Parse(req.Value) ? "- A" : "- No a") + "xeman upgrade"; break;
+                case "3": tmpText += (bool.Parse(req.Value) ? "- B" : "- No b") + "owman upgrade"; break;
             }
             tmpText += "\n";
         }
