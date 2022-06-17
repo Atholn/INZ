@@ -202,7 +202,7 @@ public class UIMapEditorManager : MonoBehaviour, IPointerEnterHandler, IPointerE
 
         mapViewColors = mapInfo.ViewMap;
         mapInfoPanel.GetComponentInChildren<InputField>().text = mapInfo.Decription;
-
+        MapEditorManager.SetCameraBlock(map.MapWorldCreate.SizeMapX, map.MapWorldCreate.SizeMapY);
         MapEditorManager.ImportMap(map.MapWorldCreate);
 
         ActiveDeactivatePanel(loadMapPanel, !loadMapPanel.activeSelf);

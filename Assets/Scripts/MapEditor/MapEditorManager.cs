@@ -245,6 +245,11 @@ public class MapEditorManager : MonoBehaviour
         CreateGameObject(vx, vz, level);
     }
 
+    internal void SetCameraBlock(int sizeMapX, int sizeMapY)
+    { 
+        GameObject.FindObjectOfType<MapEditorCameraControll>().SetMapLimits(sizeMapX, sizeMapY);
+    }
+
     private void InitializeEditorStartPoints()
     {
         _mapWorldInfo.StartPoints = new List<EditorStartPoint>();
@@ -554,8 +559,8 @@ public class MapEditorManager : MonoBehaviour
         _mapWorldInfo.SizeMapX = sizeX;
         _mapWorldInfo.SizeMapY = sizeY;
 
-        GameObject.FindObjectOfType<MapEditorCameraControll>().SetMapLimits(_mapWorldInfo.SizeMapX, _mapWorldInfo.SizeMapY);
-
+        
+        SetCameraBlock(_mapWorldInfo.SizeMapX, _mapWorldInfo.SizeMapY);
         MapLoader.InitializeNewMap(ref _mapWorldInfo, ref mapsPrefabs, ref Terrain, GetPrefabsOnly(), _mapWorldInfo.MainGroundID);
     }
     #endregion
