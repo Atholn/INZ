@@ -314,7 +314,9 @@ public class GameManager : MonoBehaviour
             {
                 CampaignStorage.Win = true;
             }
-            ExitToBackScene();
+
+            _gameUI.ShowWinner(0, _playersMaterials[0].color);
+            return;
         }
     }
 
@@ -340,7 +342,20 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        //todo if we want lose
+        ifWin = bool.Parse(addional["win"]) ?
+            winner == 0 :
+            !(winner == 0);
+        //if (bool.Parse(addional["win"]))
+        //{
+        //    ifWin = winner == 0;
+        //}
+        //else
+        //{
+        //    ifWin = !(winner == 0);
+        //}
+
+        if(!ifWin && winner != 0)
+            _gameUI.ShowWinner(winner, _playersMaterials[winner].color);
     }
 
     private void SourcesCheckWin(ref bool ifWin, Dictionary<string, string> addionals)
@@ -395,7 +410,7 @@ public class GameManager : MonoBehaviour
         foreach (var addional in addionals)
         {
             int coutOfSoldiers;
-            //Debug.LogError(int.Parse(addional.Key) + " " + addional.Key + " " + addional.Value);
+
             if (addional.Key == "0")
             {
                 coutOfSoldiers = _playersGameObjects[0].Where(u => u.GetComponent<Soldier>() != null).Count();
