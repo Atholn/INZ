@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 22877548905349695}
   - component: {fileID: 1263771426606662619}
   - component: {fileID: 8861128955406523054}
+  - component: {fileID: 3409944123242601813}
   m_Layer: 0
   m_Name: Stone4
   m_TagString: Untagged
@@ -99,3 +100,17 @@ MonoBehaviour:
   ItemImage: {fileID: 4515724042983857587, guid: 4770568bb163e8340a781835aadea2e6, type: 3}
   ItemHeightLevel: 1
   ItemHeightPosY: 0.5
+  ItemImageComputer: {fileID: 0}
+--- !u!65 &3409944123242601813
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2681721045036282386}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.052855927, y: 0.047246113, z: 0.039131414}
+  m_Center: {x: -0.000032225624, y: 0.0020794147, z: 0.017296696}
