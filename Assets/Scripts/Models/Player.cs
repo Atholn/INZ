@@ -356,7 +356,6 @@ public class Player : MonoBehaviour
 
         if (creatingSoldiers > _computerSoldiersCount)
         {
-            //computerTaskAttacking = ComputerTaskAttacking.attackingEnemies;
             return;
         }
 
@@ -407,7 +406,11 @@ public class Player : MonoBehaviour
 
     private void SearchingEnemy()
     {
-        enemyTarget = GetNearEnemy();
+        if(gameManager._playersGameObjects[0].Count == 0 && MapToPlayStorage.SceneToBack == "Campaign")
+        {
+            return;
+        }
+        enemyTarget = MapToPlayStorage.SceneToBack == "Campaign" ? gameManager._playersGameObjects[0][0] : GetNearEnemy();
 
         commandsAttack = false;
         computerTaskAttacking = ComputerTaskAttacking.attackingEnemies;

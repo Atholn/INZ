@@ -227,6 +227,16 @@ public class GameManager : MonoBehaviour
         }
 
         UpdateWinRequaired();
+
+        if(Input.GetMouseButtonDown(3))
+        {
+            if (sceneToBack == "Campaign")
+            {
+                CampaignStorage.Win = true;
+            }
+
+            _gameUI.ShowWinner(0, _playersMaterials[0].color);
+        }
     }
 
     #region Update sources
@@ -318,6 +328,7 @@ public class GameManager : MonoBehaviour
             _gameUI.ShowWinner(0, _playersMaterials[0].color);
             return;
         }
+
     }
 
     private void FreeCheckWin(ref bool ifWin, Dictionary<string, string> addional)
@@ -334,7 +345,7 @@ public class GameManager : MonoBehaviour
             {
                 if (winner != -1)
                 {
-                    ifWin = false;
+                    ifWin = !bool.Parse(addional["win"]) && _playersGameObjects[0].Count == 0;
                     return;
                 }
 
@@ -345,14 +356,6 @@ public class GameManager : MonoBehaviour
         ifWin = bool.Parse(addional["win"]) ?
             winner == 0 :
             !(winner == 0);
-        //if (bool.Parse(addional["win"]))
-        //{
-        //    ifWin = winner == 0;
-        //}
-        //else
-        //{
-        //    ifWin = !(winner == 0);
-        //}
 
         if(!ifWin && winner != 0)
             _gameUI.ShowWinner(winner, _playersMaterials[winner].color);
