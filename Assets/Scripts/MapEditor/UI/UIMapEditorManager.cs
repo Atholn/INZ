@@ -9,9 +9,7 @@ public class UIMapEditorManager : MonoBehaviour, IPointerEnterHandler, IPointerE
 {
     enum TypeOfMap
     {
-        Campaign,
         Sirmish,
-        FreeGame,
     }
 
     public MapEditorManager MapEditorManager;
