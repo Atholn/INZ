@@ -177,6 +177,10 @@ public class GameManager : MonoBehaviour
 
             UpdateUnitPoints(i);
         }
+
+        CameraControll  cc = GameObject.FindObjectOfType<CameraControll>();
+        var posFirst = _playersGameObjects[0][0].transform.position;
+        cc.transform.position = new Vector3(posFirst.x, cc.transform.position.y, posFirst.z - 20f);
     }
 
     void Update()
