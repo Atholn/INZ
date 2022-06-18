@@ -106,7 +106,8 @@ public class Soldier : HumanUnit
         }
         
         transform.LookAt(target.position);
-        transform.rotation = new Quaternion(0, transform.rotation.z, 0, 0);
+        transform.rotation = new Quaternion(0f, transform.rotation.y, 0f, transform.rotation.w);
+
         nav.velocity = Vector3.zero;
         attack = true;
         run = false;
