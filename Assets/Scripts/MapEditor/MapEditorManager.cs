@@ -187,6 +187,7 @@ public class MapEditorManager : MonoBehaviour
                 }
 
                 CreateGameObject(vxSlider, vySlider, level);
+
             }
         }
     }
@@ -344,9 +345,7 @@ public class MapEditorManager : MonoBehaviour
                 _mapWorldInfo.Maps[level][vx][vz] = CurrentButtonPressed;
             }
 
-            mapsPrefabs[level][vx][vz] = Instantiate(ItemControllers[CurrentButtonPressed].item.ItemPrefab,
-                new Vector3(vx, ItemControllers[CurrentButtonPressed].item.ItemHeightPosY, vz),
-                ItemControllers[CurrentButtonPressed].item.ItemPrefab.transform.rotation);
+            CreateItem(vx, ItemControllers[CurrentButtonPressed].item.ItemHeightPosY, vz, level, ItemControllers[CurrentButtonPressed].item.ItemPrefab);
 
             var colider = mapsPrefabs[level][vx][vz].GetComponent<BoxCollider>();
 
@@ -355,6 +354,13 @@ public class MapEditorManager : MonoBehaviour
                 colider.enabled = false;
             }
         }
+    }
+
+    private void CreateItem(int vx, float vy, int vz, int level, GameObject prefab)
+    {
+        mapsPrefabs[level][vx][vz] = Instantiate(prefab,
+            new Vector3(vx, vy, vz),
+            prefab.transform.rotation);
     }
 
     private void ResetAreaAfterCreate(int vx, int vz, int level)
@@ -537,6 +543,12 @@ public class MapEditorManager : MonoBehaviour
         MapLoader.ResetAndLoad(ref _mapWorldInfo, ref newMap, ref mapsPrefabs, ref Terrain, GetPrefabsOnly(), coliderAfterLoad: false);
 
         ItemController startPointPrefab = ItemControllers.Where(i => i is ItemUnitController).FirstOrDefault();
+
+        if(_mapWorldInfo.StartPoints == null)
+        {
+            return;
+        }
+
         foreach (EditorStartPoint eSP in _mapWorldInfo.StartPoints)
         {
             if (ArrayToVector3(eSP.UnitStartLocation) == Vector3.zero)

@@ -11,4 +11,9 @@ public static class SceneLoader
     {
         SceneManager.LoadScene("GameScene");
     }
+
+    public static void Editor()
+    {
+        SceneManager.LoadScene("Editor");
+    }
 }

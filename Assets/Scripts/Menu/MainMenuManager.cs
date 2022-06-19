@@ -5,13 +5,11 @@ public class MainMenuManager : MonoBehaviour
 {
     public GameObject MainMenuPanel;
     public GameObject PlayPanel;
-    public GameObject OptionsPanel;
 
     private void Awake()
     {
         MainMenuPanel.SetActive(true);
         PlayPanel.SetActive(false);
-        OptionsPanel.SetActive(false);
     }
 
     #region MainMenu
