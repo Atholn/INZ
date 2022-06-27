@@ -34,7 +34,6 @@ public class Player : MonoBehaviour
         returnSoldiers,
     }
 
-    internal TypeOfPlayer typeOfPlayer;
     internal int whichPlayer;
 
     internal int actualUnitsPoint = 0;
@@ -46,6 +45,7 @@ public class Player : MonoBehaviour
 
     GameManager gameManager;
 
+    internal TypeOfPlayer typeOfPlayer;
     ComputerTask computerTask = ComputerTask.building;
     ComputerTaskBuilding computerTaskBuilding = ComputerTaskBuilding.checkBuilding;
     ComputerTaskAttacking computerTaskAttacking = ComputerTaskAttacking.soldierSelection;
