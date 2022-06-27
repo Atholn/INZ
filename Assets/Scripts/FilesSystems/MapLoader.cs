@@ -104,7 +104,6 @@ public class MapLoader : MonoBehaviour
                         {
                             ColiderOff(mapsPrefabs[i][j][k]);
                         }
-
                     }
                 }
             }

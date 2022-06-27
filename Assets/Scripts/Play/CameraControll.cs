@@ -240,21 +240,21 @@ public class CameraControll : MonoBehaviour
 
             object commandData = null;
 
-            foreach (GameObject gameObject in _selectUnits)
+            foreach (GameObject unit in _selectUnits)
             {
-                if (gameObject.GetComponent<BuildingUnit>() != null)
+                if (unit.GetComponent<BuildingUnit>() != null)
                 {
-                    gameObject.GetComponent<BuildingUnit>().PointerPosition = new Vector3(rayHit.point.x, 0.45f, rayHit.point.z);
+                    unit.GetComponent<BuildingUnit>().PointerPosition = new Vector3(rayHit.point.x, 0.45f, rayHit.point.z);
                     _gameManager.Pointer.transform.position = new Vector3(rayHit.point.x, 0.45f, rayHit.point.z);
                     continue;
                 }
 
-                if (gameObject.GetComponent<Soldier>() != null)
+                if (unit.GetComponent<Soldier>() != null)
                 {
                     if (rayHit.collider is TerrainCollider)
                     {
                         commandData = rayHit.point;
-                        GiveCommands(commandData, "Command");
+                        GiveOneCommand(unit, commandData, "Command");
                         continue;
                     }
 
@@ -281,48 +281,49 @@ public class CameraControll : MonoBehaviour
 
                     if (k == 0)
                     {
-                        GiveCommands(commandData, "CommandPlayer");
+                        GiveOneCommand(unit, commandData, "CommandPlayer");
                         continue;
                     }
 
-                    GiveCommands(commandData, "CommandEnemy");
+                    GiveOneCommand(unit, commandData, "CommandEnemy");
 
                     continue;
                 }
 
-                if (gameObject.GetComponent<Worker>() != null)
+                if (unit.GetComponent<Worker>() != null)
                 {
                     if (rayHit.collider.gameObject.GetComponent<BuildingPlace>() != null)
                     {
                         commandData = rayHit.collider.gameObject.GetComponent<BuildingPlace>().Building;
-                        GiveCommands(commandData, "Command");
+                        GiveOneCommand(unit, commandData, "Command");
                         continue;
                     }
 
                     if(rayHit.collider.gameObject.GetComponent<BuildingUnit>() != null)
                     {
                         commandData = rayHit.collider.gameObject.GetComponent<BuildingUnit>().gameObject;
-                        GiveCommands(commandData, "Command");
+                        GiveOneCommand(unit, commandData, "Command");
                         continue;
                     }
 
                     if (rayHit.collider.gameObject.GetComponent<Tree>() != null)
                     {
                         commandData = rayHit.collider.gameObject.GetComponent<Tree>();
-                        GiveCommands(commandData, "Command");
+                        GiveOneCommand(unit, commandData, "Command");
                         continue;
                     }
+
                     if (rayHit.collider.gameObject.GetComponent<GoldMine>() != null)
                     {
                         commandData = rayHit.collider.gameObject.GetComponent<GoldMine>();
-                        GiveCommands(commandData, "Command");
+                        GiveOneCommand(unit, commandData, "Command");
                         continue;
                     }
 
                     if (rayHit.collider is TerrainCollider)
                     {
                         commandData = rayHit.point;
-                        GiveCommands(commandData, "Command");
+                        GiveOneCommand(unit, commandData, "Command");
                         continue;
                     }
                 }
@@ -340,6 +341,11 @@ public class CameraControll : MonoBehaviour
         {
             selectable.GetComponent<Unit>().SendMessage(commandName, dataCommand, SendMessageOptions.DontRequireReceiver);
         }
+    }
+
+    void GiveOneCommand(GameObject unit, object dataCommand, string commandName)
+    {
+        unit.GetComponent<Unit>().SendMessage(commandName, dataCommand, SendMessageOptions.DontRequireReceiver);
     }
 
     private void UpdateSelecting()
