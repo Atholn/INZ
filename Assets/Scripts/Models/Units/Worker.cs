@@ -165,7 +165,10 @@ public class Worker : HumanUnit
 
         if (bU.BuildingPercent < bU.CreateTime)
         {
-            bU.BuildingPercent += Time.deltaTime;
+            float deltaTime = Time.deltaTime;
+            if (_gameManager.fastBuilding) deltaTime *= 10;
+
+            bU.BuildingPercent += deltaTime;
             bU.DustOn();
             target.transform.position = new Vector3(target.transform.position.x, -it.HeightBuilding + (bU.BuildingPercent / bU.CreateTime) * (it.ItemHeightPosY + it.HeightBuilding), target.transform.position.z);
 

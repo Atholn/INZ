@@ -148,7 +148,7 @@ public class CameraControll : MonoBehaviour
 
     private void UpdateCodes()
     {
-        if (Input.GetMouseButtonDown(4))
+        if (Input.GetMouseButtonDown(4) || Input.GetButtonDown("P"))
         {
             for (int i = 0; i < _gameManager._players.Count; i++)
             {
@@ -156,6 +156,13 @@ public class CameraControll : MonoBehaviour
                 _gameManager.UpdateGold(i, 1000);
             }
         }
+
+        if(Input.GetButtonDown("O"))
+        {
+            _gameManager.SetFastBuilding();
+        }
+
+
     }
 
     private void UpdateSelection()

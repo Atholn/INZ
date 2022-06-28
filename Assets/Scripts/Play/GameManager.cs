@@ -183,6 +183,13 @@ public class GameManager : MonoBehaviour
         cc.transform.position = new Vector3(posFirst.x, cc.transform.position.y, posFirst.z - 20f);
     }
 
+    internal bool fastBuilding = false;
+
+    internal void SetFastBuilding()
+    {
+        fastBuilding = !fastBuilding;
+    }
+
     void Update()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -232,7 +239,7 @@ public class GameManager : MonoBehaviour
 
         UpdateWinRequaired();
 
-        if(Input.GetMouseButtonDown(3))
+        if(Input.GetButtonDown("I"))
         {
             if (sceneToBack == "Campaign")
             {

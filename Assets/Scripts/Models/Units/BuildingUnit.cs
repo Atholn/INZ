@@ -196,7 +196,11 @@ public class BuildingUnit : Unit
             return;
         }
 
-        queueCreateUnitProgress[0] += Time.deltaTime;
+        var createDeltaTime = Time.deltaTime;
+        if (gameManager.fastBuilding) 
+            createDeltaTime *= 10;
+
+        queueCreateUnitProgress[0] += createDeltaTime;
 
         if (queueCreateUnitProgress[0] > queueCreateUnit[0].GetComponent<Unit>().CreateTime)
         {
