@@ -95,6 +95,20 @@ public class GameUI : MonoBehaviour
                 ErrorsPanel.SetActive(false);
             }
         }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (MenuPanel.activeSelf)
+                Back();
+            else
+                Menu();
+        }
+
+        if(Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            if (MenuPanel.activeSelf || WinLosePanel.activeSelf)
+                Exit();
+        }
     }
 
     #region TopPanel
